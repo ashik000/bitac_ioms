@@ -1,0 +1,13 @@
+
+
+.summary-panels {
+    @extend .panel-wrap;
+
+    .product-panel, .summary-panels {
+        max-width: calc(100% * 5 / 12)
+    }
+
+    .meta-panel {
+        max-width: calc(100% * 2 / 12)
+    }
+}

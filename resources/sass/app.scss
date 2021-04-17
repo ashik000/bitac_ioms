@@ -1,0 +1,55 @@
+@charset "utf-8";
+
+@import "variables";
+@import "~bootstrap";
+@import "~material-design-icons/iconfont/material-icons.css";
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: $theme-background;
+    font-size: $theme-font-size;
+    letter-spacing: $theme-letter-spacing;
+}
+
+h1, h2, h3, h4, h5 {
+    padding: 0;
+    margin: 0 0 5px;
+}
+
+h1 {
+    font-size: 42px;
+    font-weight: 500;
+}
+
+h2 {
+    font-size: 30px;
+    font-weight: 500;
+}
+
+h3 {
+    font-size: 24px;
+    font-weight: 500;
+    color: #cccccc;
+}
+
+.container-fluid {
+    padding-right: 100px;
+    padding-left: 100px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.main {
+    margin-top: 4rem;
+}
+.material-icons{
+    opacity: .6;
+}
+.material-icons:hover{
+    opacity: 1;
+}
+
+@import "components/navbar";
+//@import "components/panels";
+//
+//@import "pages/dashboard";

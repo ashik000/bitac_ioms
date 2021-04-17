@@ -1,0 +1,31 @@
+.page-header {
+    margin: 1rem 0 4rem;
+    color: #ffffff;
+}
+
+.section {
+    .section-header {
+        padding: 0.5rem 1rem;
+        border: 1px solid darken(wheat, 20);
+        background: wheat;
+    }
+
+    .section-list {
+        list-style: none;
+        padding: 0;
+
+        li {
+            padding: 0.5rem 1rem;
+
+            &.list-header {
+                color: #232156;
+            }
+        }
+    }
+
+    .section-table {
+        thead {
+        }
+    }
+}
+
