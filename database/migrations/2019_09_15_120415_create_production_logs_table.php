@@ -14,7 +14,7 @@ class CreateProductionLogsTable extends Migration
     public function up()
     {
         Schema::create('production_logs', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id')->nullable(false);
             $table->unsignedBigInteger('station_id');
             $table->unsignedBigInteger('product_id');
 

@@ -14,7 +14,7 @@ class CreateDowntimesTable extends Migration
     public function up()
     {
         Schema::create('downtimes', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id');
             $table->unsignedBigInteger('production_log_id');
             $table->unsignedBigInteger('reason_id')->nullable();
             $table->dateTime('start_time');

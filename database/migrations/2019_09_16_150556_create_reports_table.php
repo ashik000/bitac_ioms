@@ -14,7 +14,7 @@ class CreateReportsTable extends Migration
     public function up()
     {
         Schema::create('reports', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id');
             $table->enum('tag', ['hourly', 'daily', 'weekly', 'monthly', 'yearly'])->index();
             $table->unsignedBigInteger('station_id');
             $table->unsignedBigInteger('product_id');
