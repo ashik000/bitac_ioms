@@ -34,6 +34,9 @@ class ModifyDowntimesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('downtimes', function (Blueprint $table) {
+            $table->dropForeign('downtimes_operator_id_foreign');
+            $table->dropForeign('downtimes_shift_id_foreign');
+        });
     }
 }

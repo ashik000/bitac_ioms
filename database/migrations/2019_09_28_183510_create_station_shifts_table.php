@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddStationShiftTable extends Migration
+class CreateStationShiftsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -37,6 +37,6 @@ class AddStationShiftTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('station_shifts');
     }
 }

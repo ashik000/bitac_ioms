@@ -43,6 +43,9 @@ class ModifyStationOperatorsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('station_operators', function (Blueprint $table) {
+            $table->dropForeign('station_operators_operator_id_foreign');
+            $table->dropForeign('station_operators_station_id_foreign');
+        });
     }
 }
