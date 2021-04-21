@@ -29,22 +29,6 @@ class CreateReportsTable extends Migration
             $table->unsignedBigInteger('unplanned_downtime');
             $table->unsignedBigInteger('planned_downtime');
             $table->timestamps();
-
-            $table->foreign('station_id')
-                  ->references('id')
-                  ->on('stations');
-
-            $table->foreign('product_id')
-                  ->references('id')
-                  ->on('products');
-
-            $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users');
-
-            $table->foreign('shift_id')
-                  ->references('id')
-                  ->on('shifts');
         });
     }
 

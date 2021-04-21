@@ -20,10 +20,6 @@ class CreateSlowProductionsTable extends Migration
             $table->unsignedMediumInteger('duration');
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('production_log_id')
-                  ->references('id')
-                  ->on('production_logs');
         });
     }
 
