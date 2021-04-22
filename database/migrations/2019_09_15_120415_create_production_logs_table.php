@@ -14,7 +14,7 @@ class CreateProductionLogsTable extends Migration
     public function up()
     {
         Schema::create('production_logs', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id')->nullable(false);
             $table->unsignedBigInteger('station_id');
             $table->unsignedBigInteger('product_id');
 
@@ -24,14 +24,6 @@ class CreateProductionLogsTable extends Migration
 
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('station_id')
-                  ->references('id')
-                  ->on('stations');
-
-            $table->foreign('product_id')
-                  ->references('id')
-                  ->on('products');
         });
     }
 

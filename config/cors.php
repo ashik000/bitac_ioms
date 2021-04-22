@@ -13,7 +13,7 @@ return [
     */
 
     'supportsCredentials' => false,
-    'allowedOrigins' => env('APP_NAME') === 'BOF_LARAVEL'? ['http://bof-ioms.inovacetech.com', 'http://ioms.inovacetech.com'] : ['http://walton.api-inovace360.com'],
+    'allowedOrigins' => ['*'],
     'allowedOriginsPatterns' => [],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],

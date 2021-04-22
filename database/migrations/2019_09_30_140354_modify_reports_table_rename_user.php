@@ -15,7 +15,6 @@ class ModifyReportsTableRenameUser extends Migration
     {
         //
         Schema::table('reports', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
             $table->dropColumn('user_id');
             $table->unsignedBigInteger('operator_id')->nullable(true)->after('product_id');
             $table->foreign('operator_id')
@@ -31,6 +30,8 @@ class ModifyReportsTableRenameUser extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('reports', function (Blueprint $table) {
+            $table->dropForeign('reports_operator_id_foreign');
+        });
     }
 }

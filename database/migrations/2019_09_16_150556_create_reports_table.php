@@ -14,7 +14,7 @@ class CreateReportsTable extends Migration
     public function up()
     {
         Schema::create('reports', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id');
             $table->enum('tag', ['hourly', 'daily', 'weekly', 'monthly', 'yearly'])->index();
             $table->unsignedBigInteger('station_id');
             $table->unsignedBigInteger('product_id');
@@ -29,22 +29,6 @@ class CreateReportsTable extends Migration
             $table->unsignedBigInteger('unplanned_downtime');
             $table->unsignedBigInteger('planned_downtime');
             $table->timestamps();
-
-            $table->foreign('station_id')
-                  ->references('id')
-                  ->on('stations');
-
-            $table->foreign('product_id')
-                  ->references('id')
-                  ->on('products');
-
-            $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users');
-
-            $table->foreign('shift_id')
-                  ->references('id')
-                  ->on('shifts');
         });
     }
 

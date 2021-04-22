@@ -14,16 +14,12 @@ class CreateSlowProductionsTable extends Migration
     public function up()
     {
         Schema::create('slow_productions', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id');
             $table->unsignedBigInteger('production_log_id');
             $table->dateTime('start_time');
             $table->unsignedMediumInteger('duration');
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('production_log_id')
-                  ->references('id')
-                  ->on('production_logs');
         });
     }
 
