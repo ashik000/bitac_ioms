@@ -8,5 +8,6 @@ Setup instructions
 5. Run `npm install`
 
 Running instructions
-1. Run `php artisan serve`
-2. Run `gulp serve`
+1. Run `php artisan serve` twice on port 8000 and 8001
+2. Run `npm run hot`
+3. Go to `localhost:8000` on your browser.
