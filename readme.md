@@ -5,7 +5,8 @@ Setup instructions
 2. Copy everything from `.env.example`
 3. Run `composer install`
 4. Run `php artisan key:generate`
-5. Run `npm install`
+5. Run `php artisan passport:keys`
+6. Run `npm install`
 
 Running instructions
 1. Run `php artisan serve` twice on port 8000 and 8001
