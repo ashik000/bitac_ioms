@@ -247,7 +247,7 @@ class ReportController extends Controller
             ])
             ->select([DB::raw('SUM(downtimes.duration) as duration'), 'downtime_reasons.name'])
             ->orderBy('duration', 'DESC')
-            ->groupBy(['downtimes.reason_id']);
+            ->groupBy(['downtimes.reason_id','downtime_reasons.name']);
 
         $downtimeResult = $downtimeQuery->get()->reduce(function ($carry, $item) {
             $carry['labels'][] = $item->name == null ? "Uncommented" : $item->name;
