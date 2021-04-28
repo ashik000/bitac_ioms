@@ -14,19 +14,18 @@ class StationOperatorController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function index()
     {
-        $stationOperators = StationOperator::active()->all();
+        $stationOperators = StationOperator::active()->get();
         $stationOperators->map(function ($stationOperator) {
             $stationOperator->operator_name = $stationOperator->operator->first_name . ' ' . $stationOperator->operator->last_name;
             $stationOperator->station_name = $stationOperator->station->name;
             $stationOperator->station_group_id = $stationOperator->station->stationGroup->id;
             $stationOperator->station_group_name = $stationOperator->station->stationGroup->name;
         });
-        return response()->json($stationOperators->makeHidden(['deleted_at', 'created_at', 'updated_at',
-            'station', 'operator']), 200);
+        return response()->json($stationOperators->makeHidden(['deleted_at', 'created_at', 'updated_at', 'station', 'operator']), 200);
     }
 
     /**
@@ -43,7 +42,7 @@ class StationOperatorController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {

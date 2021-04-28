@@ -271,8 +271,8 @@ class ReportController extends Controller
         $query = ProductionLog::join('products', 'products.id', '=', 'production_logs.product_id')
             ->whereBetween('production_logs.produced_at', [$date->startOfDay(), $date->endOfDay()])
             ->where('production_logs.station_id', '=', $request->get('stationId'))
-            ->select('products.id', 'products.name', DB::raw('hour(production_logs.produced_at) as hour'), DB::raw('count(*) as produced'))
-            ->groupBy(DB::raw('hour(production_logs.produced_at)'), 'products.id');
+            ->select('products.id', 'products.name', DB::raw('extract(hour from production_logs.produced_at) as hour'), DB::raw('count(*) as produced'))
+            ->groupBy(DB::raw('extract(hour from production_logs.produced_at)'), 'products.id');
 
         $reports = $query->get();
 
