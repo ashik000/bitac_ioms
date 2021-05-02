@@ -24,7 +24,7 @@ class DowntimeReportController extends Controller
                 ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
                 ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
                 ->whereBetween('start_time', [$start->startOfDay(), $end->endOfDay()])
-                ->groupBy('station_id')
+                ->groupBy(['station_id','station_group_id','station_name','stations.station_group_id','station_group_name'])
                 ->select([
                     'station_id',
                     'station_group_id',
@@ -47,7 +47,7 @@ class DowntimeReportController extends Controller
                 ->leftJoin('downtime_reason_groups', 'downtime_reasons.reason_group_id', '=', 'downtime_reason_groups.id')
                 ->whereBetween('start_time', [$start->startOfDay(), $end->endOfDay()])
                 ->where('station_id', '=', $stationId)
-                ->groupBy(['downtimes.reason_id'])
+                ->groupBy(['downtimes.reason_id','downtime_reasons.name','reason_group_id','type','reason_group_name'])
                 ->select([
                     'reason_id',
                     DB::raw('downtime_reasons.name as name'),
@@ -85,7 +85,7 @@ class DowntimeReportController extends Controller
                 ->leftJoin('products', 'products.id', '=', 'production_logs.product_id')
                 ->leftjoin('product_groups', 'product_groups.id', '=', 'products.product_group_id')
                 ->whereBetween('start_time', [$start->startOfDay(), $end->endOfDay()])
-                ->groupBy('product_id','station_id')
+                ->groupBy(['product_id','station_id','station_group_id','product_group_id','station_groups.name','stations.name','products.name','product_groups.name'])
                 ->select([
                     'station_id',
                     'product_id',
@@ -113,7 +113,7 @@ class DowntimeReportController extends Controller
                 ->whereBetween('start_time', [$start->startOfDay(), $end->endOfDay()])
                 ->where('station_id', '=', $stationProduct->station_id)
                 ->where('product_id', '=', $stationProduct->product_id)
-                ->groupBy(['downtimes.reason_id'])
+                ->groupBy(['downtimes.reason_id','downtime_reasons.name','downtime_reasons.reason_group_id','downtime_reasons.type','downtime_reason_groups.name'])
                 ->select([
                     'reason_id',
                     DB::raw('downtime_reasons.name as name'),
@@ -150,7 +150,7 @@ class DowntimeReportController extends Controller
                 ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
                 ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
                 ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
-                ->groupBy('shift_id','station_id')
+                ->groupBy('shift_id','station_id','stations.station_group_id','stations.name','station_groups.name','shifts.name')
                 ->select([
                     'shift_id',
                     'station_id',
@@ -176,7 +176,7 @@ class DowntimeReportController extends Controller
                 ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
                 ->where('station_id', '=', $stationShift->station_id)
                 ->where('shift_id', '=', $stationShift->shift_id)
-                ->groupBy(['downtimes.reason_id'])
+                ->groupBy(['downtimes.reason_id','downtime_reasons.name','downtime_reasons.reason_group_id','downtime_reasons.type','downtime_reason_groups.name'])
                 ->select([
                     'reason_id',
                     DB::raw('downtime_reasons.name as name'),
@@ -213,7 +213,7 @@ class DowntimeReportController extends Controller
                 ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
                 ->join('operators', 'operators.id', '=', 'downtimes.operator_id')
                 ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
-                ->groupBy('operator_id','station_id')
+                ->groupBy('operator_id','station_id','station_group_id','stations.name','station_groups.name','operators.first_name','operators.last_name')
                 ->select([
                     'station_id',
                     'operator_id',
@@ -240,7 +240,7 @@ class DowntimeReportController extends Controller
                 ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
                 ->where('station_id', '=', $stationOperator->station_id)
                 ->where('operator_id', '=', $stationOperator->operator_id)
-                ->groupBy(['downtimes.reason_id'])
+                ->groupBy(['downtimes.reason_id','downtime_reasons.name','downtime_reasons.reason_group_id','downtime_reasons.type','downtime_reason_groups.name'])
                 ->select([
                     'reason_id',
                     DB::raw('downtime_reasons.name as name'),
