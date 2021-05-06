@@ -29,6 +29,11 @@ export const store = new Vuex.Store({
            state.auth.refreshToken = auth.refreshToken;
            state.auth.tokenExpiration = auth.tokenExpiration;
            state.auth.role = auth.role;
+           if(!auth.token) {
+               window.localStorage.removeItem('user_info');
+           }else{
+               window.localStorage.setItem('user_info', JSON.stringify(auth));
+           }
        }
    },
    actions: {

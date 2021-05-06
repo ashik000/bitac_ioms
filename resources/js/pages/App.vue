@@ -1,10 +1,10 @@
 <template>
     <div v-bind:class="{'wrapper':(showNav)}">
-        <nav v-if="showNav" class="main-navbar">
+        <nav v-if="showNav" class="main-navbar px-0">
             <div class="container-fluid">
                 <router-link to="/lineview" class="nav-item" active-class="active">
                     <a class="navbar-brand" href="/lineview">
-<!--                        <img v-if="process.env.MIX_APP_NAME == 'Laravel'" src="../../assets/images/walton-logo.png" style="height: 40px" alt="Walton">-->
+                        <img src="storage/images/walton-logo.png" style="height: 40px" alt="Walton">
 <!--                        <img v-if="process.env.MIX_APP_NAME == 'BOF_LARAVEL'" src="../../assets/images/inovace-logo.png" style="height: 40px" alt="Walton">-->
                     </a>
                 </router-link>
@@ -46,7 +46,7 @@
             </div>
         </nav>
 
-        <main v-bind:class="{'main':(showNav)}">
+        <main :class="{'main':(showNav)}">
             <router-view></router-view>
         </main>
     </div>

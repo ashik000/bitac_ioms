@@ -35,7 +35,12 @@ if (token) {
 
 axios.interceptors.request.use(request => {
     request.headers.common['Accept'] = 'application/json';
-    const access_token = store.state.auth.token;
+    let access_token = null;
+    if(store.state.auth.token) {
+        access_token = store.state.auth.token;
+    }else if(window.localStorage.getItem('user_info')){
+        access_token = window.localStorage.getItem('user_info').token;
+    }
     // const access_token = window.localStorage.getItem('access_token');
     if (access_token) {
         request.headers.common['Authorization'] = `Bearer ${access_token}`;

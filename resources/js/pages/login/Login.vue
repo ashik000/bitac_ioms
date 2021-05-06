@@ -6,15 +6,16 @@
                 <div class="col-md-2 col-sm-0"></div>
                 <div class="col-md-8 col-sm-12">
                     <div class="row" style="background: #fff; border-radius: 10px; box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.25);">
-                        <div class="left-image-div">
-                            <img src="../../../assets/images/InovaceLogo.png" alt="inovace logo" height="60" style="margin-top: 20px;">
-                        </div>
-                        <div class="right-form-div">
+<!--                        <div class="left-image-div">
+                            <img src="storage/images/walton-logo.png" alt="inovace logo" height="60" style="margin-top: 20px;">
+                        </div>-->
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
                             <div class="form-group" align="center" style="margin: 0px; padding: 0px;">
-                                <img src="../../../assets/images/InovaceLogo.png" alt="inovace logo" height="60" style="margin-bottom: 20px;">
+                                <img src="storage/images/walton-logo.png" alt="inovace logo" height="60" style="margin-top: 20px;">
                             </div>
-                            <h2 style="font-size: 30px; color: black; text-align: center;">IOMS <small>Login</small></h2>
-                            <form action="#" @submit.prevent = 'login' style="margin-top: 50px;">
+                            <h2 class="pt-5" style="font-size: 30px; color: black; text-align: center;">IOMS</h2>
+                            <form action="#" @submit.prevent = 'login' style="margin-top: 30px;">
                                 <div class="form-group">
                                     <label for="username">Email</label>
                                     <input type="email" class="form-control login input-underlinebox" id="username" placeholder="Enter your email"
@@ -32,6 +33,9 @@
                                     <button type="submit" class="btn btn-primary" style="padding: 5px 50px; border-radius: 20px;">LOG IN</button>
                                 </div>
                             </form>
+                            <div class="form-group pt-5" align="center" style="margin: 0px; padding: 0px;">
+                                <img src="storage/images/InovaceLogo.png" alt="inovace logo" height="40" style="margin-bottom: 20px;">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -105,15 +109,14 @@
         min-height: 520px;
     }
     .right-form-div {
-        width: 40%;
-        float: right;
+        width: 100%;
         padding: 25px 20px 0px;
         text-align: left;
         background: url("") no-repeat bottom;
         min-height: 520px;
     }
     .right-form-div > div > img {
-        display: none;
+        /*display: none;*/
     }
     .form-control:focus {
         border-color: #66afe9;
@@ -126,7 +129,7 @@
             width: 30%;
         }
         .right-form-div {
-            width: 70%;
+            width: 100%;
         }
     }
     @media screen and (max-width: 560px) {

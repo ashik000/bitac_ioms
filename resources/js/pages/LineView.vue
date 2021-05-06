@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="clock-wrap">
-                    <img class="inovace-logo" src="../../assets/images/inovace-logo.png" alt="Inovace Technologies">
+                    <img class="inovace-logo" src="storage/images/inovace-logo.png" alt="Inovace Technologies">
                     <p class="clock">{{ currentTime }}</p>
                 </div>
             </header>
@@ -282,6 +282,7 @@
             }
         },
         mounted() {
+            console.log("got it");
             const vm = this;
             this.$data._clock = () => {
                 vm.currentTime = moment().format('LTS');
