@@ -59,6 +59,7 @@ class HourlyReportGenerator implements ReportGenerator
         $allScraps = $this->scrapRepository->fetchScrapsBetweenADateRangeOfAllStations($start, $end)->groupBy(['station_id', 'product_id']);
 
         $reports = collect();
+        $reportLastId = DB::table('reports')->max('id');
         foreach ($stations as $station) {
             $stationOperator = StationOperator::where('station_id', '=', $station->id)
                 ->where('start_time', '<=', $start->startOfHour())
@@ -89,8 +90,9 @@ class HourlyReportGenerator implements ReportGenerator
 
                 $expected = floor(($totalTime  + $unplannedStopTime)/ $product->meta->cycle_time);
                 $produced = $productionLogs->sum('units_per_signal');
-
+                $reportLastId = $reportLastId ? $reportLastId+1 : 1;
                 $report               = new Report();
+                $report->id           = $reportLastId;
                 $report->generated_at = $start->endOfHour();
                 $report->tag          = 'hourly';
                 $report->station_id   = $station->id;

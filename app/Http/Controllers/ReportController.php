@@ -109,7 +109,7 @@ class ReportController extends Controller
         });
 
         $query->groupBy($groupedBy);
-
+        $query->orderBy('generated_at');
         $query->select([
             'generated_at',
             DB::raw('SUM(produced) as produced'),
@@ -313,15 +313,14 @@ class ReportController extends Controller
 
     public function getOEETableReportByStation(Request $request){
         $stationId  = $request->get('stationId');
-        $start  = CarbonImmutable::parse($request->get('start'));
-        $end = CarbonImmutable::parse($request->get('end'));
+        $start  = CarbonImmutable::parse($request->get('start'))->startOfDay();
+        $end = CarbonImmutable::parse($request->get('end'))->endOfDay();
         $type = $request->get('type');
         $type = ( is_null($type) || empty($type) ) ? 'hourly' : $type;
-
         if(is_null($stationId)){
             // Info: stationId null means all stations. In this case, there will be as many rows as stations and (availability,performance,quality,oee) fields will be from start and end duration only
             $result = Report::where('tag', 'hourly')
-                ->whereBetween('generated_at', [$start->startOfDay(), $end->endOfDay()])
+                ->whereBetween('generated_at', [$start, $end])
                 ->groupBy('station_id')
                 ->select([
                     'station_id',
@@ -337,7 +336,7 @@ class ReportController extends Controller
                 $row['station_group_id'] = $station->station_group_id;
                 $row['station_group_name'] = $row->station->stationGroup->name;
                 unset($row->station);
-                $totalTimeDuration = $start->diffInSeconds($end);
+                $totalTimeDuration = $end->diffInSeconds($start);
                 $row['availability'] = ($totalTimeDuration - $row->planned_downtime)<=0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
                 $row['performance'] = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality'] = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
@@ -398,15 +397,15 @@ class ReportController extends Controller
 
     public function getOEETableReportByStationProduct(Request $request){
         $stationProductId = $request->get('stationProductId');
-        $start  = CarbonImmutable::parse($request->get('start'));
-        $end = CarbonImmutable::parse($request->get('end'));
+        $start  = CarbonImmutable::parse($request->get('start'))->startOfDay();
+        $end = CarbonImmutable::parse($request->get('end'))->endOfDay();
         $type = $request->get('type');
         $type = ( is_null($type) || empty($type) ) ? 'hourly' : $type;
 
         if(is_null($stationProductId)){
             // Info: stationId null means all stations. In this case, there will be as many rows as stations and (availability,performance,quality,oee) fields will be from start and end duration only
             $result = Report::where('tag', 'hourly')
-                ->whereBetween('generated_at', [$start->startOfDay(), $end->endOfDay()])
+                ->whereBetween('generated_at', [$start, $end])
                 ->groupBy(['product_id','station_id'])
                 ->select([
                     'product_id',
@@ -491,15 +490,15 @@ class ReportController extends Controller
 
     public function getOEETableReportByStationShift(Request $request){
         $stationShiftId = $request->get('stationShiftId');
-        $start  = CarbonImmutable::parse($request->get('start'));
-        $end = CarbonImmutable::parse($request->get('end'));
+        $start  = CarbonImmutable::parse($request->get('start'))->startOfDay();
+        $end = CarbonImmutable::parse($request->get('end'))->endOfDay();
         $type = $request->get('type');
         $type = ( is_null($type) || empty($type) ) ? 'hourly' : $type;
 
         if(is_null($stationShiftId)){
             // Info: stationId null means all stations. In this case, there will be as many rows as stations and (availability,performance,quality,oee) fields will be from start and end duration only
             $result = Report::where('tag', 'hourly')
-                ->whereBetween('generated_at', [$start->startOfDay(), $end->endOfDay()])
+                ->whereBetween('generated_at', [$start, $end])
                 ->groupBy(['shift_id','station_id'])
                 ->select([
                     'shift_id',
@@ -582,15 +581,15 @@ class ReportController extends Controller
 
     public function getOEETableReportByStationOperator(Request $request){
         $stationOperatorId = $request->get('stationOperatorId');
-        $start  = CarbonImmutable::parse($request->get('start'));
-        $end = CarbonImmutable::parse($request->get('end'));
+        $start  = CarbonImmutable::parse($request->get('start'))->startOfDay();
+        $end = CarbonImmutable::parse($request->get('end'))->endOfDay();
         $type = $request->get('type');
         $type = ( is_null($type) || empty($type) ) ? 'hourly' : $type;
 
         if(is_null($stationOperatorId)){
             // Info: stationId null means all stations. In this case, there will be as many rows as stations and (availability,performance,quality,oee) fields will be from start and end duration only
             $result = Report::where('tag', 'hourly')
-                ->whereBetween('generated_at', [$start->startOfDay(), $end->endOfDay()])
+                ->whereBetween('generated_at', [$start, $end])
                 ->groupBy(['operator_id','station_id'])
                 ->select([
                     'operator_id',
