@@ -14,9 +14,9 @@ class RegenerateReportsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'reports:refresh 
+    protected $signature = 'reports:refresh
                                 {--T|tag= : Type of report `hourly`, `daily`, `weekly`, `monthly`}
-                                {--S|start=} 
+                                {--S|start=}
                                 {--E|end=}';
 
     /**
