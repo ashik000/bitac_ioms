@@ -2,7 +2,7 @@
     <div>
         <div class="d-flex justify-content-between">
             <p class="display-4 text-white">{{ produced }} pcs</p>
-            <p class="display-4 text-success">{{ (oee * 100).toFixed(2) }} %</p>
+            <p class="display-4 text-success">{{ totalOee }} %</p>
         </div>
         <ul class="line-product-list">
             <li class="line-item" v-for="product in products">
@@ -26,6 +26,11 @@
                 type: Array,
             },
             oee: Number
+        },
+        computed: {
+            totalOee(){
+                return isNaN(this.oee * 100) ? 0 : (this.oee * 100).toFixed(2);
+            }
         }
     }
 </script>
@@ -48,11 +53,14 @@
 
             .scrapped {
                 &:before {
-                    content: "/";
+                    font-family: "Material Icons";
+                    content: "\e5cd";
+                    color: #ff1111;
                     display: inline-block;
                     padding-left: 0.5rem;
                     padding-right: 0.5rem;
                 }
+                color: #ff1111;
             }
 
             &:first-of-type {
@@ -64,6 +72,14 @@
                 border-bottom: 0.25rem solid $primary-color-accent;
 
                 .produced {
+                    &:before {
+                        font-family: "Material Icons";
+                        content: "\e5ca";
+                        color: #14a76c;
+                        display: inline-block;
+                        padding-left: 0.5rem;
+                        padding-right: 0.5rem;
+                    }
                     color: #14a76c;
                 }
             }
