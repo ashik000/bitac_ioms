@@ -106,6 +106,7 @@
                             pointHoverRadius: 6,
                             borderColor: '#03A9F4',
                             backgroundColor: '#03A9F4',
+                            grace: '10%',
                         },
                         {
                             label: 'OEE',
@@ -128,6 +129,7 @@
                                 min: 0,
                                 beginAtZero: true,
                                 stepSize: 25,
+                                grace: '10%',
                                 callback: function(value, index, values) {
                                     return value + '%';
                                 }

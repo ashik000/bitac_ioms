@@ -12,9 +12,9 @@
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
                             <div class="form-group" align="center" style="margin: 0px; padding: 0px;">
-                                <img src="storage/images/walton-logo.png" alt="inovace logo" height="60" style="margin-top: 20px;">
+                                <img src="public/storage/images/walton-logo.png" alt="inovace logo" height="60" style="margin-top: 20px;">
                             </div>
-                            <h2 class="pt-5" style="font-size: 30px; color: black; text-align: center;">IOMS</h2>
+                            <h2 class="pt-5" style="font-size: 30px; font-family:Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; color: black; text-align: center;">IOMS</h2>
                             <form action="#" @submit.prevent = 'login' style="margin-top: 30px;">
                                 <div class="form-group">
                                     <label for="username">Email</label>
@@ -34,7 +34,7 @@
                                 </div>
                             </form>
                             <div class="form-group pt-5" align="center" style="margin: 0px; padding: 0px;">
-                                <img src="storage/images/InovaceLogo.png" alt="inovace logo" height="40" style="margin-bottom: 20px;">
+                                <img src="storage/images/inovace-black-logo.png" alt="Inovace Logo" height="50" style="margin-bottom: 20px;">
                             </div>
                         </div>
                     </div>

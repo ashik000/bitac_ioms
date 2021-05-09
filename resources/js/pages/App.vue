@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <router-link to="/lineview" class="nav-item" active-class="active">
                     <a class="navbar-brand" href="/lineview">
-                        <img src="storage/images/walton-logo.png" style="height: 40px" alt="Walton">
+                        <img src="public/storage/images/walton-logo.png" style="height: 40px" alt="Walton">
 <!--                        <img v-if="process.env.MIX_APP_NAME == 'BOF_LARAVEL'" src="../../assets/images/inovace-logo.png" style="height: 40px" alt="Walton">-->
                     </a>
                 </router-link>
