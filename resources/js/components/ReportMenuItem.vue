@@ -9,18 +9,18 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="#"
                            @click.prevent="$emit('reportMenuItemSelected', 'oeeReport')">OEE</a>
-                        <a class="dropdown-item" href="#"
+                        <a class="dropdown-item" href="#"ReportMenuItem
                            @click.prevent="$emit('reportMenuItemSelected', 'downtimeReport')">Downtime</a>
-                        <a class="dropdown-item" href="#"
-                           @click.prevent="$emit('reportMenuItemSelected', 'qualityReport')">Quality</a>
-                        <a class="dropdown-item" href="#"
-                           @click.prevent="$emit('reportMenuItemSelected', 'timeUsageReport')">Time Usage</a>
-                        <a class="dropdown-item" href="#"
-                           @click.prevent="$emit('reportMenuItemSelected', 'quantitiesReport')">Quantities</a>
-                        <a class="dropdown-item" href="#"
-                           @click.prevent="$emit('reportMenuItemSelected', 'cycleTimeReport')">Cycle Time</a>
-                        <a class="dropdown-item" href="#"
-                           @click.prevent="$emit('reportMenuItemSelected', 'scrapReasonsReport')">Scrap Reasons</a>
+<!--                        <a class="dropdown-item" href="#"-->
+<!--                           @click.prevent="$emit('reportMenuItemSelected', 'qualityReport')">Quality</a>-->
+<!--                        <a class="dropdown-item" href="#"-->
+<!--                           @click.prevent="$emit('reportMenuItemSelected', 'timeUsageReport')">Time Usage</a>-->
+<!--                        <a class="dropdown-item" href="#"-->
+<!--                           @click.prevent="$emit('reportMenuItemSelected', 'quantitiesReport')">Quantities</a>-->
+<!--                        <a class="dropdown-item" href="#"-->
+<!--                           @click.prevent="$emit('reportMenuItemSelected', 'cycleTimeReport')">Cycle Time</a>-->
+<!--                        <a class="dropdown-item" href="#"-->
+<!--                           @click.prevent="$emit('reportMenuItemSelected', 'scrapReasonsReport')">Scrap Reasons</a>-->
                     </div>
                 </div>
             </div>
