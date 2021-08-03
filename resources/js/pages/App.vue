@@ -1,107 +1,91 @@
 <template>
-    <div v-bind:class="{'wrapper':(showNav)}">
-        <nav v-if="showNav" class="main-navbar px-0">
-            <div class="container-fluid">
-                <router-link to="/lineview" class="nav-item" active-class="active">
-                    <a class="navbar-brand" href="/lineview">
-                        <img src="storage/images/walton-logo.png" style="height: 40px" alt="Walton">
-<!--                        <img v-if="process.env.MIX_APP_NAME == 'BOF_LARAVEL'" src="../../assets/images/inovace-logo.png" style="height: 40px" alt="Walton">-->
-                    </a>
-                </router-link>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <router-link to="/lineview" class="nav-item" active-class="active" tag="li">
-                            <a href="/lineview" class="nav-link">
-                                <span class="sr-only">(current)</span>
-                                LINEVIEW
-                            </a>
+    <span  v-bind:class="{'top-nav':(showNav)}">
+    <nav v-if="showNav">
+    <div class="px-3 py-2 d-1">
+        <div class="container-fluid">
+            <div class="d-flex flex-wrap align-items-center justify-content-start justify-content-lg-start main-header-flex-container">
+                <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                    <li>
+                        <router-link to="/lineview">
+                            <img src="storage/images/walton-logo.png" alt="walton-logo" style="height: 40px;">
                         </router-link>
-
-                        <router-link v-if="authorized" to="/reports" class="nav-item" active-class="active" tag="li">
-                            <!--<a href="/reports" class="nav-link">-->
-                                <!--REPORTS-->
-                            <!--</a>-->
-                            <report-menu-item @reportMenuItemSelected="reportSelected"></report-menu-item>
+                    </li>
+                    <li>
+                        <router-link to="/dashboard" class="nav-link text-white" active-class="active">
+                            Dashboard
                         </router-link>
-
-                        <router-link v-if="authorized" to="/settings/downtime_reasons" class="nav-item" active-class="active" tag="li">
-                            <a href="/settings/downtime_reasons" class="nav-link">
-                                SETTINGS
-                            </a>
+                    </li>
+                    <li>
+                        <router-link to="/lineview" class="nav-link text-white" active-class="active">
+                            Lineview
                         </router-link>
-                    </ul>
-                </div>
-
-                <div class="pull-right">
-                    <a href="#" @click="logout" class="nav-link">
-                        LOGOUT
-                    </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link text-white">
+                            Reports
+                        </a>
+                    </li>
+                    <li>
+                        <router-link v-if="authorized" to="/settings/stations" class="nav-link text-white" active-class="active">
+                            Settings
+                        </router-link>
+                    </li>
+                </ul>
+                <div class="logout">
+                    <a href="javascript:;" @click="logout">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
+                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"></path>
+                        </svg>
+                        Logout</a>
                 </div>
             </div>
-        </nav>
-
-        <main :class="{'main':(showNav)}">
-            <router-view></router-view>
-        </main>
+        </div>
     </div>
+    </nav>
+
+    <main :class="{'main':(showNav)}">
+        <router-view></router-view>
+    </main>
+    </span>
 </template>
-
 <script>
-    import ReportMenuItem from '../components/ReportMenuItem';
-    import loginService from '../services/LoginService';
+import ReportMenuItem from '../components/ReportMenuItem';
+import loginService from '../services/LoginService';
 
-    export default {
-        name: 'App',
-        data: () => ({}),
-        components: {
-            ReportMenuItem
+export default {
+    name: 'App',
+    data: () => ({}),
+    components: {
+        ReportMenuItem
+    },
+    methods:{
+        reportSelected(eventData){
+            this.$router.push({name:eventData});
         },
-        methods:{
-            reportSelected(eventData){
-                this.$router.push({name:eventData});
-            },
-            logout() {
-                loginService.logout(null, response => {
-                    this.$store.commit('addAuthProperties', {
-                        token: null,
-                        refreshToken: null,
-                        tokenExpiration: null,
-                        role: null
-                    });
-                    this.$router.push({
-                        name : 'login'
-                    })
-                }, error => {
-
+        logout() {
+            loginService.logout(null, response => {
+                this.$store.commit('addAuthProperties', {
+                    token: null,
+                    refreshToken: null,
+                    tokenExpiration: null,
+                    role: null
                 });
-            }
+                this.$router.push({
+                    name : 'login'
+                })
+            }, error => {
+
+            });
+        }
+    },
+    computed :{
+        showNav(){
+            return this.$route.path !== '/login';
         },
-        computed :{
-            showNav(){
-                return this.$route.path !== '/login';
-            },
-            authorized() {
-                return this.$store.getters.isAdmin || this.$store.getters.isManager;
-            }
+        authorized() {
+            return this.$store.getters.isAdmin || this.$store.getters.isManager;
         }
     }
+}
 </script>
-
-<style lang="scss" scoped>
-    .wrapper {
-        width: 100vw;
-        height: 100vh;
-
-        display: flex;
-
-        .main {
-            flex-grow: 1;
-        }
-    }
-</style>

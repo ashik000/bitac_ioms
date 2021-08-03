@@ -393,7 +393,7 @@
 
                         .btn {
                             color: #ffffff;
-                            background: $primary-color-accent;
+                            //background: $primary-color-accent;
                             border-radius: 0.25rem;
                             padding: 0.15rem 1rem;
                             font-size: 16px;
@@ -405,7 +405,7 @@
                             &:hover,
                             &:focus,
                             &.active {
-                                background: $primary-color-alt;
+                                //background: $primary-color-alt;
                             }
                         }
                     }
