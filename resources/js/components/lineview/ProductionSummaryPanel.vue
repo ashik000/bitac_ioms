@@ -69,7 +69,7 @@
 
                 padding-bottom: 1rem;
                 margin-bottom: 1rem;
-                border-bottom: 0.25rem solid $primary-color-accent;
+                //border-bottom: 0.25rem solid $primary-color-accent;
 
                 .produced {
                     &:before {

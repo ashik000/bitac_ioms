@@ -1,55 +1,196 @@
 @charset "utf-8";
 
-@import "variables";
 @import "~bootstrap";
-@import "~material-design-icons/iconfont/material-icons.css";
 
-body {
-    font-family: 'Open Sans', sans-serif;
-    background: $theme-background;
-    font-size: $theme-font-size;
-    letter-spacing: $theme-letter-spacing;
+html, body{
+    height: 100%;
+    background-color: #F8FCFF;
+}
+nav > .d-1{
+    background: linear-gradient(270deg, rgba(0,160,253,1) 0%, rgba(0,167,221,1) 34%, rgba(0,184,151,1) 100%);
 }
 
-h1, h2, h3, h4, h5 {
+nav > .d-2{
+    background-color: #035FA3;
+}
+
+.wrapper{
+    position: fixed;
+    top: 8em;
+    bottom: 0;
+    margin-top: 1em;
+    background-color: #F8FCFF;
+
+}
+.card-wrapper{
+    position: absolute;
+    top: 0;
+    bottom: 1.5em;
+    left: 1.5em;
+    right: 1.5em;
+    background-color: #FFFFFF;
+}
+
+.y-scroll {
+    overflow-y: scroll;
+}
+
+.list-group-item.active{
+    background-color: #007EDA;
+}
+
+.main-header-flex-container{
+    justify-content: space-between !important;
+}
+
+.card-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header-button{
+    background-color: #E2F0FF;
+    border-color: #05386B;
+    color: black;
+}
+
+.remove-width{
+    width: unset;
+}
+
+.input-group .transparent-search-button{
+    background-color: transparent;
+    border: transparent;
     padding: 0;
-    margin: 0 0 5px;
+    right: 25px;
+    bottom: 2px;
+    z-index: 100;
 }
 
-h1 {
-    font-size: 42px;
-    font-weight: 500;
+.accordion-button::after{
+    background-image: none;
+    content: none;
 }
 
-h2 {
-    font-size: 30px;
-    font-weight: 500;
+.accordion-button:not(.collapsed)::after {
+    background-image: none;
+    content: none;
 }
 
-h3 {
-    font-size: 24px;
-    font-weight: 500;
-    color: #cccccc;
+.accordion-button::before{
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1.25rem;
+    transform: rotate(-90deg);
+    transition: transform .2s ease-in-out;
+    margin-right: 1rem;
 }
 
-.container-fluid {
-    padding-right: 100px;
-    padding-left: 100px;
-    margin-right: auto;
-    margin-left: auto;
+.accordion-button:not(.collapsed)::before {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    transform: rotate(-0deg);
 }
 
-.main {
-    margin-top: 4rem;
-}
-.material-icons{
-    opacity: .6;
-}
-.material-icons:hover{
-    opacity: 1;
+.accordion-item{
+    margin: .5rem;
+    border: none;
 }
 
-@import "components/navbar";
-//@import "components/panels";
-//
-//@import "pages/dashboard";
+.card-header{
+    background: linear-gradient(308deg, rgba(4,69,125,0.9304096638655462) 0%, rgba(3,92,159,1) 20%, rgba(2,122,201,1) 100%);
+    color: white;
+}
+
+.accordion-body{
+    background-color: #F3F3F3;
+}
+
+.accordion-collapse.collapse.show{
+    border-left: 2px solid #F6F6F6;
+    border-right: 2px solid #F6F6F6;
+    border-bottom: 2px solid #F6F6F6;
+}
+
+.accordion-button:focus{
+    z-index: unset;
+    border-color: unset;
+    outline: unset;
+    box-shadow: unset;
+}
+
+
+.accordion-button:not(.collapsed) {
+    color: unset;
+    background-color: unset;
+}
+.accordion-header{
+    display: flex;
+    align-items: center;
+    background-color: #FBFBFB;
+    border: 2px solid #F6F6F6;
+}
+
+.accordion-header button{
+    white-space: nowrap;
+}
+
+.logout > a{
+    color: white;
+    text-decoration: inherit;
+}
+
+.logout > a > svg {
+    transform: rotate(90deg);
+    padding: 2px;
+    border: 1px solid white;
+}
+
+.list-group-item.active:first-child{
+    color: black;
+    background-color: #FFFFFF;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* button */
+::-webkit-scrollbar-button {
+    background: rgba(25, 25, 21, 0);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(25, 25, 21, .15);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(25, 25, 21, 1);
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgba(25, 25, 21, 0);
+}
+
+/* The track NOT covered by the handle. */
+::-webkit-scrollbar-track-piece {
+    background: rgba(25, 25, 21, 0);
+}
+
+/* Corner */
+::-webkit-scrollbar-corner {
+    background: rgba(25, 25, 21, 0);
+}
+
+/* Resizer */
+::-webkit-resizer {
+    background: rgba(25, 25, 21, 0);
+}

@@ -1,22 +1,30 @@
 <template>
-    <div>
-        <header class="section-header">
-            <span style="color:#ffffff ">
-                {{ sectionHeader }}
-            </span>
+    <div class="card shadow h-100">
+        <span>
+            <div class="card-header">
+                    <div>
+                        {{ sectionHeader }}
+                    </div>
 
-            <button class="btn" style="color: #ffffff" @click="$emit('action-clicked')">
-                <i class="icon material-icons" style="font-size:24px; color:#e6e6e6;">add_circle_outline</i>
-            </button>
-        </header>
-        <ul class="section-list">
-            <li class="list-header" v-if="listHeader">{{ listHeader }}</li>
-            <li v-for="item in items" :key="item.id" @click="$emit('item-selected', item)">
-                <slot :item="item">
-                    {{ item }}
-                </slot>
-            </li>
-        </ul>
+                    <div>
+                        <button type="button" class="btn btn-secondary card-header-button" @click="$emit('action-clicked')">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"></path>
+                          </svg>
+                          {{ buttonText }}
+                        </button>
+                    </div>
+            </div>
+
+            <ul class="card-body p-0 y-scroll">
+<!--                <li class="list-header" v-if="listHeader">{{ listHeader }}</li>-->
+                <li v-for="item in items" :key="item.id" @click="$emit('item-selected', item)" class="list-group-item border-0">
+                    <slot :item="item">
+                        {{ item }}
+                    </slot>
+                </li>
+            </ul>
+        </span>
     </div>
 </template>
 
@@ -27,6 +35,10 @@
             sectionHeader: {
                 type: String,
                 required: true,
+            },
+            buttonText:{
+               type: String,
+               required: true,
             },
             listHeader: {
                 type: String,
@@ -39,53 +51,3 @@
         }
     }
 </script>
-
-<style scoped lang="scss">
-    .section-header {
-             padding: 0.5rem 1rem;
-             background: #232156;
-
-             display: flex;
-             flex-direction: row;
-             justify-content: flex-start;
-             align-items: center;
-
-             > span {
-                 flex-grow: 1;
-             }
-
-        .action {
-            background: #0c4da1;
-            border: None;
-            border-radius: 50%;
-
-            padding: 0;
-            width: 1.5rem;
-            height: 1.5rem;
-
-            font-size: 1.25rem;
-            line-height: 1.5rem;
-
-            box-shadow: 1px 1px 1px 1px #0c4da1;
-        }
-    }
-
-    .section-list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-
-        li {
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-
-            &.list-header {
-                background: transparent;
-                cursor: default;
-            }
-            color:#ffffff;
-            border: 1px solid #0B312A;
-            background: transparent;
-        }
-    }
-</style>

@@ -1,28 +1,36 @@
 <template>
-    <div>
-        <header class="section-header">
-            <span style="color: #ffffff">
+    <div class="card shadow h-100">
+        <div class="card-header">
+            <div>
                 {{ sectionHeader }}
-            </span>
+            </div>
 
-            <button class="btn" style="color: #ffffff" @click="$emit('action-clicked')">
-                <i class="icon material-icons" style="font-size:24px; color:#e6e6e6;">add_circle_outline</i>
-            </button>
-        </header>
-        <div class="table-responsive">
-            <table class="settings-table table">
-                <thead>
-                <slot name="columnHeaders">
-                </slot>
-                </thead>
-                <tbody>
-                <tr v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }">
+          <div class="d-flex">
+            <div class="input-group remove-width">
+              <input type="text" class="form-control" placeholder="Search" aria-label="Stations search" aria-describedby="Stations search">
+              <button class="btn transparent-search-button" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  class="bi bi-search" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                </svg>
+              </button>
+            </div>
+
+            <button type="button" class="btn btn-secondary card-header-button" @click="$emit('action-clicked')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"></path>
+              </svg>
+              Add Stations</button>
+          </div>
+        </div>
+        <div class="card-body  y-scroll">
+          <div class="accordion">
+                <span v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }">
                     <slot :row="item" name="row">
-                        <td>{{ item }}</td>
+                        {{ item }}
                     </slot>
-                </tr>
-                </tbody>
-            </table>
+                </span>
+          </div>
+
         </div>
     </div>
 </template>
