@@ -1,18 +1,17 @@
 <template>
-    <div>
-        <h3 class="page-header">Manage Shifts</h3>
-        <div class="row">
-            <section class="section col-8">
+    <span>
+        <div class="card-wrapper row">
+            <div class="col-12">
                 <SettingsTable :items="shifts" sectionHeader="Shifts" @action-clicked="openShiftAddModal">
                     <template v-slot:columnHeaders>
                         <tr>
                             <th style="width: 40%;">Name</th>
                             <th style="width: 25%;">Start</th>
                             <th style="width: 25%;">End</th>
-                            <th style="width: 10%;"></th>
+                            <th style="width: 10%;">Actions</th>
                         </tr>
                     </template>
-                    <div></div>
+
                     <template v-slot:row="{ row }">
                         <td style="width: 40%;">
                             <div class="d-flex justify-content-between align-items-center">
@@ -45,7 +44,7 @@
                         </td>
                     </template>
                 </SettingsTable>
-            </section>
+            </div>
         </div>
 
         <Modal v-if="showShiftForm" @close="closeModal">
@@ -94,7 +93,7 @@
             <template v-slot:footer>
             </template>
         </Modal>
-    </div>
+    </span>
 
 </template>
 

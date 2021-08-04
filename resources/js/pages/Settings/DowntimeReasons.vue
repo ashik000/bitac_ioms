@@ -1,7 +1,6 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-    <div>
-        <h3 class="page-header">Manage Downtime Reasons</h3>
-        <div class="row">
+<template>
+    <span>
+        <div class="card-wrapper row">
             <aside class="section col-3">
                 <SettingsList sectionHeader="Reason Groups"
                               :items="groups"
@@ -131,7 +130,7 @@
             <template v-slot:footer>
             </template>
         </Modal>
-    </div>
+    </span>
 </template>
 
 <script>

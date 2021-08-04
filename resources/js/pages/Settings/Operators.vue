@@ -1,8 +1,7 @@
 <template>
-    <div>
-        <h3 class="page-header">Manage Operators</h3>
-        <div class="row">
-            <section class="section col-8">
+    <span>
+        <div class="card-wrapper row">
+            <div class="col-12">
                 <SettingsTable :items="operators" sectionHeader="Operators" @action-clicked="openOperatorAddModal">
                     <template v-slot:columnHeaders>
                         <tr>
@@ -39,7 +38,7 @@
                         </td>
                     </template>
                 </SettingsTable>
-            </section>
+            </div>
         </div>
 
         <Modal v-if="showOperatorForm" @close="closeModal">
@@ -88,7 +87,7 @@
             <template v-slot:footer>
             </template>
         </Modal>
-    </div>
+    </span>
 </template>
 
 <script>
