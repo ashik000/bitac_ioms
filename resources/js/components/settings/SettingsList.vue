@@ -1,6 +1,6 @@
 <template>
     <div class="card shadow h-100">
-        <span>
+
             <div class="card-header">
                     <div>
                         {{ sectionHeader }}
@@ -24,7 +24,7 @@
                     </slot>
                 </li>
             </ul>
-        </span>
+
     </div>
 </template>
 
