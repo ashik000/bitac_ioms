@@ -72,7 +72,67 @@
 
                                   <div :id="'station-details' + row.id" class="accordion-collapse collapse" >
                                     <div class="accordion-body">
-                                        <span>{{row.name}}</span>
+                                        <!-- Tabs navs -->
+                                        <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+                                          <li class="nav-item" role="presentation">
+                                            <a
+                                                class="nav-link active"
+                                                id="ex3-tab-1"
+                                                data-bs-toggle="tab"
+                                                href="#products-tab"
+                                                role="tab"
+                                                aria-controls="products-tab"
+                                                aria-selected="true"
+                                            >Products</a>
+                                          </li>
+                                          <li class="nav-item" role="presentation">
+                                            <a
+                                                class="nav-link"
+                                                id="ex3-tab-2"
+                                                data-bs-toggle="tab"
+                                                href="#shifts-tab"
+                                                role="tab"
+                                                aria-controls="shifts-tab"
+                                                aria-selected="false"
+                                            >Shifts</a>
+                                          </li>
+                                          <li class="nav-item" role="presentation">
+                                            <a
+                                                class="nav-link"
+                                                id="ex3-tab-3"
+                                                data-bs-toggle="tab"
+                                                href="#operators-tab"
+                                                role="tab"
+                                                aria-controls="operators-tab"
+                                                aria-selected="false"
+                                            >Operators</a>
+                                          </li>
+                                        </ul>
+
+                                        <div class="tab-content row">
+                                            <div class="tab-pane fade show active"
+                                                 id="products-tab"
+                                                 role="tabpanel"
+                                                 aria-labelledby="products-tab">
+                                                <StationProduct :station-id="selectedStationId"></StationProduct>
+                                            </div>
+
+                                            <div class="tab-pane fade"
+                                                 id="shifts-tab"
+                                                 role="tabpanel"
+                                                 aria-labelledby="shifts-tab">
+                                                <StationShift :station-id="selectedStationId"></StationShift>-
+                                            </div>
+
+                                            <div class="tab-pane fade"
+                                                 id="operators-tab"
+                                                 role="tabpanel"
+                                                 aria-labelledby="operators-tab">
+                                                <StationOperator :station-id="selectedStationId"></StationOperator>
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                   </div>
 
@@ -81,8 +141,6 @@
                         </template>
                     </SettingsTable>
                 </div>
-
-
             </div>
 
 
@@ -163,24 +221,6 @@
                 <template v-slot:footer>
                 </template>
             </Modal>
-
-<!--        <div v-if="showConfigureStation">-->
-<!--            <h3 class="page-header">-->
-<!--                Configure Station-->
-<!--            </h3>-->
-<!--            <div class="row">-->
-<!--                <div class="col-md-6">-->
-<!--                    <StationProduct :station-id="selectedStationId"></StationProduct>-->
-<!--                </div>-->
-<!--                <div class="col-md-3">-->
-<!--                    <StationShift :station-id="selectedStationId"></StationShift>-->
-<!--                </div>-->
-<!--                <div class="col-md-3">-->
-<!--                    <StationOperator :station-id="selectedStationId"></StationOperator>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--        </div>-->
     </span>
 
 </template>

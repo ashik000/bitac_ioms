@@ -249,7 +249,7 @@
     .settings-table {
         thead {
             background: #4e4d78;
-            color: white;
+            color: black;
             opacity: .7;
             th {
                 padding: 0.25rem;
@@ -262,7 +262,7 @@
             td {
                 background: transparent;
                 border: 1px solid #0B312A;
-                color: #ffffff;
+                color: black;
             }
         }
     }
