@@ -79,9 +79,9 @@
                                                 class="nav-link active"
                                                 id="ex3-tab-1"
                                                 data-bs-toggle="tab"
-                                                href="#products-tab"
+                                                :href="'#products-tab' + row.id"
                                                 role="tab"
-                                                aria-controls="products-tab"
+                                                :aria-controls="'products-tab' + row.id"
                                                 aria-selected="true"
                                             >Products</a>
                                           </li>
@@ -90,9 +90,9 @@
                                                 class="nav-link"
                                                 id="ex3-tab-2"
                                                 data-bs-toggle="tab"
-                                                href="#shifts-tab"
+                                                :href="'#shifts-tab' + row.id"
                                                 role="tab"
-                                                aria-controls="shifts-tab"
+                                                :aria-controls="'shifts-tab' + row.id"
                                                 aria-selected="false"
                                             >Shifts</a>
                                           </li>
@@ -101,9 +101,9 @@
                                                 class="nav-link"
                                                 id="ex3-tab-3"
                                                 data-bs-toggle="tab"
-                                                href="#operators-tab"
+                                                :href="'#operators-tab' + row.id"
                                                 role="tab"
-                                                aria-controls="operators-tab"
+                                                :aria-controls="'operators-tab' + row.id"
                                                 aria-selected="false"
                                             >Operators</a>
                                           </li>
@@ -111,23 +111,23 @@
 
                                         <div class="tab-content row">
                                             <div class="tab-pane fade show active"
-                                                 id="products-tab"
+                                                 :id="'products-tab' + row.id"
                                                  role="tabpanel"
-                                                 aria-labelledby="products-tab">
+                                                 :aria-labelledby="'products-tab' + row.id">
                                                 <StationProduct :station-id="selectedStationId"></StationProduct>
                                             </div>
 
                                             <div class="tab-pane fade"
-                                                 id="shifts-tab"
+                                                 :id="'shifts-tab' + row.id"
                                                  role="tabpanel"
-                                                 aria-labelledby="shifts-tab">
+                                                 :aria-labelledby="'shifts-tab' + row.id">
                                                 <StationShift :station-id="selectedStationId"></StationShift>-
                                             </div>
 
                                             <div class="tab-pane fade"
-                                                 id="operators-tab"
+                                                 :id="'operators-tab' + row.id"
                                                  role="tabpanel"
-                                                 aria-labelledby="operators-tab">
+                                                 :aria-labelledby="'operators-tab' + row.id">
                                                 <StationOperator :station-id="selectedStationId"></StationOperator>
                                             </div>
 
