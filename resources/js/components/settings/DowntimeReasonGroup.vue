@@ -30,7 +30,7 @@
 
 <script>
 export default {
-    name: 'StationGroup',
+    name: 'DowntimeReasonGroup',
     props: {
         sectionHeader: {
             type: String,

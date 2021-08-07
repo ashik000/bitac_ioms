@@ -2,10 +2,10 @@
     <span>
         <div class="card-wrapper row">
             <aside class="section col-3">
-                <DowntimeGroup sectionHeader="Reason Groups"
+                <DowntimeReasonGroup sectionHeader="Reason Groups"
                               :items="groups"
                               @action-clicked="openGroupAddModal"
-                              @item-selected="">
+                              @item-selected="" buttonText="Add Reason Group">
                     <template v-slot="{ item }">
                         <div class="d-flex justify-content-between align-items-center">
                             {{ item.name }}
@@ -21,10 +21,10 @@
                             </a>
                         </div>
                     </template>
-                </DowntimeGroup>
+                </DowntimeReasonGroup>
             </aside>
             <section class="section col-9">
-                <DowntimeList :items="reasons"
+                <DowntimeReasonList :items="reasons"
                                sectionHeader="Reasons"
                                @action-clicked="showReasonForm = true">
                     <template v-slot:columnHeaders>
@@ -47,7 +47,7 @@
                             </div>
                         </td>
                     </template>
-                </DowntimeList>
+                </DowntimeReasonList>
             </section>
         </div>
         <Modal v-if="showGroupDeleteForm" @close="closeGroupForm">
@@ -134,13 +134,14 @@
 </template>
 
 <script>
-    import DowntimeGroup from "../../components/settings/DowntimeGroup";
-    import DowntimeList from "../../components/settings/DowntimeList";
+    import DowntimeReasonGroup from "../../components/settings/DowntimeReasonGroup";
+    import DowntimeReasonList from "../../components/settings/DowntimeReasonList";
     import downtimeReasonsService from '../../services/DowntimeReasons'
     import groupMixin from '../../mixins/groupMixin'
+
     export default {
         name: "DowntimeReasons",
-        components: {DowntimeGroup, DowntimeList},
+        components: {DowntimeReasonGroup, DowntimeReasonList},
         mixins:[groupMixin],
         data: () => ({
             showReasonForm: false,
