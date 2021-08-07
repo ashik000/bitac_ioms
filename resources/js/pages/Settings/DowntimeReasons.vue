@@ -2,7 +2,7 @@
     <span>
         <div class="card-wrapper row">
             <aside class="section col-3">
-                <SettingsList sectionHeader="Reason Groups"
+                <DowntimeGroup sectionHeader="Reason Groups"
                               :items="groups"
                               @action-clicked="openGroupAddModal"
                               @item-selected="">
@@ -21,10 +21,10 @@
                             </a>
                         </div>
                     </template>
-                </SettingsList>
+                </DowntimeGroup>
             </aside>
             <section class="section col-9">
-                <SettingsTable :items="reasons"
+                <DowntimeList :items="reasons"
                                sectionHeader="Reasons"
                                @action-clicked="showReasonForm = true">
                     <template v-slot:columnHeaders>
@@ -47,7 +47,7 @@
                             </div>
                         </td>
                     </template>
-                </SettingsTable>
+                </DowntimeList>
             </section>
         </div>
         <Modal v-if="showGroupDeleteForm" @close="closeGroupForm">
@@ -134,10 +134,13 @@
 </template>
 
 <script>
+    import DowntimeGroup from "../../components/settings/DowntimeGroup";
+    import DowntimeList from "../../components/settings/DowntimeList";
     import downtimeReasonsService from '../../services/DowntimeReasons'
     import groupMixin from '../../mixins/groupMixin'
     export default {
         name: "DowntimeReasons",
+        components: {DowntimeGroup, DowntimeList},
         mixins:[groupMixin],
         data: () => ({
             showReasonForm: false,
@@ -232,6 +235,3 @@
     }
 </script>
 
-<style scoped lang="scss">
-
-</style>

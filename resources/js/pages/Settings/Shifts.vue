@@ -2,7 +2,7 @@
     <span>
         <div class="card-wrapper row">
             <div class="col-12">
-                <SettingsTable :items="shifts" sectionHeader="Shifts" @action-clicked="openShiftAddModal">
+                <ShiftList :items="shifts" sectionHeader="Shifts" @action-clicked="openShiftAddModal">
                     <template v-slot:columnHeaders>
                         <tr>
                             <th style="width: 40%;">Name</th>
@@ -43,7 +43,7 @@
                             </div>
                         </td>
                     </template>
-                </SettingsTable>
+                </ShiftList>
             </div>
         </div>
 
@@ -98,11 +98,13 @@
 </template>
 
 <script>
+    import ShiftList from "../../components/settings/ShiftList";
     import shiftsService from '../../services/ShiftsService';
     import groupMixin from '../../mixins/groupMixin';
 
     export default {
         name: "Shifts",
+        components: {ShiftList},
         mixins:[groupMixin],
         data: function() {
             return {
@@ -198,9 +200,3 @@
         }
     }
 </script>
-
-<style src="vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css"></style>
-
-<style scoped lang="scss">
-
-</style>

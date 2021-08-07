@@ -2,7 +2,7 @@
     <span>
         <div class="card-wrapper row">
             <div class="col-12">
-                <SettingsTable :items="operators" sectionHeader="Operators" @action-clicked="openOperatorAddModal">
+                <OperatorList :items="operators" sectionHeader="Operators" @action-clicked="openOperatorAddModal">
                     <template v-slot:columnHeaders>
                         <tr>
                             <th style="width: 45%;">Operator Name</th>
@@ -37,7 +37,7 @@
                             </div>
                         </td>
                     </template>
-                </SettingsTable>
+                </OperatorList>
             </div>
         </div>
 
@@ -91,11 +91,13 @@
 </template>
 
 <script>
+    import OperatorList from "../../components/settings/OperatorList";
     import operatorsService from '../../services/OperatorsService';
     import groupMixin from '../../mixins/groupMixin';
 
     export default {
         name: "Operators",
+        components: {OperatorList},
         mixins:[groupMixin],
         data: function () {
             return {

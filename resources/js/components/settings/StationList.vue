@@ -35,7 +35,7 @@
 
 <script>
     export default {
-        name: "SettingsTable",
+        name: "StationList",
         props: {
             items: {
                 type: Array,
@@ -49,67 +49,3 @@
         }
     }
 </script>
-
-<style scoped lang="scss">
-    .section-header {
-        padding: 0.5rem 1rem;
-        background: #232156;
-
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-
-        > span {
-            flex-grow: 1;
-        }
-
-        .action {
-            background:#0c4da1;
-            border: None;
-            border-radius: 50%;
-
-            padding: 0;
-            width: 1.5rem;
-            height: 1.5rem;
-
-            font-size: 1.25rem;
-            line-height: 1.5rem;
-
-            box-shadow: 1px 1px 1px 1px #0c4da1;
-        }
-    }
-
-    .settings-table {
-        thead {
-            background: #4e4d78;
-            color: #b2b2b2;
-
-            th {
-                padding-top: 0.25rem;
-                padding-bottom: 0.25rem;
-                border: 1px solid #0B312A;
-                font-weight: bold;
-            }
-        }
-
-        tbody {
-            /*tr {*/
-            /*    &:nth-child(even) {*/
-            /*        background: #fafafa;*/
-            /*    }*/
-            /*}*/
-            td {
-                background: transparent;
-                border: 1px solid #0B312A;
-                color: #ffffff;
-                vertical-align: middle;
-            }
-        }
-    }
-
-    .selected{
-        background: #1c3d5a;
-    }
-</style>
-

@@ -4,7 +4,7 @@
             <div class="card-wrapper row">
                 <div class="col-3 h-100">
 
-                    <SettingsList sectionHeader="Station Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Stations Group">
+                    <StationGroup sectionHeader="Station Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Stations Group">
                         <template v-slot="{ item }">
                                 {{ item.name }}
                             <span style="float: right;">
@@ -25,12 +25,12 @@
                                   </button>
                             </span>
                         </template>
-                    </SettingsList>
+                    </StationGroup>
                 </div>
 
 
                 <div class="col-9 h-100">
-                    <SettingsTable :items="stations"
+                    <StationList :items="stations"
                                    sectionHeader="Stations"
                                    :selected-id="selectedStationId"
                                    @action-clicked="openStationAddModal">
@@ -139,7 +139,7 @@
                                 </div>
                             </div>
                         </template>
-                    </SettingsTable>
+                    </StationList>
                 </div>
             </div>
 
@@ -226,7 +226,9 @@
 </template>
 
 <script>
-import stationService from '../../services/StationsService'
+import StationGroup from "../../components/settings/StationGroup";
+import StationList from "../../components/settings/StationList";
+import stationService from '../../services/StationsService';
 import groupMixin from '../../mixins/groupMixin';
 import StationProduct from "../../components/station/StationProduct";
 import StationOperator from "../../components/station/StationOperator";
@@ -234,7 +236,7 @@ import StationShift from "../../components/station/StationShift";
 
 export default {
     name: "Stations",
-    components: {StationOperator, StationShift, StationProduct},
+    components: {StationOperator, StationShift, StationProduct, StationGroup, StationList},
     mixins:[groupMixin],
     data: () => ({
         showStationForm: false,

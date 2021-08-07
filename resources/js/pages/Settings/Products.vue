@@ -2,7 +2,7 @@
     <div>
         <div class="card-wrapper row">
             <div class="col-3 h-100">
-                <SettingsList sectionHeader="Product Groups"  :items="groups" @action-clicked="openGroupAddModal">
+                <ProductGroup sectionHeader="Product Groups"  :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Product Group">
                     <template v-slot="{ item }">
                             {{ item.name }}
                         <span style="float: right;">
@@ -23,10 +23,10 @@
                                   </button>
                         </span>
                     </template>
-                </SettingsList>
+                </ProductGroup>
             </div>
             <section class="col-9 h-100">
-                <SettingsTable :items="products" sectionHeader="Products" @action-clicked="openProductAddModal">
+                <ProductList :items="products" sectionHeader="Products" @action-clicked="openProductAddModal">
                     <template v-slot:columnHeaders>
                     </template>
                     <template v-slot:row="{ row }">
@@ -52,7 +52,7 @@
                             </div>
                         </td>
                     </template>
-                </SettingsTable>
+                </ProductList>
             </section>
         </div>
         <Modal v-if="showGroupDeleteForm" @close="closeGroupForm">
@@ -136,11 +136,14 @@
 </template>
 
 <script>
+    import ProductGroup from "../../components/settings/ProductGroup";
+    import ProductList from "../../components/settings/ProductList";
     import productService from '../../services/Products'
     import stationService from '../../services/StationsService';
     import groupMixin from '../../mixins/groupMixin';
     export default {
         name: "Products",
+        components: {ProductGroup, ProductList},
         mixins:[groupMixin],
         data: () => ({
             showProductForm: false,

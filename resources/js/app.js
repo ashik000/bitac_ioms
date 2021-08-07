@@ -11,16 +11,12 @@ import Toasted from 'vue-toasted';
 import App from './pages/App'
 
 import Modal from "./components/Modal";
-import SettingsList from "./components/settings/SettingsList";
-import SettingsTable from "./components/settings/SettingsTable";
 
 moment.updateLocale("en", { week: {
         dow: 6, // First day of week is Saturday
     }});
 
 Vue.component('Modal', Modal);
-Vue.component('SettingsList', SettingsList);
-Vue.component('SettingsTable', SettingsTable);
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 Vue.component('multiselect', Multiselect);
 

@@ -30,7 +30,7 @@
 
 <script>
     export default {
-        name: 'SettingsList',
+        name: 'StationGroup',
         props: {
             sectionHeader: {
                 type: String,

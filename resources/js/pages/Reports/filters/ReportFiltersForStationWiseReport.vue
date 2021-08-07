@@ -7,7 +7,7 @@
                         <label>Select Station Group</label>
                         <select class="form-control" v-model="selectedStationGroupId">
                             <option value="0">All</option>
-                            <option v-for="stationGroup in stationGroups" :value="stationGroup.id" :key="stationGroup.id">{{ stationGroup.name }}</option>
+                            <option v-for="stationGroup in StationGroup" :value="stationGroup.id" :key="stationGroup.id">{{ stationGroup.name }}</option>
                         </select>
                     </div>
                     <div class="col-sm-6">
@@ -31,7 +31,7 @@
         data: () => ({
             selectedStationGroupId: 0,
             selectedStationId: 0,
-            stationGroups:[],
+            StationGroup:[],
             allStations:[],
         }),
         computed: {
@@ -62,7 +62,7 @@
         },
         mounted() {
             StationService.fetchAllGroups( response => {
-                this.stationGroups = response;
+                this.StationGroup = response;
 
             });
             StationService.fetchAll([], response => {
