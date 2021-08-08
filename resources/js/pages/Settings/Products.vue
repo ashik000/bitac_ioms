@@ -139,7 +139,7 @@
     import ProductGroup from "../../components/settings/ProductGroup";
     import ProductList from "../../components/settings/ProductList";
     import productService from '../../services/Products'
-    import stationService from '../../services/StationsService';
+    // import stationService from '../../services/StationsService';
     import groupMixin from '../../mixins/groupMixin';
     export default {
         name: "Products",
@@ -252,9 +252,9 @@
             productService.fetchAll([], products => {
                 this.products = products;
             });
-            stationService.fetchAll(stations=>{
-                this.stations = stations;
-            });
+            // stationService.fetchAll(stations=>{
+            //     this.stations = stations;
+            // });
         }
     }
 </script>

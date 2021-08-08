@@ -23,11 +23,20 @@
             </div>
         </div>
         <div class="card-body  y-scroll">
-          <span v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }">
-            <slot :row="item" name="row">
-                {{ item }}
-            </slot>
-        </span>
+
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                        <slot name="columnHeaders"></slot>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }">
+                            <slot :row="item" name="row">
+                                <td>{{ item }}</td>
+                            </slot>
+                        </tr>
+                    </tbody>
+                </table>
+
 
         </div>
     </div>

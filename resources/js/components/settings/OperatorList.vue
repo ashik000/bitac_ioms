@@ -7,7 +7,7 @@
 
             <div class="d-flex">
                 <div class="input-group remove-width">
-                    <input type="text" class="form-control" placeholder="Search" aria-label="Operator search" aria-describedby="Operator search">
+                    <input type="text" class="form-control" placeholder="Search" aria-label="Shift search" aria-describedby="Shift search">
                     <button class="btn transparent-search-button" type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
@@ -19,15 +19,24 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                         <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"></path>
                     </svg>
-                    Add Operator</button>
+                    Add Shift</button>
             </div>
         </div>
         <div class="card-body  y-scroll">
-          <span v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }">
-            <slot :row="item" name="row">
-                {{ item }}
-            </slot>
-        </span>
+
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                <slot name="columnHeaders"></slot>
+                </thead>
+                <tbody>
+                <tr v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }">
+                    <slot :row="item" name="row">
+                        <td>{{ item }}</td>
+                    </slot>
+                </tr>
+                </tbody>
+            </table>
+
 
         </div>
     </div>

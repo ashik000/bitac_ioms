@@ -5,38 +5,38 @@
                 <ShiftList :items="shifts" sectionHeader="Shifts" @action-clicked="openShiftAddModal">
                     <template v-slot:columnHeaders>
                         <tr>
-                            <th style="width: 40%;">Name</th>
-                            <th style="width: 25%;">Start</th>
-                            <th style="width: 25%;">End</th>
-                            <th style="width: 10%;">Actions</th>
+                            <th>Name</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Actions</th>
                         </tr>
                     </template>
 
                     <template v-slot:row="{ row }">
-                        <td style="width: 40%;">
-                            <div class="d-flex justify-content-between align-items-center">
+                        <td>
+                            <div>
                                 {{ row.name }}
                             </div>
                         </td>
-                        <td style="width: 25%;">
-                            <div class="d-flex justify-content-between align-items-center">
+                        <td>
+                            <div>
                                 {{ row.start_time }}
                             </div>
                         </td>
-                        <td style="width: 25%;">
-                            <div class="d-flex justify-content-between align-items-center">
+                        <td>
+                            <div>
                                 {{ row.end_time }}
                             </div>
                         </td>
-                        <td style="width: 10%;">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a class="btn btn-link" style="margin-left: auto">
-                                    <i class="material-icons" style="color: #e6e6e6;" @click.prevent="showShiftEditModal(row)">
+                        <td>
+                            <div>
+                                <a class="btn btn-primary">
+                                    <i class="material-icons" @click.prevent="showShiftEditModal(row)">
                                         edit
                                     </i>
                                 </a>
-                                <a class="btn btn-link">
-                                    <i class="material-icons" style="color: #e6e6e6;" @click.prevent="showShiftDeleteModal(row)">
+                                <a class="btn btn-danger">
+                                    <i class="material-icons" @click.prevent="showShiftDeleteModal(row)">
                                         delete
                                     </i>
                                 </a>

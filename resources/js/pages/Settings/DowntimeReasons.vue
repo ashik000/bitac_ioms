@@ -7,18 +7,20 @@
                               @action-clicked="openGroupAddModal"
                               @item-selected="" buttonText="Add Reason Group">
                     <template v-slot="{ item }">
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div>
                             {{ item.name }}
-                            <a class="btn btn-link" style="margin-left: auto">
-                                <i class="material-icons" style="color: #e6e6e6;" @click.prevent="showGroupEditModal(item)">
-                                    edit
-                                </i>
-                            </a>
-                            <a class="btn btn-link">
-                                <i class="material-icons" style="color: #e6e6e6;" @click.prevent="showGroupDeleteModal(item)">
-                                    delete
-                                </i>
-                            </a>
+                                <span style="float: right;">
+                                    <a class="btn-sm btn-primary">
+                                        <i class="material-icons" @click.prevent="showGroupEditModal(item)">
+                                            edit
+                                        </i>
+                                    </a>
+                                    <a class="btn-sm btn-danger">
+                                        <i class="material-icons" @click.prevent="showGroupDeleteModal(item)">
+                                            delete
+                                        </i>
+                                    </a>
+                                </span>
                         </div>
                     </template>
                 </DowntimeReasonGroup>
@@ -27,25 +29,25 @@
                 <DowntimeReasonList :items="reasons"
                                sectionHeader="Reasons"
                                @action-clicked="showReasonForm = true">
-                    <template v-slot:columnHeaders>
-                    </template>
-                    <div></div>
+<!--                    <template v-slot:columnHeaders>-->
+<!--                    </template>-->
+
                     <template v-slot:row="{ row }">
-                        <td>
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div>
                                 {{ row.name }}
-                            <a class="btn btn-link" style="margin-left: auto">
-                                <i class="material-icons" style="color: #e6e6e6;" @click.prevent="showDowntimeEditModal(row)">
-                                    edit
-                                </i>
-                            </a>
-                            <a class="btn btn-link">
-                                <i class="material-icons" style="color: #e6e6e6;" @click.prevent="showReasonDeleteModal(row)">
-                                    delete
-                                </i>
-                            </a>
+                                <span style="float: right;">
+                                    <a class="btn btn-primary">
+                                        <i class="material-icons" @click.prevent="showDowntimeEditModal(row)">
+                                            edit
+                                        </i>
+                                    </a>
+                                    <a class="btn btn-danger">
+                                        <i class="material-icons" @click.prevent="showReasonDeleteModal(row)">
+                                            delete
+                                        </i>
+                                    </a>
+                                </span>
                             </div>
-                        </td>
                     </template>
                 </DowntimeReasonList>
             </section>

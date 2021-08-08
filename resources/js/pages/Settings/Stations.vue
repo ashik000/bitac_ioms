@@ -34,14 +34,11 @@
                                    sectionHeader="Stations"
                                    :selected-id="selectedStationId"
                                    @action-clicked="openStationAddModal">
-                        <template v-slot:columnHeaders>
+<!--                        <template v-slot:columnHeaders>-->
 
-                        </template>
+<!--                        </template>-->
 
                         <template v-slot:row="{ row }">
-                            <div class="accordion">
-                                <div class="accordion-item">
-
                                   <h2 class="accordion-header" id="panelsStayOpen-headingOne" @click="setSelectedStationId(row)">
                                       <button class="accordion-button collapsed" data-bs-toggle="collapse" :data-bs-target="'#station-details' + row.id" type="button" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne" @click="setSelectedStationId(row)">
                                         {{ row.name }}
@@ -135,9 +132,6 @@
 
                                     </div>
                                   </div>
-
-                                </div>
-                            </div>
                         </template>
                     </StationList>
                 </div>

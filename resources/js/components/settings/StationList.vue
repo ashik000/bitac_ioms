@@ -23,11 +23,13 @@
           </div>
         </div>
         <div class="card-body  y-scroll">
-          <span v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }">
+          <div class="accordion">
+          <div v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }" class="accordion-item">
             <slot :row="item" name="row">
                 {{ item }}
             </slot>
-        </span>
+        </div>
+          </div>
 
         </div>
     </div>

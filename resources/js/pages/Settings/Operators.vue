@@ -5,32 +5,33 @@
                 <OperatorList :items="operators" sectionHeader="Operators" @action-clicked="openOperatorAddModal">
                     <template v-slot:columnHeaders>
                         <tr>
-                            <th style="width: 45%;">Operator Name</th>
-                            <th style="width: 45%;">Code</th>
-                            <th style="width: 10%;"></th>
+                            <th>Operator Name</th>
+                            <th>Operator ID</th>
+<!--                            <th>Status</th>-->
+                            <th>Actions</th>
                         </tr>
                     </template>
                     <div></div>
                     <template v-slot:row="{ row }">
-                        <td style="width: 45%;">
-                            <div class="d-flex justify-content-between align-items-center">
+                        <td>
+                            <div>
                                 {{ row.first_name + " " + row.last_name }}
                             </div>
                         </td>
-                        <td style="width: 45%;">
-                            <div class="d-flex justify-content-between align-items-center">
+                        <td>
+                            <div>
                                 {{ row.code }}
                             </div>
                         </td>
-                        <td style="width: 10%;">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a class="btn btn-link" style="margin-left: auto">
+                        <td>
+                            <div>
+                                <a class="btn btn-primary">
                                     <i class="material-icons" style="color: #e6e6e6;"  @click.prevent="showOperatorEditModal(row)">
                                         edit
                                     </i>
                                 </a>
-                                <a class="btn btn-link">
-                                    <i class="material-icons" style="color: #e6e6e6;" @click.prevent="showOperatorDeleteModal(row)">
+                                <a class="btn btn-danger">
+                                    <i class="material-icons" @click.prevent="showOperatorDeleteModal(row)">
                                         delete
                                     </i>
                                 </a>
