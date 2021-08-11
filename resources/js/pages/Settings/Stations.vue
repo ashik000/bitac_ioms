@@ -6,7 +6,9 @@
 
                     <StationGroup sectionHeader="Station Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Stations Group">
                         <template v-slot="{ item }">
-                                {{ item.name }}
+                                <a class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
+                                    {{ item.name }}
+                                </a>
                             <span style="float: right;">
                                   <button type="button" class="btn btn-primary btn-sm" @click.prevent="showGroupEditModal(item)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -322,7 +324,12 @@ export default {
         setSelectedStationId(item){
             console.log("Selected station id " + item.id);
             this.selectedStationId = item.id;
-        }
+        },
+        loadGroupData(groupId){
+            stationService.fetchAllStationsByGroupId(groupId, stations => {
+                this.stations = stations;
+            });
+        },
     },
     computed : {
         showConfigureStation(){
@@ -332,10 +339,12 @@ export default {
     mounted() {
         stationService.fetchAllGroups(groups => {
             this.groups = groups;
+
+            stationService.fetchAllStationsByGroupId(this.groups[0].id, stations => {
+                console.log(stations);
+                this.stations = stations;
+            });
         });
-        stationService.fetchAll([], products => {
-            this.stations = products;
-        })
     }
 }
 </script>

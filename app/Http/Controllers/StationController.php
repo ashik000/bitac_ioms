@@ -88,4 +88,10 @@ class StationController extends Controller
         $station->delete();
         return new StationCollection(Station::all());
     }
+
+    public function stationsByGroupId($id)
+    {
+        $stations = Station::where('station_group_id', $id)->get();
+        return new StationCollection($stations);
+    }
 }

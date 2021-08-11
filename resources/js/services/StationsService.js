@@ -43,5 +43,12 @@ export default {
         axios.delete(`stations/${id}`)
             .then(r => success(r.data.station_list))
             .catch(e => console.log(e));
+    },
+    fetchAllStationsByGroupId(groupId, success, error) {
+        axios.get('stationsByGroupId/' + groupId, {
+
+        })
+            .then(r => success(r.data.station_list))
+            .catch(e => console.log(e))
     }
 }
