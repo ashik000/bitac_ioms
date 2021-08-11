@@ -34,9 +34,6 @@
                                    sectionHeader="Stations"
                                    :selected-id="selectedStationId"
                                    @action-clicked="openStationAddModal">
-<!--                        <template v-slot:columnHeaders>-->
-
-<!--                        </template>-->
 
                         <template v-slot:row="{ row }">
                                   <h2 class="accordion-header" id="panelsStayOpen-headingOne" @click="setSelectedStationId(row)">
