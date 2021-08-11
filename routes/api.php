@@ -26,6 +26,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::resource('products', 'ProductController');
     Route::resource('downtimeReasons', 'DowntimeReasonController');
     Route::resource('downtimeReasonGroups','DowntimeReasonGroupController');
+    Route::get('downtimeReasonsByGroupId/{id}','DowntimeController@downtimeReasonsByGroupId');
     Route::resource('productGroups','ProductGroupController');
     Route::resource('stationGroups','StationGroupController');
     Route::resource('stationProducts','StationProductController');

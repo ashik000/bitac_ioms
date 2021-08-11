@@ -1,21 +1,23 @@
 <template>
     <span>
-        <div class="card-wrapper row">
-            <aside class="section col-3">
+        <div class="card-wrapper row y-scroll">
+            <aside class="section col-md-3 col-sm-12 pt-md-2 pt-4 pb-4">
                 <DowntimeReasonGroup sectionHeader="Reason Groups"
                               :items="groups"
                               @action-clicked="openGroupAddModal"
                               @item-selected="" buttonText="Add Reason Group">
                     <template v-slot="{ item }">
                         <div>
-                            {{ item.name }}
+                            <a class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
+                                {{ item.name }}
+                            </a>
                                 <span style="float: right;">
-                                    <a class="btn-sm btn-primary">
+                                    <a class="btn-sm btn-primary me-1 anchor_btn">
                                         <i class="material-icons" @click.prevent="showGroupEditModal(item)">
                                             edit
                                         </i>
                                     </a>
-                                    <a class="btn-sm btn-danger">
+                                    <a class="btn-sm btn-danger anchor_btn">
                                         <i class="material-icons" @click.prevent="showGroupDeleteModal(item)">
                                             delete
                                         </i>
@@ -25,7 +27,7 @@
                     </template>
                 </DowntimeReasonGroup>
             </aside>
-            <section class="section col-9">
+            <section class="section col-md-9 col-sm-12 pt-md-2 pt-4 pb-4">
                 <DowntimeReasonList :items="reasons"
                                sectionHeader="Reasons"
                                @action-clicked="showReasonForm = true">
@@ -36,12 +38,12 @@
                             <div>
                                 {{ row.name }}
                                 <span style="float: right;">
-                                    <a class="btn btn-primary">
+                                    <a class="btn btn-primary anchor_btn">
                                         <i class="material-icons" @click.prevent="showDowntimeEditModal(row)">
                                             edit
                                         </i>
                                     </a>
-                                    <a class="btn btn-danger">
+                                    <a class="btn btn-danger anchor_btn">
                                         <i class="material-icons" @click.prevent="showReasonDeleteModal(row)">
                                             delete
                                         </i>
@@ -71,7 +73,7 @@
         <Modal v-if="showGroupForm" @close="closeGroupForm">
             <template v-slot:header>
                 <div class="container">
-                    Add Group
+                    {{ modalTitleText }} Group
                 </div>
             </template>
             <template v-slot:content>
@@ -80,7 +82,7 @@
                         <label for="name">Name</label>
                         <input type="text" v-model="groupName" class="form-control" id="name" placeholder="Enter Name">
                     </div>
-                    <button class="btn btn-primary" >Submit</button>
+                    <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
             </template>
             <template v-slot:footer>
@@ -89,28 +91,30 @@
 
         <Modal v-if="showReasonForm" @close="closeShowReasonForm">
             <template v-slot:header>
-                <div class="container">
-                    Add Reason
+                <div class="container card-title">
+                    {{ modalTitleText }} Reason
                 </div>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="reasonId == null ? createDowntimeReason():updateDowntimeReason()">
                     <div class="form-group">
-                        <label>Name</label>
+                        <label class="mt-2">Name</label>
                         <input type="text" v-model="reasonName" class="form-control" placeholder="Enter Name">
-                        <label>Group</label>
+                        <label class="mt-2">Group</label>
                         <select class="form-control" v-model="selectedGroupId">
+                            <option disabled value="">--Select--</option>
                             <option v-for="group in groups" :value="group.id">
                                 {{ group.name }}
                             </option>
                         </select>
-                        <label>Type</label>
+                        <label class="mt-2">Type</label>
                         <select v-model="type" class="form-control">
+                            <option disabled value="">--Select--</option>
                             <option value="planned">Planned</option>
                             <option value="unplanned">Unplanned</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary" >Submit</button>
+                    <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
             </template>
             <template v-slot:footer>
@@ -150,10 +154,11 @@
             showReasonDeleteForm : false,
             reasonName:"",
             type:"",
-            selectedGroupId : null,
+            selectedGroupId : "",
             groups: [],
             reasons: [],
             reasonId : null,
+            modalTitleText: "Add",
         }),
         methods: {
             deleteReason(){
@@ -174,6 +179,7 @@
               this.reasonName = null;
               this.selectedGroupId = null;
               this.type = null;
+              this.modalTitleText = "Add";
             },
             updateDowntimeReason(){
                 downtimeReasonsService.updateReason(this.reasonId, {
@@ -187,6 +193,7 @@
                 });
             },
             showDowntimeEditModal(item){
+                this.modalTitleText = "Edit";
               this.showReasonForm = true;
               this.reasonId = item.id;
               this.reasonName = item.name;
@@ -214,8 +221,8 @@
                     this.groups = data;
                     this.showGroupForm = false;
                 });
+                this.clearReasonGroup();
             },
-
             createDowntimeReason(){
                 downtimeReasonsService.addReason({
                     name:this.reasonName,
@@ -225,15 +232,36 @@
                     this.reasons = data;
                     this.showReasonForm = false;
                 });
-            }
+                this.clearDowntimeReason();
+            },
+            clearDowntimeReason(){
+                this.reasonName = "";
+                this.selectedGroupId = null;
+                this.type = "";
+            },
+            clearReasonGroup(){
+                this.groupName = "";
+            },
+            loadGroupData(groupId){
+                console.log(groupId);
+                downtimeReasonsService.fetchAllDowntimeReasonsByGroupId(groupId, reasons => {
+                    this.reasons = reasons['downtime_reason_list'];
+                });
+            },
         },
         mounted() {
             downtimeReasonsService.fetchAllGroups(groups => {
                 this.groups = groups;
+                console.log(this.groups);
+                downtimeReasonsService.fetchAllDowntimeReasonsByGroupId(this.groups[0].id, reasons => {
+                    console.log(reasons);
+                    this.reasons = reasons['downtime_reason_list'];
+                });
             });
-            downtimeReasonsService.fetchAll([], reasons => {
-                this.reasons = reasons;
-            })
+            // downtimeReasonsService.fetchAll([], reasons => {
+            //     this.reasons = reasons['downtime_reason_list'];
+            // })
+
         }
     }
 </script>

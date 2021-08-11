@@ -11,7 +11,7 @@
                 <footer class="footer">
                     <slot name="footer"></slot>
                 </footer>
-                <button class="close" @click="$emit('close')">&times;</button>
+                <button type="button" class="btn-close" aria-label="Close" @click="$emit('close')"></button>
             </div>
         </div>
     </transition>
@@ -68,13 +68,12 @@
                 min-height: 80%;
             }
 
-            .close {
-                background: none;
-                border: none;
-
+            .btn-close {
+                width: 0.25em;
+                height: 0.25em;
                 position: absolute;
-                right: 1rem;
-                top: 0.5rem;
+                right: 1.75rem;
+                top: 1rem;
             }
 
             .header, .content, .footer {
