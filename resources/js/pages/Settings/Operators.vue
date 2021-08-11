@@ -15,6 +15,7 @@
                     <template v-slot:row="{ row }">
                         <td>
                             <div>
+                                
                                 {{ row.first_name + " " + row.last_name }}
                             </div>
                         </td>

@@ -7,23 +7,21 @@
                               @action-clicked="openGroupAddModal"
                               @item-selected="" buttonText="Add Reason Group">
                     <template v-slot="{ item }">
-                        <div>
-                            <a class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
-                                {{ item.name }}
-                            </a>
-                                <span style="float: right;">
-                                    <a class="btn-sm btn-primary me-1 anchor_btn">
-                                        <i class="material-icons" @click.prevent="showGroupEditModal(item)">
-                                            edit
-                                        </i>
-                                    </a>
-                                    <a class="btn-sm btn-danger anchor_btn">
-                                        <i class="material-icons" @click.prevent="showGroupDeleteModal(item)">
-                                            delete
-                                        </i>
-                                    </a>
-                                </span>
-                        </div>
+                        <a class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
+                            {{ item.name }}
+                        </a>
+                            <span style="float: right;">
+                                <a class="btn-sm btn-primary me-1 anchor_btn">
+                                    <i class="material-icons" @click.prevent="showGroupEditModal(item)">
+                                        edit
+                                    </i>
+                                </a>
+                                <a class="btn-sm btn-danger anchor_btn">
+                                    <i class="material-icons" @click.prevent="showGroupDeleteModal(item)">
+                                        delete
+                                    </i>
+                                </a>
+                            </span>
                     </template>
                 </DowntimeReasonGroup>
             </aside>

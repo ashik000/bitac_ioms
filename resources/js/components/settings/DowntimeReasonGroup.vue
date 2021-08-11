@@ -16,9 +16,8 @@
             </div>
         </div>
 
-        <ul class="card-body p-0 y-scroll">
-            <!--                <li class="list-header" v-if="listHeader">{{ listHeader }}</li>-->
-            <li v-for="item in items" :key="item.id" @click="$emit('item-selected', item)" class="list-group-item border-0">
+        <ul class="card-body p-0 y-scroll list-group">
+            <li v-for="(item, index) in items" :key="item.id" @click="$emit('item-selected', item); toggleActive(index)" :class="[{active: activeItem === index}, 'list-group-item', 'border-0']">
                 <slot :item="item">
                     {{ item }}
                 </slot>
@@ -31,6 +30,9 @@
 <script>
 export default {
     name: 'DowntimeReasonGroup',
+    data: () => ({
+        activeItem: 0,
+    }),
     props: {
         sectionHeader: {
             type: String,
@@ -47,6 +49,11 @@ export default {
         items: {
             type: Array,
             required: true
+        }
+    },
+    methods: {
+        toggleActive: function(index) {
+            this.activeItem = index;
         }
     }
 }
