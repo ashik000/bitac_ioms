@@ -9,6 +9,7 @@ use App\Http\Resources\DowntimeLineData;
 use App\Http\Resources\DowntimeReasonCollection;
 use App\Http\Resources\DowntimeReasonResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DowntimeReasonController extends Controller
 {
@@ -21,8 +22,7 @@ class DowntimeReasonController extends Controller
     {
         $downtimeReasons = DowntimeReason::all();
         $downtimeReasons->load('downtimeReasonGroup');
-//        return new DowntimeReasonCollection($downtimeReasons);
-        return DowntimeReasonResource::collection($downtimeReasons);
+        return new DowntimeReasonCollection($downtimeReasons);
     }
 
     /**

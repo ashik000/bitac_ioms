@@ -52,5 +52,12 @@ export default {
         axios.post(`assignDowntimeReason`, data)
             .then(r => success(r.data))
             .catch(e => console.log(e))
+    },
+    fetchAllDowntimeReasonsByGroupId(groupId, success, error) {
+        axios.get('downtimeReasonsByGroupId/' + groupId, {
+
+        })
+            .then(r => success(r.data))
+            .catch(e => console.log(e))
     }
 }

@@ -194,3 +194,17 @@ nav > .d-2{
 ::-webkit-resizer {
     background: rgba(25, 25, 21, 0);
 }
+
+/* downtimeReason */
+.anchor_btn {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.hide_overflow_text {
+    display: inline-block;
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
