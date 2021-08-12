@@ -41,8 +41,9 @@ class ProductController extends Controller
         $product['unit']             = $request['unit'];
         $product['product_group_id'] = $request['product_group_id'];
         $product->save();
-        return new ProductCollection(Product::all());
 
+        $products = Product::where('product_group_id', $product['product_group_id'])->get();
+        return new ProductCollection($products);
     }
 
     /**
@@ -82,7 +83,9 @@ class ProductController extends Controller
         $product['unit']             = $request['unit'];
         $product['product_group_id'] = $request['product_group_id'];
         $product->save();
-        return new ProductCollection(Product::all());
+
+        $products = Product::where('product_group_id', $product['product_group_id'])->get();
+        return new ProductCollection($products);
     }
 
     /**
@@ -95,7 +98,20 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $product->delete();
-        return new ProductCollection(Product::all());
+        $products = Product::where('product_group_id', $product['product_group_id'])->get();
+        return new ProductCollection($products);
+    }
 
+    /**
+     * get list of downtime reasons by group id
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return ProductCollection
+     */
+    public function productsByGroupId($id)
+    {
+        $products = Product::where('product_group_id', $id)->get();
+        return new ProductCollection($products);
     }
 }

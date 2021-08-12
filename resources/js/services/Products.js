@@ -12,7 +12,13 @@ export default {
         })
             .then(r => success(r.data.product_list))
             .catch(e => console.log(e.response.data))
+    },
+    fetchAllProductsByGroupId(groupId, success, error) {
+        axios.get('productsByGroupId/' + groupId, {
 
+        })
+            .then(r => success(r.data.product_list))
+            .catch(e => console.log(e.response.data))
     },
     addGroup(data, success, error) {
         axios.post('productGroups', data)

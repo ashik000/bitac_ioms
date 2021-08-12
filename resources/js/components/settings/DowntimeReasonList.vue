@@ -22,8 +22,8 @@
                     Add Reason</button>
             </div>
         </div>
-        <div class="card-body  y-scroll">
-            <div class="list-group list-group-flush">
+        <div class="card-body y-scroll">
+            <div class="list-group">
                 <li v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }" class="list-group-item">
                     <slot :row="item" name="row">
                         {{ item }}

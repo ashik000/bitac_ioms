@@ -22,20 +22,23 @@
                     Add Products</button>
             </div>
         </div>
-        <div class="card-body  y-scroll">
-          <span v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }">
-            <slot :row="item" name="row">
-                {{ item }}
-            </slot>
-        </span>
-
+        <div class="card-body y-scroll">
+            <div class="list-group">
+                <li v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }"  class="list-group-item">
+                    <slot :row="item" name="row">
+                        {{ item }}
+                    </slot>
+                </li>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import LineView from "../../pages/LineView";
 export default {
     name: "ProductList",
+    components: {LineView},
     props: {
         items: {
             type: Array,
