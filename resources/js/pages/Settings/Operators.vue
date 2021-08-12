@@ -15,20 +15,22 @@
                     <template v-slot:row="{ row }">
                         <td>
                             <div>
-                                
-                                {{ row.first_name + " " + row.last_name }}
+                                <input v-model="row.first_name" v-bind:type="type" />
+                                <input v-model="row.last_name" v-bind:type="type" />
+                                <span v-if="hide">{{ row.first_name + " " + row.last_name }}</span>
                             </div>
                         </td>
                         <td>
                             <div>
-                                {{ row.code }}
+                                <input v-model="row.code" v-bind:type="type" />
+                                <span v-if="hide">{{ row.code }}</span>
                             </div>
                         </td>
                         <td>
                             <div>
                                 <a class="btn btn-primary">
-                                    <i class="material-icons" style="color: #e6e6e6;"  @click.prevent="showOperatorEditModal(row)">
-                                        edit
+                                    <i class="material-icons" style="color: #e6e6e6;" v-bind:data-id="row.id" v-on:click="hide = !hide; selectedOperatorId(row.id);" @click.prevent="enableEdit(row.id, row.first_name, row.last_name, row.code);" >
+                                        {{ editBtnText }}
                                     </i>
                                 </a>
                                 <a class="btn btn-danger">
@@ -109,7 +111,13 @@
                 operatorId: null,
                 operatorCode: null,
                 showOperatorForm: false,
-                showOperatorDeleteForm: false
+                showOperatorDeleteForm: false,
+                type: 'hidden',
+                editBtnText: "Edit",
+                hide: true,
+                editState: false,
+                selectedOperatorIdCheck: null,
+                selectedId: null
             };
         },
         methods: {
@@ -183,6 +191,55 @@
                 this.showOperatorForm = false;
                 this.showOperatorDeleteForm = false;
                 this.resetForm();
+            },
+
+            selectedOperatorId(operatorId) {
+                this.selectedOperatorIdCheck = operatorId;
+                // console.log(this.selectedOperatorIdCheck);
+            },
+
+            // getDataId(e) {
+            //     var data_id = e.target.dataset.id;
+            //     console.log('data id '+data_id);
+            //     // this.row_data_id = data_id;
+            // },
+
+            enableEdit(operatorId, firstName, lastName, operatorCode) {
+                // console.log(firstName);
+                // console.log(lastName);
+                // console.log(operatorCode);
+
+                if (this.selectedOperatorIdCheck === operatorId) {
+
+                    this.editBtnText = 'Save';
+                    this.type = 'text';
+
+                    const formData = {
+                        first_name: firstName,
+                        last_name: lastName,
+                        code: operatorCode
+                    };
+
+                    operatorsService.updateOperator(operatorId, formData, (data) => {
+                        this.operators = data;
+                        this.editState = true;
+                    } , (error) => {
+                        console.log(error);
+                    });
+                }
+
+                // console.log(formData);
+
+                if (this.editState === true) {
+                    this.hideInputFields();
+                    // this.editState = false;
+                }
+
+            },
+
+            hideInputFields() {
+                this.editBtnText = 'Edit';
+                this.type = 'hidden';
             }
         },
 

@@ -10,18 +10,18 @@
                         <a class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
                             {{ item.name }}
                         </a>
-                            <span style="float: right;">
-                                <a class="btn-sm btn-primary me-1 anchor_btn">
-                                    <i class="material-icons" @click.prevent="showGroupEditModal(item)">
-                                        edit
-                                    </i>
-                                </a>
-                                <a class="btn-sm btn-danger anchor_btn">
-                                    <i class="material-icons" @click.prevent="showGroupDeleteModal(item)">
-                                        delete
-                                    </i>
-                                </a>
-                            </span>
+                        <span style="float: right;">
+                            <a class="btn-sm btn-primary me-1 anchor_btn">
+                                <i class="material-icons" @click.prevent="showGroupEditModal(item)">
+                                    edit
+                                </i>
+                            </a>
+                            <a class="btn-sm btn-danger anchor_btn">
+                                <i class="material-icons" @click.prevent="showGroupDeleteModal(item)">
+                                    delete
+                                </i>
+                            </a>
+                        </span>
                     </template>
                 </DowntimeReasonGroup>
             </aside>
@@ -33,21 +33,21 @@
 <!--                    </template>-->
 
                     <template v-slot:row="{ row }">
-                            <div>
-                                {{ row.name }}
-                                <span style="float: right;">
-                                    <a class="btn btn-primary anchor_btn">
-                                        <i class="material-icons" @click.prevent="showDowntimeEditModal(row)">
-                                            edit
-                                        </i>
-                                    </a>
-                                    <a class="btn btn-danger anchor_btn">
-                                        <i class="material-icons" @click.prevent="showReasonDeleteModal(row)">
-                                            delete
-                                        </i>
-                                    </a>
-                                </span>
-                            </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            {{ row.name }}
+                            <span style="float: right;">
+                                <a class="btn btn-primary anchor_btn">
+                                    <i class="material-icons" @click.prevent="showDowntimeEditModal(row)">
+                                        edit
+                                    </i>
+                                </a>
+                                <a class="btn btn-danger anchor_btn">
+                                    <i class="material-icons" @click.prevent="showReasonDeleteModal(row)">
+                                        delete
+                                    </i>
+                                </a>
+                            </span>
+                        </div>
                     </template>
                 </DowntimeReasonList>
             </section>
@@ -241,7 +241,7 @@
                 this.groupName = "";
             },
             loadGroupData(groupId){
-                console.log(groupId);
+                // console.log(groupId);
                 downtimeReasonsService.fetchAllDowntimeReasonsByGroupId(groupId, reasons => {
                     this.reasons = reasons['downtime_reason_list'];
                 });
@@ -250,7 +250,7 @@
         mounted() {
             downtimeReasonsService.fetchAllGroups(groups => {
                 this.groups = groups;
-                console.log(this.groups);
+                // console.log(this.groups);
                 downtimeReasonsService.fetchAllDowntimeReasonsByGroupId(this.groups[0].id, reasons => {
                     console.log(reasons);
                     this.reasons = reasons['downtime_reason_list'];

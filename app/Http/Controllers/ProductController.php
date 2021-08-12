@@ -98,4 +98,17 @@ class ProductController extends Controller
         return new ProductCollection(Product::all());
 
     }
+
+    /**
+     * get list of downtime reasons by group id
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return ProductCollection
+     */
+    public function productsByGroupId($id)
+    {
+        $products = Product::where('product_group_id', $id)->get();
+        return new ProductCollection($products);
+    }
 }
