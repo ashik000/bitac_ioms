@@ -49,6 +49,6 @@ class Handler extends ExceptionHandler
         if ($exception->getMessage() == 'Invalid scope(s) provided.') {
             return response()->json('Forbidden', 403);
         }
-        return parent::render($request, $exception);
+        return response()->json(['message' => 'Something went wrong'], 500);
     }
 }

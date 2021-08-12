@@ -3,13 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Data\Models\Product;
+use App\Data\Repositories\ProductRepository;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class ProductController extends Controller
 {
+
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    public function __construct(ProductRepository $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,14 +48,9 @@ class ProductController extends Controller
      */
     public function store(ProductCreateRequest $request)
     {
-        $product = new Product();
-        $product['name']             = $request['name'];
-        $product['code']             = $request['code'];
-        $product['unit']             = $request['unit'];
-        $product['product_group_id'] = $request['product_group_id'];
-        $product->save();
-
-        $products = Product::where('product_group_id', $product['product_group_id'])->get();
+        $checkStore = $this->productRepository->storeProduct($request);
+        if(!$checkStore) throw new BadRequestException();
+        $products = $this->productRepository->fetchAllProductsByGroup($request['product_group_id'], $orderBy = 'asc');
         return new ProductCollection($products);
     }
 
@@ -77,14 +85,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-        $product['name']             = $request['name'];
-        $product['code']             = $request['code'];
-        $product['unit']             = $request['unit'];
-        $product['product_group_id'] = $request['product_group_id'];
-        $product->save();
-
-        $products = Product::where('product_group_id', $product['product_group_id'])->get();
+        $checkUpdate = $this->productRepository->updateProduct($request, $id);
+        if(!$checkUpdate) throw new BadRequestException();
+        $products = $this->productRepository->fetchAllProductsByGroup($request['product_group_id'], $orderBy = 'asc');
         return new ProductCollection($products);
     }
 
@@ -97,8 +100,9 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
-        $product->delete();
-        $products = Product::where('product_group_id', $product['product_group_id'])->get();
+        $checkDelete = $this->productRepository->deleteProduct($id);
+        if(!$checkDelete) throw new BadRequestException();
+        $products = $this->productRepository->fetchAllProductsByGroup($product['product_group_id'], $orderBy = 'asc');
         return new ProductCollection($products);
     }
 

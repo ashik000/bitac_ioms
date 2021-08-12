@@ -38,7 +38,7 @@ class DowntimeReasonGroupController extends Controller
         $downtime_reason_group = new DowntimeReasonGroup();
         $downtime_reason_group['name'] = $request['name'];
         $downtime_reason_group->save();
-        return response()->json(DowntimeReasonGroup::all(),200);
+        return response()->json(DowntimeReasonGroup::groupBy('name', 'asc')->get(),200);
     }
 
     /**
