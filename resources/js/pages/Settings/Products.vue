@@ -154,7 +154,6 @@
             products: [],
             stations:[],
             productId: null,
-
         }),
         methods: {
             deleteProduct(){
@@ -209,6 +208,8 @@
                     console.log(data);
                     this.groups = data
                 });
+                this.clearProductGroup();
+                this.closeGroupForm();
             },
             openProductAddModal() {
                 this.showProductForm = true;
@@ -234,6 +235,19 @@
                     this.products = data;
                     this.showProductForm = false;
                 });
+                productService.fetchAllProductsByGroupId(this.selectedGroupId, products => {
+                    this.products = products;
+                });
+                this.clearProducts();
+            },
+            clearProducts(){
+                this.productName = "";
+                this.productUnit = "";
+                this.selectedGroupId = null;
+                this.productCode = "";
+            },
+            clearProductGroup(){
+                this.groupName = "";
             },
             loadGroupData(groupId){
                 // console.log(groupId);
@@ -244,21 +258,21 @@
 
         },
         computed:{
-          showStationProductList(){
-              return
-            }
+          // showStationProductList(){
+          //     return
+          //   }
         },
         mounted() {
             productService.fetchAllGroups(groups => {
                 this.groups = groups;
                 productService.fetchAllProductsByGroupId(this.groups[0].id, products => {
-                    console.log(products);
+                    // console.log(products);
                     this.products = products;
                 });
             });
-            productService.fetchAll([], products => {
-                this.products = products;
-            });
+            // productService.fetchAll([], products => {
+            //     this.products = products;
+            // });
             // stationService.fetchAll(stations=>{
             //     this.stations = stations;
             // });
