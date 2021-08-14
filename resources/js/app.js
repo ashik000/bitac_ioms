@@ -26,6 +26,12 @@ Vue.filter('formatTime', function(value) {
     }
 });
 
+Vue.filter('formatDateTime', function(value) {
+    if (value) {
+        return moment(String(value), "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD h:mm:ss A");
+    }
+});
+
 Vue.use(VCalendar);
 Vue.use(Toasted);
 

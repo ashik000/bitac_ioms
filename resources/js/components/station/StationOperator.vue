@@ -20,7 +20,7 @@
                 <tbody>
                 <tr v-for="stationOperator in stationOperators" :key="stationOperator.id">
                     <td>{{stationOperator.operator_name + " " + stationOperator.operator_code}}</td>
-                    <td>{{stationOperator.start_time}}</td>
+                    <td>{{stationOperator.start_time| formatDateTime}}</td>
                     <td>
                         <a class="btn btn-danger btn-sm" @click.prevent="openStationOperatorDeleteModal(stationOperator)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
