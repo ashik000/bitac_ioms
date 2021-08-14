@@ -7,7 +7,7 @@ import Vue from 'vue'
 import router from './routes';
 import {store} from './store/index';
 import Toasted from 'vue-toasted';
-
+import moment from 'moment'
 import App from './pages/App'
 
 import Modal from "./components/Modal";
@@ -19,6 +19,12 @@ moment.updateLocale("en", { week: {
 Vue.component('Modal', Modal);
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 Vue.component('multiselect', Multiselect);
+
+Vue.filter('formatTime', function(value) {
+    if (value) {
+        return moment(String(value), "HH:mm:ss").format("h:mm:ss A");
+    }
+});
 
 Vue.use(VCalendar);
 Vue.use(Toasted);

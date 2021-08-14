@@ -1,29 +1,33 @@
 <template>
     <div>
         <header class="section-header">
-            <span style="color: #ffffff">
-                Operators
-            </span>
-            <button class="btn" style="color: #ffffff" @click="openStationOperatorCreateModal()">
-                <i class="icon material-icons" style="font-size:24px; color:white;">add_circle_outline</i>
+            <button class="btn btn btn-primary btn-sm btn-assign-item" @click="openStationOperatorCreateModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"></path>
+                </svg>
+                Assign Operator
             </button>
         </header>
         <div>
-            <table class="settings-table table small" v-if="showStationOperatorsTable">
+            <table class="table table-bordered settings-station-table" v-if="showStationOperatorsTable">
                 <thead>
-                <th>Name</th>
-                <th>Start Time</th>
-                <th class="text-center">Actions</th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Start Time</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
                 <tbody>
                 <tr v-for="stationOperator in stationOperators" :key="stationOperator.id">
                     <td>{{stationOperator.operator_name + " " + stationOperator.operator_code}}</td>
                     <td>{{stationOperator.start_time}}</td>
                     <td>
-                        <a class="btn btn-link">
-                            <i class="material-icons" @click.prevent="openStationOperatorDeleteModal(stationOperator)">
-                                delete
-                            </i>
+                        <a class="btn btn-danger btn-sm" @click.prevent="openStationOperatorDeleteModal(stationOperator)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                            </svg>
+                                REMOVE
                         </a>
                     </td>
                 </tr>
@@ -170,60 +174,3 @@
 </script>
 
 <style src="vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css"></style>
-
-<style scoped lang="scss">
-    .section-header {
-        padding: 0.5rem 1rem;
-        background: #232156;
-
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-
-        > span {
-            flex-grow: 1;
-        }
-
-        .action {
-            background: #0c4da1;
-            border: None;
-            border-radius: 50%;
-
-            padding: 0;
-            width: 1.5rem;
-            height: 1.5rem;
-
-            font-size: 1.25rem;
-            line-height: 1.5rem;
-
-            box-shadow: 1px 1px 1px 1px #0c4da1;
-        }
-    }
-
-    .settings-table {
-        thead {
-            background: #4e4d78;
-            color: white;
-            opacity: .7;
-            th {
-                padding: 0.25rem;
-                font-weight: bold;
-                border: 1px solid #0B312A;
-            }
-        }
-
-        tbody {
-            /*tr {*/
-            /*    &:nth-child(even) {*/
-            /*        background: #fafafa;*/
-            /*    }*/
-            /*}*/
-            td {
-                background: transparent;
-                border: 1px solid #0B312A;
-                color: #ffffff;
-            }
-        }
-    }
-</style>
