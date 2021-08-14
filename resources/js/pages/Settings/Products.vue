@@ -2,7 +2,7 @@
     <div>
         <div class="card-wrapper row">
             <div class="col-md-3 col-sm-12 h-100">
-                <ProductGroup sectionHeader="Product Groups"  :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Product Group">
+                <ProductGroup sectionHeader="Product Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Product Group">
                     <template v-slot="{ item }">
                         <a class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
                             {{ item.name }}
@@ -62,7 +62,7 @@
             <template v-slot:content>
                 <form @submit.prevent="deleteGroup">
                     <p>Are you sure you want to delete the group named <span style="color: darkred">{{groupName}}</span>?</p>
-                    <button class="btn btn-danger" >Submit</button>
+                    <button class="btn btn-danger">Submit</button>
                 </form>
             </template>
             <template v-slot:footer>
@@ -72,7 +72,7 @@
         <Modal v-if="showGroupForm" @close="closeGroupForm">
             <template v-slot:header>
                 <div class="container">
-                    Add Product Group
+                    {{ modalTitleText }} Product Group
                 </div>
             </template>
             <template v-slot:content>
@@ -81,7 +81,7 @@
                         <label for="name">Name</label>
                         <input type="text" v-model="groupName" class="form-control" id="name" placeholder="Enter Name">
                     </div>
-                    <button class="btn btn-primary" >Submit</button>
+                    <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
             </template>
         </Modal>
@@ -97,18 +97,18 @@
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" v-model="productName" class="form-control" placeholder="Enter Name">
-                        <label>Group</label>
+                        <label class="mt-2">Group</label>
                         <select class="form-control" v-model="selectedGroupId">
                             <option v-for="group in groups" :value="group.id">
                                 {{ group.name }}
                             </option>
                         </select>
-                        <label>Code</label>
+                        <label class="mt-2">Code</label>
                         <input type="text" v-model="productCode" class="form-control" placeholder="Enter Code">
-                        <label>Unit</label>
+                        <label class="mt-2">Unit</label>
                         <input type="text" v-model="productUnit" class="form-control" placeholder="Enter Unit">
                     </div>
-                    <button class="btn btn-primary" >Submit</button>
+                    <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
             </template>
             <template v-slot:footer>
@@ -154,6 +154,7 @@
             products: [],
             stations:[],
             productId: null,
+            modalTitleText: 'Add'
         }),
         methods: {
             deleteProduct(){
@@ -171,6 +172,7 @@
                 this.productCode = item.code;
             },
             showProductEditModal(item){
+                this.modalTitleText = 'Edit';
                 this.productId = item.id;
                 this.productName = item.name;
                 this.showProductForm = true;
@@ -186,6 +188,7 @@
                 this.productUnit = "";
                 this.productName = "";
                 this.productCode = "";
+                this.modalTitleText = 'Add';
             },
             deleteGroup(){
                 productService.deleteGroup(this.groupId, r =>{

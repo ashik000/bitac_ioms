@@ -192,12 +192,12 @@
             },
             showDowntimeEditModal(item){
                 this.modalTitleText = "Edit";
-              this.showReasonForm = true;
-              this.reasonId = item.id;
-              this.reasonName = item.name;
-              this.type = item.type;
-              this.selectedGroupId = item.reason_group_id;
-              console.log(JSON.stringify(item));
+                this.showReasonForm = true;
+                this.reasonId = item.id;
+                this.reasonName = item.name;
+                this.type = item.type;
+                this.selectedGroupId = item.reason_group_id;
+                // console.log(JSON.stringify(item));
             },
             deleteGroup(){
                 downtimeReasonsService.deleteGroup(this.groupId, r =>{

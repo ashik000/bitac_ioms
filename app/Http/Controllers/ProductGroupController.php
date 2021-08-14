@@ -14,7 +14,7 @@ class ProductGroupController extends Controller
      * @return ProductGroupCollection
      */
     public function index(){
-        return response()->json(ProductGroup::all(),200);
+        return response()->json(ProductGroup::orderBy('name', 'asc')->get(),200);
     }
 
     /**

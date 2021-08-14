@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\Models\DowntimeReason;
 use App\Data\Models\DowntimeReasonGroup;
+use App\Data\Repositories\DowntimeReasonRepository;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class DowntimeReasonGroupController extends Controller
 {
@@ -14,7 +17,7 @@ class DowntimeReasonGroupController extends Controller
      */
     public function index()
     {
-        return response()->json(DowntimeReasonGroup::all(),200);
+        return response()->json(DowntimeReasonGroup::orderBy('name', 'asc')->get(),200);
     }
 
     /**
@@ -38,7 +41,7 @@ class DowntimeReasonGroupController extends Controller
         $downtime_reason_group = new DowntimeReasonGroup();
         $downtime_reason_group['name'] = $request['name'];
         $downtime_reason_group->save();
-        return response()->json(DowntimeReasonGroup::all(),200);
+        return response()->json(DowntimeReasonGroup::orderBy('name', 'asc')->get(),200);
     }
 
     /**
@@ -74,7 +77,7 @@ class DowntimeReasonGroupController extends Controller
         $downtime_reason_group = DowntimeReasonGroup::find($id);
         $downtime_reason_group['name'] = $request['name'];
         $downtime_reason_group->save();
-        return response()->json(DowntimeReasonGroup::all(),200);
+        return response()->json(DowntimeReasonGroup::orderBy('name', 'asc')->get(),200);
     }
 
     /**
@@ -85,8 +88,17 @@ class DowntimeReasonGroupController extends Controller
      */
     public function destroy($id)
     {
-        $downtime_reason_group = DowntimeReasonGroup::find($id);
-        $downtime_reason_group->delete();
-        return response()->json(DowntimeReasonGroup::all(),200);
+        $downtimeReasonGroup = DowntimeReasonGroup::find($id);
+
+        $checkUsage = DowntimeReason::where('reason_group_id', $downtimeReasonGroup['id'])->get();
+
+        if (count($checkUsage) > 0) {
+            // throw error on group_id found on reason table
+            return response()->json(DowntimeReasonGroup::all(),200);
+        }
+        else {
+            $downtimeReasonGroup->delete();
+            return response()->json(DowntimeReasonGroup::all(),200);
+        }
     }
 }

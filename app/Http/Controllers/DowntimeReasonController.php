@@ -4,15 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Data\Models\Downtime;
 use App\Data\Models\DowntimeReason;
+use App\Data\Repositories\DowntimeReasonRepository;
 use App\Http\Requests\DowntimeReasonCreateRequest;
 use App\Http\Resources\DowntimeLineData;
 use App\Http\Resources\DowntimeReasonCollection;
 use App\Http\Resources\DowntimeReasonResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class DowntimeReasonController extends Controller
 {
+    /**
+     * @var DowntimeReasonRepository
+     */
+    private $downtimeReasonRepository;
+
+    public function __construct(DowntimeReasonRepository $downtimeReasonRepository) {
+        $this->downtimeReasonRepository = $downtimeReasonRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -43,12 +54,10 @@ class DowntimeReasonController extends Controller
      */
     public function store(DowntimeReasonCreateRequest $request)
     {
-        $downtime_reason                    = new DowntimeReason();
-        $downtime_reason['reason_group_id'] = $request['reason_group_id'];
-        $downtime_reason['name']            = $request['name'];
-        $downtime_reason['type']            = $request['type'];
-        $downtime_reason->save();
-        return new DowntimeReasonCollection(DowntimeReason::all());
+        $checkStore = $this->downtimeReasonRepository->storeDowntimeReason($request);
+        if(!$checkStore) throw new BadRequestException();
+        $downtimeReasons = $this->downtimeReasonRepository->fetchAllDowntimeReasonsByGroup($request['reason_group_id'], $orderBy = 'asc');
+        return new DowntimeReasonCollection($downtimeReasons);
     }
 
     /**
@@ -82,12 +91,10 @@ class DowntimeReasonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $downtime_reason                    = DowntimeReason::find($id);
-        $downtime_reason['reason_group_id'] = $request['reason_group_id'];
-        $downtime_reason['name']            = $request['name'];
-        $downtime_reason['type']            = $request['type'];
-        $downtime_reason->save();
-        return new DowntimeReasonCollection(DowntimeReason::all());
+        $checkUpdate = $this->downtimeReasonRepository->updateDowntimeReason($request, $id);
+        if(!$checkUpdate) throw new BadRequestException();
+        $downtimeReasons = $this->downtimeReasonRepository->fetchAllDowntimeReasonsByGroup($request['reason_group_id'], $orderBy = 'asc');
+        return new DowntimeReasonCollection($downtimeReasons);
     }
 
     /**
@@ -98,9 +105,11 @@ class DowntimeReasonController extends Controller
      */
     public function destroy($id)
     {
-        $downtime_reason = DowntimeReason::find($id);
-        $downtime_reason->delete();
-        return new DowntimeReasonCollection(DowntimeReason::all());
+        $downtimeReason = DowntimeReason::find($id);
+        $checkDelete = $this->downtimeReasonRepository->deleteDowntimeReason($id);
+        if(!$checkDelete) throw new BadRequestException();
+        $downtimeReasons = $this->downtimeReasonRepository->fetchAllDowntimeReasonsByGroup($downtimeReason['reason_group_id'], $orderBy = 'asc');
+        return new DowntimeReasonCollection($downtimeReasons);
     }
 
     public function assignDowntimeReason(Request $request) {

@@ -50,4 +50,43 @@ class ProductRepository implements PaginatedResultInterface, RawQueryBuilderOutp
         return Product::all()->keyBy('id');
     }
 
+    public function fetchAllProductsByGroup($productGroupId, $orderBy) {
+        return Product::where('product_group_id', $productGroupId)->orderBy('name', $orderBy)->get();
+    }
+
+    public function storeProduct($request) {
+        $product = new Product();
+        $product['name']             = $request['name'];
+        $product['code']             = $request['code'];
+        $product['unit']             = $request['unit'];
+        $product['product_group_id'] = $request['product_group_id'];
+        $check = $product->save();
+        if ($check) {
+            return true;
+        }
+        return false;
+    }
+
+    public function updateProduct($request, $id) {
+        $product = Product::find($id);
+        $product['name']             = $request['name'];
+        $product['code']             = $request['code'];
+        $product['unit']             = $request['unit'];
+        $product['product_group_id'] = $request['product_group_id'];
+        $check = $product->save();
+        if ($check) {
+            return true;
+        }
+        return false;
+    }
+
+    public function deleteProduct($id) {
+        $product = Product::find($id);
+        $check = $product->delete();
+        if ($check) {
+            return true;
+        }
+        return false;
+    }
+
 }
