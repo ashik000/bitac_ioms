@@ -40,7 +40,10 @@
                                     </i>
                                 </a>
                                 <a class="btn btn-danger">
-                                    <i class="material-icons" @click.prevent="showOperatorDeleteModal(row)">
+                                    <i v-if="selectedOperatorId === row.id" class="material-icons" @click.prevent="cancelEdit()">
+                                        Cancel
+                                    </i>
+                                    <i v-else class="material-icons" @click.prevent="showOperatorDeleteModal(row)">
                                         delete
                                     </i>
                                 </a>
@@ -200,6 +203,9 @@
                     this.selectedOperatorId = null;
                 else this.selectedOperatorId = operatorId;
             },
+            cancelEdit: function () {
+                this.selectedOperatorId = null;
+            }
         },
 
         mounted() {
