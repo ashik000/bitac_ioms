@@ -2,7 +2,7 @@
     <div>
         <div class="card-wrapper row">
             <div class="col-md-3 col-sm-12 h-100">
-                <ProductGroup sectionHeader="Product Groups"  :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Product Group">
+                <ProductGroup sectionHeader="Product Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Product Group">
                     <template v-slot="{ item }">
                         <a class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
                             {{ item.name }}

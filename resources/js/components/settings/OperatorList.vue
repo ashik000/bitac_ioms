@@ -37,7 +37,6 @@
                 </tbody>
             </table>
 
-
         </div>
     </div>
 </template>
@@ -54,7 +53,10 @@ export default {
         filteredItems : function () {
             return this.items.filter((item) => {
                 if(this.searchString === '') return true;
-                return item.first_name.includes(this.searchString) || item.last_name.includes(this.searchString);
+                let fullName = item.first_name + ' ' + item.last_name;
+                let nameCheck = fullName.toLowerCase().includes(this.searchString.toLowerCase());
+                let operatorCodeCheck = item.code.toLowerCase().includes(this.searchString.toLowerCase());
+                return nameCheck || operatorCodeCheck;
             });
         }
     },
