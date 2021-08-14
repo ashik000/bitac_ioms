@@ -203,7 +203,7 @@ nav > .d-2{
 
 .hide_overflow_text {
     display: inline-block;
-    width: 100px;
+    width: 150px;
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis;
@@ -241,4 +241,8 @@ table.station-product-table > tbody > tr > td:first-child{
 
 .btn-assign-product{
     margin-bottom: .98rem;
+}
+
+.list-pointer {
+    cursor: pointer;
 }

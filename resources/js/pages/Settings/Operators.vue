@@ -5,10 +5,10 @@
                 <OperatorList :items="operators" sectionHeader="Operators" @action-clicked="openOperatorAddModal">
                     <template v-slot:columnHeaders>
                         <tr>
-                            <th>Operator Name</th>
-                            <th>Operator ID</th>
+                            <th style="width: 40%;">Operator Name</th>
+                            <th style="width: 40%;">Operator ID</th>
 <!--                            <th>Status</th>-->
-                            <th>Actions</th>
+                            <th style="width: 20%;">Actions</th>
                         </tr>
                     </template>
                     <div></div>
