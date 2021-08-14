@@ -15,22 +15,28 @@
                     <template v-slot:row="{ row }">
                         <td>
                             <div>
-                                <input v-model="row.first_name" v-bind:type="type" />
-                                <input v-model="row.last_name" v-bind:type="type" />
-                                <span v-if="hide">{{ row.first_name + " " + row.last_name }}</span>
+                                <div v-if="selectedOperatorId === row.id" >
+                                    <input v-model="row.first_name" />
+                                    <input v-model="row.last_name" />
+                                </div>
+
+                                <span v-else>{{ row.first_name + " " + row.last_name }}</span>
                             </div>
                         </td>
                         <td>
                             <div>
-                                <input v-model="row.code" v-bind:type="type" />
-                                <span v-if="hide">{{ row.code }}</span>
+                                <input v-if="selectedOperatorId === row.id" v-model="row.code" />
+                                <span v-else>{{ row.code }}</span>
                             </div>
                         </td>
                         <td>
                             <div>
                                 <a class="btn btn-primary">
-                                    <i class="material-icons" style="color: #e6e6e6;" v-bind:data-id="row.id" v-on:click="hide = !hide; selectedOperatorId(row.id);" @click.prevent="enableEdit(row.id, row.first_name, row.last_name, row.code);" >
-                                        {{ editBtnText }}
+                                    <i v-if="selectedOperatorId === row.id" class="material-icons" style="color: #e6e6e6;" @click="selectOperatorId(row.id); updateOperator(row)">
+                                        Save
+                                    </i>
+                                    <i v-else class="material-icons" style="color: #e6e6e6;" @click="selectOperatorId(row.id)"  >
+                                        Edit
                                     </i>
                                 </a>
                                 <a class="btn btn-danger">
@@ -44,37 +50,6 @@
                 </OperatorList>
             </div>
         </div>
-
-        <Modal v-if="showOperatorForm" @close="closeModal">
-            <template v-slot:header>
-                <div class="container">
-                    Add Operator
-                </div>
-            </template>
-
-            <template v-slot:content>
-                <form @submit.prevent="operatorId == null? createOperator():updateOperator()">
-                    <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" v-model="firstName" class="form-control" placeholder="Enter First Name" />
-                    </div>
-
-                    <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" v-model="lastName" class="form-control" placeholder="Enter Last Name" />
-                    </div>
-
-                    <div class="form-group">
-                        <label>Operator code</label>
-                        <input type="text" v-model="operatorCode" class="form-control" placeholder="Enter Code" />
-                    </div>
-
-                    <button class="btn btn-primary" >Submit</button>
-                </form>
-
-            </template>
-
-        </Modal>
 
         <Modal v-if="showOperatorDeleteForm" @close="closeModal">
             <template v-slot:header>
@@ -112,11 +87,8 @@
                 operatorCode: null,
                 showOperatorForm: false,
                 showOperatorDeleteForm: false,
-                type: 'hidden',
-                editBtnText: "Edit",
                 hide: true,
-                editState: false,
-                selectedOperatorIdCheck: null,
+                selectedOperatorId: null,
                 selectedId: null
             };
         },
@@ -156,16 +128,15 @@
                 });
             },
 
-            updateOperator: function(){
+            updateOperator: function(operator) {
                 const formData = {
-                    first_name: this.firstName,
-                    last_name: this.lastName,
-                    code: this.operatorCode
+                    first_name: operator.first_name,
+                    last_name: operator.last_name,
+                    code: operator.code
                 };
 
-                operatorsService.updateOperator(this.operatorId, formData, (data) => {
+                operatorsService.updateOperator(operator.id, formData, (data) => {
                     this.operators = data;
-                    this.closeModal();
                 } , (error) => {
                     console.log(error);
                 });
@@ -193,54 +164,11 @@
                 this.resetForm();
             },
 
-            selectedOperatorId(operatorId) {
-                this.selectedOperatorIdCheck = operatorId;
-                // console.log(this.selectedOperatorIdCheck);
+            selectOperatorId: function(operatorId) {
+                if(this.selectedOperatorId === operatorId)
+                    this.selectedOperatorId = null;
+                else this.selectedOperatorId = operatorId;
             },
-
-            // getDataId(e) {
-            //     var data_id = e.target.dataset.id;
-            //     console.log('data id '+data_id);
-            //     // this.row_data_id = data_id;
-            // },
-
-            enableEdit(operatorId, firstName, lastName, operatorCode) {
-                // console.log(firstName);
-                // console.log(lastName);
-                // console.log(operatorCode);
-
-                if (this.selectedOperatorIdCheck === operatorId) {
-
-                    this.editBtnText = 'Save';
-                    this.type = 'text';
-
-                    const formData = {
-                        first_name: firstName,
-                        last_name: lastName,
-                        code: operatorCode
-                    };
-
-                    operatorsService.updateOperator(operatorId, formData, (data) => {
-                        this.operators = data;
-                        this.editState = true;
-                    } , (error) => {
-                        console.log(error);
-                    });
-                }
-
-                // console.log(formData);
-
-                if (this.editState === true) {
-                    this.hideInputFields();
-                    // this.editState = false;
-                }
-
-            },
-
-            hideInputFields() {
-                this.editBtnText = 'Edit';
-                this.type = 'hidden';
-            }
         },
 
         mounted() {
@@ -253,6 +181,3 @@
     }
 </script>
 
-<style scoped>
-
-</style>
