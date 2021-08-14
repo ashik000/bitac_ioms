@@ -51,6 +51,37 @@
             </div>
         </div>
 
+         <Modal v-if="showOperatorForm" @close="closeModal">
+            <template v-slot:header>
+                <div class="container">
+                    Add Operator
+                </div>
+            </template>
+
+            <template v-slot:content>
+                <form @submit.prevent="operatorId == null? createOperator():updateOperator()">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" v-model="firstName" class="form-control" placeholder="Enter First Name" />
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label>Last Name</label>
+                        <input type="text" v-model="lastName" class="form-control" placeholder="Enter Last Name" />
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label>Operator code</label>
+                        <input type="text" v-model="operatorCode" class="form-control" placeholder="Enter Code" />
+                    </div>
+
+                    <button class="btn btn-primary mt-2">Submit</button>
+                </form>
+
+            </template>
+
+        </Modal>
+
         <Modal v-if="showOperatorDeleteForm" @close="closeModal">
             <template v-slot:header>
                 <div class="container">
