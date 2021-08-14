@@ -37,9 +37,8 @@ class DowntimeController extends Controller
      * @param int $id
      * @return DowntimeReasonCollection
      */
-    public function downtimeReasonsByGroupId($id)
-    {
-        $downtime_reasons = DowntimeReason::where('reason_group_id', $id)->get();
+    public function downtimeReasonsByGroupId($id) {
+        $downtime_reasons = DowntimeReason::where('reason_group_id', $id)->orderBy('name', 'asc')->get();
         return new DowntimeReasonCollection($downtime_reasons);
     }
 
