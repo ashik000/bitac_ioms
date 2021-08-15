@@ -24,7 +24,7 @@
         </div>
         <div class="card-body y-scroll">
             <div class="list-group">
-                <li v-for="item in filteredItems" :key="item.id" :class="{ selected: item.id == selectedId }"  class="list-group-item">
+                <li v-for="item in filteredItems" :key="item.id" :class="{ selected: item.id == selectedId }" class="list-group-item">
                     <slot :row="item" name="row">
                         {{ item }}
                     </slot>

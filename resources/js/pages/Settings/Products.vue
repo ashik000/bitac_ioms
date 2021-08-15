@@ -4,9 +4,9 @@
             <div class="col-md-3 col-sm-12 h-100">
                 <ProductGroup sectionHeader="Product Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Product Group">
                     <template v-slot="{ item }">
-                        <a class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
+                        <span class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
                             {{ item.name }}
-                        </a>
+                        </span>
                         <span style="float: right;">
                               <button type="button" class="btn btn-primary btn-sm" @click.prevent="showGroupEditModal(item)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">

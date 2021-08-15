@@ -7,9 +7,9 @@
                               @action-clicked="openGroupAddModal"
                               @item-selected="" buttonText="Add Reason Group">
                     <template v-slot="{ item }">
-                        <a class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
+                        <span class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
                             {{ item.name }}
-                        </a>
+                        </span>
                         <span style="float: right;">
                             <a class="btn-sm btn-primary me-1 anchor_btn">
                                 <i class="material-icons" @click.prevent="showGroupEditModal(item)">
