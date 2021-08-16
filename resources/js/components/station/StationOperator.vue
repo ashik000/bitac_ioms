@@ -24,7 +24,7 @@
                     <td>
                         <a class="btn btn-danger btn-sm" @click.prevent="openStationOperatorDeleteModal(stationOperator)">
                             <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon>
-                                DELETE
+                                REMOVE
                         </a>
                     </td>
                 </tr>

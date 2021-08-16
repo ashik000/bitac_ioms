@@ -22,7 +22,9 @@
                 <tbody>
                 <tr v-for="stationShift in stationShifts" :key="stationShift.id">
                     <td>{{stationShift.shift.name}}</td>
-                    <td>{{getScheduleString(stationShift.schedule)}}</td>
+                    <td class="center-flex">
+                        <div :class="day === '1'? 'day-circle-active' : 'day-circle-inactive'" v-for="(day, index) in stationShift.schedule.split('')">{{dayToNameMap[index].name}}</div>
+                    </td>
                     <td>{{stationShift.shift.start_time | formatTime}}-{{stationShift.shift.end_time | formatTime}}</td>
                     <td>
                         <div class="d-flex station-actions-btn-group">
@@ -62,33 +64,21 @@
         <Modal v-if="showStationShiftForm" @close="closeStationShiftModals">
             <template v-slot:header>
                 <div class="text-center">
-                    <h5>{{stationShift.id == null? 'Add Station Shift' : 'Edit Station Shift'}}</h5>
+                    <h5>{{!stationShiftEditMode? 'Add Station Shift' : 'Edit Station Shift'}}</h5>
                 </div>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="">
                     <div class="form-group">
                         <label>Shift</label>
-                        <select class="form-control" v-model="stationShift.shift_id">
+                        <select v-bind:disabled="stationShiftEditMode" class="form-control" v-model="stationShift.shift_id">
                             <option v-for="shift in shifts" :value="shift.id">
                                 {{ shift.name }}
                             </option>
                         </select>
                         <label>Days</label>
-                        <div style="height: 300px">
-                        <multiselect v-model="selectedDays"
-                                     :options="dayToNameMap"
-                                     :multiple="true"
-                                     :close-on-select="false"
-                                     :clear-on-select="false"
-                                     :preserve-search="true"
-                                     open-direction="bottom"
-                                     placeholder="Pick some"
-                                     label="name"
-                                     track-by="value"
-                                     :preselect-first="true">
-
-                        </multiselect>
+                        <div class="center-flex">
+                            <div @click="toggleSelectedShiftDays(index)" style="cursor: pointer" :class="day === '1'? 'day-circle-active' : 'day-circle-inactive'" v-for="(day, index) in selectedShiftDays">{{dayToNameMap[index].name}}</div>
                         </div>
                     </div>
                 </form>
@@ -98,13 +88,14 @@
             </template>
         </Modal>
 
-<!--        <pre class="language-json"><code>{{selectedDays}}</code></pre>-->
     </div>
 </template>
 
 <script>
     import stationShiftService from '../../services/StationShiftService';
     import shiftService from '../../services/ShiftsService';
+    import toastrService from '../../services/ToastrService';
+    import Vue from 'vue';
 
     export default {
         name: "StationShift",
@@ -122,7 +113,9 @@
             showStationShiftForm:false,
             stationShifts:[],
             shifts:[],
+            stationShiftEditMode: false,
             selectedShiftId:null,
+            selectedShiftDays: [],
             stationShift:{
               id:null,
               shift_id:null,
@@ -130,46 +123,48 @@
               scheduleDisplayString :"",
             },
             dayToNameMap :[
-                {name: "Saturday", value: 0},
-                {name: "Sunday", value: 1},
-                {name: "Monday", value: 2},
-                {name: "Tuesday", value: 3},
-                {name: "Wednesday", value: 4},
-                {name: "Thursday", value: 5},
-                {name: "Friday", value: 6},
+                {name: "SAT", value: 0},
+                {name: "SUN", value: 1},
+                {name: "MON", value: 2},
+                {name: "TUE", value: 3},
+                {name: "WED", value: 4},
+                {name: "THU", value: 5},
+                {name: "FRI", value: 6},
             ]
         }),
         methods:{
+
+            toggleSelectedShiftDays(dayIndex) {
+                let val = this.selectedShiftDays[dayIndex] === '1' ? '0' : '1';
+                Vue.set(this.selectedShiftDays, dayIndex, val);
+            },
+
             openEditStationShiftModal(stationShift){
+                this.stationShiftEditMode = true;
                 this.stationShift = stationShift;
-                this.stationShift.scheduleDisplayString = this.getScheduleString(stationShift.schedule);
-                this.fillSelectedDays(stationShift.schedule);
+                this.selectedShiftDays = stationShift.schedule.split('');
                 this.showStationShiftForm = true;
             },
-            createStationShift(){
-              let stationShift = {
-                  id:this.stationShift.id,
-                  station_id:this.stationId,
-                  shift_id:this.stationShift.shift_id,
-                  schedule:this.getScheduleStringForPost(),
-              };
-            stationShiftService.createOrUpdateStationShift(stationShift, r=> {
-                this.stationShifts = r;
-            }, e => {
-                console.log(e);
-            })
-          },
-            getScheduleStringForPost(){
-                let scheduleString="";
-                let selectedDays = this.selectedDays.map((object)=> object.value);
-                for(let i =0; i < 7;i++ ){
-                    if(selectedDays.includes(i)){
-                        scheduleString+="1";
-                    }else {
-                        scheduleString+="0";
-                    }
-                }
-                return scheduleString;
+            createStationShift() {
+                let stationShift = {
+                    id:this.stationShift.id,
+                    station_id:this.stationId,
+                    shift_id:this.stationShift.shift_id,
+                    schedule:this.getScheduleStringForPost(),
+                };
+                stationShiftService.createOrUpdateStationShift(stationShift, r=> {
+                    this.stationShifts = r;
+                    this.stationShiftEditMode? toastrService.showSuccessToast('Shift edit successful') : toastrService.showSuccessToast('Shift creation successful');
+                    this.showStationShiftForm = false;
+                    this.stationShiftEditMode = false;
+                }, e => {
+                    toastrService.showErrorToast(e);
+                    this.showStationShiftForm = false;
+                    this.stationShiftEditMode = false;
+                })
+            },
+            getScheduleStringForPost() {
+                return this.selectedShiftDays.join('');
             },
             openDeleteStationShift(stationShift){
                 this.showStationShiftDeleteModal = true;
@@ -185,9 +180,10 @@
             },
             closeStationShiftModals(){
                 this.showStationShiftForm = false;
+                this.stationShiftEditMode = false;
                 this.showStationShiftDeleteModal = false;
                 this.selectedStationShiftId = null;
-                this.selectedDays = [];
+                this.selectedShiftDays.fill('0', 0, this.selectedShiftDays.length);
             },
             getAllStationShifts(){
                 stationShiftService.fetchAll(this.stationId,r => {
@@ -202,35 +198,6 @@
                     this.shifts = r;
                 });
             },
-            fillSelectedDays(scheduleString) {
-                let selectedDays = [];
-                for(let i = 0; i< scheduleString.length ; i++){
-                    let character = scheduleString.charAt(i);
-                    if(character ==1){
-                        for(let j=0;j<this.dayToNameMap.length; j++){
-                            if(this.dayToNameMap[j].value == i){
-                                selectedDays.push(this.dayToNameMap[j]);
-                            }
-                        }
-                    }
-                }
-                this.selectedDays = selectedDays;
-            },
-            getScheduleString(scheduleString){
-                let formattedScheduleString = "";
-                for(let i = 0 ; i < scheduleString.length;i++){
-                   let character = scheduleString.charAt(i);
-                   if(character == 1){
-                       for(let j = 0 ; j < this.dayToNameMap.length ; j++){
-                           if(this.dayToNameMap[j].value == i){
-                               formattedScheduleString+= " "+this.dayToNameMap[j].name.substr(0,3);
-                           }
-                       }
-                   }
-                }
-                console.log(formattedScheduleString);
-                return formattedScheduleString;
-            }
         },
         watch:{
             stationId: function(newStationId, oldStationId) { // watch it

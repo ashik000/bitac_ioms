@@ -247,3 +247,30 @@ table.settings-station-table > tbody > tr > td:first-child{
 .list-pointer {
     cursor: pointer;
 }
+
+.day-circle-active {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    color: #fff;
+    text-align: center;
+    background: #4a803b;
+}
+
+.day-circle-inactive {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    color: #fff;
+    text-align: center;
+    background: #484343;
+}
+
+.center-flex {
+    display: flex;
+    justify-content: space-between
+}
