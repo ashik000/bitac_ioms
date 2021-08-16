@@ -11,16 +11,12 @@
                             {{ item.name }}
                         </span>
                         <span style="float: right;">
-                            <a class="btn-sm btn-primary me-1 anchor_btn">
-                                <i class="material-icons" @click.prevent="showGroupEditModal(item)">
-                                    edit
-                                </i>
-                            </a>
-                            <a class="btn-sm btn-danger anchor_btn">
-                                <i class="material-icons" @click.prevent="showGroupDeleteModal(item)">
-                                    delete
-                                </i>
-                            </a>
+                            <button type="button" class="btn btn-primary btn-sm" @click.prevent="showGroupEditModal(item)">
+                                <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> Edit
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm" @click.prevent="showGroupDeleteModal(item)">
+                                <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> Delete
+                            </button>
                         </span>
                     </template>
                 </DowntimeReasonGroup>
@@ -36,16 +32,12 @@
                         <div class="d-flex justify-content-between align-items-center">
                             {{ row.name }}
                             <span style="float: right;">
-                                <a class="btn btn-primary anchor_btn">
-                                    <i class="material-icons" @click.prevent="showDowntimeEditModal(row)">
-                                        edit
-                                    </i>
-                                </a>
-                                <a class="btn btn-danger anchor_btn">
-                                    <i class="material-icons" @click.prevent="showReasonDeleteModal(row)">
-                                        delete
-                                    </i>
-                                </a>
+                                <button type="button" class="btn btn-primary btn-sm" @click.prevent="showDowntimeEditModal(row)">
+                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> Edit
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" @click.prevent="showReasonDeleteModal(row)">
+                                    <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> Delete
+                                </button>
                             </span>
                         </div>
                     </template>
@@ -210,8 +202,9 @@
                 downtimeReasonsService.deleteGroup(this.groupId, r =>{
                     this.groups = r;
                     this.closeGroupForm();
-                }, e =>{
-                    console.log(e);
+                }, error =>{
+                    toastrService.showErrorToast(error);
+                    console.log(error);
                 })
             },
             updateGroup(){
