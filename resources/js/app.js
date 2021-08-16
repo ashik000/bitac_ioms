@@ -6,7 +6,7 @@ import Multiselect from 'vue-multiselect';
 import Vue from 'vue'
 import router from './routes';
 import {store} from './store/index';
-import Toasted from 'vue-toasted';
+// import Toasted from 'vue-toasted';
 
 import App from './pages/App'
 
@@ -21,7 +21,7 @@ Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 Vue.component('multiselect', Multiselect);
 
 Vue.use(VCalendar);
-Vue.use(Toasted);
+// Vue.use(Toasted);
 
 const app = new Vue({
     el: '#app',

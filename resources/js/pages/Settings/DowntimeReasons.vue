@@ -140,7 +140,8 @@
 <script>
     import DowntimeReasonGroup from "../../components/settings/DowntimeReasonGroup";
     import DowntimeReasonList from "../../components/settings/DowntimeReasonList";
-    import downtimeReasonsService from '../../services/DowntimeReasons'
+    import downtimeReasonsService from '../../services/DowntimeReasons';
+    import toastrService from '../../services/ToastrService';
     import groupMixin from '../../mixins/groupMixin'
 
     export default {
@@ -163,7 +164,10 @@
               downtimeReasonsService.deleteReason(this.reasonId, data=>{
                   this.reasons = data;
                   this.closeShowReasonForm();
-              })
+                  toastrService.showSuccessToast('Downtime reason group deleted.');
+              }, error => {
+                  toastrService.showErrorToast(error);
+              });
             },
             showReasonDeleteModal(row){
               this.showReasonDeleteForm = true;
@@ -188,6 +192,9 @@
                     this.reasons = data;
                     this.showReasonForm = false;
                     this.reasonId = null;
+                    toastrService.showSuccessToast('Downtime reason group updated.');
+                }, error => {
+                    toastrService.showErrorToast(error);
                 });
             },
             showDowntimeEditModal(item){
@@ -208,18 +215,23 @@
                 })
             },
             updateGroup(){
-                downtimeReasonsService.updateGroup(this.groupId,{name:this.groupName}, r=>{
+                downtimeReasonsService.updateGroup(this.groupId,{name:this.groupName}, r=> {
                     this.groups = r;
+                    toastrService.showSuccessToast('Downtime reason updated.');
                     this.closeGroupForm();
-                }, e => {
+                }, error => {
+                    toastrService.showErrorToast(error);
                 });
             },
             createGroup() {
                 downtimeReasonsService.addGroup({name: this.groupName}, data => {
                     this.groups = data;
                     this.showGroupForm = false;
+                    toastrService.showSuccessToast('Downtime reason group added.');
+                    this.clearReasonGroup();
+                }, error => {
+                    toastrService.showErrorToast(error);
                 });
-                this.clearReasonGroup();
             },
             createDowntimeReason(){
                 downtimeReasonsService.addReason({
@@ -229,8 +241,11 @@
                 },data=>{
                     this.reasons = data;
                     this.showReasonForm = false;
+                    toastrService.showSuccessToast('Downtime reason added.');
+                    this.clearDowntimeReason();
+                }, error => {
+                    toastrService.showErrorToast(error);
                 });
-                this.clearDowntimeReason();
             },
             clearDowntimeReason(){
                 this.reasonName = "";
@@ -250,9 +265,7 @@
         mounted() {
             downtimeReasonsService.fetchAllGroups(groups => {
                 this.groups = groups;
-                // console.log(this.groups);
                 downtimeReasonsService.fetchAllDowntimeReasonsByGroupId(this.groups[0].id, reasons => {
-                    console.log(reasons);
                     this.reasons = reasons['downtime_reason_list'];
                 });
             });

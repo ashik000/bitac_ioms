@@ -7,7 +7,7 @@
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                     <li>
                         <router-link to="/lineview">
-                            <img src="storage/images/walton-logo.png" alt="walton-logo" style="height: 40px;">
+                            <img src="/storage/images/walton-logo.png" alt="walton-logo" style="height: 40px;">
                         </router-link>
                     </li>
                     <li>
