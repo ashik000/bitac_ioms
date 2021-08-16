@@ -22,7 +22,7 @@ export default {
         }
     },
     showErrorToast(message) {
-        toastr.error(message, 'Error');
+        toastr.error(message, 'Error!');
         toastr.options = {
             "closeButton": true,
             "debug": false,

@@ -31,22 +31,19 @@
                         </td>
                         <td>
                             <div>
-                                <a class="btn btn-primary">
-                                    <i v-if="selectedOperatorId === row.id" class="material-icons" style="color: #e6e6e6;" @click="selectOperatorId(row.id); updateOperator(row)">
-                                        Save
-                                    </i>
-                                    <i v-else class="material-icons" style="color: #e6e6e6;" @click="selectOperatorId(row.id)"  >
-                                        Edit
-                                    </i>
-                                </a>
-                                <a class="btn btn-danger">
-                                    <i v-if="selectedOperatorId === row.id" class="material-icons" @click.prevent="cancelEdit()">
-                                        Cancel
-                                    </i>
-                                    <i v-else class="material-icons" @click.prevent="showOperatorDeleteModal(row)">
-                                        delete
-                                    </i>
-                                </a>
+                                <button v-if="selectedOperatorId === row.id" type="button" class="btn btn-success btn-sm" @click="selectOperatorId(row.id); updateOperator(row)">
+                                    <b-icon icon="cloud-arrow-up" class="pb-sm-1" font-scale="1.30"></b-icon> SAVE
+                                </button>
+                                <button v-else type="button" class="btn btn-primary btn-sm" @click="selectOperatorId(row.id)">
+                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
+                                </button>
+
+                                <button v-if="selectedOperatorId === row.id" type="button" class="btn btn-danger btn-sm" @click.prevent="cancelEdit()">
+                                    <b-icon icon="x-circle-fill" class="pb-sm-1" font-scale="1.30"></b-icon> CANCEL
+                                </button>
+                                <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="showOperatorDeleteModal(row)">
+                                    <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
+                                </button>
                             </div>
                         </td>
                     </template>
@@ -106,6 +103,7 @@
 <script>
     import OperatorList from "../../components/settings/OperatorList";
     import operatorsService from '../../services/OperatorsService';
+    import toastrService from '../../services/ToastrService';
     import groupMixin from '../../mixins/groupMixin';
 
     export default {
@@ -157,8 +155,10 @@
                 operatorsService.createOperator(formData, (data) => {
                     this.operators = data;
                     this.closeModal();
-                } , (error) => {
-                    console.log(error);
+                    toastrService.showSuccessToast('Operator created.');
+                }, (error) => {
+                    toastrService.showErrorToast(error);
+                    // console.log(error);
                 });
             },
 
@@ -168,20 +168,23 @@
                     last_name: operator.last_name,
                     code: operator.code
                 };
-
                 operatorsService.updateOperator(operator.id, formData, (data) => {
                     this.operators = data;
+                    toastrService.showSuccessToast('Operator updated.');
                 } , (error) => {
-                    console.log(error);
+                    // console.log(error);
+                    toastrService.showErrorToast(error);
                 });
             },
 
             deleteOperator: function(){
                 operatorsService.deleteOperator(this.operatorId, (data) => {
                     this.operators = data;
+                    toastrService.showSuccessToast('Operator deleted.');
                     this.closeModal();
                 }, (error) => {
-                    console.log(error);
+                    toastrService.showErrorToast(error);
+                    // console.log(error);
                 });
             },
 
