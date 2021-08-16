@@ -1,53 +1,55 @@
 <template>
     <span>
         <div class="card-wrapper row">
-            <div class="col-12">
-                <ShiftList :items="shifts" sectionHeader="Shifts" @action-clicked="openShiftAddModal">
-                    <template v-slot:columnHeaders>
-                        <tr>
-                            <th class="text-left" width="41%">Name</th>
-                            <th class="text-center" width="23%">Start</th>
-                            <th class="text-center" width="23%">End</th>
-                            <th class="text-center" width="15%">Actions</th>
-                        </tr>
-                    </template>
+            <b-overlay :show="showUpdateInprogress" opacity="0.6">
+                <div class="col-12">
+                    <ShiftList :items="shifts" sectionHeader="Shifts" @action-clicked="openShiftAddModal">
+                        <template v-slot:columnHeaders>
+                            <tr>
+                                <th class="text-left" width="41%">Name</th>
+                                <th class="text-center" width="23%">Start</th>
+                                <th class="text-center" width="23%">End</th>
+                                <th class="text-center" width="15%">Actions</th>
+                            </tr>
+                        </template>
 
-                    <template v-slot:row="{ row }">
-                        <td class="text-left">
-                            <div v-if="selectedShiftId === row.id" >
-                                <input v-model="row.name" />
-                            </div>
-                            <span v-else>{{ row.name }}</span>
-                        </td>
-                        <td class="text-center">
-                            <div v-if="selectedShiftId === row.id" >
-                                <input v-model="row.start_time" />
-                            </div>
-                            <span v-else>{{ row.start_time }}</span>
-                        </td>
-                        <td class="text-center">
-                            <div v-if="selectedShiftId === row.id" >
-                                <input v-model="row.end_time" />
-                            </div>
-                            <span v-else>{{ row.end_time }}</span>
-                        </td>
-                        <td class="text-center">
-                            <button v-if="selectedShiftId === row.id" type="button" class="btn btn-success btn-sm" @click.prevent="selectShiftId(row.id)">
-                                <b-icon icon="cloud-arrow-up" class="pb-sm-1" font-scale="1.30"></b-icon> Save
-                            </button>
-                            <button v-else type="button" class="btn btn-primary btn-sm" @click.prevent="selectShiftId(row.id)">
-                                <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> Edit
-                            </button>
-                            <button v-if="selectedShiftId === row.id" type="button" class="btn btn-danger btn-sm" @click.prevent="cancelUpdateShift(row.id)">
-                                <b-icon icon="x-circle-fill" class="pb-sm-1" font-scale="1.30"></b-icon> Cancel
-                            </button>
-                            <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="showShiftDeleteModal(row)">
-                                <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> Delete
-                            </button>
-                        </td>
-                    </template>
-                </ShiftList>
-            </div>
+                        <template v-slot:row="{ row }">
+                            <td class="text-left">
+                                <div v-if="selectedShiftId === row.id" >
+                                    <input class="form-control" v-model="row.name" />
+                                </div>
+                                <span v-else>{{ row.name }}</span>
+                            </td>
+                            <td class="text-center">
+                                <div v-if="selectedShiftId === row.id" >
+                                    <VueCtkDateTimePicker input-size="sm" v-model="row.start_time" format="HH:mm" formatted="HH:mm" :only-time="true" :no-label="true" label="Select Start Time" />
+                                </div>
+                                <span v-else>{{ row.start_time }}</span>
+                            </td>
+                            <td class="text-center">
+                                <div v-if="selectedShiftId === row.id" >
+                                    <VueCtkDateTimePicker input-size="sm" v-model="row.end_time" format="HH:mm" formatted="HH:mm" :only-time="true" :no-label="true" label="Select Start Time" />
+                                </div>
+                                <span v-else>{{ row.end_time }}</span>
+                            </td>
+                            <td class="text-center">
+                                <button v-if="selectedShiftId === row.id" type="button" class="btn btn-success btn-sm" @click.prevent="selectShiftId(row.id); updateShift(row);">
+                                    <b-icon icon="cloud-arrow-up" class="pb-sm-1" font-scale="1.30"></b-icon> SAVE
+                                </button>
+                                <button v-else type="button" class="btn btn-primary btn-sm" @click.prevent="selectShiftId(row.id);">
+                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
+                                </button>
+                                <button v-if="selectedShiftId === row.id" type="button" class="btn btn-danger btn-sm" @click.prevent="cancelUpdateShift(row.id)">
+                                    <b-icon icon="x-circle-fill" class="pb-sm-1" font-scale="1.30"></b-icon> CANCEL
+                                </button>
+                                <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="showShiftDeleteModal(row)">
+                                    <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
+                                </button>
+                            </td>
+                        </template>
+                    </ShiftList>
+                </div>
+            </b-overlay>
         </div>
 
         <Modal v-if="showShiftForm" @close="closeModal">
@@ -58,27 +60,23 @@
             </template>
 
             <template v-slot:content>
-                <form @submit.prevent="shiftId == null? createShift():updateShift()">
+                <form @submit.prevent="shiftId == null? createShift():closeModal()">
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" v-model="shiftName" class="form-control" placeholder="Enter Shift Name" />
                     </div>
-
                     <div class="form-group">
                         <label>Shift Start Time</label>
                         <VueCtkDateTimePicker v-model="shiftStartTime" format="HH:mm" formatted="HH:mm" :only-time="true" :no-label="true" label="Select Start Time" />
                     </div>
-
                     <div class="form-group">
                         <label>Shift End Time</label>
                         <VueCtkDateTimePicker v-model="shiftEndTime" format="HH:mm" formatted="HH:mm" :only-time="true" :no-label="true" label="Select End Time" />
                     </div>
-
                     <button class="btn btn-primary" >Submit</button>
                 </form>
-
+                <b-overlay :show="showAddInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
-
         </Modal>
 
         <Modal v-if="showShiftDeleteForm" @close="closeModal">
@@ -120,7 +118,9 @@
                 shifts: [],
                 hide: true,
                 selectedShiftId: null,
-                selectedId: null
+                selectedId: null,
+                showAddInprogress: false,
+                showUpdateInprogress: false
             };
         },
         methods:{
@@ -150,27 +150,31 @@
                     start_time: this.shiftStartTime,
                     end_time: this.shiftEndTime
                 };
-
+                this.showAddInprogress = true;
                 shiftsService.createShift(formData, (data) => {
                     this.shifts = data;
                     this.closeModal();
+                    this.showAddInprogress = false;
                 } , (error) => {
                     console.log(error);
+                    this.showAddInprogress = false;
                 });
             },
 
-            updateShift: function () {
+            updateShift: function (shift) {
                 const formData = {
-                    name: this.shiftName,
-                    start_time: this.shiftStartTime,
-                    end_time: this.shiftEndTime
+                    name: shift.name,
+                    start_time: shift.start_time,
+                    end_time: shift.end_time
                 };
-
-                shiftsService.updateShift(this.shiftId, formData, (data) => {
+                this.showUpdateInprogress = true;
+                shiftsService.updateShift(shift.id, formData, (data) => {
                     this.shifts = data;
                     this.closeModal();
+                    this.showUpdateInprogress = false;
                 }, (error) => {
                     console.log(error);
+                    this.showUpdateInprogress = false;
                 });
             },
 
