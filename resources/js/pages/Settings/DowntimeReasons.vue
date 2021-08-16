@@ -12,10 +12,10 @@
                         </span>
                         <span style="float: right;">
                             <button type="button" class="btn btn-primary btn-sm" @click.prevent="showGroupEditModal(item)">
-                                <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> Edit
+                                <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
                             </button>
                             <button type="button" class="btn btn-danger btn-sm" @click.prevent="showGroupDeleteModal(item)">
-                                <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> Delete
+                                <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
                             </button>
                         </span>
                     </template>
@@ -33,10 +33,10 @@
                             {{ row.name }}
                             <span style="float: right;">
                                 <button type="button" class="btn btn-primary btn-sm" @click.prevent="showDowntimeEditModal(row)">
-                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> Edit
+                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
                                 </button>
                                 <button type="button" class="btn btn-danger btn-sm" @click.prevent="showReasonDeleteModal(row)">
-                                    <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> Delete
+                                    <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
                                 </button>
                             </span>
                         </div>

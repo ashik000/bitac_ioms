@@ -4,15 +4,15 @@
             <div class="col-md-3 col-sm-12 h-100">
                 <ProductGroup sectionHeader="Product Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Product Group">
                     <template v-slot="{ item }">
-                        <span class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
+                        <span class="hide_overflow_text" @click.prevent="loadGroupData(item.id)">
                             {{ item.name }}
                         </span>
                         <span style="float: right;">
                             <button type="button" class="btn btn-primary btn-sm" @click.prevent="showGroupEditModal(item)">
-                                <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> Edit
+                                <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
                             </button>
                             <button type="button" class="btn btn-danger btn-sm" @click.prevent="showGroupDeleteModal(item)">
-                                <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> Delete
+                                <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
                             </button>
                         </span>
                     </template>
@@ -28,10 +28,10 @@
                             {{ row.name }}
                             <span style="float: right;">
                                 <button type="button" class="btn btn-primary btn-sm" @click.prevent="showProductEditModal(row)">
-                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> Edit
+                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
                                 </button>
                                 <button type="button" class="btn btn-danger btn-sm" @click.prevent="showProductDeleteModal(row)">
-                                    <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> Delete
+                                    <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
                                 </button>
                             </span>
                         </div>

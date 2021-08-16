@@ -32,17 +32,17 @@
                         <td>
                             <div>
                                 <button v-if="selectedOperatorId === row.id" type="button" class="btn btn-success btn-sm" @click="selectOperatorId(row.id); updateOperator(row)">
-                                    <b-icon icon="cloud-arrow-up" class="pb-sm-1" font-scale="1.30"></b-icon> Save
+                                    <b-icon icon="cloud-arrow-up" class="pb-sm-1" font-scale="1.30"></b-icon> SAVE
                                 </button>
                                 <button v-else type="button" class="btn btn-primary btn-sm" @click="selectOperatorId(row.id)">
-                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> Edit
+                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
                                 </button>
 
                                 <button v-if="selectedOperatorId === row.id" type="button" class="btn btn-danger btn-sm" @click.prevent="cancelEdit()">
-                                    <b-icon icon="x-circle-fill" class="pb-sm-1" font-scale="1.30"></b-icon> Cancel
+                                    <b-icon icon="x-circle-fill" class="pb-sm-1" font-scale="1.30"></b-icon> CANCEL
                                 </button>
                                 <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="showOperatorDeleteModal(row)">
-                                    <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> Delete
+                                    <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
                                 </button>
                             </div>
                         </td>
