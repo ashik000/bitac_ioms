@@ -1,7 +1,7 @@
 <template>
     <div>
         <header class="section-header">
-            <button class="btn btn-primary btn-sm btn-assign-product" @click="openStationProductCreateModal()">
+            <button class="btn btn-primary btn-sm btn-assign-item" @click="openStationProductCreateModal()">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                 <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"></path>
               </svg>
@@ -9,7 +9,7 @@
             </button>
         </header>
         <div>
-            <table class="table table-bordered station-product-table" v-if="showStationProductsTable">
+            <table class="table table-bordered settings-station-table" v-if="showStationProductsTable">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -30,7 +30,7 @@
                     <td>{{stationProduct.units_per_signal}}</td>
                     <td>{{stationProduct.performance_threshold}}</td>
                     <td>
-                        <div class="d-flex station-product-actions-btn-group">
+                        <div class="d-flex station-actions-btn-group">
                             <a class="btn btn-primary btn-sm" @click.prevent="openStationProductEditForm(stationProduct)">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
