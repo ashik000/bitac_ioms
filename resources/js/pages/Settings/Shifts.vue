@@ -5,42 +5,45 @@
                 <ShiftList :items="shifts" sectionHeader="Shifts" @action-clicked="openShiftAddModal">
                     <template v-slot:columnHeaders>
                         <tr>
-                            <th>Name</th>
-                            <th>Start</th>
-                            <th>End</th>
-                            <th>Actions</th>
+                            <th class="text-left" width="41%">Name</th>
+                            <th class="text-center" width="23%">Start</th>
+                            <th class="text-center" width="23%">End</th>
+                            <th class="text-center" width="15%">Actions</th>
                         </tr>
                     </template>
 
                     <template v-slot:row="{ row }">
-                        <td>
-                            <div>
-                                {{ row.name }}
+                        <td class="text-left">
+                            <div v-if="selectedShiftId === row.id" >
+                                <input v-model="row.name" />
                             </div>
+                            <span v-else>{{ row.name }}</span>
                         </td>
-                        <td>
-                            <div>
-                                {{ row.start_time }}
+                        <td class="text-center">
+                            <div v-if="selectedShiftId === row.id" >
+                                <input v-model="row.start_time" />
                             </div>
+                            <span v-else>{{ row.start_time }}</span>
                         </td>
-                        <td>
-                            <div>
-                                {{ row.end_time }}
+                        <td class="text-center">
+                            <div v-if="selectedShiftId === row.id" >
+                                <input v-model="row.end_time" />
                             </div>
+                            <span v-else>{{ row.end_time }}</span>
                         </td>
-                        <td>
-                            <div>
-                                <a class="btn btn-primary">
-                                    <i class="material-icons" @click.prevent="showShiftEditModal(row)">
-                                        edit
-                                    </i>
-                                </a>
-                                <a class="btn btn-danger">
-                                    <i class="material-icons" @click.prevent="showShiftDeleteModal(row)">
-                                        delete
-                                    </i>
-                                </a>
-                            </div>
+                        <td class="text-center">
+                            <button v-if="selectedShiftId === row.id" type="button" class="btn btn-success btn-sm" @click.prevent="selectShiftId(row.id)">
+                                <b-icon icon="cloud-arrow-up" class="pb-sm-1" font-scale="1.30"></b-icon> Save
+                            </button>
+                            <button v-else type="button" class="btn btn-primary btn-sm" @click.prevent="selectShiftId(row.id)">
+                                <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> Edit
+                            </button>
+                            <button v-if="selectedShiftId === row.id" type="button" class="btn btn-danger btn-sm" @click.prevent="cancelUpdateShift(row.id)">
+                                <b-icon icon="x-circle-fill" class="pb-sm-1" font-scale="1.30"></b-icon> Cancel
+                            </button>
+                            <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="showShiftDeleteModal(row)">
+                                <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> Delete
+                            </button>
                         </td>
                     </template>
                 </ShiftList>
@@ -114,7 +117,10 @@
                 shiftName: null,
                 shiftStartTime: null,
                 shiftEndTime: null,
-                shifts: []
+                shifts: [],
+                hide: true,
+                selectedShiftId: null,
+                selectedId: null
             };
         },
         methods:{
@@ -188,6 +194,15 @@
                 this.showShiftForm = false;
                 this.showShiftDeleteForm = false;
                 this.resetForm();
+            },
+
+            selectShiftId: function(shiftId) {
+                if(this.selectedShiftId === shiftId)
+                    this.selectedShiftId = null;
+                else this.selectedShiftId = shiftId;
+            },
+            cancelUpdateShift: function (){
+                this.selectedShiftId = null;
             }
         },
 
