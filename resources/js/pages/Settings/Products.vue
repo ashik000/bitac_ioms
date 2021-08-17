@@ -191,16 +191,22 @@
             },
             deleteGroup(){
                 this.showInprogress = true;
-                productService.deleteGroup(this.groupId, r =>{
-                    this.groups = r;
-                    this.showInprogress = true;
-                    toastrService.showSuccessToast('Product group deleted.');
+                if (this.products.length > 0) {
                     this.closeGroupForm();
-                }, error =>{
-                    this.showInprogress = true;
-                    toastrService.showErrorToast(error);
-                    // console.log(error);
-                })
+                    this.showInprogress = false;
+                    toastrService.showErrorToast("You can't delete this because the group has products.");
+                } else {
+                    productService.deleteGroup(this.groupId, r =>{
+                        this.groups = r;
+                        this.showInprogress = true;
+                        toastrService.showSuccessToast('Product group deleted.');
+                        this.closeGroupForm();
+                    }, error =>{
+                        this.showInprogress = true;
+                        toastrService.showErrorToast(error);
+                        // console.log(error);
+                    })
+                }
             },
             updateGroup(){
                 this.showInprogress = true;

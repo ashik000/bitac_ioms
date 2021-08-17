@@ -249,16 +249,23 @@ export default {
         },
         deleteGroup(){
             this.showInprogress = true;
-            stationService.deleteGroup(this.groupId, r =>{
-                this.groups = r;
-                this.showInprogress = false;
+            if (this.stations.length > 0) {
                 this.closeGroupForm();
-                toastrService.showSuccessToast('Station group deleted.');
-            }, error =>{
                 this.showInprogress = false;
-                toastrService.showErrorToast(error);
-                // console.log(e);
-            })
+                toastrService.showErrorToast("You can't delete this because the group has stations.");
+            } else {
+                stationService.deleteGroup(this.groupId, r =>{
+                    this.groups = r;
+                    this.showInprogress = false;
+                    this.closeGroupForm();
+                    toastrService.showSuccessToast('Station group deleted.');
+                }, error =>{
+                    this.showInprogress = false;
+                    toastrService.showErrorToast(error);
+                    // console.log(e);
+                })
+
+            }
         },
         createGroup() {
             this.showInprogress = true;
@@ -356,9 +363,8 @@ export default {
     mounted() {
         stationService.fetchAllGroups(groups => {
             this.groups = groups;
-
             stationService.fetchAllStationsByGroupId(this.groups[0].id, stations => {
-                console.log(stations);
+                // console.log(stations);
                 this.stations = stations;
             });
         });

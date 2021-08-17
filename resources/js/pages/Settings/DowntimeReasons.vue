@@ -125,6 +125,7 @@
                     <p>Are you sure you want to delete the reason named <span style="color: darkred">{{reasonName}}</span>?</p>
                     <button class="btn btn-danger">Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
             </template>
@@ -210,16 +211,22 @@
             },
             deleteGroup(){
                 this.showInprogress = true;
-                downtimeReasonsService.deleteGroup(this.groupId, r =>{
-                    this.groups = r;
+                if (this.reasons.length > 0) {
                     this.closeGroupForm();
                     this.showInprogress = false;
-                    toastrService.showSuccessToast('Downtime reason group deleted.');
-                }, error =>{
-                    this.showInprogress = false;
-                    toastrService.showErrorToast(error);
-                    // console.log(error);
-                })
+                    toastrService.showErrorToast("You can't delete this because the group has reasons.");
+                } else {
+                    downtimeReasonsService.deleteGroup(this.groupId, r =>{
+                        this.groups = r;
+                        this.closeGroupForm();
+                        this.showInprogress = false;
+                        toastrService.showSuccessToast('Downtime reason group deleted.');
+                    }, error =>{
+                        this.showInprogress = false;
+                        toastrService.showErrorToast(error);
+                        // console.log(error);
+                    })
+                }
             },
             updateGroup(){
                 this.showInprogress = true;
