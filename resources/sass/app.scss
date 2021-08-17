@@ -274,3 +274,8 @@ table.settings-station-table > tbody > tr > td:first-child{
     display: flex;
     justify-content: space-between
 }
+
+li.active > span:last-child > button:first-child{
+    background-color: #D3D3D3;
+    color: black;
+}
