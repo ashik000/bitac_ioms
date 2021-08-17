@@ -2,7 +2,7 @@
     <span>
 
         <div class="card-wrapper row">
-            <div class="col-3 h-100">
+            <div class="section col-md-3 col-sm-12 pt-md-2 pt-4 pb-4">
                 <StationGroup sectionHeader="Station Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Stations Group">
                     <template v-slot="{ item }">
                         <span class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
@@ -20,7 +20,7 @@
                 </StationGroup>
             </div>
 
-            <div class="col-9 h-100">
+            <div class="section col-md-9 col-sm-12 pt-md-2 pt-4 pb-4">
                 <StationList :items="stations"
                                sectionHeader="Stations"
                                :selected-id="selectedStationId"
@@ -32,7 +32,7 @@
                             {{ row.name }}
                             </button>
                             <div class="d-flex stations-setting-button-group">
-                                <button type="button" class="btn btn-secondary btn-sm" >
+                                <button type="button" class="btn btn-secondary btn-sm" :data-bs-target="'#station-details' + row.id" aria-expanded="false" data-bs-toggle="collapse" @click="setSelectedStationId(row)">
                                     <b-icon icon="gear" class="pb-sm-1" font-scale="1.30"></b-icon> MANAGE COMPONENTS
                                 </button>
                                 <button type="button" class="btn btn-primary btn-sm" @click.prevent="showStationEditModal(row)">

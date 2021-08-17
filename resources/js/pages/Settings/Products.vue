@@ -1,7 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div>
         <div class="card-wrapper row">
-            <div class="col-md-3 col-sm-12 h-100">
+            <div class="section col-md-3 col-sm-12 pt-md-2 pt-4 pb-4">
                 <ProductGroup sectionHeader="Product Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Product Group">
                     <template v-slot="{ item }">
                         <span class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
@@ -18,7 +18,7 @@
                     </template>
                 </ProductGroup>
             </div>
-            <section class="section col-md-9 col-sm-12">
+            <section class="section col-md-9 col-sm-12 pt-md-2 pt-4 pb-4">
                 <ProductList :items="products" sectionHeader="Products" @action-clicked="openProductAddModal">
 <!--                    <template v-slot:columnHeaders>-->
 <!--                    </template>-->
