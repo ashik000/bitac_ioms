@@ -226,7 +226,7 @@ export default {
             this.stationId = item.id;
             this.oee_threshold = item.oee_threshold;
             this.name = item.name;
-            this.selectedGroupId = item.station_group_id;
+            this.selectedGroupId = item.station_group.id;
             this.description = item.description;
         },
         updateGroup(){
@@ -312,7 +312,7 @@ export default {
             this.stationId = item.id;
             this.oee_threshold = item.oee_threshold;
             this.name = item.name;
-            this.selectedGroupId = item.station_group_id;
+            this.selectedGroupId = item.station_group.id;
             this.description = item.description;
         },
         setSelectedStationId(item){
