@@ -1,10 +1,10 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div>
         <div class="card-wrapper row">
-            <div class="col-md-3 col-sm-12 h-100">
+            <div class="section col-md-3 col-sm-12 pt-md-2 pt-4 pb-4">
                 <ProductGroup sectionHeader="Product Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Product Group">
                     <template v-slot="{ item }">
-                        <span class="hide_overflow_text" @click.prevent="loadGroupData(item.id)">
+                        <span class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
                             {{ item.name }}
                         </span>
                         <span style="float: right;">
@@ -18,7 +18,7 @@
                     </template>
                 </ProductGroup>
             </div>
-            <section class="section col-md-9 col-sm-12">
+            <section class="section col-md-9 col-sm-12 pt-md-2 pt-4 pb-4">
                 <ProductList :items="products" sectionHeader="Products" @action-clicked="openProductAddModal">
 <!--                    <template v-slot:columnHeaders>-->
 <!--                    </template>-->
@@ -51,6 +51,7 @@
                     <p>Are you sure you want to delete the group named <span style="color: darkred">{{groupName}}</span>?</p>
                     <button class="btn btn-danger">Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
             </template>
@@ -70,6 +71,7 @@
                     </div>
                     <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
         </Modal>
 
@@ -97,6 +99,7 @@
                     </div>
                     <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
             </template>
@@ -113,6 +116,7 @@
                     <p>Are you sure you want to delete the product named <span style="color: darkred">{{productName}}</span>?</p>
                     <button class="btn btn-danger">Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
             </template>
@@ -142,15 +146,19 @@
             products: [],
             stations:[],
             productId: null,
-            modalTitleText: 'Add'
+            modalTitleText: 'Add',
+            showInprogress: false,
         }),
         methods: {
             deleteProduct(){
+                this.showInprogress = true;
                 productService.deleteProduct(this.productId, r=>{
                     this.products = r;
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Product deleted.');
                     this.closeProductModal();
                 }, error => {
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
                 });
             },
@@ -182,32 +190,47 @@
                 this.modalTitleText = 'Add';
             },
             deleteGroup(){
-                productService.deleteGroup(this.groupId, r =>{
-                    this.groups = r;
-                    toastrService.showSuccessToast('Product group deleted.');
+                this.showInprogress = true;
+                if (this.products.length > 0) {
                     this.closeGroupForm();
-                }, error =>{
-                    toastrService.showErrorToast(error);
-                    // console.log(error);
-                })
+                    this.showInprogress = false;
+                    toastrService.showErrorToast("You can't delete this because the group has products.");
+                } else {
+                    productService.deleteGroup(this.groupId, r =>{
+                        this.groups = r;
+                        this.showInprogress = true;
+                        toastrService.showSuccessToast('Product group deleted.');
+                        this.closeGroupForm();
+                    }, error =>{
+                        this.showInprogress = true;
+                        toastrService.showErrorToast(error);
+                        // console.log(error);
+                    })
+                }
             },
             updateGroup(){
+                this.showInprogress = true;
                 productService.updateGroup(this.groupId,{name:this.groupName}, r=>{
                     this.groups = r;
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Product group updated.');
                     this.closeGroupForm();
                 }, error => {
-                    console.log(error);
+                    this.showInprogress = false;
+                    // console.log(error);
                     toastrService.showErrorToast(error);
                 });
             },
             createGroup() {
+                this.showInprogress = true;
                 productService.addGroup({name: this.groupName}, data => {
                     this.groups = data;
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Product group added.');
                     this.clearProductGroup();
                     this.closeGroupForm();
                 }, error => {
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
                 });
             },
@@ -215,6 +238,7 @@
                 this.showProductForm = true;
             },
             updateProduct(){
+                this.showInprogress = true;
                 productService.updateProduct(this.productId,{
                     name:this.productName,
                     product_group_id: this.selectedGroupId,
@@ -222,13 +246,16 @@
                     unit : this.productUnit
                 }, data => {
                     this.products = data;
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Product updated.');
                     this.closeProductModal();
                 }, error => {
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
                 });
             },
             createProduct(){
+                this.showInprogress = true;
                 productService.addProduct({
                     name:this.productName,
                     product_group_id: this.selectedGroupId,
@@ -237,8 +264,10 @@
                 }, data => {
                     this.products = data;
                     this.showProductForm = false;
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Product added.');
                 }, error => {
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
                 });
                 productService.fetchAllProductsByGroupId(this.selectedGroupId, products => {
