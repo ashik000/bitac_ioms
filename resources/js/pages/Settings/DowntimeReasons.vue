@@ -55,6 +55,7 @@
                     <p>Are you sure you want to delete the group named <span style="color: darkred">{{groupName}}</span>?</p>
                     <button class="btn btn-danger" >Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
             </template>
@@ -74,6 +75,7 @@
                     </div>
                     <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
             </template>
@@ -106,6 +108,7 @@
                     </div>
                     <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
             </template>
@@ -150,16 +153,20 @@
             reasons: [],
             reasonId : null,
             modalTitleText: "Add",
+            showInprogress: false,
         }),
         methods: {
             deleteReason(){
-              downtimeReasonsService.deleteReason(this.reasonId, data=>{
-                  this.reasons = data;
-                  this.closeShowReasonForm();
-                  toastrService.showSuccessToast('Downtime reason group deleted.');
-              }, error => {
-                  toastrService.showErrorToast(error);
-              });
+                this.showInprogress = true;
+                downtimeReasonsService.deleteReason(this.reasonId, data=>{
+                    this.reasons = data;
+                    this.closeShowReasonForm();
+                    this.showInprogress = false;
+                    toastrService.showSuccessToast('Downtime reason group deleted.');
+                }, error => {
+                    this.showInprogress = false;
+                    toastrService.showErrorToast(error);
+                });
             },
             showReasonDeleteModal(row){
               this.showReasonDeleteForm = true;
@@ -176,6 +183,7 @@
               this.modalTitleText = "Add";
             },
             updateDowntimeReason(){
+                this.showInprogress = true;
                 downtimeReasonsService.updateReason(this.reasonId, {
                     name:this.reasonName,
                     reason_group_id:this.selectedGroupId,
@@ -184,8 +192,10 @@
                     this.reasons = data;
                     this.showReasonForm = false;
                     this.reasonId = null;
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Downtime reason group updated.');
                 }, error => {
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
                 });
             },
@@ -199,34 +209,45 @@
                 // console.log(JSON.stringify(item));
             },
             deleteGroup(){
+                this.showInprogress = true;
                 downtimeReasonsService.deleteGroup(this.groupId, r =>{
                     this.groups = r;
                     this.closeGroupForm();
+                    this.showInprogress = false;
+                    toastrService.showSuccessToast('Downtime reason group deleted.');
                 }, error =>{
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
-                    console.log(error);
+                    // console.log(error);
                 })
             },
             updateGroup(){
+                this.showInprogress = true;
                 downtimeReasonsService.updateGroup(this.groupId,{name:this.groupName}, r=> {
                     this.groups = r;
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Downtime reason updated.');
                     this.closeGroupForm();
                 }, error => {
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
                 });
             },
             createGroup() {
+                this.showInprogress = true;
                 downtimeReasonsService.addGroup({name: this.groupName}, data => {
                     this.groups = data;
                     this.showGroupForm = false;
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Downtime reason group added.');
                     this.clearReasonGroup();
                 }, error => {
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
                 });
             },
             createDowntimeReason(){
+                this.showInprogress = true;
                 downtimeReasonsService.addReason({
                     name:this.reasonName,
                     reason_group_id:this.selectedGroupId,
@@ -234,9 +255,11 @@
                 },data=>{
                     this.reasons = data;
                     this.showReasonForm = false;
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Downtime reason added.');
                     this.clearDowntimeReason();
                 }, error => {
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
                 });
             },

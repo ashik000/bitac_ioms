@@ -1,54 +1,56 @@
 <template>
     <span>
         <div class="card-wrapper row">
-            <div class="col-12">
-                <OperatorList :items="operators" sectionHeader="Operators" @action-clicked="openOperatorAddModal">
-                    <template v-slot:columnHeaders>
-                        <tr>
-                            <th style="width: 40%;">Operator Name</th>
-                            <th style="width: 40%;">Operator ID</th>
-<!--                            <th>Status</th>-->
-                            <th style="width: 20%;">Actions</th>
-                        </tr>
-                    </template>
-                    <div></div>
-                    <template v-slot:row="{ row }">
-                        <td>
-                            <div>
-                                <div v-if="selectedOperatorId === row.id" >
-                                    <input v-model="row.first_name" />
-                                    <input v-model="row.last_name" />
+            <b-overlay :show="showInprogress" opacity="0.6">
+                <div class="col-12">
+                    <OperatorList :items="operators" sectionHeader="Operators" @action-clicked="openOperatorAddModal">
+                        <template v-slot:columnHeaders>
+                            <tr>
+                                <th style="width: 40%;">Operator Name</th>
+                                <th style="width: 40%;">Operator ID</th>
+    <!--                            <th>Status</th>-->
+                                <th style="width: 20%;">Actions</th>
+                            </tr>
+                        </template>
+                        <div></div>
+                        <template v-slot:row="{ row }">
+                            <td>
+                                <div>
+                                    <div v-if="selectedOperatorId === row.id" >
+                                        <input v-model="row.first_name" />
+                                        <input v-model="row.last_name" />
+                                    </div>
+
+                                    <span v-else>{{ row.first_name + " " + row.last_name }}</span>
                                 </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <input v-if="selectedOperatorId === row.id" v-model="row.code" />
+                                    <span v-else>{{ row.code }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <button v-if="selectedOperatorId === row.id" type="button" class="btn btn-success btn-sm" @click="selectOperatorId(row.id); updateOperator(row)">
+                                        <b-icon icon="cloud-arrow-up" class="pb-sm-1" font-scale="1.30"></b-icon> SAVE
+                                    </button>
+                                    <button v-else type="button" class="btn btn-primary btn-sm" @click="selectOperatorId(row.id)">
+                                        <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
+                                    </button>
 
-                                <span v-else>{{ row.first_name + " " + row.last_name }}</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <input v-if="selectedOperatorId === row.id" v-model="row.code" />
-                                <span v-else>{{ row.code }}</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <button v-if="selectedOperatorId === row.id" type="button" class="btn btn-success btn-sm" @click="selectOperatorId(row.id); updateOperator(row)">
-                                    <b-icon icon="cloud-arrow-up" class="pb-sm-1" font-scale="1.30"></b-icon> SAVE
-                                </button>
-                                <button v-else type="button" class="btn btn-primary btn-sm" @click="selectOperatorId(row.id)">
-                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
-                                </button>
-
-                                <button v-if="selectedOperatorId === row.id" type="button" class="btn btn-danger btn-sm" @click.prevent="cancelEdit()">
-                                    <b-icon icon="x-circle-fill" class="pb-sm-1" font-scale="1.30"></b-icon> CANCEL
-                                </button>
-                                <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="showOperatorDeleteModal(row)">
-                                    <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
-                                </button>
-                            </div>
-                        </td>
-                    </template>
-                </OperatorList>
-            </div>
+                                    <button v-if="selectedOperatorId === row.id" type="button" class="btn btn-danger btn-sm" @click.prevent="cancelEdit()">
+                                        <b-icon icon="x-circle-fill" class="pb-sm-1" font-scale="1.30"></b-icon> CANCEL
+                                    </button>
+                                    <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="showOperatorDeleteModal(row)">
+                                        <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
+                                    </button>
+                                </div>
+                            </td>
+                        </template>
+                    </OperatorList>
+                </div>
+            </b-overlay>
         </div>
 
          <Modal v-if="showOperatorForm" @close="closeModal">
@@ -77,7 +79,7 @@
 
                     <button class="btn btn-primary mt-2">Submit</button>
                 </form>
-
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
 
         </Modal>
@@ -93,6 +95,7 @@
                     <p>Are you sure you want to delete the operator named <span style="color: darkred">{{firstName + " " + lastName}}</span>?</p>
                     <button class="btn btn-danger">Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
             </template>
@@ -121,7 +124,8 @@
                 showOperatorDeleteForm: false,
                 hide: true,
                 selectedOperatorId: null,
-                selectedId: null
+                selectedId: null,
+                showInprogress: false,
             };
         },
         methods: {
@@ -146,17 +150,19 @@
             },
 
             createOperator: function(){
+                this.showInprogress = true;
                 const formData = {
                     first_name: this.firstName,
                     last_name: this.lastName,
                     code: this.operatorCode
                 };
-
                 operatorsService.createOperator(formData, (data) => {
                     this.operators = data;
                     this.closeModal();
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Operator created.');
                 }, (error) => {
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
                     // console.log(error);
                 });
@@ -168,21 +174,27 @@
                     last_name: operator.last_name,
                     code: operator.code
                 };
+                this.showInprogress = true;
                 operatorsService.updateOperator(operator.id, formData, (data) => {
                     this.operators = data;
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Operator updated.');
                 } , (error) => {
                     // console.log(error);
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
                 });
             },
 
             deleteOperator: function(){
+                this.showInprogress = true;
                 operatorsService.deleteOperator(this.operatorId, (data) => {
                     this.operators = data;
+                    this.showInprogress = false;
                     toastrService.showSuccessToast('Operator deleted.');
                     this.closeModal();
                 }, (error) => {
+                    this.showInprogress = false;
                     toastrService.showErrorToast(error);
                     // console.log(error);
                 });

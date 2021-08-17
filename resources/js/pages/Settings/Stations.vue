@@ -125,6 +125,7 @@
                     <p>Are you sure you want to delete the group named <span style="color: darkred">{{groupName}}</span>?</p>
                     <button class="btn btn-danger" >Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
             </template>
@@ -144,6 +145,7 @@
                     </div>
                     <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
         </Modal>
 
@@ -171,6 +173,7 @@
                     </div>
                     <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
             </template>
@@ -187,6 +190,7 @@
                     <p>Are you sure you want to delete the station named <span style="color: darkred">{{name}}</span>?</p>
                     <button class="btn btn-danger">Submit</button>
                 </form>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
             </template>
@@ -219,6 +223,7 @@ export default {
         groups: [],
         stations: [],
         selectedStationId:0,
+        showInprogress: false,
     }),
     methods:{
         showStationEditModal(item){
@@ -230,31 +235,40 @@ export default {
             this.description = item.description;
         },
         updateGroup(){
+            this.showInprogress = true;
             stationService.updateGroup(this.groupId,{name:this.groupName}, r=>{
                 this.groups = r;
-                toastrService.showSuccessToast('Station group updated.');
+                this.showInprogress = false;
                 this.closeGroupForm();
+                toastrService.showSuccessToast('Station group updated.');
             }, error => {
+                this.showInprogress = false;
                 toastrService.showErrorToast(error);
                 // console.log(error);
             });
         },
         deleteGroup(){
+            this.showInprogress = true;
             stationService.deleteGroup(this.groupId, r =>{
                 this.groups = r;
-                toastrService.showSuccessToast('Station group deleted.');
+                this.showInprogress = false;
                 this.closeGroupForm();
+                toastrService.showSuccessToast('Station group deleted.');
             }, error =>{
+                this.showInprogress = false;
                 toastrService.showErrorToast(error);
                 // console.log(e);
             })
         },
         createGroup() {
+            this.showInprogress = true;
             stationService.addGroup({name: this.groupName}, data => {
                 this.groups = data;
                 this.showGroupForm = false;
+                this.showInprogress = false;
                 toastrService.showSuccessToast('Station group created.');
             }, error => {
+                this.showInprogress = false;
                 toastrService.showErrorToast(error);
             })
         },
@@ -262,6 +276,7 @@ export default {
             this.showStationForm = true;
         },
         createStation(){
+            this.showInprogress = true;
             stationService.addStation({
                 name:this.name,
                 station_group_id: this.selectedGroupId,
@@ -270,9 +285,11 @@ export default {
             }, data => {
                 this.stations = data;
                 this.showStationForm = false;
+                this.showInprogress = false;
                 this.closeStationForm();
                 toastrService.showSuccessToast('Station added.');
             }, error => {
+                this.showInprogress = false;
                 toastrService.showErrorToast(error);
             })
         },
@@ -285,6 +302,7 @@ export default {
             this.showStationDeleteForm = null;
         },
         updateStation(){
+            this.showInprogress = true;
             stationService.updateStation(this.stationId,{
                 name:this.name,
                 station_group_id: this.selectedGroupId,
@@ -293,17 +311,22 @@ export default {
             }, data => {
                 this.stations = data;
                 this.showStationForm = false;
+                this.showInprogress = false;
                 toastrService.showSuccessToast('Station updated.');
             }, error => {
+                this.showInprogress = false;
                 toastrService.showErrorToast(error);
             })
         },
         deleteStations() {
+            this.showInprogress = true;
             stationService.deleteStation(this.stationId,r =>{
                 this.stations = r;
+                this.showInprogress = false;
                 this.closeStationForm();
                 toastrService.showSuccessToast('Station deleted.');
             }, error => {
+                this.showInprogress = false;
                 toastrService.showErrorToast(error);
             })
         },
