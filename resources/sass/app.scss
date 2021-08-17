@@ -274,6 +274,19 @@ table.settings-station-table > tbody > tr > td:first-child{
     display: flex;
     justify-content: space-between
 }
+table.table-bordered.settings-station-table >thead > tr{
+    border: none;
+}
+
+table.table-bordered.settings-station-table >thead{
+    border: 1px solid rgb(222, 226, 230);
+}
+
+table.table-bordered.settings-station-table >thead > tr > th{
+    font-weight: unset;
+    border: none;
+    background: white;
+}
 
 li.active > span:last-child > button:first-child{
     background-color: #D3D3D3;
