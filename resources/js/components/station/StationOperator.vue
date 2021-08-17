@@ -23,10 +23,7 @@
                     <td>{{stationOperator.start_time| formatDateTime}}</td>
                     <td>
                         <a class="btn btn-danger btn-sm" @click.prevent="openStationOperatorDeleteModal(stationOperator)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
-                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
-                            </svg>
+                            <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon>
                                 REMOVE
                         </a>
                     </td>
@@ -38,20 +35,21 @@
 
         <Modal v-if="showStationOperatorCreateModal === true" @close="closeStationOperatorModal()" >
             <template v-slot:header>
-                <h3>Add Station Operator</h3>
+                <h3>Assign Station Operator</h3>
             </template>
             <template v-slot:content>
                 <form>
                     <div class="form-group">
                         <label for="operatorSelect">Operator</label>
-                        <select id="operatorSelect" class="form-control"
+                        <select required id="operatorSelect" class="form-control"
                                 v-model="selectedOperatorId">
+                            <option disabled value="">--Select--</option>
                             <option v-for="operator in operators" :value="operator.id">
                                 {{ operator.first_name + operator.last_name + " " + operator.code }}
                             </option>
                         </select>
-                        <label for="startTimeSelect">Select Start Time</label>
-                        <VueCtkDateTimePicker id="startTimeSelect" v-model="stationOperator.start_time" :inline="true" format="YYYY-MM-DD hh:mm:ss" formatted="YYYY-MM-DD hh:mm:ss" />
+                        <label for="startTimeSelect">Select Start Date and Time</label>
+                        <VueCtkDateTimePicker id="startTimeSelect" v-model="stationOperator.start_time" :inline="true" format="YYYY-MM-DD HH:mm:ss" formatted="YYYY-MM-DD HH:mm:ss" />
                     </div>
                     <button style="float: right;" class="btn btn-primary" @click.prevent="createStationOperator()">Submit</button>
                 </form>
@@ -68,8 +66,9 @@
             </template>
             <template v-slot:content>
                 <form @submit.prevent="">
-                    <p>Are you sure you want to delete ?</p>
-                    <button class="btn btn-danger" @click="deleteStationOperator">Submit</button>
+                    <p>Are you sure you want to delete the operator named <span style="color: darkred">{{selectedStationOperatorNameToDelete}}</span>?</p>
+                    <br>
+                    <button class="btn btn-danger" @click="deleteStationOperator">Delete</button>
                 </form>
             </template>
             <template v-slot:footer>
@@ -82,6 +81,7 @@
 
     import stationOperatorService from '../../services/StationOperatorService';
     import operatorService from '../../services/OperatorsService';
+    import toasterService from '../../services/ToastrService'
 
     export default {
         name: "StationOperator",
@@ -98,6 +98,7 @@
             operators: [],
             selectedOperatorId: null,
             selectedStationOperatorIdToDelete: null,
+            selectedStationOperatorNameToDelete: null,
             stationOperator: {
                 id: null,
                 station_id: null,
@@ -145,16 +146,21 @@
                 stationOperatorService.createOrUpdateStationOperator(data, r => {
                     this.stationOperators = r;
                     this.closeStationOperatorModal();
+                    toasterService.showSuccessToast('Added station operator.');
+                }, error => {
+                    toasterService.showErrorToast("Validation failed");
                 });
             },
             openStationOperatorDeleteModal(stationOperator) {
                 this.selectedStationOperatorIdToDelete = stationOperator.id;
+                this.selectedStationOperatorNameToDelete = stationOperator.operator_name;
                 this.showStationOperatorDeleteModal = true;
             },
             deleteStationOperator() {
                 stationOperatorService.deleteStationOperator(this.selectedStationOperatorIdToDelete, r => {
                     this.stationOperators = r;
                     this.closeStationOperatorModal();
+                    toasterService.showSuccessToast('Deleted station operator.')
                 }, e => {
                     console.log(e);
                 });
