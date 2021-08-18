@@ -5,6 +5,7 @@
             :showPartition="true"
             @partitionSelected="onPartitionSelect"
             @rangeSelected="onRangeSelect"></reports-common-header>
+
         <report-container @reportTypeChanged="onReportTypeChange">
             <template v-slot:reportContainer>
                 <div>
@@ -14,6 +15,7 @@
                         @stationShiftSelected="onStationShiftSelect"
                         @stationOperatorSelected="onStationOperatorSelect"
                         :reportType="selectedReportType"></report-filters>
+
                     <div style="background-color: #343345; width: 100%; padding: 30px;">
                         <div class="report-page">
                             <div class="chart-wrapper">
@@ -198,9 +200,3 @@
         }
     }
 </script>
-
-<style scoped>
-    th, td, tr, thead{
-        border:1px solid black!important;
-    }
-</style>
