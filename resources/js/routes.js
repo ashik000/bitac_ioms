@@ -11,6 +11,7 @@ import Users from "./pages/Settings/Users";
 import Operators from "./pages/Settings/Operators";
 import OeeReport from "./pages/Reports/OeeReport";
 import DowntimeReport from "./pages/Reports/DowntimeReport";
+
 import LoginPage from "./pages/login/Login";
 
 import Reports from "./pages/Reports/Reports";
@@ -91,7 +92,32 @@ const routes = [
                 name: 'downtimeReport',
                 path: 'downtime-report',
                 component: DowntimeReport
-            }
+            },
+            // {
+            //     name: 'qualityReport',
+            //     path: 'quality-report',
+            //     component: QualityReport
+            // },
+            // {
+            //     name: 'timeUsageReport',
+            //     path: 'time-usage-report',
+            //     component: TimeUsageReport
+            // },
+            // {
+            //     name: 'quantitiesReport',
+            //     path: 'quantities-report',
+            //     component: QuantitiesReport
+            // },
+            // {
+            //     name: 'cycleTimeReport',
+            //     path: 'cycle-time-report',
+            //     component: CycleTimeReport
+            // },
+            // {
+            //     name: 'scrapReasonsReport',
+            //     path: 'scrap-reasons-report',
+            //     component: ScrapReasonsReport
+            // }
         ]
     }
 ];

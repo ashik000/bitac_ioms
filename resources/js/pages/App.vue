@@ -21,9 +21,18 @@
                         </router-link>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Reports
                         </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/reports/oee-report">OEE</a></li>
+                            <li><a class="dropdown-item" href="/reports/downtime-report">Downtime</a></li>
+                            <li><a class="dropdown-item" href="#">Quality</a></li>
+                            <li><a class="dropdown-item" href="#">Time Usage</a></li>
+                            <li><a class="dropdown-item" href="#">Quantities</a></li>
+                            <li><a class="dropdown-item" href="#">Cycle Time</a></li>
+                            <li><a class="dropdown-item" href="#">Scrap Reasons</a></li>
+                        </ul>
                     </li>
                     <li>
                         <router-link v-if="authorized" to="/settings/stations" class="nav-link text-white" active-class="active">
