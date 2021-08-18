@@ -2,7 +2,7 @@
     <span>
 
         <div class="card-wrapper row">
-            <div class="section col-md-3 col-sm-12 pt-md-2 pt-4 pb-4">
+            <div class="section col-md-3 col-sm-12 h-100">
                 <StationGroup sectionHeader="Station Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Stations Group">
                     <template v-slot="{ item }">
                         <span class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
@@ -20,7 +20,7 @@
                 </StationGroup>
             </div>
 
-            <div class="section col-md-9 col-sm-12 pt-md-2 pt-4 pb-4">
+            <div class="section col-md-9 col-sm-12 h-100">
                 <StationList :items="stations"
                                sectionHeader="Stations"
                                :selected-id="selectedStationId"
@@ -224,6 +224,7 @@ export default {
         stations: [],
         selectedStationId:0,
         showInprogress: false,
+        groupName: '',
     }),
     methods:{
         showStationEditModal(item){
@@ -273,6 +274,7 @@ export default {
                 this.groups = data;
                 this.showGroupForm = false;
                 this.showInprogress = false;
+                this.groupName = '';
                 toastrService.showSuccessToast('Station group created.');
             }, error => {
                 this.showInprogress = false;

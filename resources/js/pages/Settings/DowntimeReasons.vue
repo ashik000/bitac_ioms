@@ -1,7 +1,7 @@
 <template>
     <span>
-        <div class="card-wrapper row y-scroll">
-            <aside class="section col-md-3 col-sm-12 pt-md-2 pt-4 pb-4">
+        <div class="card-wrapper row">
+            <aside class="section col-md-3 col-sm-12 h-100">
                 <DowntimeReasonGroup sectionHeader="Reason Groups"
                               :items="groups"
                               @action-clicked="openGroupAddModal"
@@ -21,7 +21,7 @@
                     </template>
                 </DowntimeReasonGroup>
             </aside>
-            <section class="section col-md-9 col-sm-12 pt-md-2 pt-4 pb-4">
+            <section class="section col-md-9 col-sm-12 h-100">
                 <DowntimeReasonList :items="reasons"
                                sectionHeader="Reasons"
                                @action-clicked="showReasonForm = true">
