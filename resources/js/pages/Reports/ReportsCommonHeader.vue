@@ -2,116 +2,158 @@
     <span>
         <div class="row">
             <div class="col-md-3">
-                <div class="card" style="width: 18rem;">
-                  <div class="card-header">
-                    Featured
-                  </div>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                    <li class="list-group-item">A third item</li>
-                  </ul>
-                </div>
+                <ReportSideBar>
+                    <template v-slot:reportContainer>
+
+                    </template>
+                </ReportSideBar>
             </div>
-            <div class="col-md-9">existing</div>
-        </div>
+            <div class="col-md-9">
+                <nav class="navbar navbar-expand-lg navbar-light bg-theme">
+                    <div class="container-fluid">
+                        <div class="report-type-picker">
+                            {{ reportName }}
+                        </div>
 
-        <div>
-            <nav class="navbar navbar-expand-lg navbar-light bg-theme">
-                <div class="container-fluid">
-                    <div class="report-type-picker">
-                        {{ reportName }}
-                    </div>
+                        <ReportFilters></ReportFilters>
 
-                    <ul class="partition-picker" v-if="showPartition">
-                        <li class="nav-item" :class="{ active: partition === 'hourly' }"
-                            @click.prevent="partitionChanged('hourly')">
-                            <a href="#" class="nav-link">
-                                Hourly
-                            </a>
-                        </li>
-                        <li class="nav-item" :class="{ active: partition === 'daily' }"
-                            @click.prevent="partitionChanged('daily')">
-                            <a href="#" class="nav-link">
-                                Daily
-                            </a>
-                        </li>
-                        <li class="nav-item" :class="{ active: partition === 'weekly' }"
-                            @click.prevent="partitionChanged('weekly')">
-                            <a href="#" class="nav-link">
-                                Weekly
-                            </a>
-                        </li>
-                        <li class="nav-item" :class="{ active: partition === 'monthly' }"
-                            @click.prevent="partitionChanged('monthly')">
-                            <a href="#" class="nav-link">
-                                Monthly
-                            </a>
-                        </li>
-                    </ul>
+                        <ul class="partition-picker" v-if="showPartition">
+                            <li class="nav-item" :class="{ active: partition === 'hourly' }"
+                                @click.prevent="partitionChanged('hourly')">
+                                <a href="#" class="nav-link">
+                                    Hourly
+                                </a>
+                            </li>
+                            <li class="nav-item" :class="{ active: partition === 'daily' }"
+                                @click.prevent="partitionChanged('daily')">
+                                <a href="#" class="nav-link">
+                                    Daily
+                                </a>
+                            </li>
+                            <li class="nav-item" :class="{ active: partition === 'weekly' }"
+                                @click.prevent="partitionChanged('weekly')">
+                                <a href="#" class="nav-link">
+                                    Weekly
+                                </a>
+                            </li>
+                            <li class="nav-item" :class="{ active: partition === 'monthly' }"
+                                @click.prevent="partitionChanged('monthly')">
+                                <a href="#" class="nav-link">
+                                    Monthly
+                                </a>
+                            </li>
+                        </ul>
 
-                    <div class="date-range-picker-wrap">
-                    <span class="range-picker-label">
-                        Date Range
-                    </span>
-                        <v-date-picker class="date-range-picker" v-show="selectedRange.tag === 'custom'"
-                                       :input-props="{ style: `
-                                            background-color: #0f0e26;
-                                            color: #dddddd;
-                                            padding: 0.7rem;
-                                            border-radius: 0.25rem;
-                                            margin: 0.1rem 0;
-                                            width: 200px;
-                                            text-align: center;
-                                            cursor: pointer;
-                                        `
-                                   }"
-                                       mode='range'
-                                       :value='range'
-                                       @input="onDateRangeChanged"/>
+                        <div class="date-range-picker-wrap">
+                        <span class="range-picker-label">
+                            Date Range
+                        </span>
+                            <v-date-picker class="date-range-picker" v-show="selectedRange.tag === 'custom'"
+                                           :input-props="{ style: `
+                                                background-color: #0f0e26;
+                                                color: #dddddd;
+                                                padding: 0.7rem;
+                                                border-radius: 0.25rem;
+                                                margin: 0.1rem 0;
+                                                width: 200px;
+                                                text-align: center;
+                                                cursor: pointer;
+                                            `
+                                       }"
+                                           mode='range'
+                                           :value='range'
+                                           @input="onDateRangeChanged"/>
 
-                        <div class="btn-group btn-group-lg" role="group" aria-label="">
-                            <div class="btn-group date-shortcut" role="group">
-                                <button id="date-shortcut" type="button"
-                                        class="btn dropdown-toggle"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false"
-                                        style="background-color: #0f0e26;
-                                            border: 1px solid #ffffff;
-                                            color: #dddddd;
-                                            padding: 0.45rem;
-                                            border-radius: 0.25rem;
-                                            margin: 0.1rem;
-                                            cursor: pointer;"
-                                >
-                                    {{ selectedRange.title }}
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="date-shortcut">
-                                    <a href="#" class="dropdown-item"
-                                       v-for="item in rangeSelections" @click="changeSelectedRange(item)">
-                                        {{ item.title }}
-                                    </a>
+                            <div class="btn-group btn-group-lg" role="group" aria-label="">
+                                <div class="btn-group date-shortcut" role="group">
+                                    <button id="date-shortcut" type="button"
+                                            class="btn dropdown-toggle"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                            style="background-color: #0f0e26;
+                                                border: 1px solid #ffffff;
+                                                color: #dddddd;
+                                                padding: 0.45rem;
+                                                border-radius: 0.25rem;
+                                                margin: 0.1rem;
+                                                cursor: pointer;"
+                                    >
+                                        {{ selectedRange.title }}
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="date-shortcut">
+                                        <a href="#" class="dropdown-item"
+                                           v-for="item in rangeSelections" @click="changeSelectedRange(item)">
+                                            {{ item.title }}
+                                        </a>
 
-                                    <a href="#" class="dropdown-item"
-                                       @click="changeSelectedRange({ tag: 'custom', title: 'Custom' })">
-                                        Custom
-                                    </a>
+                                        <a href="#" class="dropdown-item"
+                                           @click="changeSelectedRange({ tag: 'custom', title: 'Custom' })">
+                                            Custom
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </nav>
+
+                <report-container @reportTypeChanged="onReportTypeChange">
+                <template v-slot:reportContainer>
+                <div>
+
+
+                    <div style="background-color: #343345; width: 100%; padding: 30px;">
+                        <div class="report-page">
+                            <div class="chart-wrapper">
+                                <oee-chart :title="title" :dataset="dataset"/>
+                            </div>
+                        </div>
+                        <div style="margin-top:30px;">
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 18px; color:#dddddd">{{ reportTableTitle }}</span>
+                            </div>
+                            <report-table-by-station :stationId="selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
+                            <report-table-by-product :stationProductId="selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
+                            <report-table-by-shift :stationShiftId="selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>
+                            <report-table-by-operator :stationOperatorId="selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='operator'"></report-table-by-operator>
+                        </div>
+                    </div>
                 </div>
-            </nav>
+            </template>
+        </report-container>
+
+            </div>
         </div>
+
+
     </span>
 </template>
 
 <script>
 import moment from 'moment';
+import ReportContainer from './ReportContainer';
+import ReportSideBar from "../../components/reports/ReportSideBar";
+import ReportFilters from "../../pages/Reports/filters/ReportFilters";
+import OEEChart from '../../components/reports/OEEChart';
+import ReportTableOEEByStation from './reporttable/oee/ReportTableOEEByStation';
+import ReportTableOEEByProduct from './reporttable/oee/ReportTableOEEByProduct';
+import ReportTableOEEByShift from './reporttable/oee/ReportTableOEEByShift';
+import ReportTableOEEByOperator from './reporttable/oee/ReportTableOEEByOperator';
+import reportService from "../../services/Reports";
 
 export default {
     name: "ReportsCommonHeader",
+    components: {
+        ReportSideBar,
+        ReportContainer,
+        ReportFilters,
+        'oee-chart': OEEChart,
+        'report-table-by-station': ReportTableOEEByStation,
+        'report-table-by-product': ReportTableOEEByProduct,
+        'report-table-by-shift': ReportTableOEEByShift,
+        'report-table-by-operator': ReportTableOEEByOperator,
+    },
     props: {
         reportName: {
             type: String,
@@ -132,6 +174,29 @@ export default {
             start: moment().startOf('day').toDate(),
             end: moment().endOf('day').toDate()
         },
+        selectedPartition: 'hourly',
+        // selectedRange: {
+        //     start: moment().startOf('day').toDate(),
+        //     end: moment().endOf('day').toDate()
+        // },
+        selectedReportType: 'station',
+        selectedStationId: 0,
+        selectedStation: null,
+        selectedStationProductId: 0,
+        selectedStationProduct: null,
+        selectedStationShiftId: 0,
+        selectedStationShift: null,
+        selectedStationOperatorId: 0,
+        selectedStationOperator: null,
+        title: '',
+        dataset: {
+            labels: [],
+            performance: [],
+            availability: [],
+            quality: [],
+            oee: [],
+        },
+        tableData: []
     }),
     computed: {
         rangeSelections() {
@@ -167,6 +232,37 @@ export default {
                             title: 'Last Week'
                         }
                     ]
+            }
+        },
+        reportTableTitle(){
+            if(this.selectedReportType === 'station'){
+                if(this.selectedStationId){
+                    if(this.selectedStation) return `Station: ${this.selectedStation.name}`;
+                    return '';
+                } else {
+                    return 'All Stations';
+                }
+            } else if(this.selectedReportType === 'product'){
+                if(this.selectedStationProductId){
+                    if(this.selectedStationProduct) return `Station: ${this.selectedStationProduct.station_name} > Product: ${this.selectedStationProduct.product_name}`;
+                    return '';
+                } else {
+                    return 'All Products';
+                }
+            } else if(this.selectedReportType === 'shift'){
+                if(this.selectedStationShiftId){
+                    if(this.selectedStationShift) return `Station: ${this.selectedStationShift.station_name} > Shift: ${this.selectedStationShift.shift_name}`;
+                    return '';
+                } else {
+                    return 'All Shifts';
+                }
+            } else if(this.selectedReportType === 'operator'){
+                if(this.selectedStationOperatorId){
+                    if(this.selectedStationOperator) return `Station: ${this.selectedStationOperator.station_name} > Operator: ${this.selectedStationOperator.operator_name}`;
+                    return '';
+                } else {
+                    return 'All Operators';
+                }
             }
         }
     },
@@ -216,7 +312,83 @@ export default {
         partitionChanged(p){
             this.partition = p;
             return this.$emit('partitionSelected', p);
+        },
+        onPartitionSelect(eventData) {
+            console.log("parent received partitionSelected event: " + eventData);
+            this.selectedPartition = eventData;
+            this.fetchOEEData();
+        },
+        onRangeSelect(eventData) {
+            console.log(`parent received rangeselected event: start: ${eventData.start} , end: ${eventData.end}`);
+            this.selectedRange.start = eventData.start;
+            this.selectedRange.end = eventData.end;
+            this.fetchOEEData();
+        },
+        onReportTypeChange(eventData) {
+            console.log("parent received report type changed event: " + eventData);
+            this.selectedReportType = eventData;
+            this.fetchOEEData();
+        },
+        onStationChange(eventData) {
+            console.log("parent received station changed event: " + JSON.stringify(eventData));
+            this.selectedStationId = Number.parseInt(eventData.stationId);
+            this.selectedStation = eventData.station;
+            this.selectedStationProductId = null;
+            this.selectedStationShiftId = null;
+            this.selectedStationOperatorId = null;
+            this.fetchOEEData();
+        },
+        onStationProductSelect(eventData) {
+            console.log("parent received station-product change event: " + JSON.stringify(eventData));
+            this.selectedStationProductId = Number.parseInt(eventData.stationProductId);
+            this.selectedStationProduct = eventData.stationProduct;
+            this.selectedStationId = null;
+            this.selectedStationShiftId = null;
+            this.selectedStationOperatorId = null;
+            this.fetchOEEData();
+        },
+        onStationShiftSelect(eventData) {
+            console.log("parent received station-shift change event: " + eventData);
+            this.selectedStationShiftId = Number.parseInt(eventData.stationShiftId);
+            this.selectedStationShift = eventData.stationShift;
+            this.selectedStationId = null;
+            this.selectedStationProductId = null;
+            this.selectedStationOperatorId = null;
+            this.fetchOEEData();
+        },
+        onStationOperatorSelect(eventData) {
+            console.log("parent received station-operator change event: " + eventData);
+            this.selectedStationOperatorId = Number.parseInt(eventData.stationOperatorId);
+            this.selectedStationOperator = eventData.stationOperator;
+            this.selectedStationId = null;
+            this.selectedStationProductId = null;
+            this.selectedStationShiftId = null;
+            this.fetchOEEData();
+        },
+        fetchOEEData() {
+            let data = {
+                stationId: this.selectedStationId,
+                stationProductId: this.selectedStationProductId,
+                stationShiftId: this.selectedStationShiftId,
+                stationOperatorId: this.selectedStationOperatorId,
+                start: moment(this.selectedRange.start).format('YYYY-MM-DD'),
+                endTime: moment(this.selectedRange.end).format('YYYY-MM-DD'),
+                type: this.selectedPartition
+            };
+            console.log(`Fetching OEE report data with ${JSON.stringify(data)} params`);
+            reportService.fetchReports(data, response => {
+                this.title = response.title;
+                this.dataset.labels = response.dataset.labels;
+                this.dataset.performance = response.dataset.performance;
+                this.dataset.availability = response.dataset.availability;
+                this.dataset.quality = response.dataset.quality;
+                this.dataset.oee = response.dataset.oee;
+                console.log(`Received OEE report data: ${JSON.stringify(response)}`);
+            });
         }
+    },
+    mounted(){
+        this.fetchOEEData();
     }
 }
 </script>
