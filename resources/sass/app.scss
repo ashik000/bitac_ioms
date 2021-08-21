@@ -40,6 +40,10 @@ nav > .d-2{
     background-color: #007EDA;
 }
 
+.list-group-item.active a{
+    color: white;
+}
+
 .main-header-flex-container{
     justify-content: space-between !important;
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">
-            Oee Report
+            {{ reportName }}
         </div>
 
         <ul class="partition-picker list-group list-group-flush">
@@ -40,6 +40,10 @@
             reportType: {
                 type: String,
                 default: 'station'
+            },
+            reportName: {
+                type: String,
+                default: 'OEE Report',
             }
         },
         methods: {

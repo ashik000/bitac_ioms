@@ -9,11 +9,11 @@
                 </ReportSideBar>
             </div>
             <div class="col-md-9">
-                <nav class="navbar navbar-expand-lg navbar-light bg-theme">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light partitionNav">
                     <div class="container-fluid">
-                        <div class="report-type-picker">
-                            {{ reportName }}
-                        </div>
+<!--                        <div class="report-type-picker">-->
+<!--                            {{ reportName }}-->
+<!--                        </div>-->
 
                         <ReportFilters :reportType="reportType"></ReportFilters>
 
@@ -45,9 +45,9 @@
                         </ul>
 
                         <div class="date-range-picker-wrap">
-                        <span class="range-picker-label">
-                            Date Range
-                        </span>
+                            <span class="range-picker-label" style="color: #0a1520">
+                                Date Range
+                            </span>
                             <v-date-picker class="date-range-picker" v-show="selectedRange.tag === 'custom'"
                                            :input-props="{ style: `
                                                 background-color: #0f0e26;
@@ -71,9 +71,9 @@
                                             data-toggle="dropdown"
                                             aria-haspopup="true"
                                             aria-expanded="false"
-                                            style="background-color: #0f0e26;
+                                            style="background-color: #dddddd;
                                                 border: 1px solid #ffffff;
-                                                color: #dddddd;
+                                                color: #000000;
                                                 padding: 0.45rem;
                                                 border-radius: 0.25rem;
                                                 margin: 0.1rem;
@@ -98,7 +98,7 @@
                     </div>
                 </nav>
 
-                <report-container @reportTypeChanged="onReportTypeChange">
+                <report-container @reportTypeChanged="changeReportType">
                     <template v-slot:reportContainer>
                         <div>
                             <div style="background-color: #343345; width: 100%; padding: 30px;">
@@ -173,7 +173,6 @@ export default {
             end: moment().endOf('day').toDate()
         },
         reportType: 'station',
-        // reportTypes: ['station', 'product', 'shift', 'operator'],
         selectedPartition: 'hourly',
         // selectedRange: {
         //     start: moment().startOf('day').toDate(),
@@ -267,9 +266,6 @@ export default {
         }
     },
     methods: {
-        changeReportType(type) {
-            this.reportType = type;
-        },
         reportTitle(report) {
             switch (report) {
                 case 'oee':
@@ -314,7 +310,9 @@ export default {
         },
         partitionChanged(p){
             this.partition = p;
-            return this.$emit('partitionSelected', p);
+            this.selectedPartition = p;
+            this.fetchOEEData();
+            // return this.$emit('partitionSelected', p);
         },
         onPartitionSelect(eventData) {
             console.log("parent received partitionSelected event: " + eventData);
@@ -325,6 +323,11 @@ export default {
             console.log(`parent received rangeselected event: start: ${eventData.start} , end: ${eventData.end}`);
             this.selectedRange.start = eventData.start;
             this.selectedRange.end = eventData.end;
+            this.fetchOEEData();
+        },
+        changeReportType(type) {
+            this.reportType = type;
+            this.selectedReportType = type;
             this.fetchOEEData();
         },
         onReportTypeChange(eventData) {
@@ -466,6 +469,14 @@ export default {
             right: 0;
         }
     }
+}
+
+.partitionNav .nav-item.active a {
+    color: #035FA3!important;
+    font-weight: bold;
+}
+.partitionNav .nav-item.active {
+    border-bottom: 0.2rem solid #007EDA!important;
 }
 </style>
 

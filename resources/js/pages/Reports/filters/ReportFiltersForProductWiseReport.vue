@@ -1,7 +1,7 @@
 <template>
     <div class="justify-content-center align-items-center" style="display: flex; flex-direction: row; ">
         <div style="width: 100%!important">
-            <nav class="navbar navbar-expand-lg navbar-light bg-theme nav-fill" style="padding: 15px;">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 15px;">
                 <div class="row" style="width: 100%!important;margin-left:0px!important">
                     <div class="col-sm-3">
                         <label>Select Station Group</label>
