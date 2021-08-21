@@ -11,9 +11,6 @@
             <div class="col-md-9">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light partitionNav">
                     <div class="container-fluid">
-<!--                        <div class="report-type-picker">-->
-<!--                            {{ reportName }}-->
-<!--                        </div>-->
 
                         <ReportFilters :reportType="reportType"></ReportFilters>
 
@@ -50,9 +47,9 @@
                             </span>
                             <v-date-picker class="date-range-picker" v-show="selectedRange.tag === 'custom'"
                                            :input-props="{ style: `
-                                                background-color: #0f0e26;
-                                                color: #dddddd;
-                                                padding: 0.7rem;
+                                                background-color: #ffffff;
+                                                color: #3D3B30;
+                                                padding: 0.5rem;
                                                 border-radius: 0.25rem;
                                                 margin: 0.1rem 0;
                                                 width: 200px;
@@ -64,24 +61,13 @@
                                            :value='range'
                                            @input="onDateRangeChanged"/>
 
-                            <div class="btn-group btn-group-lg" role="group" aria-label="">
-                                <div class="btn-group date-shortcut" role="group">
-                                    <button id="date-shortcut" type="button"
-                                            class="btn dropdown-toggle"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                            style="background-color: #dddddd;
-                                                border: 1px solid #ffffff;
-                                                color: #000000;
-                                                padding: 0.45rem;
-                                                border-radius: 0.25rem;
-                                                margin: 0.1rem;
-                                                cursor: pointer;"
-                                    >
-                                        {{ selectedRange.title }}
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="date-shortcut">
+
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ selectedRange.title }}
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li>
                                         <a href="#" class="dropdown-item"
                                            v-for="item in rangeSelections" @click="changeSelectedRange(item)">
                                             {{ item.title }}
@@ -91,9 +77,10 @@
                                            @click="changeSelectedRange({ tag: 'custom', title: 'Custom' })">
                                             Custom
                                         </a>
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul>
                             </div>
+
                         </div>
                     </div>
                 </nav>

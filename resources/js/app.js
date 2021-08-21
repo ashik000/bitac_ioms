@@ -7,7 +7,6 @@ import Vue from 'vue'
 import { BootstrapVue, IconsPlugin, BIcon } from 'bootstrap-vue'
 import router from './routes';
 import {store} from './store/index';
-import Toasted from 'vue-toasted';
 import moment from 'moment'
 
 import App from './pages/App'
@@ -25,7 +24,6 @@ Vue.component('b-icon', BIcon);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(VCalendar);
-// Vue.use(Toasted);
 
 Vue.filter('formatTime', function(value) {
     if (value) {
