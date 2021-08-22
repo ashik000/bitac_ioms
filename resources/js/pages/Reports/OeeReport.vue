@@ -4,8 +4,33 @@
             reportName="OEE Report"
             :showPartition="true"
             @partitionSelected="onPartitionSelect"
-            @rangeSelected="onRangeSelect">
+            @rangeSelected="onRangeSelect"
+            :reportType="reportType"
+        >
         </reports-common-header>
+
+        <report-container>
+            <template v-slot:reportContainer>
+                <div>
+                    <div style="background-color: #343345; width: 100%; padding: 30px;">
+                        <div class="report-page">
+                            <div class="chart-wrapper">
+                                <oee-chart :title="title" :dataset="dataset"/>
+                            </div>
+                        </div>
+                        <div style="margin-top:30px;">
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-size: 18px; color:#dddddd">{{ reportTableTitle }}</span>
+                            </div>
+                            <report-table-by-station :stationId="selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
+                            <report-table-by-product :stationProductId="selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
+                            <report-table-by-shift :stationShiftId="selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>
+                            <report-table-by-operator :stationOperatorId="selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='operator'"></report-table-by-operator>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </report-container>
 
     </div>
 </template>
@@ -23,6 +48,12 @@
 
     export default {
         name: "OeeReport",
+        props: {
+            reportType: {
+                type: String,
+                default: 'station'
+            }
+        },
         components: {
             ReportFilters,
             ReportContainer,
@@ -165,9 +196,15 @@
                     console.log(`Received OEE report data: ${JSON.stringify(response)}`);
                 });
             },
+        },
+        watch: {
+            reportType: function (newReportType, oldReportType) {
+                this.fetchOEEData();
+                console.log(newReportType);
+            }
+        },
+        mounted(){
+            this.fetchOEEData();
         }
-        // mounted(){
-            // this.fetchOEEData();
-        // }
     }
 </script>

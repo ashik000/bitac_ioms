@@ -3,16 +3,16 @@
         <reports-common-header
             reportName="Downtime Report"
             :showPartition="false"
-            @rangeSelected="onRangeSelect"></reports-common-header>
-        <report-container @reportTypeChanged="onReportTypeChange">
+            @rangeSelected="onRangeSelect" :reportType="reportType"></reports-common-header>
+        <report-container>
             <template v-slot:reportContainer>
                 <div>
-                    <report-filters
-                        @stationChanged="onStationChange"
-                        @stationProductSelected="onStationProductSelect"
-                        @stationShiftSelected="onStationShiftSelect"
-                        @stationOperatorSelected="onStationOperatorSelect"
-                        :reportType="selectedReportType"></report-filters>
+<!--                    <report-filters-->
+<!--                        @stationChanged="onStationChange"-->
+<!--                        @stationProductSelected="onStationProductSelect"-->
+<!--                        @stationShiftSelected="onStationShiftSelect"-->
+<!--                        @stationOperatorSelected="onStationOperatorSelect"-->
+<!--                        :reportType="selectedReportType"></report-filters>-->
                     <div style="background-color: #343345; width: 100%; padding: 30px;">
                         <div class="report-page">
                             <div class="chart-wrapper">
@@ -58,6 +58,12 @@
             'report-table-by-product': ReportTableDowntimeByProduct,
             'report-table-by-shift': ReportTableDowntimeByShift,
             'report-table-by-operator': ReportTableDowntimeByOperator,
+        },
+        props: {
+            reportType: {
+                type: String,
+                default: 'station'
+            }
         },
         data: () => ({
             selectedRange: {
@@ -120,6 +126,8 @@
                 this.selectedStationOperatorId = 0;
             },
             onRangeSelect(eventData) {
+                console.log('range selected');
+                console.log(eventData);
                 this.selectedRange.start = eventData.start;
                 this.selectedRange.end = eventData.end;
                 this.fetchDowntimeData();
@@ -167,6 +175,12 @@
                     this.$set(this.downtimeDataset, 'labels', response.dataset.labels);
                     this.$set(this.downtimeDataset, 'downtimes', response.dataset.duration);
                 });
+            }
+        },
+        watch: {
+            reportType: function (newReportType, oldReportType) {
+                this.fetchDowntimeData();
+                console.log(newReportType);
             }
         },
         mounted (){

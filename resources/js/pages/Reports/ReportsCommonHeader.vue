@@ -1,13 +1,10 @@
 <template>
     <span>
         <div class="row">
-            <div class="col-md-3">
-                <ReportSideBar v-on:reportTypeChanged="changeReportType" :reportType="reportType">
-<!--                    <template v-slot:reportContainer>-->
-
-<!--                    </template>-->
-                </ReportSideBar>
-            </div>
+<!--            <div class="col-md-3">-->
+<!--                <ReportSideBar v-on:reportTypeChanged="changeReportType" :reportType="reportType">-->
+<!--                </ReportSideBar>-->
+<!--            </div>-->
             <div class="col-md-9">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light partitionNav">
                     <div class="container-fluid">
@@ -90,29 +87,6 @@
                     </div>
                 </nav>
 
-                <report-container @reportTypeChanged="changeReportType">
-                    <template v-slot:reportContainer>
-                        <div>
-                            <div style="background-color: #343345; width: 100%; padding: 30px;">
-                                <div class="report-page">
-                                    <div class="chart-wrapper">
-                                        <oee-chart :title="title" :dataset="dataset"/>
-                                    </div>
-                                </div>
-                                <div style="margin-top:30px;">
-                                    <div style="margin-bottom: 10px;">
-                                        <span style="font-size: 18px; color:#dddddd">{{ reportTableTitle }}</span>
-                                    </div>
-                                    <report-table-by-station :stationId="selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
-                                    <report-table-by-product :stationProductId="selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
-                                    <report-table-by-shift :stationShiftId="selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>
-                                    <report-table-by-operator :stationOperatorId="selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='operator'"></report-table-by-operator>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-                </report-container>
-
             </div>
         </div>
 
@@ -152,6 +126,10 @@ export default {
         showPartition: {
             type: Boolean,
             default: true
+        },
+        reportType: {
+            type: String,
+            default: 'station'
         }
     },
     data: () => ({
@@ -164,7 +142,7 @@ export default {
             start: moment().startOf('day').toDate(),
             end: moment().endOf('day').toDate()
         },
-        reportType: 'station',
+        // reportType: 'station',
         selectedPartition: 'hourly',
         // selectedRange: {
         //     start: moment().startOf('day').toDate(),
@@ -386,9 +364,9 @@ export default {
             });
         }
     },
-    mounted(){
-        this.fetchOEEData();
-    }
+    // mounted(){
+    //     this.fetchOEEData();
+    // }
 }
 </script>
 
