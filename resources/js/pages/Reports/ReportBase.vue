@@ -42,7 +42,8 @@
         methods : {
             changeReportType(type) {
                 this.reportType = type;
-                this.selectedReportType = type;
+                this.selectedReportType = type;  // quite unnecessary
+                // console.log('test '+type); -> base passes the selected report type
             },
         }
     }

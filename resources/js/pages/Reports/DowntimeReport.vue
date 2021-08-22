@@ -3,16 +3,14 @@
         <reports-common-header
             reportName="Downtime Report"
             :showPartition="false"
-            @rangeSelected="onRangeSelect" :reportType="reportType"></reports-common-header>
+            @rangeSelected="onRangeSelect"
+            :reportType="reportType"
+            :reportName="reportName"
+        ></reports-common-header>
+
         <report-container>
             <template v-slot:reportContainer>
                 <div>
-<!--                    <report-filters-->
-<!--                        @stationChanged="onStationChange"-->
-<!--                        @stationProductSelected="onStationProductSelect"-->
-<!--                        @stationShiftSelected="onStationShiftSelect"-->
-<!--                        @stationOperatorSelected="onStationOperatorSelect"-->
-<!--                        :reportType="selectedReportType"></report-filters>-->
                     <div style="background-color: #343345; width: 100%; padding: 30px;">
                         <div class="report-page">
                             <div class="chart-wrapper">
@@ -63,6 +61,10 @@
             reportType: {
                 type: String,
                 default: 'station'
+            },
+            reportName: {
+                type: String,
+                default: 'downtime'
             }
         },
         data: () => ({
@@ -179,8 +181,9 @@
         },
         watch: {
             reportType: function (newReportType, oldReportType) {
+                this.selectedReportType = newReportType;
                 this.fetchDowntimeData();
-                console.log(newReportType);
+                // console.log(newReportType);
             }
         },
         mounted (){

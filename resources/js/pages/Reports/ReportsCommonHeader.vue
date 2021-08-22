@@ -1,10 +1,7 @@
 <template>
     <span>
         <div class="row">
-<!--            <div class="col-md-3">-->
-<!--                <ReportSideBar v-on:reportTypeChanged="changeReportType" :reportType="reportType">-->
-<!--                </ReportSideBar>-->
-<!--            </div>-->
+
             <div class="col-md-9">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light partitionNav">
                     <div class="container-fluid">
@@ -14,7 +11,8 @@
                             v-on:stationProductSelected="onStationProductSelect"
                             v-on:stationShiftSelected="onStationShiftSelect"
                             v-on:stationOperatorSelected="onStationOperatorSelect"
-                            :reportType="reportType"></ReportFilters>
+                            :reportType="reportType">
+                        </ReportFilters>
 
                         <ul class="partition-picker" v-if="showPartition">
                             <li class="nav-item" :class="{ active: partition === 'hourly' }"
@@ -281,8 +279,8 @@ export default {
         partitionChanged(p){
             this.partition = p;
             this.selectedPartition = p;
-            this.fetchOEEData();
-            // return this.$emit('partitionSelected', p);
+            // this.fetchOEEData();
+            return this.$emit('partitionSelected', p);
         },
         onPartitionSelect(eventData) {
             console.log("parent received partitionSelected event: " + eventData);
@@ -352,7 +350,7 @@ export default {
                 endTime: moment(this.selectedRange.end).format('YYYY-MM-DD'),
                 type: this.selectedPartition
             };
-            console.log(`Fetching OEE report data with ${JSON.stringify(data)} params`);
+            console.log(`Fetching report data with ${JSON.stringify(data)} params`);
             reportService.fetchReports(data, response => {
                 this.title = response.title;
                 this.dataset.labels = response.dataset.labels;
@@ -360,9 +358,11 @@ export default {
                 this.dataset.availability = response.dataset.availability;
                 this.dataset.quality = response.dataset.quality;
                 this.dataset.oee = response.dataset.oee;
-                console.log(`Received OEE report data: ${JSON.stringify(response)}`);
+                console.log(`Received report data X: ${JSON.stringify(response)}`);
             });
         }
+    },
+    watch: {
     },
     // mounted(){
     //     this.fetchOEEData();

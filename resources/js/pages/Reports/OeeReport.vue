@@ -6,6 +6,7 @@
             @partitionSelected="onPartitionSelect"
             @rangeSelected="onRangeSelect"
             :reportType="reportType"
+            :reportName="reportName"
         >
         </reports-common-header>
 
@@ -52,6 +53,10 @@
             reportType: {
                 type: String,
                 default: 'station'
+            },
+            reportName: {
+                type: String,
+                default: 'oee'
             }
         },
         components: {
@@ -134,47 +139,47 @@
                 this.selectedRange.end = eventData.end;
                 this.fetchOEEData();
             },
-        //     onReportTypeChange(eventData) {
-        //         console.log("parent received report type changed event: " + eventData);
-        //         this.selectedReportType = eventData;
-        //         this.fetchOEEData();
-        //     },
-        //     onStationChange(eventData) {
-        //         console.log("parent received station changed event: " + JSON.stringify(eventData));
-        //         this.selectedStationId = Number.parseInt(eventData.stationId);
-        //         this.selectedStation = eventData.station;
-        //         this.selectedStationProductId = null;
-        //         this.selectedStationShiftId = null;
-        //         this.selectedStationOperatorId = null;
-        //         this.fetchOEEData();
-        //     },
-        //     onStationProductSelect(eventData) {
-        //         console.log("parent received station-product change event: " + JSON.stringify(eventData));
-        //         this.selectedStationProductId = Number.parseInt(eventData.stationProductId);
-        //         this.selectedStationProduct = eventData.stationProduct;
-        //         this.selectedStationId = null;
-        //         this.selectedStationShiftId = null;
-        //         this.selectedStationOperatorId = null;
-        //         this.fetchOEEData();
-        //     },
-        //     onStationShiftSelect(eventData) {
-        //         console.log("parent received station-shift change event: " + eventData);
-        //         this.selectedStationShiftId = Number.parseInt(eventData.stationShiftId);
-        //         this.selectedStationShift = eventData.stationShift;
-        //         this.selectedStationId = null;
-        //         this.selectedStationProductId = null;
-        //         this.selectedStationOperatorId = null;
-        //         this.fetchOEEData();
-        //     },
-        //     onStationOperatorSelect(eventData) {
-        //         console.log("parent received station-operator change event: " + eventData);
-        //         this.selectedStationOperatorId = Number.parseInt(eventData.stationOperatorId);
-        //         this.selectedStationOperator = eventData.stationOperator;
-        //         this.selectedStationId = null;
-        //         this.selectedStationProductId = null;
-        //         this.selectedStationShiftId = null;
-        //         this.fetchOEEData();
-        //     },
+            onReportTypeChange(eventData) {
+                console.log("parent received report type changed event: " + eventData);
+                this.selectedReportType = eventData;
+                this.fetchOEEData();
+            },
+            onStationChange(eventData) {
+                console.log("parent received station changed event: " + JSON.stringify(eventData));
+                this.selectedStationId = Number.parseInt(eventData.stationId);
+                this.selectedStation = eventData.station;
+                this.selectedStationProductId = null;
+                this.selectedStationShiftId = null;
+                this.selectedStationOperatorId = null;
+                this.fetchOEEData();
+            },
+            onStationProductSelect(eventData) {
+                console.log("parent received station-product change event: " + JSON.stringify(eventData));
+                this.selectedStationProductId = Number.parseInt(eventData.stationProductId);
+                this.selectedStationProduct = eventData.stationProduct;
+                this.selectedStationId = null;
+                this.selectedStationShiftId = null;
+                this.selectedStationOperatorId = null;
+                this.fetchOEEData();
+            },
+            onStationShiftSelect(eventData) {
+                console.log("parent received station-shift change event: " + eventData);
+                this.selectedStationShiftId = Number.parseInt(eventData.stationShiftId);
+                this.selectedStationShift = eventData.stationShift;
+                this.selectedStationId = null;
+                this.selectedStationProductId = null;
+                this.selectedStationOperatorId = null;
+                this.fetchOEEData();
+            },
+            onStationOperatorSelect(eventData) {
+                console.log("parent received station-operator change event: " + eventData);
+                this.selectedStationOperatorId = Number.parseInt(eventData.stationOperatorId);
+                this.selectedStationOperator = eventData.stationOperator;
+                this.selectedStationId = null;
+                this.selectedStationProductId = null;
+                this.selectedStationShiftId = null;
+                this.fetchOEEData();
+            },
             fetchOEEData() {
                 let data = {
                     stationId: this.selectedStationId,
@@ -199,8 +204,9 @@
         },
         watch: {
             reportType: function (newReportType, oldReportType) {
+                this.selectedReportType = newReportType;
                 this.fetchOEEData();
-                console.log(newReportType);
+                // console.log('new report type '+newReportType);
             }
         },
         mounted(){
