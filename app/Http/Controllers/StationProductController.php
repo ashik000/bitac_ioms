@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Data\Models\StationProduct;
 use Illuminate\Http\Request;
-use Log;
 
 class StationProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -48,7 +47,7 @@ class StationProductController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -60,13 +59,15 @@ class StationProductController extends Controller
         $stationProduct->product_id = $data['product_id'];
         $stationProduct->station_id = $data['station_id'];
         $stationProduct->cycle_time = $data['cycle_time'];
+        $stationProduct->cycle_unit = $data['cycle_unit'];
         $stationProduct->cycle_timeout = $data['cycle_timeout'];
         $stationProduct->units_per_signal = $data['units_per_signal'];
 //        $stationProduct->deleted_at = null;
         $stationProduct->performance_threshold = $data['performance_threshold'];
         $stationProduct->save();
         $stationProducts = StationProduct::where('station_id',$data['station_id'])->get()->load('product');
-        return response()->json($stationProducts,200);    }
+        return response()->json($stationProducts,200);
+    }
 
     /**
      * Display the specified resource.
@@ -106,7 +107,7 @@ class StationProductController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {

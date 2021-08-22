@@ -12,7 +12,12 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light partitionNav">
                     <div class="container-fluid">
 
-                        <ReportFilters :reportType="reportType"></ReportFilters>
+                        <ReportFilters
+                            v-on:stationChanged="onStationChange"
+                            v-on:stationProductSelected="onStationProductSelect"
+                            v-on:stationShiftSelected="onStationShiftSelect"
+                            v-on:stationOperatorSelected="onStationOperatorSelect"
+                            :reportType="reportType"></ReportFilters>
 
                         <ul class="partition-picker" v-if="showPartition">
                             <li class="nav-item" :class="{ active: partition === 'hourly' }"
@@ -322,6 +327,7 @@ export default {
             this.selectedReportType = eventData;
             this.fetchOEEData();
         },
+
         onStationChange(eventData) {
             console.log("parent received station changed event: " + JSON.stringify(eventData));
             this.selectedStationId = Number.parseInt(eventData.stationId);
