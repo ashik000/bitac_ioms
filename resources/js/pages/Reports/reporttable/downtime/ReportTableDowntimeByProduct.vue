@@ -54,6 +54,10 @@
             },
             end: {
                 type: Date
+            },
+            stationId: {
+                type: Number,
+                default: 0
             }
         },
         watch:{
