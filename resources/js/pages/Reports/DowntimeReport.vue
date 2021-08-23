@@ -123,6 +123,7 @@
         },
         methods: {
             clearQueryParams(){
+                this.selectedStationId = 0;
                 this.selectedStationProductId = 0;
                 this.selectedStationShiftId = 0;
                 this.selectedStationOperatorId = 0;

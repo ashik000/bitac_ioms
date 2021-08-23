@@ -11,7 +11,8 @@
                             v-on:stationProductSelected="onStationProductSelect"
                             v-on:stationShiftSelected="onStationShiftSelect"
                             v-on:stationOperatorSelected="onStationOperatorSelect"
-                            :reportType="reportType">
+                            :reportType="reportType"
+                            :reportName="reportName">
                         </ReportFilters>
 
                         <ul class="partition-picker" v-if="showPartition">
@@ -119,7 +120,7 @@ export default {
     props: {
         reportName: {
             type: String,
-            default: 'OEE Report',
+            default: 'oee',
         },
         showPartition: {
             type: Boolean,
@@ -137,6 +138,10 @@ export default {
         },
         partition: 'hourly',
         range: {
+            start: moment().startOf('day').toDate(),
+            end: moment().endOf('day').toDate()
+        },
+        selectedRangeX: {
             start: moment().startOf('day').toDate(),
             end: moment().endOf('day').toDate()
         },
@@ -162,6 +167,10 @@ export default {
             availability: [],
             quality: [],
             oee: [],
+        },
+        downtimeDataset: {
+            labels: [],
+            downtimes: []
         },
         tableData: []
     }),
@@ -311,7 +320,9 @@ export default {
             this.selectedStationProductId = null;
             this.selectedStationShiftId = null;
             this.selectedStationOperatorId = null;
-            this.fetchOEEData();
+            // this.fetchOEEData();
+            console.log('report name '+this.reportName);
+            this.reportName === 'oee' ? this.fetchOEEData() : this.fetchDowntimeData();
         },
         onStationProductSelect(eventData) {
             console.log("parent received station-product change event: " + JSON.stringify(eventData));
@@ -320,7 +331,9 @@ export default {
             this.selectedStationId = null;
             this.selectedStationShiftId = null;
             this.selectedStationOperatorId = null;
-            this.fetchOEEData();
+            // this.fetchOEEData();
+            console.log('report name '+this.reportName);
+            this.reportName === 'oee' ? this.fetchOEEData() : this.fetchDowntimeData();
         },
         onStationShiftSelect(eventData) {
             console.log("parent received station-shift change event: " + eventData);
@@ -329,7 +342,9 @@ export default {
             this.selectedStationId = null;
             this.selectedStationProductId = null;
             this.selectedStationOperatorId = null;
-            this.fetchOEEData();
+            // this.fetchOEEData();
+            console.log('report name '+this.reportName);
+            this.reportName === 'oee' ? this.fetchOEEData() : this.fetchDowntimeData();
         },
         onStationOperatorSelect(eventData) {
             console.log("parent received station-operator change event: " + eventData);
@@ -338,7 +353,9 @@ export default {
             this.selectedStationId = null;
             this.selectedStationProductId = null;
             this.selectedStationShiftId = null;
-            this.fetchOEEData();
+            // this.fetchOEEData();
+            console.log('report name '+this.reportName);
+            this.reportName === 'oee' ? this.fetchOEEData() : this.fetchDowntimeData();
         },
         fetchOEEData() {
             let data = {
@@ -360,9 +377,24 @@ export default {
                 this.dataset.oee = response.dataset.oee;
                 console.log(`Received report data X: ${JSON.stringify(response)}`);
             });
+        },
+
+        fetchDowntimeData() {
+            let data = {
+                stationId: this.selectedStationId == 0 ? null : this.selectedStationId,
+                stationProductId: this.selectedStationProductId == 0 ? null : this.selectedStationProductId,
+                stationShiftId : this.selectedStationShiftId == 0 ? null : this.selectedStationShiftId,
+                stationOperatorId : this.selectedStationOperatorId == 0 ? null : this.selectedStationOperatorId,
+                start: moment(this.selectedRangeX.start).format('YYYY-MM-DD'),
+                endTime: moment(this.selectedRangeX.end).format('YYYY-MM-DD'),
+            };
+
+            reportService.fetchDowntimeData(data, response => {
+                this.title = response.title;
+                this.$set(this.downtimeDataset, 'labels', response.dataset.labels);
+                this.$set(this.downtimeDataset, 'downtimes', response.dataset.duration);
+            });
         }
-    },
-    watch: {
     },
     // mounted(){
     //     this.fetchOEEData();
