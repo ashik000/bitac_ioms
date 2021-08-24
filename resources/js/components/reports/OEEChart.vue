@@ -171,7 +171,7 @@
     .wrap {
         padding: 2rem;
 
-        background: #0f0f0f;
+        background: #ffffff;
 
         .report-title {
             color: #ffffff;

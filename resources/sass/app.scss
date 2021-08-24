@@ -36,6 +36,10 @@ nav > .d-2{
     overflow-y: scroll;
 }
 
+.list-group-item{
+    border: unset;
+}
+
 .list-group-item.active{
     background-color: #007EDA;
 }

@@ -4,7 +4,7 @@
             {{ reportName }}
         </div>
 
-        <ul class="partition-picker list-group list-group-flush">
+        <ul class=" list-group list-group-flush">
             <li class="list-group-item" @click.prevent="reportTypeChanged('station')" :class="{ active: reportType === 'station' }">
                 <a href="#" class="nav-link">
                     Station Wise Report

@@ -1,5 +1,4 @@
 <template>
-    <div>
         <div class="row">
             <div class="col-md-3">
                 <ReportSideBar v-on:reportTypeChanged="changeReportType" :reportType="reportType">
@@ -10,7 +9,6 @@
             </div>
         </div>
 
-    </div>
 </template>
 
 <script>
