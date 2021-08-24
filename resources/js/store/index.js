@@ -10,6 +10,12 @@ export const store = new Vuex.Store({
            refreshToken: null,
            tokenExpiration: null,
            role: null
+       },
+       reportPageFilters: {
+           selectedStationId: null,
+           selectedStationProductId: null,
+           selectedStationShiftId: null,
+           selectedStationOperatorId: null,
        }
    },
    getters: {
@@ -34,11 +40,17 @@ export const store = new Vuex.Store({
            }else{
                window.localStorage.setItem('user_info', JSON.stringify(auth));
            }
+       },
+       UPDATE_STATION_ID(state, stationId) {
+           state.reportPageFilters.selectedStationId = stationId;
        }
    },
    actions: {
        addAuthProperties(context, auth) {
            context.commit('addAuthProperties', auth);
+       },
+       selectedStationId({ commit }, stationId) {
+           commit('UPDATE_STATION_ID', stationId);
        }
    }
 });

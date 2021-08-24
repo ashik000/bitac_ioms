@@ -46,6 +46,7 @@
     import ReportTableOEEByProduct from './reporttable/oee/ReportTableOEEByProduct';
     import ReportTableOEEByShift from './reporttable/oee/ReportTableOEEByShift';
     import ReportTableOEEByOperator from './reporttable/oee/ReportTableOEEByOperator';
+    import { mapState } from 'vuex';
 
     export default {
         name: "OeeReport",
@@ -125,7 +126,10 @@
                         return 'All Operators';
                     }
                 }
-            }
+            },
+            ...mapState({
+                reportPageFilters: 'reportPageFilters'
+            })
         },
         methods: {
             onPartitionSelect(eventData) {

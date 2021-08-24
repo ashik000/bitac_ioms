@@ -321,6 +321,9 @@ export default {
             this.selectedStationShiftId = null;
             this.selectedStationOperatorId = null;
             // this.fetchOEEData();
+
+            this.$store.dispatch('selectedStationId', this.selectedStationId);
+
             console.log('report name '+this.reportName);
             this.reportName === 'oee' ? this.fetchOEEData() : this.fetchDowntimeData();
         },
