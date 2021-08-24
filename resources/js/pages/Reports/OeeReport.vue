@@ -23,7 +23,7 @@
                             <div style="margin-bottom: 10px;">
                                 <span style="font-size: 18px; color:#dddddd">{{ reportTableTitle }}</span>
                             </div>
-                            <report-table-by-station :stationId="selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
+                            <report-table-by-station :stationId="reportPageFilters.selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
                             <report-table-by-product :stationProductId="selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
                             <report-table-by-shift :stationShiftId="selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>
                             <report-table-by-operator :stationOperatorId="selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='operator'"></report-table-by-operator>
@@ -77,7 +77,7 @@
                 end: moment().endOf('day').toDate()
             },
             selectedReportType: 'station',
-            selectedStationId: 0,
+            // selectedStationId: 0,
             selectedStation: null,
             selectedStationProductId: 0,
             selectedStationProduct: null,

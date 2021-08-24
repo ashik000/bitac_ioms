@@ -12,7 +12,7 @@
                     </div>
                     <div class="col-sm-6">
                         <label>Select Station</label>
-                        <select class="form-control" v-model="selectedStationId" @change="stationChanged">
+                        <select class="form-control" v-model="selectedStationId">
                             <option value="0">All</option>
                             <option v-for="station in filteredStations" :value="station.id" :key="station.id">{{ station.name }}</option>
                         </select>
@@ -30,11 +30,20 @@
         name: "ReportFiltersForStationWiseReport",
         data: () => ({
             selectedStationGroupId: 0,
-            selectedStationId: 0,
             StationGroup:[],
             allStations:[],
         }),
         computed: {
+
+            selectedStationId: {
+                get() {
+                    return this.$store.state.reportPageFilters.selectedStationId;
+                },
+                set(stationId) {
+                    this.$store.dispatch('selectedStationId', stationId);
+                }
+            },
+
             filteredStations() {
                 const vm = this;
                 if(vm.selectedStationGroupId == 0){
@@ -50,15 +59,15 @@
             },
         },
         methods: {
-            stationChanged() {
-                if(this.selectedStation){
-                    this.selectedStationGroupId = this.selectedStation.station_group.id;
-                }
-                this.$emit('stationChanged', {
-                    'stationId': this.selectedStationId,
-                    'station': this.selectedStation
-                });
-            },
+            // stationChanged() {
+            //     if(this.selectedStation){
+            //         this.selectedStationGroupId = this.selectedStation.station_group.id;
+            //     }
+            //     this.$emit('stationChanged', {
+            //         'stationId': this.selectedStationId,
+            //         'station': this.selectedStation
+            //     });
+            // },
         },
         mounted() {
             StationService.fetchAllGroups( response => {
