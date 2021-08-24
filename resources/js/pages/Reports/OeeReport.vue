@@ -128,7 +128,7 @@
                 }
             },
             ...mapState({
-                reportPageFilters: 'reportPageFilters'
+                reportPageFilters: 'reportPageFilters',
             })
         },
         methods: {
@@ -148,15 +148,15 @@
                 this.selectedReportType = eventData;
                 this.fetchOEEData();
             },
-            onStationChange(eventData) {
-                console.log("parent received station changed event: " + JSON.stringify(eventData));
-                this.selectedStationId = Number.parseInt(eventData.stationId);
-                this.selectedStation = eventData.station;
-                this.selectedStationProductId = null;
-                this.selectedStationShiftId = null;
-                this.selectedStationOperatorId = null;
-                this.fetchOEEData();
-            },
+            // onStationChange(eventData) {
+            //     console.log("parent received station changed event: " + JSON.stringify(eventData));
+            //     this.selectedStationId = Number.parseInt(eventData.stationId);
+            //     this.selectedStation = eventData.station;
+            //     this.selectedStationProductId = null;
+            //     this.selectedStationShiftId = null;
+            //     this.selectedStationOperatorId = null;
+            //     this.fetchOEEData();
+            // },
             onStationProductSelect(eventData) {
                 console.log("parent received station-product change event: " + JSON.stringify(eventData));
                 this.selectedStationProductId = Number.parseInt(eventData.stationProductId);
@@ -186,7 +186,7 @@
             },
             fetchOEEData() {
                 let data = {
-                    stationId: this.selectedStationId,
+                    stationId: this.reportPageFilters.selectedStationId,
                     stationProductId: this.selectedStationProductId,
                     stationShiftId: this.selectedStationShiftId,
                     stationOperatorId: this.selectedStationOperatorId,
@@ -211,6 +211,12 @@
                 this.selectedReportType = newReportType;
                 this.fetchOEEData();
                 // console.log('new report type '+newReportType);
+            },
+            reportPageFilters: {
+                handler(newFilters, oldFilters) {
+                    this.fetchOEEData();
+                },
+                deep: true
             }
         },
         mounted(){
