@@ -124,7 +124,7 @@
                         yAxes: [{
                             display: true,
                             ticks: {
-                                fontColor: '#ffffff',
+                                fontColor: '#000',
                                 max: 100,
                                 min: 0,
                                 beginAtZero: true,
@@ -136,17 +136,17 @@
                             },
                             gridLines: {
                                 offsetGridLines: true,
-                                color: 'rgba(255, 255, 255, 0.15)'
+                                color: '#A3ACB8'
                             }
                         }],
                         xAxes: [{
                             barPercentage: 0.5,
                             ticks: {
-                                fontColor: '#ffffff',
+                                fontColor: '#000',
                             },
                             gridLines: {
                                 offsetGridLines: true,
-                                color: 'rgba(255, 255, 255, 0.15)'
+                                color: '#A3ACB8'
                             }
                         }],
                     },
@@ -174,7 +174,7 @@
         background: #ffffff;
 
         .report-title {
-            color: #ffffff;
+            color: #000000;
             margin: 1.5rem 1rem;
         }
 

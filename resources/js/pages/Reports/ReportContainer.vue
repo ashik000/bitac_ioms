@@ -1,5 +1,5 @@
 <template>
-    <div class="justify-content-center align-items-center" style="margin-top:20px; display: flex; flex-direction: row; ">
+    <div class="justify-content-center align-items-center ps-4" style="margin-top:20px; display: flex; flex-direction: row; ">
         <div style="width: 100%">
             <div style="background-color:#0F0D26">
                 <slot name="reportContainer"></slot>
