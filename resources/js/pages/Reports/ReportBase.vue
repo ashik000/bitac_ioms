@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid wrapper wrapper-top-4">
-        <div class="row card-wrapper">
+        <div class="row card-wrapper gx-0">
             <div class="section col-md-2 h-100">
                 <ReportSideBar v-on:reportTypeChanged="changeReportType" :reportType="reportType">
                 </ReportSideBar>
@@ -48,7 +48,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>

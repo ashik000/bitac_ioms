@@ -26,6 +26,14 @@ nav > .d-2{
 .wrapper-top-4{
     top: 4em;
 }
+
+.background-light-blue{
+    background-color: #009FFF;
+}
+.background-light-blue.active{
+    background: linear-gradient(90deg, rgba(18,96,190,255) 0%, rgba(18,96,190,255) 41%, rgba(0, 159, 255, 1) 100%);
+}
+
 .card-wrapper{
     position: absolute;
     top: 0;
@@ -302,4 +310,82 @@ table.table-bordered.settings-station-table >thead > tr > th{
 li.active > span:last-child > button:first-child{
     background-color: #D3D3D3;
     color: black;
+}
+
+
+.navbar {
+    background: #222056;
+
+    .nav-item {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+
+        .nav-link {
+            color: #337ab7;
+        }
+
+        &.active {
+            padding-bottom: 0.25rem;
+            border-bottom: 0.10rem solid #dddddd;
+
+            .nav-link {
+                color: #dddddd;
+            }
+        }
+
+        &:hover {
+            .nav-link {
+                color: #999999;
+            }
+        }
+    }
+}
+
+.report-type-picker {
+    color: #337ab7;
+
+    &:hover {
+        color: #999999;
+    }
+
+    &.show {
+        color: #dddddd;
+    }
+}
+
+.partition-picker {
+    @extend .navbar-nav, .flex-grow-1, .justify-content-center;
+}
+
+.date-range-picker-wrap {
+    @extend .d-flex, .flex-row, .justify-content-end, .align-items-center, .w-25;
+
+    .range-picker-label {
+        color: #dddddd;
+        padding: 0.5rem 1rem;
+        margin: 0 0.5rem;
+        white-space: nowrap;
+    }
+
+    .date-range-picker.vc-reset {
+        flex: 1;
+
+        .__date-picker-input {
+        }
+    }
+
+    .date-shortcut {
+        .dropdown-menu {
+            left: auto;
+            right: 0;
+        }
+    }
+}
+
+.partitionNav .nav-item.active a {
+    color: #035FA3!important;
+    font-weight: bold;
+}
+.partitionNav .nav-item.active {
+    border-bottom: 0.2rem solid #007EDA!important;
 }
