@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-sm-4">
                         <label>Select Operator (With station)</label>
-                        <select class="form-control" v-model="selectedStationOperatorId" @change="stationOperatorSelected">
+                        <select class="form-control" v-model="selectedStationOperatorId">
                             <option value="0">All</option>
                             <option v-for="so in filteredStationOperators" :value="so.id" :key="so.id">{{ so.name }}</option>
                         </select>
@@ -39,12 +39,22 @@
         data: () => ({
             selectedStationGroupId: 0,
             selectedStationId: 0,
-            selectedStationOperatorId: 0,
+            // selectedStationOperatorId: 0,
             StationGroup:[],
             allStations:[],
             allStationOperators: []
         }),
         computed: {
+
+            selectedStationOperatorId: {
+                get() {
+                    return this.$store.state.reportPageFilters.selectedStationOperatorId;
+                },
+                set(stationOperatorId) {
+                    this.$store.dispatch('selectedStationOperatorId', stationOperatorId);
+                }
+            },
+
             filteredStations() {
                 let vm = this;
                 if(this.selectedStationGroupId == 0) {
@@ -86,16 +96,16 @@
             stationChanged() {
                 if(this.selectedStation && this.selectedStation.station_group) this.selectedStationGroupId = this.selectedStation.station_group.id;
             },
-            stationOperatorSelected() {
-                if(this.selectedStationOperator){
-                    this.selectedStationId = this.selectedStationOperator.station_id;
-                    this.selectedStationGroupId = this.selectedStationOperator.station_group_id;
-                }
-                this.$emit('stationOperatorSelected', {
-                    'stationOperatorId' : this.selectedStationOperatorId,
-                    'stationOperator': this.selectedStationOperator
-                });
-            },
+            // stationOperatorSelected() {
+            //     if(this.selectedStationOperator){
+            //         this.selectedStationId = this.selectedStationOperator.station_id;
+            //         this.selectedStationGroupId = this.selectedStationOperator.station_group_id;
+            //     }
+            //     this.$emit('stationOperatorSelected', {
+            //         'stationOperatorId' : this.selectedStationOperatorId,
+            //         'stationOperator': this.selectedStationOperator
+            //     });
+            // },
         },
         mounted() {
             StationService.fetchAllGroups( response => {

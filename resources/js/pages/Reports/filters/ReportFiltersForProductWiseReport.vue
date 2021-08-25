@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-sm-3">
                         <label>Select Product (With station)</label>
-                        <select class="form-control" v-model="selectedStationProductId" @change="stationProductSelected">
+                        <select class="form-control" v-model="selectedStationProductId">
                             <option value="0">All</option>
                             <option v-for="sp in filteredStationProducts" :value="sp.id" :key="sp.id">{{ sp.name }}</option>
                         </select>
@@ -48,13 +48,23 @@
             selectedStationGroupId: 0,
             selectedStationId: 0,
             selectedProductGroupId: 0,
-            selectedStationProductId: 0,
+            // selectedStationProductId: 0,
             StationGroup:[],
             allStations:[],
             productGroups:[],
             allStationProducts: []
         }),
         computed: {
+
+            selectedStationProductId: {
+                get() {
+                    return this.$store.state.reportPageFilters.selectedStationProductId;
+                },
+                set(stationProductId) {
+                    this.$store.dispatch('selectedStationProductId', stationProductId);
+                }
+            },
+
             filteredStations() {
                 let vm = this;
                 if(this.selectedStationGroupId == 0) {
@@ -101,17 +111,17 @@
             stationChanged() {
                 if(this.selectedStation && this.selectedStation.station_group) this.selectedStationGroupId = this.selectedStation.station_group.id;
             },
-            stationProductSelected() {
-                if(this.selectedStationProduct){
-                    this.selectedProductGroupId = this.selectedStationProduct.product_group_id;
-                    this.selectedStationId = this.selectedStationProduct.station_id;
-                    this.selectedStationGroupId = this.selectedStationProduct.station_group_id;
-                }
-                this.$emit('stationProductSelected', {
-                    'stationProductId': this.selectedStationProductId,
-                    'stationProduct': this.selectedStationProduct
-                });
-            },
+            // stationProductSelected() {
+            //     if(this.selectedStationProduct){
+            //         this.selectedProductGroupId = this.selectedStationProduct.product_group_id;
+            //         this.selectedStationId = this.selectedStationProduct.station_id;
+            //         this.selectedStationGroupId = this.selectedStationProduct.station_group_id;
+            //     }
+            //     this.$emit('stationProductSelected', {
+            //         'stationProductId': this.selectedStationProductId,
+            //         'stationProduct': this.selectedStationProduct
+            //     });
+            // },
         },
         mounted() {
             StationService.fetchAllGroups( response => {

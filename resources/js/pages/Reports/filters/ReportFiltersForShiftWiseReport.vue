@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-sm-4">
                         <label>Select Shift (With station)</label>
-                        <select class="form-control" v-model="selectedStationShiftId" @change="stationShiftSelected">
+                        <select class="form-control" v-model="selectedStationShiftId">
                             <option value="0">All</option>
                             <option v-for="ss in filteredStationShifts" :value="ss.id" :key="ss.id">{{ ss.name }}</option>
                         </select>
@@ -39,12 +39,22 @@
         data: () => ({
             selectedStationGroupId: 0,
             selectedStationId: 0,
-            selectedStationShiftId: 0,
+            // selectedStationShiftId: 0,
             StationGroup:[],
             allStations:[],
             allStationShifts: []
         }),
         computed: {
+
+            selectedStationShiftId: {
+                get() {
+                    return this.$store.state.reportPageFilters.selectedStationShiftId;
+                },
+                set(stationShiftId) {
+                    this.$store.dispatch('selectedStationShiftId', stationShiftId);
+                }
+            },
+
             filteredStations() {
                 let vm = this;
                 if(this.selectedStationGroupId == 0) {
@@ -86,16 +96,16 @@
             stationChanged() {
                 if(this.selectedStation && this.selectedStation.station_group) this.selectedStationGroupId = this.selectedStation.station_group.id;
             },
-            stationShiftSelected() {
-                if(this.selectedStationShift){
-                    this.selectedStationId = this.selectedStationShift.station_id;
-                    this.selectedStationGroupId = this.selectedStationShift.station_group_id;
-                }
-                this.$emit('stationShiftSelected', {
-                    'stationShiftId': this.selectedStationShiftId,
-                    'stationShift': this.selectedStationShift
-                });
-            },
+            // stationShiftSelected() {
+            //     if(this.selectedStationShift){
+            //         this.selectedStationId = this.selectedStationShift.station_id;
+            //         this.selectedStationGroupId = this.selectedStationShift.station_group_id;
+            //     }
+            //     this.$emit('stationShiftSelected', {
+            //         'stationShiftId': this.selectedStationShiftId,
+            //         'stationShift': this.selectedStationShift
+            //     });
+            // },
         },
         mounted() {
             StationService.fetchAllGroups( response => {
