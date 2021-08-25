@@ -388,3 +388,28 @@ li.active > span:last-child > button:first-child{
 .partitionNav .nav-item.active {
     border-bottom: 0.2rem solid #007EDA!important;
 }
+
+/* report table */
+.reportTable {
+    border: 1px solid black !important;
+    background-color: ivory;
+}
+
+.reportTable thead {
+    background-color: #9bafc3;
+    color: black;
+    border: 1px solid black !important;
+}
+
+.reportTable th, td, tr {
+    border: 1px solid #8ea2b7 !important;
+}
+
+.reportTable tbody {
+    color: black;
+}
+
+.reportTable tr:nth-child(even) {
+    background-color: #f4f4f4;
+    color: black;
+}
