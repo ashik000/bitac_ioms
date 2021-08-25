@@ -22,8 +22,8 @@
             <td>{{ (row.oee * 100).toFixed(2) }} %</td>
         </tr>
         <tr v-else>
-            <td colspan="6" v-if="!stationId" style="text-align: center; color:red;">No Data Found</td>
-            <td colspan="5" v-else style="text-align: center; color:red">No Data Found</td>
+            <td colspan="6" v-if="!stationId">No Data Found</td>
+            <td colspan="5" v-else>No Data Found</td>
         </tr>
         </tbody>
     </table>

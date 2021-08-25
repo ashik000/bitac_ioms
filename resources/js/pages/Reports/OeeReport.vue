@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="h-100">
         <reports-common-header
             reportName="OEE Report"
             :showPartition="true"
@@ -13,15 +13,15 @@
         <report-container>
             <template v-slot:reportContainer>
                 <div>
-                    <div style="background-color: #343345; width: 100%; padding: 30px;">
+                    <div>
                         <div class="report-page">
                             <div class="chart-wrapper">
                                 <oee-chart :title="title" :dataset="dataset"/>
                             </div>
                         </div>
-                        <div style="margin-top:30px;">
-                            <div style="margin-bottom: 10px;">
-                                <span style="font-size: 18px; color:#dddddd">{{ reportTableTitle }}</span>
+                        <div>
+                            <div>
+                                <span>{{ reportTableTitle }}</span>
                             </div>
                             <report-table-by-station :stationId="reportPageFilters.selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
                             <report-table-by-product :stationProductId="selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>

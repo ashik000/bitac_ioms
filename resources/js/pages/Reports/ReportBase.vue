@@ -1,13 +1,15 @@
 <template>
-        <div class="row">
-            <div class="col-md-3">
+    <div class="container-fluid wrapper">
+        <div class="row card-wrapper">
+            <div class="section col-md-3 h-100">
                 <ReportSideBar v-on:reportTypeChanged="changeReportType" :reportType="reportType">
                 </ReportSideBar>
             </div>
-            <div class="col-md-9">
+            <div class="section col-md-9 h-100">
                 <router-view :reportType="reportType"></router-view>
             </div>
         </div>
+    </div>
 
 </template>
 
