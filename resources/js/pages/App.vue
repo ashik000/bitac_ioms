@@ -25,8 +25,8 @@
                             Reports
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/reports/oee-report">OEE</a></li>
-                            <li><a class="dropdown-item" href="/reports/downtime-report">Downtime</a></li>
+                            <li><router-link class="dropdown-item" to="/reports/oee-report">OEE</router-link></li>
+                            <li><router-link class="dropdown-item" to="/reports/downtime-report">Downtime</router-link></li>
                         </ul>
                     </li>
                     <li>

@@ -74,13 +74,9 @@
                 end: moment().endOf('day').toDate()
             },
             selectedReportType: 'station',
-            // selectedStationId: 0,
             selectedStation: null,
-            // selectedStationProductId: 0,
             selectedStationProduct: null,
-            // selectedStationShiftId: 0,
             selectedStationShift: null,
-            // selectedStationOperatorId: 0,
             selectedStationOperator: null,
             title: '',
             downtimeDataset: {
@@ -92,28 +88,28 @@
         computed:{
             reportTableTitle(){
                 if(this.selectedReportType === 'station'){
-                    if(this.selectedStationId){
+                    if(this.reportPageFilters.selectedStationId){
                         if(this.selectedStation) return `Station: ${this.selectedStation.name}`;
                         return '';
                     } else {
                         return 'All Stations';
                     }
                 } else if(this.selectedReportType === 'product'){
-                    if(this.selectedStationProductId){
+                    if(this.reportPageFilters.selectedStationProductId){
                         if(this.selectedStationProduct) return `Station: ${this.selectedStationProduct.station_name} > Product: ${this.selectedStationProduct.product_name}`;
                         return '';
                     } else {
                         return 'All Products';
                     }
                 } else if(this.selectedReportType === 'shift'){
-                    if(this.selectedStationShiftId){
+                    if(this.reportPageFilters.selectedStationShiftId){
                         if(this.selectedStationShift) return `Station: ${this.selectedStationShift.station_name} > Shift: ${this.selectedStationShift.shift_name}`;
                         return '';
                     } else {
                         return 'All Shifts';
                     }
                 } else if(this.selectedReportType === 'operator'){
-                    if(this.selectedStationOperatorId){
+                    if(this.reportPageFilters.selectedStationOperatorId){
                         if(this.selectedStationOperator) return `Station: ${this.selectedStationOperator.station_name} > Operator: ${this.selectedStationOperator.operator_name}`;
                         return '';
                     } else {
@@ -143,30 +139,6 @@
                 this.selectedReportType = eventData;
                 this.fetchDowntimeData();
             },
-            // onStationChange(eventData) {
-            //     this.clearQueryParams();
-            //     this.selectedStationId = Number.parseInt(eventData.stationId);
-            //     this.selectedStation = eventData.station;
-            //     this.fetchDowntimeData();
-            // },
-            // onStationProductSelect(eventData) {
-            //     this.clearQueryParams();
-            //     this.selectedStationProductId = Number.parseInt(eventData.stationProductId);
-            //     this.selectedStationProduct = eventData.stationProduct;
-            //     this.fetchDowntimeData();
-            // },
-            // onStationShiftSelect(eventData) {
-            //     this.clearQueryParams();
-            //     this.selectedStationShiftId = Number.parseInt(eventData.stationShiftId);
-            //     this.selectedStationShift = eventData.stationShift;
-            //     this.fetchDowntimeData();
-            // },
-            // onStationOperatorSelect(eventData) {
-            //     this.clearQueryParams();
-            //     this.selectedStationOperatorId = Number.parseInt(eventData.stationOperatorId);
-            //     this.selectedStationOperator = eventData.stationOperator;
-            //     this.fetchDowntimeData();
-            // },
             fetchDowntimeData() {
                 let data = {
                     stationId: this.reportPageFilters.selectedStationId === 0 ? null : this.reportPageFilters.selectedStationId,
