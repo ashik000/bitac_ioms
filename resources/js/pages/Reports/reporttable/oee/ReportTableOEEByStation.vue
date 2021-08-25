@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="row in tableData" v-if="tableData && tableData.length >0">
+        <tr v-for="row in tableData" v-if="showTable">
             <td v-if="!stationId">{{ row.station_name }}</td>
             <td v-if="!stationId">{{ row.station_group_name }}</td>
             <td v-else>{{ row.time_duration }}</td>
@@ -21,9 +21,9 @@
             <td>{{ (row.performance * 100).toFixed(2) }} %</td>
             <td>{{ (row.oee * 100).toFixed(2) }} %</td>
         </tr>
-        <tr v-else>
-            <td colspan="6" v-if="!stationId">No Data Found</td>
-            <td colspan="5" v-else>No Data Found</td>
+        <tr v-if="!showTable">
+            <td colspan="6" v-if="!stationId" style="text-align: center; color:red;">No Data Found</td>
+            <td colspan="5" v-else style="text-align: center; color:red">No Data Found</td>
         </tr>
         </tbody>
     </table>
@@ -84,6 +84,11 @@
         mounted(){
             const vm = this;
             vm.fetchData();
+        },
+        computed:{
+            showTable(){
+                return this.tableData && this.tableData.length > 0;
+            }
         }
     }
 </script>
