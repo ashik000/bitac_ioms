@@ -72,7 +72,6 @@
         mounted() {
             StationService.fetchAllGroups( response => {
                 this.StationGroup = response;
-
             });
             StationService.fetchAll([], response => {
                 this.allStations = response;

@@ -24,9 +24,9 @@
                                 <span>{{ reportTableTitle }}</span>
                             </div>
                             <report-table-by-station :stationId="reportPageFilters.selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
-                            <report-table-by-product :stationProductId="selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
-                            <report-table-by-shift :stationShiftId="selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>
-                            <report-table-by-operator :stationOperatorId="selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='operator'"></report-table-by-operator>
+                            <report-table-by-product :stationProductId="reportPageFilters.selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
+                            <report-table-by-shift :stationShiftId="reportPageFilters.selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>
+                            <report-table-by-operator :stationOperatorId="reportPageFilters.selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='operator'"></report-table-by-operator>
                         </div>
                     </div>
                 </div>
@@ -79,11 +79,11 @@
             selectedReportType: 'station',
             // selectedStationId: 0,
             selectedStation: null,
-            selectedStationProductId: 0,
+            // selectedStationProductId: 0,
             selectedStationProduct: null,
-            selectedStationShiftId: 0,
+            // selectedStationShiftId: 0,
             selectedStationShift: null,
-            selectedStationOperatorId: 0,
+            // selectedStationOperatorId: 0,
             selectedStationOperator: null,
             title: '',
             dataset: {
@@ -157,39 +157,39 @@
             //     this.selectedStationOperatorId = null;
             //     this.fetchOEEData();
             // },
-            onStationProductSelect(eventData) {
-                console.log("parent received station-product change event: " + JSON.stringify(eventData));
-                this.selectedStationProductId = Number.parseInt(eventData.stationProductId);
-                this.selectedStationProduct = eventData.stationProduct;
-                this.selectedStationId = null;
-                this.selectedStationShiftId = null;
-                this.selectedStationOperatorId = null;
-                this.fetchOEEData();
-            },
-            onStationShiftSelect(eventData) {
-                console.log("parent received station-shift change event: " + eventData);
-                this.selectedStationShiftId = Number.parseInt(eventData.stationShiftId);
-                this.selectedStationShift = eventData.stationShift;
-                this.selectedStationId = null;
-                this.selectedStationProductId = null;
-                this.selectedStationOperatorId = null;
-                this.fetchOEEData();
-            },
-            onStationOperatorSelect(eventData) {
-                console.log("parent received station-operator change event: " + eventData);
-                this.selectedStationOperatorId = Number.parseInt(eventData.stationOperatorId);
-                this.selectedStationOperator = eventData.stationOperator;
-                this.selectedStationId = null;
-                this.selectedStationProductId = null;
-                this.selectedStationShiftId = null;
-                this.fetchOEEData();
-            },
+            // onStationProductSelect(eventData) {
+            //     console.log("parent received station-product change event: " + JSON.stringify(eventData));
+            //     this.selectedStationProductId = Number.parseInt(eventData.stationProductId);
+            //     this.selectedStationProduct = eventData.stationProduct;
+            //     this.selectedStationId = null;
+            //     this.selectedStationShiftId = null;
+            //     this.selectedStationOperatorId = null;
+            //     this.fetchOEEData();
+            // },
+            // onStationShiftSelect(eventData) {
+            //     console.log("parent received station-shift change event: " + eventData);
+            //     this.selectedStationShiftId = Number.parseInt(eventData.stationShiftId);
+            //     this.selectedStationShift = eventData.stationShift;
+            //     this.selectedStationId = null;
+            //     this.selectedStationProductId = null;
+            //     this.selectedStationOperatorId = null;
+            //     this.fetchOEEData();
+            // },
+            // onStationOperatorSelect(eventData) {
+            //     console.log("parent received station-operator change event: " + eventData);
+            //     this.selectedStationOperatorId = Number.parseInt(eventData.stationOperatorId);
+            //     this.selectedStationOperator = eventData.stationOperator;
+            //     this.selectedStationId = null;
+            //     this.selectedStationProductId = null;
+            //     this.selectedStationShiftId = null;
+            //     this.fetchOEEData();
+            // },
             fetchOEEData() {
                 let data = {
                     stationId: this.reportPageFilters.selectedStationId,
-                    stationProductId: this.selectedStationProductId,
-                    stationShiftId: this.selectedStationShiftId,
-                    stationOperatorId: this.selectedStationOperatorId,
+                    stationProductId: this.reportPageFilters.selectedStationProductId,
+                    stationShiftId: this.reportPageFilters.selectedStationShiftId,
+                    stationOperatorId: this.reportPageFilters.selectedStationOperatorId,
                     start: moment(this.selectedRange.start).format('YYYY-MM-DD'),
                     endTime: moment(this.selectedRange.end).format('YYYY-MM-DD'),
                     type: this.selectedPartition

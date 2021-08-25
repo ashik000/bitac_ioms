@@ -21,10 +21,10 @@
                             <div style="margin-bottom: 10px;">
                                 <span style="font-size: 18px; color:#dddddd">{{ reportTableTitle }}</span>
                             </div>
-                            <report-table-by-station :stationId="selectedStationId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='station'"></report-table-by-station>
-                            <report-table-by-product :stationProductId="selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='product'"></report-table-by-product>
-                            <report-table-by-shift :stationShiftId="selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='shift'"></report-table-by-shift>
-                            <report-table-by-operator :stationOperatorId="selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='operator'"></report-table-by-operator>
+                            <report-table-by-station :stationId="reportPageFilters.selectedStationId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='station'"></report-table-by-station>
+                            <report-table-by-product :stationProductId="reportPageFilters.selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='product'"></report-table-by-product>
+                            <report-table-by-shift :stationShiftId="reportPageFilters.selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='shift'"></report-table-by-shift>
+                            <report-table-by-operator :stationOperatorId="reportPageFilters.selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='operator'"></report-table-by-operator>
                         </div>
                     </div>
                 </div>
@@ -44,6 +44,7 @@
     import ReportTableDowntimeByProduct from './reporttable/downtime/ReportTableDowntimeByProduct';
     import ReportTableDowntimeByShift from './reporttable/downtime/ReportTableDowntimeByShift';
     import ReportTableDowntimeByOperator from './reporttable/downtime/ReportTableDowntimeByOperator';
+    import {mapState} from "vuex";
 
     export default {
         name: "DowntimeReport",
@@ -73,13 +74,13 @@
                 end: moment().endOf('day').toDate()
             },
             selectedReportType: 'station',
-            selectedStationId: 0,
+            // selectedStationId: 0,
             selectedStation: null,
-            selectedStationProductId: 0,
+            // selectedStationProductId: 0,
             selectedStationProduct: null,
-            selectedStationShiftId: 0,
+            // selectedStationShiftId: 0,
             selectedStationShift: null,
-            selectedStationOperatorId: 0,
+            // selectedStationOperatorId: 0,
             selectedStationOperator: null,
             title: '',
             downtimeDataset: {
@@ -119,7 +120,10 @@
                         return 'All Operators';
                     }
                 }
-            }
+            },
+            ...mapState({
+                reportPageFilters: 'reportPageFilters',
+            })
         },
         methods: {
             clearQueryParams(){
@@ -139,36 +143,36 @@
                 this.selectedReportType = eventData;
                 this.fetchDowntimeData();
             },
-            onStationChange(eventData) {
-                this.clearQueryParams();
-                this.selectedStationId = Number.parseInt(eventData.stationId);
-                this.selectedStation = eventData.station;
-                this.fetchDowntimeData();
-            },
-            onStationProductSelect(eventData) {
-                this.clearQueryParams();
-                this.selectedStationProductId = Number.parseInt(eventData.stationProductId);
-                this.selectedStationProduct = eventData.stationProduct;
-                this.fetchDowntimeData();
-            },
-            onStationShiftSelect(eventData) {
-                this.clearQueryParams();
-                this.selectedStationShiftId = Number.parseInt(eventData.stationShiftId);
-                this.selectedStationShift = eventData.stationShift;
-                this.fetchDowntimeData();
-            },
-            onStationOperatorSelect(eventData) {
-                this.clearQueryParams();
-                this.selectedStationOperatorId = Number.parseInt(eventData.stationOperatorId);
-                this.selectedStationOperator = eventData.stationOperator;
-                this.fetchDowntimeData();
-            },
+            // onStationChange(eventData) {
+            //     this.clearQueryParams();
+            //     this.selectedStationId = Number.parseInt(eventData.stationId);
+            //     this.selectedStation = eventData.station;
+            //     this.fetchDowntimeData();
+            // },
+            // onStationProductSelect(eventData) {
+            //     this.clearQueryParams();
+            //     this.selectedStationProductId = Number.parseInt(eventData.stationProductId);
+            //     this.selectedStationProduct = eventData.stationProduct;
+            //     this.fetchDowntimeData();
+            // },
+            // onStationShiftSelect(eventData) {
+            //     this.clearQueryParams();
+            //     this.selectedStationShiftId = Number.parseInt(eventData.stationShiftId);
+            //     this.selectedStationShift = eventData.stationShift;
+            //     this.fetchDowntimeData();
+            // },
+            // onStationOperatorSelect(eventData) {
+            //     this.clearQueryParams();
+            //     this.selectedStationOperatorId = Number.parseInt(eventData.stationOperatorId);
+            //     this.selectedStationOperator = eventData.stationOperator;
+            //     this.fetchDowntimeData();
+            // },
             fetchDowntimeData() {
                 let data = {
-                    stationId: this.selectedStationId == 0 ? null : this.selectedStationId,
-                    stationProductId: this.selectedStationProductId == 0 ? null : this.selectedStationProductId,
-                    stationShiftId : this.selectedStationShiftId == 0 ? null : this.selectedStationShiftId,
-                    stationOperatorId : this.selectedStationOperatorId == 0 ? null : this.selectedStationOperatorId,
+                    stationId: this.selectedStationId == 0 ? null : this.reportPageFilters.selectedStationId,
+                    stationProductId: this.selectedStationProductId == 0 ? null : this.reportPageFilters.selectedStationProductId,
+                    stationShiftId : this.selectedStationShiftId == 0 ? null : this.reportPageFilters.selectedStationShiftId,
+                    stationOperatorId : this.selectedStationOperatorId == 0 ? null : this.reportPageFilters.selectedStationOperatorId,
                     start: moment(this.selectedRange.start).format('YYYY-MM-DD'),
                     endTime: moment(this.selectedRange.end).format('YYYY-MM-DD'),
                 };
@@ -185,6 +189,12 @@
                 this.selectedReportType = newReportType;
                 this.fetchDowntimeData();
                 // console.log(newReportType);
+            },
+            reportPageFilters: {
+                handler(newFilters, oldFilters) {
+                    this.fetchOEEData();
+                },
+                deep: true
             }
         },
         mounted (){

@@ -6,13 +6,7 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light partitionNav">
                     <div class="container-fluid">
 
-                        <ReportFilters
-                            v-on:stationChanged="onStationChange"
-                            v-on:stationProductSelected="onStationProductSelect"
-                            v-on:stationShiftSelected="onStationShiftSelect"
-                            v-on:stationOperatorSelected="onStationOperatorSelect"
-                            :reportType="reportType"
-                            :reportName="reportName">
+                        <ReportFilters :reportType="reportType" :reportName="reportName">
                         </ReportFilters>
 
                         <ul class="partition-picker" v-if="showPartition">
@@ -322,7 +316,7 @@ export default {
             this.selectedStationOperatorId = null;
             // this.fetchOEEData();
 
-            this.$store.dispatch('selectedStationId', this.selectedStationId);
+            // this.$store.dispatch('selectedStationId', this.selectedStationId);
 
             console.log('report name '+this.reportName);
             this.reportName === 'oee' ? this.fetchOEEData() : this.fetchDowntimeData();
