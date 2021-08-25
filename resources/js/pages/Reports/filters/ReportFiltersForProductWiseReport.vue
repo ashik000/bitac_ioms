@@ -1,40 +1,36 @@
 <template>
-    <div class="justify-content-center align-items-center" style="display: flex; flex-direction: row; ">
-        <div style="width: 100%!important">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 15px;">
-                <div class="row" style="width: 100%!important;margin-left:0px!important">
-                    <div class="col-sm-3">
-                        <label>Select Station Group</label>
-                        <select class="form-control" v-model="selectedStationGroupId" >
-                            <option value="0">All</option>
-                            <option v-for="stationGroup in StationGroup" :value="stationGroup.id" :key="stationGroup.id">{{ stationGroup.name }}</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-3">
-                        <label>Select Station</label>
-                        <select class="form-control" v-model="selectedStationId" @change="stationChanged">
-                            <option value="0">All</option>
-                            <option v-for="station in filteredStations" :value="station.id" :key="station.id">{{ station.name }}</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-3">
-                        <label>Select Product Group</label>
-                        <select class="form-control" v-model="selectedProductGroupId">
-                            <option value="0">All</option>
-                            <option v-for="productGroup in productGroups" :value="productGroup.id" :key="productGroup.id">{{ productGroup.name }}</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-3">
-                        <label>Select Product (With station)</label>
-                        <select class="form-control" v-model="selectedStationProductId">
-                            <option value="0">All</option>
-                            <option v-for="sp in filteredStationProducts" :value="sp.id" :key="sp.id">{{ sp.name }}</option>
-                        </select>
-                    </div>
-                </div>
-            </nav>
+    <nav class="navbar w-100">
+        <div class="row w-100">
+            <div class="col-sm-3">
+                <label>Select Station Group</label>
+                <select class="form-control" v-model="selectedStationGroupId" >
+                    <option value="0">All</option>
+                    <option v-for="stationGroup in StationGroup" :value="stationGroup.id" :key="stationGroup.id">{{ stationGroup.name }}</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Select Station</label>
+                <select class="form-control" v-model="selectedStationId" @change="stationChanged">
+                    <option value="0">All</option>
+                    <option v-for="station in filteredStations" :value="station.id" :key="station.id">{{ station.name }}</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Select Product Group</label>
+                <select class="form-control" v-model="selectedProductGroupId">
+                    <option value="0">All</option>
+                    <option v-for="productGroup in productGroups" :value="productGroup.id" :key="productGroup.id">{{ productGroup.name }}</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Select Product (With station)</label>
+                <select class="form-control" v-model="selectedStationProductId">
+                    <option value="0">All</option>
+                    <option v-for="sp in filteredStationProducts" :value="sp.id" :key="sp.id">{{ sp.name }}</option>
+                </select>
+            </div>
         </div>
-    </div>
+    </nav>
 </template>
 
 <script>
@@ -140,48 +136,3 @@
         }
     }
 </script>
-
-<style scoped lang="scss">
-    @import "#/app.scss";
-
-    .navbar {
-        background-color: #b3b3b3;
-        .nav-item {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            .nav-link {
-                color: #666666;
-            }
-        }
-    }
-
-    .partition-picker {
-        @extend .navbar-nav, .flex-grow-1, .justify-content-center;
-    }
-
-    .date-range-picker-wrap {
-        @extend .d-flex, .flex-row, .justify-content-end, .align-items-center, .w-25;
-
-        .range-picker-label {
-            color: #dddddd;
-            padding: 0.5rem 1rem;
-            margin: 0 0.5rem;
-            white-space: nowrap;
-        }
-
-        .date-range-picker.vc-reset {
-            flex: 1;
-
-            .__date-picker-input {
-            }
-        }
-
-        .date-shortcut {
-            .dropdown-menu {
-                left: auto;
-                right: 0;
-            }
-        }
-    }
-</style>
-

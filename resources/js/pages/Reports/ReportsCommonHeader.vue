@@ -1,8 +1,8 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light partitionNav">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg partitionNav">
 
-            <ReportFilters :reportType="reportType" :reportName="reportName">
+
+            <ReportFilters :reportType="reportType" :reportName="reportName" class="w-100">
             </ReportFilters>
 
             <ul class="partition-picker" v-if="showPartition">
@@ -73,7 +73,7 @@
                 </div>
 
             </div>
-        </div>
+
     </nav>
 </template>
 
