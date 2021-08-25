@@ -46,7 +46,6 @@
         }),
         props:{
             stationProductId: {
-                type: Number,
                 default: 0
             },
             start: {

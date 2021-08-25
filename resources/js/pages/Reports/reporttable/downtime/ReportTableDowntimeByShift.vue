@@ -43,7 +43,6 @@
         }),
         props:{
             stationShiftId: {
-                type: Number,
                 default: 0
             },
             start: {

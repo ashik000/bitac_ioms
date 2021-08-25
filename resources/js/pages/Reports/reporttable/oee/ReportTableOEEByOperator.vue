@@ -41,7 +41,6 @@
         }),
         props:{
             stationOperatorId: {
-                type: Number,
                 default: 0
             },
             start: {

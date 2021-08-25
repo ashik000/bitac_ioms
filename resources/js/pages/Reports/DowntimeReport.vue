@@ -169,10 +169,10 @@
             // },
             fetchDowntimeData() {
                 let data = {
-                    stationId: this.selectedStationId == 0 ? null : this.reportPageFilters.selectedStationId,
-                    stationProductId: this.selectedStationProductId == 0 ? null : this.reportPageFilters.selectedStationProductId,
-                    stationShiftId : this.selectedStationShiftId == 0 ? null : this.reportPageFilters.selectedStationShiftId,
-                    stationOperatorId : this.selectedStationOperatorId == 0 ? null : this.reportPageFilters.selectedStationOperatorId,
+                    stationId: this.reportPageFilters.selectedStationId === 0 ? null : this.reportPageFilters.selectedStationId,
+                    stationProductId: this.reportPageFilters.selectedStationProductId === 0 ? null : this.reportPageFilters.selectedStationProductId,
+                    stationShiftId : this.reportPageFilters.selectedStationShiftId === 0 ? null : this.reportPageFilters.selectedStationShiftId,
+                    stationOperatorId : this.reportPageFilters.selectedStationOperatorId === 0 ? null : this.reportPageFilters.selectedStationOperatorId,
                     start: moment(this.selectedRange.start).format('YYYY-MM-DD'),
                     endTime: moment(this.selectedRange.end).format('YYYY-MM-DD'),
                 };
@@ -192,7 +192,7 @@
             },
             reportPageFilters: {
                 handler(newFilters, oldFilters) {
-                    this.fetchOEEData();
+                    this.fetchDowntimeData();
                 },
                 deep: true
             }
