@@ -90,19 +90,25 @@
 <style scoped>
     table {
         border: 1px solid black !important;
+        background-color: ivory;
     }
 
     thead {
-        background-color: #0f0f0f;
-        color: white;
+        background-color: #8FA998;
+        color: black;
         border: 1px solid black !important;
     }
 
     th, td, tr {
-        border: 1px solid black !important;
+        border: 1px solid #86A397 !important;
     }
 
     tbody {
-        color: #dddddd
+        color: black;
+    }
+
+    tr:nth-child(even) {
+        background-color: #E4E6C3;
+        color: black;
     }
 </style>
