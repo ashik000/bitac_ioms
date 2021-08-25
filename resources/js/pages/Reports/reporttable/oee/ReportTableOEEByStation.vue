@@ -88,23 +88,3 @@
         }
     }
 </script>
-
-<style scoped>
-    table {
-        border: 1px solid black !important;
-    }
-
-    thead {
-        background-color: #0f0f0f;
-        color: white;
-        border: 1px solid black !important;
-    }
-
-    th, td, tr {
-        border: 1px solid black !important;
-    }
-
-    tbody {
-        color: #dddddd
-    }
-</style>

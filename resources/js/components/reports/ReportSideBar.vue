@@ -1,6 +1,6 @@
 <template>
-    <div class="card h-100">
-        <div class="card-header">
+    <div class="card h-100 text-uppercase">
+        <div class="card-header justify-content-center">
             {{ reportName }}
         </div>
 
