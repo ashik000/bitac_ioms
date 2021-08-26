@@ -11,15 +11,15 @@
         <report-container>
             <template v-slot:reportContainer>
                 <div>
-                    <div style="background-color: #343345; width: 100%; padding: 30px;">
+                    <div>
                         <div class="report-page">
                             <div class="chart-wrapper">
                                 <downtime-chart :title="title" :dataset="downtimeDataset"/>
                             </div>
                         </div>
-                        <div style="margin-top:30px;">
-                            <div style="margin-bottom: 10px;">
-                                <span style="font-size: 18px; color:#dddddd">{{ reportTableTitle }}</span>
+                        <div>
+                            <div>
+                                <span>{{ reportTableTitle }}</span>
                             </div>
                             <report-table-by-station :stationId="reportPageFilters.selectedStationId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='station'"></report-table-by-station>
                             <report-table-by-product :stationProductId="reportPageFilters.selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='product'"></report-table-by-product>
@@ -174,7 +174,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>

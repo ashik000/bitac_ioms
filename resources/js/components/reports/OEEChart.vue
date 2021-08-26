@@ -2,7 +2,7 @@
     <div class="wrap">
         <h2 class="report-title">{{ title }}</h2>
 
-        <div class="chart-container" style="position: relative; height:40vh; width:100%; margin: auto;">
+        <div class="chart-container">
             <canvas height="360" ref="chartElement"/>
         </div>
     </div>
@@ -167,16 +167,3 @@
     }
 </script>
 
-<style scoped lang="scss">
-    .wrap {
-        padding: 2rem;
-
-        background: #ffffff;
-
-        .report-title {
-            color: #000000;
-            margin: 1.5rem 1rem;
-        }
-
-    }
-</style>

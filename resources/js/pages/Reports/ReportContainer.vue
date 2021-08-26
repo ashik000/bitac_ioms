@@ -1,7 +1,7 @@
 <template>
-    <div class="justify-content-center align-items-center ps-4" style="margin-top:20px; display: flex; flex-direction: row; ">
-        <div style="width: 100%">
-            <div style="background-color:#0F0D26">
+    <div class="justify-content-center align-items-center ps-4">
+        <div>
+            <div>
                 <slot name="reportContainer"></slot>
             </div>
         </div>

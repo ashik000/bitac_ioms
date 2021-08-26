@@ -2,7 +2,7 @@
     <div class="wrap">
         <h2 class="report-title">{{ title }}</h2>
 
-        <div class="chart-container" style="position: relative; height:40vh; width:100%">
+        <div class="chart-container" >
             <canvas height="360" ref="downtimeChart"/>
         </div>
     </div>
@@ -109,18 +109,3 @@
         }
     }
 </script>
-
-<style scoped lang="scss">
-
-    .wrap {
-        padding: 2rem;
-        background: #0f0f0f;
-
-        .report-title {
-            color: #ffffff;
-            margin: 1.5rem 1rem;
-        }
-
-    }
-
-</style>
