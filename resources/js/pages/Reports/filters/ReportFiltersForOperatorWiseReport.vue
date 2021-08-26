@@ -44,7 +44,8 @@
 
             selectedStationOperatorId: {
                 get() {
-                    return this.$store.state.reportPageFilters.selectedStationOperatorId;
+                    let selectedStationOperatorIdCheck = this.$store.state.reportPageFilters.selectedStationOperatorId;
+                    return  selectedStationOperatorIdCheck === null ? 0 : selectedStationOperatorIdCheck;
                 },
                 set(stationOperatorId) {
                     this.$store.dispatch('selectedStationOperatorId', stationOperatorId);

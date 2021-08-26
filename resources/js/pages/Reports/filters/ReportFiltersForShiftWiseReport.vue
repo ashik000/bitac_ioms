@@ -44,7 +44,8 @@
 
             selectedStationShiftId: {
                 get() {
-                    return this.$store.state.reportPageFilters.selectedStationShiftId;
+                    let selectedStationShiftIdCheck = this.$store.state.reportPageFilters.selectedStationShiftId;
+                    return  selectedStationShiftIdCheck === null ? 0 : selectedStationShiftIdCheck;
                 },
                 set(stationShiftId) {
                     this.$store.dispatch('selectedStationShiftId', stationShiftId);
