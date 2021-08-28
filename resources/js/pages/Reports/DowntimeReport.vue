@@ -81,7 +81,8 @@
             title: '',
             downtimeDataset: {
                 labels: [],
-                downtimes: []
+                planned: [],
+                unplanned: []
             },
             tableData: []
         }),
@@ -151,8 +152,50 @@
 
                 reportService.fetchDowntimeData(data, response => {
                     this.title = response.title;
-                    this.$set(this.downtimeDataset, 'labels', response.dataset.labels);
-                    this.$set(this.downtimeDataset, 'downtimes', response.dataset.duration);
+                    console.log('fetch downtime data');
+                    // console.log(response.dataset);
+
+                    let x_labels = [];
+                    for (const [key, value] of Object.entries(response.dataset)) {
+                        // console.log(`${key}`);
+                        x_labels.push(`${key}`);
+                    }
+
+                    // console.log(x_labels);
+
+                    let planned = [];
+                    let unplanned = [];
+                    let reasons = [];
+                    for (var key in response.dataset) {
+                        // skip loop if the property is from prototype
+                        if (!response.dataset.hasOwnProperty(key)) continue;
+
+                        var obj = response.dataset[key];
+                        for (var prop in obj) {
+                            // skip loop if the property is from prototype
+                            if (!obj.hasOwnProperty(prop)) continue;
+
+                            // your code
+                            // console.log(prop + " = " + obj[prop]);
+                            if (prop === 'planned_duration') {
+                              planned.push(obj[prop]);
+                            }
+                            if (prop === 'unplanned_duration') {
+                              unplanned.push(obj[prop]);
+                            }
+                            // if (prop === 'reasons') {
+                            //   reasons.push(obj[prop]);
+                            // }
+                        }
+                    }
+
+                    // console.log(planned)
+                    // console.log(unplanned)
+                    // console.log(reasons)
+
+                    this.$set(this.downtimeDataset, 'labels', x_labels);
+                    this.$set(this.downtimeDataset, 'planned', planned);
+                    this.$set(this.downtimeDataset, 'unplanned', unplanned);
                 });
             }
         },

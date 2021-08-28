@@ -54,7 +54,8 @@
 
             selectedStationProductId: {
                 get() {
-                    return this.$store.state.reportPageFilters.selectedStationProductId;
+                    let selectedStationProductIdCheck = this.$store.state.reportPageFilters.selectedStationProductId;
+                    return  selectedStationProductIdCheck === null ? 0 : selectedStationProductIdCheck;
                 },
                 set(stationProductId) {
                     this.$store.dispatch('selectedStationProductId', stationProductId);

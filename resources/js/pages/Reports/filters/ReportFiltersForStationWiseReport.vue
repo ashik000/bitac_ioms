@@ -34,7 +34,8 @@
 
             selectedStationId: {
                 get() {
-                    return this.$store.state.reportPageFilters.selectedStationId;
+                    let selectedStationIdCheck = this.$store.state.reportPageFilters.selectedStationId;
+                    return  selectedStationIdCheck === null ? 0 : selectedStationIdCheck;
                 },
                 set(stationId) {
                     this.$store.dispatch('selectedStationId', stationId);

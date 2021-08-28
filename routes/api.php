@@ -50,6 +50,13 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('report/downtime/by/product',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationProduct']);
     Route::get('report/downtime/by/shift',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationShift']);
     Route::get('report/downtime/by/operator',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationOperator']);
+
+    Route::get('testDowntimeReportByStation','DowntimeReportController@testDowntimeReportByStation');
+    Route::get('testDowntimeReportByStationProduct','DowntimeReportController@testDowntimeReportByStationProduct');
+    Route::get('testDowntimeReportByStationShift','DowntimeReportController@testDowntimeReportByStationShift');
+    Route::get('testDowntimeReportByStationOperator','DowntimeReportController@testDowntimeReportByStationOperator');
+
+    Route::get('gettestDowntimeReport','DowntimeReportController@gettestDowntimeReport');
 });
 
 Route::middleware(['auth:api'])->group(function () {
@@ -57,6 +64,7 @@ Route::middleware(['auth:api'])->group(function () {
 });
 
 Route::post('login', ['uses' => 'Auth\LoginController@login']);
+
 
 
 

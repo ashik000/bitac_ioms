@@ -177,7 +177,7 @@ class ReportController extends Controller
 
     public function getDowntimeReport(Request $request)
     {
-        $downtimeResult = $this->reportRepository->getDowntimeReport($request);
+        $downtimeResult = $this->reportRepository->getDowntimeReportv2($request);
         return response()->json([
             'title' => 'Downtime Report',
             'dataset' => $downtimeResult
