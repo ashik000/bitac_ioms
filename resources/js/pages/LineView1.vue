@@ -1,97 +1,65 @@
 <template>
-    <div class="container-fluid">
-            <header class="row" style="background-color: red;">
-                <div class="col" style="background-color: purple;">
-                    <div class="progress-bars-legend">
+    <div class="line-view-wrap page-wrap">
+        <div class="line-view-content container-fluid">
+            <header class="line-view-header">
+                <production-summary-panel
+                    class="col-12 col-lg-4"
+                    :produced="oeeSummary.summary.produced"
+                    :expected="oeeSummary.summary.expected"
+                    :oee="oeeSummary.summary.oee"
+                    :products="products"></production-summary-panel>
 
-                        <div class="legend-wrap">
-                            <div class="progress-bar-wrap">
-                                <span class="progress-label">{{ `${totalOee}%` }}</span>
-                            </div>
-                            <p>
-                                Station OEE
-                            </p>
-                        </div>
+                <div class="col-12 col-lg-5">
+                    <div class="station-picker-wrap">
+                        <button class="station-picker" @click.prevent="showStationSelectionForm">
+                            <i class="material-icons">
+                                label
+                            </i>
+                            {{ filter.stationName }}
+                        </button>
 
-                        <div class="legend-wrap">
-                            <div class="progress-bar-wrap">
-                                <div class="progress" :style="{ width: `${oeeSummary.summary.availability}%` }" style="background: #03A9F4"></div>
-                                <span class="progress-label">{{ `${oeeSummary.summary.availability.toFixed(2)}%` }}</span>
+                        <div class="date-wrap">
+                            <div class="date-picker">
+                                <i class="material-icons">insert_invitation</i>
+                                <v-date-picker :max-date='new Date()'
+                                               mode='single' v-model='filter.selectedDate'
+                                               :masks="{ input: 'WWW, DD MMMM' }"
+                                               :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent px-2 text-white h5' }"
+                                               @input="changeSelectedDate"/>
                             </div>
-                            <p>
-                                Availability
-                            </p>
-                        </div>
-                        <div class="legend-wrap">
-                            <div class="progress-bar-wrap">
-                                <div class="progress" :style="{ width: `${oeeSummary.summary.performance}%` }" style="background: #8BC34A"></div>
-                                <span class="progress-label">{{ `${oeeSummary.summary.performance.toFixed(2)}%` }}</span>
+
+                            <div class="date-nav">
+                                <button class="btn control-btn" @click="changeSelectedDate('PREV')">
+                                    <i class="material-icons">
+                                        navigate_before
+                                    </i>
+                                </button>
+                                <button class="btn control-btn" @click="changeSelectedDate('NEXT')"
+                                        :disabled="filter.selectedDate >= new Date().setHours(0,0,0,0)">
+                                    <i class="material-icons">
+                                        navigate_next
+                                    </i>
+                                </button>
                             </div>
-                            <p>
-                                Performance
-                            </p>
-                        </div>
-                        <div class="legend-wrap">
-                            <div class="progress-bar-wrap">
-                                <div class="progress" :style="{ width: `${oeeSummary.summary.quality}%` }" style="background: #FF9800"></div>
-                                <span class="progress-label">{{ `${oeeSummary.summary.quality.toFixed(2)}%` }}</span>
-                            </div>
-                            <p>
-                                Quality
-                            </p>
                         </div>
                     </div>
-                </div>
 
-
-                <div class="col" style="background-color: blue;">
-<!--                    <button class="btn control-btn" @click="changeSelectedDate('PREV')">-->
-<!--                        <i class="material-icons">-->
-<!--                            navigate_before-->
-<!--                        </i>-->
-<!--                    </button>-->
-<!--                    <button class="btn control-btn" @click="changeSelectedDate('NEXT')"-->
-<!--                            :disabled="filter.selectedDate >= new Date().setHours(0,0,0,0)">-->
-<!--                        <i class="material-icons">-->
-<!--                            navigate_next-->
-<!--                        </i>-->
-<!--                    </button>-->
                     <oee-summary-panel
                         :hourly-data="oeeSummary.hourly"
-                        :summary-data="oeeSummary.summary">
-                    </oee-summary-panel>
+                        :summary-data="oeeSummary.summary"/>
                 </div>
 
-                <div class="col" style="background-color: green;">
-                    <label for="station-picker">STATION:</label>
-                    <button class="station-picker" @click.prevent="showStationSelectionForm">
-                        {{ filter.stationName }}
-                    </button>
-
-                    <production-summary-panel
-                        :produced="oeeSummary.summary.produced"
-                        :expected="oeeSummary.summary.expected"
-                        :oee="oeeSummary.summary.oee"
-                        :products="products">
-                    </production-summary-panel>
-
-                    <v-date-picker :max-date='new Date()'
-                                   mode='single' v-model='filter.selectedDate'
-                                   :masks="{ input: 'WWW, DD MMMM' }"
-                                   :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent px-2 text-white h5' }"
-                                   @input="changeSelectedDate">
-                    </v-date-picker>
+                <div class="clock-wrap">
+                    <img class="inovace-logo" src="storage/images/inovace-logo.png" alt="Inovace Technologies">
+                    <p class="clock">{{ currentTime }}</p>
                 </div>
             </header>
 
-        <div class="row">
             <line-view-graph
                 class="line-view-graph-wrap mt-4"
                 :linedata="linedata.logs"
-                @downtime-clicked="openDowntimeReasonsSelectionModal">
-            </line-view-graph>
+                @downtime-clicked="openDowntimeReasonsSelectionModal"/>
         </div>
-
         <footer class="line-view-footer">
             <div class="controls container-fluid">
                 <button @click="isOperatorSelectionModalShown = true">
@@ -188,7 +156,7 @@
     import OperatorSelectionModal from "../components/lineview/operatorselection/OperatorSelectionModal";
 
     export default {
-        name: "LineView",
+        name: "LineView1",
         components: {
             OperatorSelectionModal,
             Modal,
@@ -311,12 +279,10 @@
         computed: {
             formattedSelectedDate() {
                 return moment(this.filter.selectedDate).format('dddd, DD MMMM, YYYY');
-            },
-            totalOee(){
-                return isNaN(this.oeeSummary.summary.oee * 100) ? 0 : (this.oeeSummary.summary.oee * 100).toFixed(2);
             }
         },
         mounted() {
+            console.log("got it");
             const vm = this;
             this.$data._clock = () => {
                 vm.currentTime = moment().format('LTS');
@@ -347,3 +313,4 @@
         }
     }
 </script>
+
