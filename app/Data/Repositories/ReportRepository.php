@@ -117,6 +117,97 @@ class ReportRepository
         return $downtimeResult;
     }
 
+    public function getDowntimeReportv2($request)
+    {
+//        $start = CarbonImmutable::parse($request->get('start'));
+        $end = CarbonImmutable::parse($request->get('end'));
+//
+        $start = CarbonImmutable::parse('2019-09-01');
+        $end = CarbonImmutable::parse('2019-09-30');
+
+        $stationId = @$request->get('station_id');
+        $productId = null;
+        $shiftId = null;
+        $operatorId = null;
+
+        $stationOperatorStartTime = null;
+        $stationOperatorEndTime = null;
+        $stationProductId = @$request->get('station_product_id');
+        $stationShiftId = @$request->get('station_shift_id');
+        $stationOperatorId = @$request->get('station_operator_id');
+
+//        $stationProductId = null;
+//        $stationShiftId = null;
+//        $stationOperatorId = null;
+
+        if(!empty($stationProductId)){
+            $stationProduct = StationProduct::find($stationProductId);
+            $productId = $stationProduct->product_id;
+            $stationId = $stationProduct->station_id;
+        }
+        if(!empty($stationShiftId)){
+            $stationShift = StationShift::find($stationShiftId);
+            $stationId = $stationShift->station_id;
+            $shiftId = $stationShift->shift_id;
+        }
+        if(!empty($stationOperatorId)){
+            $stationOperator = StationOperator::find($stationOperatorId);
+            $operatorId = $stationOperator->operator_id;
+            $stationId = $stationOperator->station_id;
+            $stationOperatorStartTime = $stationOperator->start_time;
+            $stationOperatorEndTime = $stationOperator->end_time;
+        }
+
+        $downtimeQuery = Downtime::query();
+        $downtimeQuery->join('production_logs', 'downtimes.production_log_id', '=', 'production_logs.id')
+            ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
+            ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
+            ->leftJoin('downtime_reasons', 'downtimes.reason_id', '=', 'downtime_reasons.id')
+            ->when($stationId, function ($q,$sId) {
+                $q->where( 'production_logs.station_id', '=', $sId);
+            })
+            ->when($productId, function ($q,$pId) {
+                $q->where( 'production_logs.product_id', '=', $pId);
+            })
+            ->when($shiftId,function ($q,$shId){
+                $q->where('downtimes.shift_id',$shId);
+            })
+            ->when($operatorId,function ($q,$opId){
+                $q->where('downtimes.operator_id',$opId);
+            })
+            ->whereBetween('downtimes.start_time', [
+                $start->startOfDay(),
+                $end->endOfDay()
+            ])
+            ->groupBy([DB::raw('DATE(downtimes.start_time)'),'downtime_reasons.type','downtimes.reason_id','downtime_reasons.name'])
+            ->orderBy(DB::raw('DATE(downtimes.start_time)'), 'ASC')
+            ->select([
+                'reason_id',
+                DB::raw('downtime_reasons.name as reason_name'),
+                DB::raw('COUNT(*) as count'),
+                DB::raw('SUM(downtimes.duration) as duration'),
+                DB::raw('DATE(downtimes.start_time) as date'),
+                DB::raw('downtime_reasons.type as reason_type'),
+            ]);
+
+
+        $downtimeResult = $downtimeQuery->get()->reduce(function ($carry, $item) {
+            if(empty($carry[$item->date])) $carry[$item->date] = [
+                'planned_duration' => 0,
+                'unplanned_duration' => 0,
+                'reasons' => []
+            ];
+            $carry[$item->date]['planned_duration'] += $item->reason_type == 'planned' ? $item->duration : 0;
+            $carry[$item->date]['unplanned_duration'] += $item->reason_type == 'unplanned' ? $item->duration : 0;
+            $carry[$item->date]['reasons'][$item->reason_name] = $item->duration;
+            return $carry;
+        }, [
+
+        ]);
+
+        return $downtimeResult;
+    }
+
     public function getHourlyProducedAndScrapedCountOfADay($request)
     {
         $date = CarbonImmutable::parse($request->get('date'));

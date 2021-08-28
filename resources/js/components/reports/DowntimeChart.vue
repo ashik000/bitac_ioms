@@ -33,8 +33,9 @@
                     }
 
                     chart.data.labels = n.labels;
-                    chart.data.datasets[0].data = clone(n.downtimes);
-                    chart.options.scales.yAxes[0].ticks.suggestedMax = this.dataset.downtimes.reduce((max, element) => max > element? max : element, 0);
+                    chart.data.datasets[0].data = clone(n.planned);
+                    chart.data.datasets[1].data = clone(n.unplanned);
+                    // chart.options.scales.yAxes[0].ticks.suggestedMax = this.dataset.downtimes.reduce((max, element) => max > element? max : element, 0);
                     chart.update();
                 },
                 deep: true
@@ -44,18 +45,28 @@
             console.log('Mounted');
             let context = this.$refs.downtimeChart;
 
+            // console.log(this.dataset.x_labels);
+
             const chart = new Chart(context, {
                 type: 'bar',
                 data: {
                     labels: this.dataset.labels,
                     datasets: [
                         {
-                            label: "Downtime",
-                            data: clone(this.dataset.downtimes),
+                            label: "Planned",
+                            data: clone(this.dataset.planned),
                             // pointHoverBackgroundColor: '#9E9E9E',
                             // pointHoverRadius: 6,
                             // borderColor: '#9E9E9E',
-                            backgroundColor: 'rgb(225,0,0)',
+                            backgroundColor: '#0000FF',
+                        },
+                        {
+                          label: "Unplanned",
+                          data: clone(this.dataset.unplanned),
+                          // pointHoverBackgroundColor: '#9E9E9E',
+                          // pointHoverRadius: 6,
+                          // borderColor: '#9E9E9E',
+                          backgroundColor: '#ff0000',
                         }
                     ]
                 },
@@ -63,31 +74,11 @@
                     maintainAspectRatio: false,
                     scales: {
                         yAxes: [{
-                            display: true,
-                            ticks: {
-                                fontColor: '#ffffff',
-                                suggestedMax: this.dataset.downtimes.reduce((max, element) => max > element? max : element, 0),
-                                min: 0,
-                                beginAtZero: true,
-                                stepSize: this.dataset.downtimes.reduce((max, element) => max > element? max : element, 0)/10,
-                                callback: function(value, index, values) {
-                                    return moment.duration(value, "seconds").format("hh[h]:mm[m]:ss[s]");
-                                }
-                            },
-                            gridLines: {
-                                offsetGridLines: true,
-                                color: 'rgba(255, 255, 255, 0.15)'
-                            }
+                          stacked: true,
                         }],
                         xAxes: [{
-                            barPercentage: 0.5,
-                            ticks: {
-                                fontColor: '#ffffff',
-                            },
-                            gridLines: {
-                                offsetGridLines: true,
-                                color: 'rgba(255, 255, 255, 0.15)'
-                            }
+                          stacked: true,
+                          gridLines: { display: false },
                         }],
                     },
                     // legend: {
