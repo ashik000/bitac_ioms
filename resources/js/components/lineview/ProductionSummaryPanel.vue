@@ -1,17 +1,19 @@
 <template>
-    <div>
-<!--        <div class="d-flex justify-content-between">-->
-<!--            <p class="display-4 text-white">{{ produced }} pcs</p>-->
-<!--            <p class="display-4 text-success">{{ totalOee }} %</p>-->
-<!--        </div>-->
-        <ul class="line-product-list">
-            <li class="line-item" v-for="product in products">
-                <span class="product-name">PRODUCING: {{ product.product_name }}</span>
+    <div class="mt-2 mb-2">
+        <ul class="list-unstyled">
+            <li class="mb-2" v-for="product in products">
+                <span class="mb-1" style="font-weight: 500;">PRODUCING: <span style="font-weight: 500; color: green;">{{ product.product_name }}</span></span>
                 <br>
-                <span class="quality">
-                    <span class="produced">PRODUCED: {{ product.produced }}</span>
-                    <span class="scrapped">DEFECT: {{ product.scrapped }}</span>
-                </span>
+                <div class="card mb-1" style="width: 8rem;">
+                  <div class="card-body p-1">
+                    <p style="font-weight: 500;" class="card-text">PRODUCED: <br> <span style="color: green;">{{ product.produced }}</span></p>
+                  </div>
+                </div>
+                <div class="card mb-1" style="width: 8rem;">
+                  <div class="card-body p-1">
+                    <p style="font-weight: 500;" class="card-text">DEFECT: <br> <span style="color: red;">{{ product.scrapped }}</span></p>
+                  </div>
+                </div>
             </li>
         </ul>
     </div>
