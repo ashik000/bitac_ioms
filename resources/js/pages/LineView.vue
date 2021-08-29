@@ -45,17 +45,7 @@
 
 
                 <div class="col" style="background-color: blue;">
-<!--                    <button class="btn control-btn" @click="changeSelectedDate('PREV')">-->
-<!--                        <i class="material-icons">-->
-<!--                            navigate_before-->
-<!--                        </i>-->
-<!--                    </button>-->
-<!--                    <button class="btn control-btn" @click="changeSelectedDate('NEXT')"-->
-<!--                            :disabled="filter.selectedDate >= new Date().setHours(0,0,0,0)">-->
-<!--                        <i class="material-icons">-->
-<!--                            navigate_next-->
-<!--                        </i>-->
-<!--                    </button>-->
+
                     <oee-summary-panel
                         :hourly-data="oeeSummary.hourly"
                         :summary-data="oeeSummary.summary">
@@ -86,13 +76,13 @@
 
         <div class="row">
             <line-view-graph
-                class="line-view-graph-wrap mt-4"
+                class="col"
                 :linedata="linedata.logs"
                 @downtime-clicked="openDowntimeReasonsSelectionModal">
             </line-view-graph>
         </div>
 
-        <footer class="line-view-footer">
+        <footer class="row">
             <div class="controls container-fluid">
                 <button @click="isOperatorSelectionModalShown = true">
                     <i class="icon material-icons">account_circle</i>
