@@ -231,6 +231,11 @@ return [
 
     'oauth_login_endpoint' => env('PASSPORT_LOGIN_ENDPOINT'),
     'oauth_client_id' => env('PASSPORT_CLIENT_ID'),
-    'oauth_client_secret' => env('PASSPORT_CLIENT_SECRET')
+    'oauth_client_secret' => env('PASSPORT_CLIENT_SECRET'),
+
+    'mqtt_broker_url' => env('MQTT_BROKER_URL'),
+    'mqtt_broker_port' => env('MQTT_BROKER_PORT'),
+    'mqtt_broker_username' => env('MQTT_BROKER_USERNAME'),
+    'mqtt_broker_password' => env('MQTT_BROKER_PASSWORD')
 
 ];
