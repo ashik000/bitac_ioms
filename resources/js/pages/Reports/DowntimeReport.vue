@@ -153,11 +153,10 @@
                 reportService.fetchDowntimeData(data, response => {
                     this.title = response.title;
                     console.log('fetch downtime data');
-                    // console.log(response.dataset);
+                    console.log(response.dataset);
 
                     let x_labels = [];
                     for (const [key, value] of Object.entries(response.dataset)) {
-                        // console.log(`${key}`);
                         x_labels.push(`${key}`);
                     }
 
@@ -183,9 +182,9 @@
                             if (prop === 'unplanned_duration') {
                               unplanned.push(obj[prop]);
                             }
-                            // if (prop === 'reasons') {
-                            //   reasons.push(obj[prop]);
-                            // }
+                            if (prop === 'reasons') {
+                              reasons.push(obj[prop]);
+                            }
                         }
                     }
 

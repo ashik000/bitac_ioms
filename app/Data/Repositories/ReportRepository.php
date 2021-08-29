@@ -119,11 +119,8 @@ class ReportRepository
 
     public function getDowntimeReportv2($request)
     {
-//        $start = CarbonImmutable::parse($request->get('start'));
+        $start = CarbonImmutable::parse($request->get('start'));
         $end = CarbonImmutable::parse($request->get('end'));
-//
-        $start = CarbonImmutable::parse('2019-09-01');
-        $end = CarbonImmutable::parse('2019-09-30');
 
         $stationId = @$request->get('station_id');
         $productId = null;
@@ -135,10 +132,6 @@ class ReportRepository
         $stationProductId = @$request->get('station_product_id');
         $stationShiftId = @$request->get('station_shift_id');
         $stationOperatorId = @$request->get('station_operator_id');
-
-//        $stationProductId = null;
-//        $stationShiftId = null;
-//        $stationOperatorId = null;
 
         if(!empty($stationProductId)){
             $stationProduct = StationProduct::find($stationProductId);
@@ -192,14 +185,14 @@ class ReportRepository
 
 
         $downtimeResult = $downtimeQuery->get()->reduce(function ($carry, $item) {
-            if(empty($carry[$item->date])) $carry[$item->date] = [
+            if(empty($carry[date('j M Y', strtotime($item->date))])) $carry[date('j M Y', strtotime($item->date))] = [
                 'planned_duration' => 0,
                 'unplanned_duration' => 0,
                 'reasons' => []
             ];
-            $carry[$item->date]['planned_duration'] += $item->reason_type == 'planned' ? $item->duration : 0;
-            $carry[$item->date]['unplanned_duration'] += $item->reason_type == 'unplanned' ? $item->duration : 0;
-            $carry[$item->date]['reasons'][$item->reason_name] = $item->duration;
+            $carry[date('j M Y', strtotime($item->date))]['planned_duration'] += $item->reason_type == 'planned' ? $item->duration : 0;
+            $carry[date('j M Y', strtotime($item->date))]['unplanned_duration'] += $item->reason_type == 'unplanned' ? $item->duration : 0;
+            $carry[date('j M Y', strtotime($item->date))]['reasons'][$item->reason_name] = $item->duration;
             return $carry;
         }, [
 

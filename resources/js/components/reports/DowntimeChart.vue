@@ -58,15 +58,15 @@
                             // pointHoverBackgroundColor: '#9E9E9E',
                             // pointHoverRadius: 6,
                             // borderColor: '#9E9E9E',
-                            backgroundColor: '#0000FF',
+                            backgroundColor: '#0077d8',
                         },
                         {
-                          label: "Unplanned",
-                          data: clone(this.dataset.unplanned),
-                          // pointHoverBackgroundColor: '#9E9E9E',
-                          // pointHoverRadius: 6,
-                          // borderColor: '#9E9E9E',
-                          backgroundColor: '#ff0000',
+                            label: "Unplanned",
+                            data: clone(this.dataset.unplanned),
+                            // pointHoverBackgroundColor: '#9E9E9E',
+                            // pointHoverRadius: 6,
+                            // borderColor: '#9E9E9E',
+                            backgroundColor: '#db0000',
                         }
                     ]
                 },
@@ -78,17 +78,16 @@
                         }],
                         xAxes: [{
                           stacked: true,
-                          gridLines: { display: false },
                         }],
                     },
-                    // legend: {
-                    //     position: 'bottom',
-                    //     usePointStyle: true
-                    // },
+                    legend: {
+                        position: 'bottom',
+                        usePointStyle: true
+                    },
                     tooltips: {
                         callbacks: {
                             label: (tooltipItem, data) => {
-                                console.log(tooltipItem);
+                                // console.log(tooltipItem);
                                 return tooltipItem.value + " seconds";
                             }
                         }
