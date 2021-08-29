@@ -14,6 +14,7 @@ class DowntimeReportRepository
     public function getDowntimeTableReportByStation($request)
     {
         $stationId = $request->get('stationId');
+
         $start = CarbonImmutable::parse($request->get('start'));
         $end = CarbonImmutable::parse($request->get('end'));
 
