@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Mqtt;
 
 use PhpMqtt\Client\Contracts\Repository;
 use PhpMqtt\Client\Exceptions\DataTransferException;
+use PhpMqtt\Client\Exceptions\PendingPublishConfirmationAlreadyExistsException;
 use PhpMqtt\Client\Exceptions\UnexpectedAcknowledgementException;
 use PhpMqtt\Client\MQTTClient;
 use Psr\Log\LoggerInterface;
@@ -16,6 +17,7 @@ class InovaceMqttClient extends MQTTClient
     private $host;
     private $port;
     private $interrupted;
+    private $currentMessageId;
 
     /**
      * Constructs a new MQTT client which subsequently supports publishing and subscribing.
@@ -41,6 +43,7 @@ class InovaceMqttClient extends MQTTClient
         $this->port = $port;
         $this->logger = $logger;
         $this->repository = $repository;
+        $this->currentMessageId = null;
         parent::__construct(
             $host,
             $port,
@@ -209,5 +212,72 @@ class InovaceMqttClient extends MQTTClient
                 }
             }
         }
+    }
+
+    /**
+     * Handles a received message. The buffer contains the whole message except
+     * command and length. The message structure is:
+     *
+     *   [topic-length:topic:message]+
+     *
+     * @param string $buffer
+     * @param int    $qualityOfServiceLevel
+     * @param bool   $retained
+     * @return void
+     * @throws DataTransferException
+     */
+    protected function handlePublishedMessage(string $buffer, int $qualityOfServiceLevel, bool $retained = false): void
+    {
+        $topicLength = (ord($buffer[0]) << 8) + ord($buffer[1]);
+        $topic       = substr($buffer, 2, $topicLength);
+        $message     = substr($buffer, ($topicLength + 2));
+
+        if ($qualityOfServiceLevel > 0) {
+            if (strlen($message) < 2) {
+                $this->logger->error(sprintf(
+                    'Received a published message with QoS level [%s] from an MQTT broker, but without a message identifier.',
+                    $qualityOfServiceLevel
+                ));
+
+                // This message seems to be incomplete or damaged. We ignore it and wait for a retransmission,
+                // which will occur at some point due to QoS level > 0.
+                return;
+            }
+
+            $messageId = $this->stringToNumber($this->pop($message, 2));
+            $this->currentMessageId = $messageId;
+
+            if ($qualityOfServiceLevel === 2) {
+                try {
+                    $this->sendPublishReceived($messageId);
+                    $this->repository->addNewPendingPublishConfirmation($messageId, $topic, $message);
+                } catch (PendingPublishConfirmationAlreadyExistsException $e) {
+                    // We already received and processed this message, therefore we do not respond
+                    // with a receipt a second time and wait for the release instead.
+                }
+                // We only deliver this published message as soon as we receive a publish complete.
+                return;
+            }
+        }
+
+        $this->deliverPublishedMessage($topic, $message, $qualityOfServiceLevel, $retained);
+    }
+
+    /**
+     * Sends a publish acknowledgement for the given message identifier.
+     *
+     * @param int $messageId
+     * @return void
+     * @throws DataTransferException
+     */
+    public function sendPublishAcknowledgementAfterProcessing(): void
+    {
+        $messageId = $this->currentMessageId;
+        $this->logger->debug('Sending publish acknowledgement to an MQTT broker.', [
+            'broker' => sprintf('%s:%s', $this->host, $this->port),
+            'message_id' => $messageId,
+        ]);
+
+        $this->writeToSocket(chr(0x40) . chr(0x02) . $this->encodeMessageId($messageId));
     }
 }
