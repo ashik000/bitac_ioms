@@ -37,6 +37,8 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::resource('scraps','ScrapController');
     Route::resource('operators','OperatorController');
     Route::get('lineview', ['as' => 'lineview.graphdata', 'uses' => 'LineViewController@lineviewData']);
+    Route::get('topDowntimeReasons', 'LineViewController@topDowntimeReasons');
+    Route::get('topOperatorDowntimeReasons', 'LineViewController@topOperatorDowntimeReasons');
     Route::get('report',['uses'=>'ReportController@index']);
     Route::get('getHourlyProducedAndScrapedCountOfADay',['uses'=>'ReportController@getHourlyProducedAndScrapedCountOfADay']);
     Route::get('getDowntimeSummary',['uses'=>'DowntimeController@getDowntimeSummary']);

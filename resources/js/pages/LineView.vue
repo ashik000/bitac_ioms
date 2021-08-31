@@ -1,111 +1,111 @@
 <template>
     <div class="container-fluid">
-            <header class="row" style="background-color: red;">
-                <div class="col" style="background-color: purple;">
-                    <div class="gauge-container d-flex flex-direction-row">
-                        <div class="gauge">
-                            <template>
-                                <vue-gauge :refid="'oee-gauge'" :options="{'needleValue': this.gaugeTotalOee, 'arcDelimiters':[33, 66], 'arcOverEffect': false, 'arcColors': [ 'red', 'yellow', 'green'] ,'needleColor': 'black'}"></vue-gauge>
-                            </template>
+        <header class="row">
+            <div class="col-md-4" style="background-color: purple;">
+                <div class="gauge-container d-flex flex-direction-row">
+                    <div class="gauge">
+                        <template>
+                            <vue-gauge :refid="'oee-gauge'" :options="{'needleValue': this.gaugeTotalOee, 'arcDelimiters':[33, 66], 'arcOverEffect': false, 'arcColors': [ 'red', 'yellow', 'green'] ,'needleColor': 'black'}"></vue-gauge>
+                        </template>
 
-                            <span>{{ `${gaugeTotalOee}%` }}</span>
-                        </div>
-
-                        <div class="gauge">
-                            <template>
-                                <vue-gauge :refid="'availability-gauge'" :options="{'needleValue': this.oeeSummary.summary.availability.toFixed(2), 'arcDelimiters': [], 'arcOverEffect': false, 'arcColors': [ 'blue'] ,'needleColor': 'black'}"></vue-gauge>
-                            </template>
-
-                            <span>{{ `${oeeSummary.summary.availability.toFixed(2)}%` }}</span>
-                        </div>
-
-                        <div class="gauge">
-                            <template>
-                                <vue-gauge :refid="'performance-gauge'" :options="{'needleValue': this.gaugePerformance, 'arcDelimiters':[], 'arcOverEffect': false, 'arcColors': [ 'green'] ,'needleColor': 'black'}"></vue-gauge>
-                            </template>
-
-                            <span>{{ `${gaugePerformance}%` }}</span>
-                        </div>
-
-                        <div class="gauge">
-                            <template>
-                                <vue-gauge :refid="'oee-gauge'" :options="{'needleValue': this.gaugeQuality, 'arcDelimiters':[], 'arcOverEffect': false, 'arcColors': ['yellow'] ,'needleColor': 'black'}"></vue-gauge>
-                            </template>
-
-                            <span>{{ `${gaugeQuality}%` }}</span>
-                        </div>
-
-                    </div>
-                </div>
-
-
-                <div class="col-md-4" style="background-color: blue;">
-                    <oee-summary-panel
-                        :hourly-data="oeeSummary.hourly"
-                        :summary-data="oeeSummary.summary">
-                    </oee-summary-panel>
-                </div>
-
-                <div class="col-md-4">
-
-                    <div class="row mt-1">
-                        <div class="col-md-2">
-                          icon
-                        </div>
-                        <div class="col-md-10">
-                          <div class="dropdown">
-                            <label for="station-picker" style="font-weight: 500; font-size: 1.2rem;">STATION:</label>
-                            <button class="btn btn-light dropdown-toggle" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false">
-                              {{ filter.stationName }}
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                              <li v-for="station in stations"
-                                  :key="station.id"
-                                  @click.prevent="changeSelectedStation(station)">
-                                <a class="dropdown-item" href="#">{{ station.name }}&nbsp;<i class="material-icons" v-if="station.id === filter.stationId">done</i>
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
+                        <span>{{ `${gaugeTotalOee}%` }}</span>
                     </div>
 
-                  <div class="row my-1">
+                    <div class="gauge">
+                        <template>
+                            <vue-gauge :refid="'availability-gauge'" :options="{'needleValue': this.oeeSummary.summary.availability.toFixed(2), 'arcDelimiters': [], 'arcOverEffect': false, 'arcColors': [ 'blue'] ,'needleColor': 'black'}"></vue-gauge>
+                        </template>
+
+                        <span>{{ `${oeeSummary.summary.availability.toFixed(2)}%` }}</span>
+                    </div>
+
+                    <div class="gauge">
+                        <template>
+                            <vue-gauge :refid="'performance-gauge'" :options="{'needleValue': this.gaugePerformance, 'arcDelimiters':[], 'arcOverEffect': false, 'arcColors': [ 'green'] ,'needleColor': 'black'}"></vue-gauge>
+                        </template>
+
+                        <span>{{ `${gaugePerformance}%` }}</span>
+                    </div>
+
+                    <div class="gauge">
+                        <template>
+                            <vue-gauge :refid="'oee-gauge'" :options="{'needleValue': this.gaugeQuality, 'arcDelimiters':[], 'arcOverEffect': false, 'arcColors': ['yellow'] ,'needleColor': 'black'}"></vue-gauge>
+                        </template>
+
+                        <span>{{ `${gaugeQuality}%` }}</span>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4" style="background-color: blue;">
+                <oee-summary-panel
+                    :hourly-data="oeeSummary.hourly"
+                    :summary-data="oeeSummary.summary">
+                </oee-summary-panel>
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="row mt-1">
                     <div class="col-md-2">
+                      icon
                     </div>
                     <div class="col-md-10">
-                      Operator: John Doe
-                    </div>
-                  </div>
-
-                    <div class="row">
-                      <div class="col-md-6">
-                        <production-summary-panel
-                            :produced="oeeSummary.summary.produced"
-                            :expected="oeeSummary.summary.expected"
-                            :oee="oeeSummary.summary.oee"
-                            :products="products">
-                        </production-summary-panel>
-                      </div>
-
-                      <div class="col-md-6">
-                        <div class="mt-4 card" style="width: 12rem;">
-                          <div class="card-body p-1">
-                            <v-date-picker :max-date='new Date()'
-                                           mode='single' v-model='filter.selectedDate'
-                                           :masks="{ input: 'WWW, DD MMMM' }"
-                                           :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent px-2 h5' }"
-                                           @input="changeSelectedDate">
-                            </v-date-picker>
-                          </div>
-                        </div>
-
+                      <div class="dropdown">
+                        <label for="station-picker" style="font-weight: 500; font-size: 1.2rem;">STATION:</label>
+                        <button class="btn btn-light dropdown-toggle" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false">
+                          {{ filter.stationName }}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <li v-for="station in stations"
+                              :key="station.id"
+                              @click.prevent="changeSelectedStation(station)">
+                            <a class="dropdown-item" href="#">{{ station.name }}&nbsp;<i class="material-icons" v-if="station.id === filter.stationId">done</i>
+                            </a>
+                          </li>
+                        </ul>
                       </div>
                     </div>
-
                 </div>
 
-            </header>
+              <div class="row my-1">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-10">
+                  Operator: John Doe
+                </div>
+              </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <production-summary-panel
+                        :produced="oeeSummary.summary.produced"
+                        :expected="oeeSummary.summary.expected"
+                        :oee="oeeSummary.summary.oee"
+                        :products="products">
+                    </production-summary-panel>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="mt-4 card" style="width: 12rem;">
+                      <div class="card-body p-1">
+                        <v-date-picker :max-date='new Date()'
+                                       mode='single' v-model='filter.selectedDate'
+                                       :masks="{ input: 'WWW, DD MMMM' }"
+                                       :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent px-2 h5' }"
+                                       @input="changeSelectedDate">
+                        </v-date-picker>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+            </div>
+
+        </header>
 
         <div class="row">
             <line-view-graph
@@ -116,8 +116,49 @@
         </div>
 
         <div class="row">
-            top operator downtime
+            <div class="col-md-4">
+                <h5>Top Downtime Reasons (last 7 days)</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Reason Name</th>
+                                <th scope="col">Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="topDowntimeReason in topDowntimeReasons">
+                                <td>{{ topDowntimeReason.reason_name }}</td>
+                                <td>{{ topDowntimeReason.duration }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Top Operator Downtime Reasons (last 7 days)</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Operator Name</th>
+                            <th scope="col">Duration</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="topOperatorDowntimeReason in topOperatorDowntimeReasons">
+                            <td>{{ topOperatorDowntimeReason.operator_name }}</td>
+                            <td>{{ topOperatorDowntimeReason.duration }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
 
         <footer class="row">
             <div class="controls container-fluid">
@@ -214,6 +255,7 @@
     import ScrapInputModel from "../components/lineview/scrapinput/ScrapInputModal";
     import OperatorSelectionModal from "../components/lineview/operatorselection/OperatorSelectionModal";
     import VueGauge from 'vue-gauge';
+    import moment from "moment";
 
     export default {
         name: "LineView",
@@ -267,6 +309,12 @@
             gaugeAvailability: 0,
             gaugePerformance: 0,
             gaugeQuality: 0,
+            range: {
+                start: moment().startOf('week').subtract(7, "days").toDate(),
+                end: moment().endOf('day').subtract(7, "days").toDate()
+            },
+            topDowntimeReasons: null,
+            topOperatorDowntimeReasons: null,
         }),
         methods: {
             showStationSelectionForm(show = false) {
@@ -339,7 +387,29 @@
                         this.isInitialized = true;
                     }
                 );
-            }
+            },
+            fetchTopDowntimeReasons() {
+                LineViewService.fetchTopDowntimeReasons({
+                        start: this.range.start,
+                        end: this.range.end,
+                    },
+                    (data) => {
+                        console.log('topDowntimeReasons');
+                        this.topDowntimeReasons = data;
+                        console.log(this.topDowntimeReasons);
+                    }
+                );
+            },
+            fetchTopOperatorDowntimeReasons() {
+                LineViewService.fetchTopOperatorDowntimeReasons({
+                        start: this.range.start,
+                        end: this.range.end,
+                    },
+                    (data) => {
+                        this.topOperatorDowntimeReasons = data;
+                    }
+                );
+            },
         },
         computed: {
             formattedSelectedDate() {
@@ -375,6 +445,9 @@
             DowntimeReasonsService.fetchAll({}, (data) => {
                 this.$set(this, 'downtimeReasons', data);
             });
+
+            this.fetchTopDowntimeReasons();
+            this.fetchTopOperatorDowntimeReasons();
         },
         destroyed() {
             clearInterval(this.$data._clock);
