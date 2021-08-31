@@ -46,7 +46,6 @@
 
 
                 <div class="col-md-4" style="background-color: blue;">
-
                     <oee-summary-panel
                         :hourly-data="oeeSummary.hourly"
                         :summary-data="oeeSummary.summary">
@@ -120,6 +119,10 @@
                 :linedata="linedata.logs"
                 @downtime-clicked="openDowntimeReasonsSelectionModal">
             </line-view-graph>
+        </div>
+
+        <div class="row">
+            top operator downtime
         </div>
 
         <footer class="row">
