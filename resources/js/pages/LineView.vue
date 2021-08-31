@@ -2,44 +2,39 @@
     <div class="container-fluid">
             <header class="row" style="background-color: red;">
                 <div class="col" style="background-color: purple;">
-                    <div class="progress-bars-legend">
+                    <div class="gauge-container d-flex flex-direction-row">
+                        <div class="gauge">
+                            <template>
+                                <vue-gauge :refid="'oee-gauge'" :options="{'needleValue': this.gaugeTotalOee, 'arcDelimiters':[33, 66], 'arcOverEffect': false, 'arcColors': [ 'red', 'yellow', 'green'] ,'needleColor': 'black'}"></vue-gauge>
+                            </template>
 
-                        <div class="legend-wrap">
-                            <div class="progress-bar-wrap">
-                                <span class="progress-label">{{ `${totalOee}%` }}</span>
-                            </div>
-                            <p>
-                                Station OEE
-                            </p>
+                            <span>{{ `${gaugeTotalOee}%` }}</span>
                         </div>
 
-                        <div class="legend-wrap">
-                            <div class="progress-bar-wrap">
-                                <div class="progress" :style="{ width: `${oeeSummary.summary.availability}%` }" style="background: #03A9F4"></div>
-                                <span class="progress-label">{{ `${oeeSummary.summary.availability.toFixed(2)}%` }}</span>
-                            </div>
-                            <p>
-                                Availability
-                            </p>
+                        <div class="gauge">
+                            <template>
+                                <vue-gauge :refid="'availability-gauge'" :options="{'needleValue': this.oeeSummary.summary.availability.toFixed(2), 'arcDelimiters': [], 'arcOverEffect': false, 'arcColors': [ 'blue'] ,'needleColor': 'black'}"></vue-gauge>
+                            </template>
+
+                            <span>{{ `${oeeSummary.summary.availability.toFixed(2)}%` }}</span>
                         </div>
-                        <div class="legend-wrap">
-                            <div class="progress-bar-wrap">
-                                <div class="progress" :style="{ width: `${oeeSummary.summary.performance}%` }" style="background: #8BC34A"></div>
-                                <span class="progress-label">{{ `${oeeSummary.summary.performance.toFixed(2)}%` }}</span>
-                            </div>
-                            <p>
-                                Performance
-                            </p>
+
+                        <div class="gauge">
+                            <template>
+                                <vue-gauge :refid="'performance-gauge'" :options="{'needleValue': this.gaugePerformance, 'arcDelimiters':[], 'arcOverEffect': false, 'arcColors': [ 'green'] ,'needleColor': 'black'}"></vue-gauge>
+                            </template>
+
+                            <span>{{ `${gaugePerformance}%` }}</span>
                         </div>
-                        <div class="legend-wrap">
-                            <div class="progress-bar-wrap">
-                                <div class="progress" :style="{ width: `${oeeSummary.summary.quality}%` }" style="background: #FF9800"></div>
-                                <span class="progress-label">{{ `${oeeSummary.summary.quality.toFixed(2)}%` }}</span>
-                            </div>
-                            <p>
-                                Quality
-                            </p>
+
+                        <div class="gauge">
+                            <template>
+                                <vue-gauge :refid="'oee-gauge'" :options="{'needleValue': this.gaugeQuality, 'arcDelimiters':[], 'arcOverEffect': false, 'arcColors': ['yellow'] ,'needleColor': 'black'}"></vue-gauge>
+                            </template>
+
+                            <span>{{ `${gaugeQuality}%` }}</span>
                         </div>
+
                     </div>
                 </div>
 
@@ -176,6 +171,7 @@
     import DowntimeSummaryModal from "../components/lineview/downtimesummary/DowntimeSummaryModal";
     import ScrapInputModel from "../components/lineview/scrapinput/ScrapInputModal";
     import OperatorSelectionModal from "../components/lineview/operatorselection/OperatorSelectionModal";
+    import VueGauge from 'vue-gauge';
 
     export default {
         name: "LineView",
@@ -187,6 +183,7 @@
             ProductionSummaryPanel,
             'oee-summary-panel': OEESummaryPanel,
             ScrapInputModel,
+            VueGauge,
         },
         data: () => ({
             currentTime: '',
@@ -223,7 +220,11 @@
             },
             linedata: {
                 logs: [],
-            }
+            },
+            gaugeTotalOee: 0,
+            gaugeAvailability: 0,
+            gaugePerformance: 0,
+            gaugeQuality: 0,
         }),
         methods: {
             showStationSelectionForm(show = false) {
@@ -303,7 +304,9 @@
                 return moment(this.filter.selectedDate).format('dddd, DD MMMM, YYYY');
             },
             totalOee(){
-                return isNaN(this.oeeSummary.summary.oee * 100) ? 0 : (this.oeeSummary.summary.oee * 100).toFixed(2);
+                let oee = isNaN(this.oeeSummary.summary.oee * 100) ? 0 : (this.oeeSummary.summary.oee * 100).toFixed(2);
+                this.gaugeTotalOee = oee;
+                return oee;
             }
         },
         mounted() {

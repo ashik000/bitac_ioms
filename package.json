@@ -43,6 +43,7 @@
     "vue-ctk-date-time-picker": "^2.3.0",
     "vue-multiselect": "^2.1.6",
     "vue-toasted": "^1.1.27",
-    "vuex": "^3.1.2"
+    "vuex": "^3.1.2",
+    "vue-gauge": "^1.0.3"
   }
 }
