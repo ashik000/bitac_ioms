@@ -96,7 +96,7 @@
                       </div>
 
                       <div class="col-md-6">
-                        <div class="card" style="width: 12rem;">
+                        <div class="mt-4 card" style="width: 12rem;">
                           <div class="card-body p-1">
                             <v-date-picker :max-date='new Date()'
                                            mode='single' v-model='filter.selectedDate'
