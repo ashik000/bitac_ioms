@@ -12,6 +12,7 @@ use App\Data\Repositories\ScrapRepository;
 use App\Http\Resources\LineViewGraphResource;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -93,7 +94,15 @@ class LineViewController extends Controller
                 DB::raw('DATE(downtimes.start_time) as date'),
             ]);
 
-        $result = $query->get();
+        $result = $query->take(5)->get();
+
+        foreach ($result as &$row) {
+            $seconds = $row['duration'];
+            $minutes = floor($seconds / 60);
+            $hours = floor($minutes / 60).'hrs '.($minutes - floor($minutes / 60) * 60).'mins';
+            $row['duration'] = $hours;
+        }
+
         return $result;
     }
 
@@ -124,11 +133,16 @@ class LineViewController extends Controller
                 DB::raw('operators.last_name as operator_last_name'),
                 DB::raw('COUNT(*) as count'),
                 DB::raw('SUM(duration) as duration')
-            ])->get();
+            ])->take(5)->get();
         $totalSum = $result->sum('duration');
         foreach ($result as &$row) {
             $row['stop_percent'] = $row['duration'] / $totalSum;
             $row['operator_name'] = $row['operator_first_name'] . ' ' . $row['operator_last_name'];
+//            $row['duration'] = CarbonInterval::seconds($row['duration'])->cascade()->forHumans();
+            $seconds = $row['duration'];
+            $minutes = floor($seconds / 60);
+            $hours = floor($minutes / 60).'hrs '.($minutes - floor($minutes / 60) * 60).'mins';
+            $row['duration'] = $hours;
             unset($row['operator_first_name']);
             unset($row['operator_last_name']);
         }

@@ -1,38 +1,38 @@
 <template>
-    <div>
+    <div class="p-2">
         <div class="chart-wrap">
             <canvas width="100%" height="150px" ref="chartElement"/>
         </div>
 
-        <div class="progress-bars-legend">
-            <div class="legend-wrap">
-                <div class="progress-bar-wrap">
-                    <div class="progress" :style="{ width: `${summaryData.availability}%` }" style="background: #03A9F4"></div>
-                    <span class="progress-label">{{ `${summaryData.availability.toFixed(2)}%` }}</span>
-                </div>
-                <p>
-                    Availability
-                </p>
-            </div>
-            <div class="legend-wrap">
-                <div class="progress-bar-wrap">
-                    <div class="progress" :style="{ width: `${summaryData.performance}%` }" style="background: #8BC34A"></div>
-                    <span class="progress-label">{{ `${summaryData.performance.toFixed(2)}%` }}</span>
-                </div>
-                <p>
-                    Performance
-                </p>
-            </div>
-            <div class="legend-wrap">
-                <div class="progress-bar-wrap">
-                    <div class="progress" :style="{ width: `${summaryData.quality}%` }" style="background: #FF9800"></div>
-                    <span class="progress-label">{{ `${summaryData.quality.toFixed(2)}%` }}</span>
-                </div>
-                <p>
-                    Quality
-                </p>
-            </div>
-        </div>
+<!--        <div class="progress-bars-legend">-->
+<!--            <div class="legend-wrap">-->
+<!--                <div class="progress-bar-wrap">-->
+<!--                    <div class="progress" :style="{ width: `${summaryData.availability}%` }" style="background: #03A9F4"></div>-->
+<!--                    <span class="progress-label">{{ `${summaryData.availability.toFixed(2)}%` }}</span>-->
+<!--                </div>-->
+<!--                <p>-->
+<!--                    Availability-->
+<!--                </p>-->
+<!--            </div>-->
+<!--            <div class="legend-wrap">-->
+<!--                <div class="progress-bar-wrap">-->
+<!--                    <div class="progress" :style="{ width: `${summaryData.performance}%` }" style="background: #8BC34A"></div>-->
+<!--                    <span class="progress-label">{{ `${summaryData.performance.toFixed(2)}%` }}</span>-->
+<!--                </div>-->
+<!--                <p>-->
+<!--                    Performance-->
+<!--                </p>-->
+<!--            </div>-->
+<!--            <div class="legend-wrap">-->
+<!--                <div class="progress-bar-wrap">-->
+<!--                    <div class="progress" :style="{ width: `${summaryData.quality}%` }" style="background: #FF9800"></div>-->
+<!--                    <span class="progress-label">{{ `${summaryData.quality.toFixed(2)}%` }}</span>-->
+<!--                </div>-->
+<!--                <p>-->
+<!--                    Quality-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 </template>
 
@@ -150,7 +150,7 @@
                         yAxes: [{
                             display: true,
                             ticks: {
-                                fontColor: '#ffffff',
+                                fontColor: '#000',
                                 max: 100,
                                 min: 0,
                                 beginAtZero: true,
@@ -161,17 +161,17 @@
                             },
                             gridLines: {
                                 offsetGridLines: true,
-                                color: 'rgba(255, 255, 255, 0.15)'
+                                color: '#000'
                             }
                         }],
                         xAxes: [{
                             barPercentage: 0.5,
                             ticks: {
-                                fontColor: '#ffffff',
+                                fontColor: '#000',
                             },
                             gridLines: {
                                 offsetGridLines: true,
-                                color: 'rgba(255, 255, 255, 0.15)'
+                                color: '#000',
                             }
                         },],
                     },
@@ -211,15 +211,14 @@
 
         .legend-wrap {
             width: 28%;
-            color: #ffffff;
+            color: #000;
             text-align: center;
         }
 
         .progress-bar-wrap {
             position: relative;
             height: 1.25rem;
-
-            background: #9E9E9E;
+            background: #000;
             border-radius: 0.25rem;
 
             .progress {
