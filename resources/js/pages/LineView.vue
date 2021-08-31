@@ -39,34 +39,72 @@
                 </div>
 
 
-                <div class="col" style="background-color: blue;">
-
+                <div class="col-md-4" style="background-color: blue;">
                     <oee-summary-panel
                         :hourly-data="oeeSummary.hourly"
                         :summary-data="oeeSummary.summary">
                     </oee-summary-panel>
                 </div>
 
-                <div class="col" style="background-color: green;">
-                    <label for="station-picker">STATION:</label>
-                    <button class="station-picker" @click.prevent="showStationSelectionForm">
-                        {{ filter.stationName }}
-                    </button>
+                <div class="col-md-4">
 
-                    <production-summary-panel
-                        :produced="oeeSummary.summary.produced"
-                        :expected="oeeSummary.summary.expected"
-                        :oee="oeeSummary.summary.oee"
-                        :products="products">
-                    </production-summary-panel>
+                    <div class="row mt-1">
+                        <div class="col-md-2">
+                          icon
+                        </div>
+                        <div class="col-md-10">
+                          <div class="dropdown">
+                            <label for="station-picker" style="font-weight: 500; font-size: 1.2rem;">STATION:</label>
+                            <button class="btn btn-light dropdown-toggle" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false">
+                              {{ filter.stationName }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                              <li v-for="station in stations"
+                                  :key="station.id"
+                                  @click.prevent="changeSelectedStation(station)">
+                                <a class="dropdown-item" href="#">{{ station.name }}&nbsp;<i class="material-icons" v-if="station.id === filter.stationId">done</i>
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                    </div>
 
-                    <v-date-picker :max-date='new Date()'
-                                   mode='single' v-model='filter.selectedDate'
-                                   :masks="{ input: 'WWW, DD MMMM' }"
-                                   :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent px-2 text-white h5' }"
-                                   @input="changeSelectedDate">
-                    </v-date-picker>
+                  <div class="row my-1">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-10">
+                      Operator: John Doe
+                    </div>
+                  </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <production-summary-panel
+                            :produced="oeeSummary.summary.produced"
+                            :expected="oeeSummary.summary.expected"
+                            :oee="oeeSummary.summary.oee"
+                            :products="products">
+                        </production-summary-panel>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="mt-4 card" style="width: 12rem;">
+                          <div class="card-body p-1">
+                            <v-date-picker :max-date='new Date()'
+                                           mode='single' v-model='filter.selectedDate'
+                                           :masks="{ input: 'WWW, DD MMMM' }"
+                                           :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent px-2 h5' }"
+                                           @input="changeSelectedDate">
+                            </v-date-picker>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
                 </div>
+
             </header>
 
         <div class="row">
@@ -75,6 +113,10 @@
                 :linedata="linedata.logs"
                 @downtime-clicked="openDowntimeReasonsSelectionModal">
             </line-view-graph>
+        </div>
+
+        <div class="row">
+            top operator downtime
         </div>
 
         <footer class="row">
