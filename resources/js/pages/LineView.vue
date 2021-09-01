@@ -136,6 +136,22 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="top_downtime_table_header">
+                        <tr>
+                            <th colspan="2">Top Operator Downtime Reasons (last 7 days)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="topOperatorDowntimeReason in topOperatorDowntimeReasons">
+                            <td>{{ topOperatorDowntimeReason.operator_name }}</td>
+                            <td>{{ topOperatorDowntimeReason.duration }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
 
@@ -144,31 +160,13 @@
                     <line-view-graph
                         class="col"
                         :linedata="linedata.logs"
+                        :stationShiftsData="stationShifts.data"
+                        @stationshift-selected="updateStationShiftId"
                         @downtime-clicked="openDowntimeReasonsSelectionModal">
                     </line-view-graph>
                 </div>
             </div>
 
-        </div>
-
-        <div class="row">
-            <div class="col-md-2">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead class="top_downtime_table_header">
-                            <tr>
-                                <th colspan="2">Top Operator Downtime Reasons (last 7 days)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="topOperatorDowntimeReason in topOperatorDowntimeReasons">
-                                <td>{{ topOperatorDowntimeReason.operator_name }}</td>
-                                <td>{{ topOperatorDowntimeReason.duration }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
 
 
@@ -243,13 +241,15 @@
             v-if="isDowntimeSummaryModalShown"
             @close="downtimeSummaryModalClosed()"
             :stationId="filter.stationId"
-            :date="filter.selectedDate"></downtime-summary-modal>
+            :date="filter.selectedDate">
+        </downtime-summary-modal>
 
         <scrap-input-model
             v-if="isScrapInputModalShown"
            @close="scrapInputModalClosed()"
            :stationId="filter.stationId"
-           :date="filter.selectedDate"></scrap-input-model>
+           :date="filter.selectedDate">
+        </scrap-input-model>
     </div>
 </template>
 
@@ -292,6 +292,7 @@
             selectedDowntime: null,
             filter: {
                 stationId: 1,
+                stationShiftId: null,
                 stationName: '',
                 selectedDate: new Date(),
             },
@@ -327,6 +328,9 @@
             },
             topDowntimeReasons: null,
             topOperatorDowntimeReasons: null,
+            stationShifts: {
+                data: []
+            },
         }),
         methods: {
             showStationSelectionForm(show = false) {
@@ -375,6 +379,11 @@
                     })
                 }
             },
+            updateStationShiftId(selectedStationShiftId) {
+                console.log('selected shift id')
+                console.log(selectedStationShiftId)
+                this.filter.stationShiftId = selectedStationShiftId;
+            },
             assignDowntimeReason(reason) {
                 DowntimeReasonsService.assignDowntime({
                     downtimeId: this.selectedDowntime.id,
@@ -386,6 +395,7 @@
             fetchData() {
                 LineViewService.fetchLineViewData({
                         stationId: this.filter.stationId,
+                        stationShiftId: this.filter.stationShiftId,
                         date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
                     },
                     (data) => {
@@ -399,6 +409,14 @@
                         this.isInitialized = true;
                     }
                 );
+                // this.fetchStationShift();
+            },
+            fetchStationShift() {
+                LineViewService.fetchStationShift({},
+                (data) => {
+                    // console.log('stationshiftdata')
+                    this.$set(this.stationShifts, 'data', data);
+                });
             },
             fetchTopDowntimeReasons() {
                 LineViewService.fetchTopDowntimeReasons({
@@ -406,7 +424,7 @@
                         end: this.range.end,
                     },
                     (data) => {
-                        console.log('topDowntimeReasons');
+                        // console.log('topDowntimeReasons');
                         this.topDowntimeReasons = data;
                         console.log(this.topDowntimeReasons);
                     }
@@ -458,6 +476,7 @@
                 this.$set(this, 'downtimeReasons', data);
             });
 
+            this.fetchStationShift();
             this.fetchTopDowntimeReasons();
             this.fetchTopOperatorDowntimeReasons();
         },

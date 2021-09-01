@@ -9,6 +9,7 @@ use App\Data\Models\SlowProduction;
 use App\Data\Repositories\ProductionLogRepository;
 use App\Data\Repositories\ProductRepository;
 use App\Data\Repositories\ScrapRepository;
+use App\Data\Repositories\ShiftRepository;
 use App\Http\Resources\LineViewGraphResource;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -18,9 +19,10 @@ use Illuminate\Support\Facades\DB;
 
 class LineViewController extends Controller
 {
-    public function lineviewData(Request $request, ProductRepository $productsRepository, ProductionLogRepository $productionLogRepository, ScrapRepository $scrapRepository)
+    public function lineviewData(Request $request, ProductRepository $productsRepository, ShiftRepository $shiftRepository, ProductionLogRepository $productionLogRepository, ScrapRepository $scrapRepository)
     {
         $stationId = $request->input('station_id');
+        $shiftId = $request->input('shift_id');
         $date      = $request->input('date');
 
         $date = Carbon::parse($date)->toImmutable();
@@ -28,12 +30,24 @@ class LineViewController extends Controller
         $products = $productsRepository->findProductsOfStation($stationId);
         $productIdToStationProductsMap = $productsRepository->findAllStationProductsOfAStationKeyByProductId($stationId);
 
+        if (!empty($shiftId) && !empty($stationId))
+        {
+            $shiftDetails = $shiftRepository->fetchShiftDetails($stationId, $shiftId);
+        }
+
+        $start_time = !empty($shiftId) ? $shiftDetails->start_time : $date->startOfDay();
+        $end_time = !empty($shiftId) ? $shiftDetails->end_time : $date->endOfDay();
+
         $productionLogs = $productionLogRepository->fetchProductionLogs([
             'station_id' => $stationId,
-            'between'    => [
-                'start' => $date->startOfDay(),
-                'end'   => $date->endOfDay(),
-            ],
+//            'between'    => [
+//                'start' => $date->startOfDay(),
+//                'end'   => $date->endOfDay(),
+//            ],
+            'between' => [
+                'start' => $start_time,
+                'end' => $end_time
+            ]
         ])->groupBy(function (ProductionLog $log) {
             return Carbon::parse($log->produced_at)->hour;
         });
@@ -41,8 +55,8 @@ class LineViewController extends Controller
         $downtimes = $productionLogRepository->fetchDowntimes([
             'station_id' => $stationId,
             'between'    => [
-                'start' => $date->startOfDay(),
-                'end'   => $date->endOfDay(),
+                'start' => $start_time,
+                'end'   => $end_time,
             ],
         ])->load(['reason.downtimeReasonGroup'])
          ->groupBy(function (Downtime $log) {
@@ -52,37 +66,39 @@ class LineViewController extends Controller
         $slowLogs = $productionLogRepository->fetchSlowLogs([
             'station_id' => $stationId,
             'between'    => [
-                'start' => $date->startOfDay(),
-                'end'   => $date->endOfDay(),
+                'start' => $start_time,
+                'end'   => $end_time,
             ],
         ])->groupBy(function (SlowProduction $log) {
             return Carbon::parse($log->start_time)->hour;
         });
 
         $scraps = $scrapRepository->fetchScrapsOfADate($stationId, $date)->groupBy('hour');
+
         return new LineViewGraphResource($products, $productionLogs, $downtimes, $slowLogs, $scraps, $productIdToStationProductsMap);
+    }
+
+    public function getLineViewStationShifts(ShiftRepository $shiftRepository)
+    {
+        return $shiftRepository->findShiftsOfStation();
     }
 
     public function topDowntimeReasons(Request $request)
     {
-//        $start = CarbonImmutable::parse($request->get('start'));
-//        $end = CarbonImmutable::parse($request->get('end'));
+        $start = CarbonImmutable::parse($request->get('start'));
+        $end = CarbonImmutable::parse($request->get('end'));
 
-        $start = '2019-09-24';
-        $end = '2019-09-30';
+//        $start = '2019-09-24';
+//        $end = '2019-09-30';
 
         $query = Downtime::query();
         $query->join('production_logs', 'downtimes.production_log_id', '=', 'production_logs.id')
             ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
             ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
             ->leftJoin('downtime_reasons', 'downtimes.reason_id', '=', 'downtime_reasons.id')
-//            ->whereBetween('downtimes.start_time', [
-//                $start->startOfDay(),
-//                $end->endOfDay()
-//            ])
             ->whereBetween('downtimes.start_time', [
-                $start,
-                $end
+                $start->startOfDay(),
+                $end->endOfDay()
             ])
             ->groupBy([DB::raw('DATE(downtimes.start_time)'),'downtime_reasons.type','downtimes.reason_id','downtime_reasons.name'])
             ->orderBy(DB::raw('SUM(downtimes.duration)'), 'DESC')
@@ -108,19 +124,18 @@ class LineViewController extends Controller
 
     public function topOperatorDowntimeReasons(Request $request)
     {
-//        $start = CarbonImmutable::parse($request->get('start'));
-//        $end = CarbonImmutable::parse($request->get('end'));
+        $start = CarbonImmutable::parse($request->get('start'));
+        $end = CarbonImmutable::parse($request->get('end'));
 
-        $start = '2019-09-24';
-        $end = '2019-09-30';
+//        $start = '2019-09-24';
+//        $end = '2019-09-30';
 
         $result = Downtime::query()
             ->join('production_logs', 'downtimes.production_log_id', '=', 'production_logs.id')
             ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
             ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
             ->join('operators', 'operators.id', '=', 'downtimes.operator_id')
-//            ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
-            ->whereBetween('downtimes.start_time', [$start, $end])
+            ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
             ->groupBy('operator_id','station_id','station_group_id','stations.name','station_groups.name','operators.first_name','operators.last_name')
             ->orderBy(DB::raw('SUM(downtimes.duration)'), 'DESC')
             ->select([
@@ -138,7 +153,6 @@ class LineViewController extends Controller
         foreach ($result as &$row) {
             $row['stop_percent'] = $row['duration'] / $totalSum;
             $row['operator_name'] = $row['operator_first_name'] . ' ' . $row['operator_last_name'];
-//            $row['duration'] = CarbonInterval::seconds($row['duration'])->cascade()->forHumans();
             $seconds = $row['duration'];
             $minutes = floor($seconds / 60);
             $hours = floor($minutes / 60).'hrs '.($minutes - floor($minutes / 60) * 60).'mins';

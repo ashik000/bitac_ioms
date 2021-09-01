@@ -12,6 +12,15 @@ export default {
             .then(r => success(r.data))
             .catch(e => console.log(e))
     },
+    fetchStationShift: (filter, success, error) => {
+        axios.get('lineviewStationShift', {
+            params: {
+
+            }
+        })
+            .then(r => success(r.data))
+            .catch(e => console.log(e))
+    },
     fetchTopDowntimeReasons: (filter, success, error) => {
         axios.get('topDowntimeReasons', {
             params: {

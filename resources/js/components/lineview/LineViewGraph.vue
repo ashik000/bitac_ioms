@@ -1,29 +1,37 @@
 <template>
     <div class="table-responsive">
-        <button class="btn btn-light" v-on:click="zoomIn()">
+        <button class="btn" v-on:click="zoomIn()" style="background-color: #00b895; color: #fff; outline: none;">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-zoom-in" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
                 <path d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z"/>
                 <path fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5z"/>
             </svg>
         </button>
-        <button class="btn btn-light" v-on:click="zoomOut()">
+        <button class="btn" v-on:click="zoomOut()" style="background-color: #00b895; color: #fff; outline: none;">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-zoom-out" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
                 <path d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z"/>
                 <path fill-rule="evenodd" d="M3 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
             </svg>
         </button>
-        <button class="btn btn-light" v-on:click="panLeft()">
+
+        <button class="btn" v-on:click="panLeft()" style="background-color: #00b895; color: #fff; outline: none;">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
             </svg>
         </button>
-        <button class="btn btn-light" v-on:click="panRight()">
+        <button class="btn" v-on:click="panRight()" style="background-color: #00b895; color: #fff; outline: none;">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
             </svg>
         </button>
+
+        <select class="form-group" name="changeStationShift" id="changeStationShift"
+                v-model="selectedStationShiftId" @click="$emit('stationshift-selected', selectedStationShiftId)"
+                style="float: right">
+            <option v-for="stationShift in stationShiftsData" :value="stationShift.shift_id">{{ stationShift.shift_name }}</option>
+        </select>
+
         <table class="line-view-graph">
             <thead>
             <tr>
@@ -44,6 +52,8 @@
                 <th v-bind:style="{width: headerWidth + '%' }" v-for="i in colspan[zoomIndex]" class="availability-column">{{barLabel(i-1)}}</th>
 
                 <th style="width: 10%">Performance</th>
+
+                <th style="width: 5%">Defect</th>
             </tr>
             </thead>
             <tbody>
@@ -98,6 +108,13 @@
                         <span class="expected">{{ logs.expected }}</span>
                     </div>
                 </td>
+                <td>
+                    <div>
+                        <span class="defect_product">
+                            {{ logs.scrapped }}
+                        </span>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -109,6 +126,9 @@
         name: "LineViewGraph",
         props: {
             linedata: {
+                type: Array
+            },
+            stationShiftsData: {
                 type: Array
             }
         },
@@ -130,7 +150,8 @@
             labelAdders: [0, 30, 15, 10, 5, 1],
             zoomValues : [3600, 1800, 900, 600, 300, 60],
             zoomIndex : 0,
-            pageNo: 0
+            pageNo: 0,
+            selectedStationShiftId: null
         }),
         methods: {
             barColor(item) {
@@ -175,7 +196,7 @@
                 this.applyViewBoxAttributes();
             },
             panLeft() {
-                console.log(this.pageNo);
+                // console.log(this.pageNo);
                 this.pageNo = Math.max(0, this.pageNo-1);
                 this.viewBox.x = Math.max(0, this.viewBox.x-this.zoomValues[this.zoomIndex]);
                 this.applyViewBoxAttributes();
@@ -187,6 +208,16 @@
                 //     topSvg.setAttribute('viewBox', `${this.viewBox.x} ${this.viewBox.y} ${this.viewBox.w} ${this.viewBox.h}`);
                 // }
                 this.viewBoxAttributes = this.viewBox.x + " " + this.viewBox.y + " " + this.viewBox.w + " " + this.viewBox.h;
+            },
+
+            // selectStationShift() {
+            //     this.selectedStationShiftId = ;
+            // }
+        },
+        updated() {
+            if (this.selectedStationShiftId == null)
+            {
+                this.selectedStationShiftId = this.stationShiftsData[0].shift_id;
             }
         }
     }
