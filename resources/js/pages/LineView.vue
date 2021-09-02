@@ -82,7 +82,7 @@
                 <div class="col-md-2">
                 </div>
                 <div class="col-md-10">
-                  Operator: John Doe
+                  Operator: {{ filter.stationOperatorName }}
                 </div>
               </div>
 
@@ -294,6 +294,7 @@
                 stationId: 1,
                 stationShiftId: null,
                 stationName: '',
+                stationOperatorName: 'N/A',
                 selectedDate: new Date(),
             },
             downtimeReasons: [],
@@ -330,8 +331,7 @@
             topOperatorDowntimeReasons: null,
             stationShifts: {
                 data: []
-            },
-            stationOperatorName: ''
+            }
         }),
         methods: {
             showStationSelectionForm(show = false) {
@@ -367,9 +367,21 @@
             changeSelectedStation(station) {
                 this.filter.stationId = station.id;
                 this.filter.stationName = station.name;
+                // this.filter.stationOperatorName = station.station_operator_name;
                 this.isStationSelectionFormShown = false;
 
                 this.fetchData();
+            },
+            fetchOperatorName() {
+                LineViewService.fetchOperatorName({
+                        stationId: this.filter.stationId,
+                        date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
+                    },
+                    (data) => {
+                        // console.log(data.operatorName)
+                        this.filter.stationOperatorName = data.operatorName;
+                    }
+                );
             },
             openDowntimeReasonsSelectionModal(bar) {
                 if (bar.type === 'downtime') {
@@ -381,8 +393,6 @@
                 }
             },
             updateStationShiftId(selectedStationShiftId) {
-                console.log('selected shift id')
-                console.log(selectedStationShiftId)
                 this.filter.stationShiftId = selectedStationShiftId;
                 this.fetchData();
             },
@@ -411,11 +421,13 @@
                         this.isInitialized = true;
                     }
                 );
+
+                this.fetchOperatorName();
+
             },
             fetchStationShift() {
                 LineViewService.fetchStationShift({},
                 (data) => {
-                    // console.log('stationshiftdata')
                     this.$set(this.stationShifts, 'data', data);
                 });
             },
@@ -425,7 +437,6 @@
                         end: this.range.end,
                     },
                     (data) => {
-                        // console.log('topDowntimeReasons');
                         this.topDowntimeReasons = data;
                         console.log(this.topDowntimeReasons);
                     }
@@ -468,6 +479,8 @@
             setInterval(this.$data._updateData, 10000);
 
             StationsService.fetchAll({}, (data) => {
+                console.log('station service fetch all')
+                console.log(data)
                 this.$set(this, 'stations', data);
                 this.filter.stationId = this.stations[0].id;
                 this.filter.stationName = this.stations[0].name;
@@ -478,6 +491,7 @@
             });
 
             this.fetchStationShift();
+
             this.fetchTopDowntimeReasons();
             this.fetchTopOperatorDowntimeReasons();
         },

@@ -213,10 +213,6 @@
                 // }
                 this.viewBoxAttributes = this.viewBox.x + " " + this.viewBox.y + " " + this.viewBox.w + " " + this.viewBox.h;
             },
-
-            // selectStationShift() {
-            //     this.selectedStationShiftId = ;
-            // }
         },
         updated() {
             if (this.selectedStationShiftId == null)

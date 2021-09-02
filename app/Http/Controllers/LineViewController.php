@@ -6,6 +6,8 @@ use App\Data\Models\Downtime;
 use App\Data\Models\ProductionLog;
 use App\Data\Models\Scrap;
 use App\Data\Models\SlowProduction;
+use App\Data\Models\Station;
+use App\Data\Models\StationOperator;
 use App\Data\Models\StationShift;
 use App\Data\Repositories\ProductionLogRepository;
 use App\Data\Repositories\ProductRepository;
@@ -40,9 +42,6 @@ class LineViewController extends Controller
 
         $start_time = isset($shiftDetails[0]->start_time) ? $dateX . ' ' . $shiftDetails[0]->start_time : $date->startOfDay();
         $end_time = isset($shiftDetails[0]->end_time) ? $dateX . ' ' . $shiftDetails[0]->end_time : $date->endOfDay();
-
-//        $start_time = '2019-11-01 08:00:00';
-//        $end_time = '2019-11-01 20:30:00';
 
         $productionLogs = $productionLogRepository->fetchProductionLogs([
             'station_id' => $stationId,
@@ -87,37 +86,6 @@ class LineViewController extends Controller
     public function getLineViewStationShifts(ShiftRepository $shiftRepository)
     {
         return $shiftRepository->findShiftsOfStation();
-    }
-
-    public function getShiftsDetails()
-    {
-        $query = StationShift::query();
-        $query->leftJoin('stations', 'stations.id', '=', 'station_shifts.station_id')
-            ->leftjoin('shifts', 'shifts.id', '=', 'station_shifts.shift_id')
-            ->where([
-                ['station_shifts.station_id', '=', 1],
-                ['station_shifts.shift_id', '=', 1]
-            ])
-            ->select([
-                DB::raw('shifts.id as shift_id'),
-                DB::raw('shifts.name as shift_name'),
-                DB::raw('shifts.start_time'),
-                DB::raw('shifts.end_time'),
-            ]);
-
-        $result = $query->get();
-//        $start_time = $result['start_time'];
-        $date = '2021-09-30';
-        $dateX = Carbon::parse($date)->toImmutable();
-//        $start = $dateX->startOfDay();
-//        $end   = $dateX->endOfDay();
-
-        $start_time = isset($result[0]->start_time) ? $date . ' ' . $result[0]->start_time : $dateX->startOfDay();
-//        $end_time = isset($shiftDetails[0]->end_time) ? $dateX . ' ' . $shiftDetails[0]->end_time : $dateX->endOfDay();
-
-        $end_time = $dateX->endOfDay();
-
-        return $start_time . ' ## ' . $end_time;
     }
 
     public function topDowntimeReasons(Request $request)
@@ -198,5 +166,40 @@ class LineViewController extends Controller
             unset($row['operator_last_name']);
         }
         return $result;
+    }
+
+    public function getOperatorName(Request $request)
+    {
+        $stationId = $request->get('stationId');
+//        $stationId = 1;
+
+        $date      = $request->get('date');
+
+//        $date = '2019-11-01';
+        $checDate = Carbon::parse($date)->format('Y-m-d H:i:s');
+
+        $result = StationOperator::query()
+            ->leftJoin('stations', 'stations.id', '=', 'station_operators.station_id')
+            ->leftJoin('operators', 'operators.id', '=', 'station_operators.operator_id')
+            ->where([
+                ['station_operators.station_id', '=', $stationId],
+                ['station_operators.start_time', '<=', $checDate],
+                ['station_operators.end_time', '>=', $checDate]
+            ])
+            ->select([
+                DB::raw('operators.first_name as first_name'),
+                DB::raw('operators.last_name as last_name'),
+            ])->distinct()->get();
+
+        if (count($result) > 0)
+        {
+            return [
+                'operatorName' => $result[0]->first_name . ' ' . $result[0]->last_name
+            ];
+        }
+        else
+        {
+            return ['operatorName' => 'N/A'];
+        }
     }
 }

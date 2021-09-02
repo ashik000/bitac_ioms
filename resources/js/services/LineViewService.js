@@ -41,5 +41,15 @@ export default {
         })
             .then(r => success(r.data))
             .catch(e => console.log(e))
-    }
+    },
+    fetchOperatorName: (filter, success, error) => {
+        axios.get('getOperatorName', {
+            params: {
+                stationId: filter.stationId,
+                date: filter.date
+            }
+        })
+            .then(r => success(r.data))
+            .catch(e => console.log(e))
+    },
 }
