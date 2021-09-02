@@ -27,7 +27,7 @@
         </button>
 
         <select class="form-group" name="changeStationShift" id="changeStationShift"
-                v-model="selectedStationShiftId" @click="$emit('stationshift-selected', selectedStationShiftId)"
+                v-model="selectedStationShiftId" @change="onSelectChange($event)"
                 style="float: right">
             <option v-for="stationShift in stationShiftsData" :value="stationShift.shift_id">{{ stationShift.shift_name }}</option>
         </select>
@@ -154,6 +154,10 @@
             selectedStationShiftId: null
         }),
         methods: {
+            onSelectChange(event) {
+                this.selectedStationShiftId = event.target.value;
+                this.$emit('stationshift-selected', this.selectedStationShiftId);
+            },
             barColor(item) {
                 if(item.type === 'log') return '#2dc630';
                 if(item.type === 'slow') return '#d8d213';

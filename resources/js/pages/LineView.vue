@@ -331,6 +331,7 @@
             stationShifts: {
                 data: []
             },
+            stationOperatorName: ''
         }),
         methods: {
             showStationSelectionForm(show = false) {
@@ -383,6 +384,7 @@
                 console.log('selected shift id')
                 console.log(selectedStationShiftId)
                 this.filter.stationShiftId = selectedStationShiftId;
+                this.fetchData();
             },
             assignDowntimeReason(reason) {
                 DowntimeReasonsService.assignDowntime({
@@ -409,7 +411,6 @@
                         this.isInitialized = true;
                     }
                 );
-                // this.fetchStationShift();
             },
             fetchStationShift() {
                 LineViewService.fetchStationShift({},

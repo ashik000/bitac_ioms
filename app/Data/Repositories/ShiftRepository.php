@@ -21,7 +21,7 @@ class ShiftRepository implements PaginatedResultInterface, RawQueryBuilderOutput
     {
         $query = StationShift::query();
         $query
-            ->leftjoin('shifts', 'shifts.id', '=', 'station_shifts.shift_id')
+            ->join('shifts', 'shifts.id', '=', 'station_shifts.shift_id')
             ->leftJoin('stations', 'stations.id', '=', 'station_shifts.station_id')
             ->select([
                 DB::raw('shifts.id as shift_id'),
@@ -30,7 +30,7 @@ class ShiftRepository implements PaginatedResultInterface, RawQueryBuilderOutput
                 DB::raw('shifts.end_time as shift_end_time'),
             ]);
 
-        $result = $query->get();
+        $result = $query->distinct()->get();
 
         if (empty($result)) {
             return null;
@@ -44,7 +44,7 @@ class ShiftRepository implements PaginatedResultInterface, RawQueryBuilderOutput
         $query = StationShift::query();
         $query->leftJoin('stations', 'stations.id', '=', 'station_shifts.station_id')
             ->leftjoin('shifts', 'shifts.id', '=', 'station_shifts.shift_id')
-            ->where(['station_shifts.station_id', '=', $stationId, 'station_shifts.shift_id', '=', $shiftId])
+            ->where([['station_shifts.station_id', '=', $stationId], ['station_shifts.shift_id', '=', $shiftId]])
             ->select([
                 DB::raw('shifts.id as shift_id'),
                 DB::raw('shifts.name as shift_name'),

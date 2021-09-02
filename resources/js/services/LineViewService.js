@@ -6,6 +6,7 @@ export default {
         axios.get('lineview', {
             params: {
                 station_id: filter.stationId,
+                shift_id: filter.stationShiftId,
                 date: filter.date
             }
         })
