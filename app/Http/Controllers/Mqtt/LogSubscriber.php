@@ -23,7 +23,7 @@ class LogSubscriber
                 $mqttClient = MqttConnection::connect('IOMS Subscribe Logs');
 
                 $mqttClient->subscribe('ioms/dev/+/logs', function ($topic, $message) use($mqttClient) {
-                    $this->deviceController->parseLogPackets($topic, $message, $mqttClient);
+                    $this->deviceController->parseAndSaveLogPackets($topic, $message, $mqttClient);
                 }, 1);
                 $mqttClient->loop(true);
             } catch (MQTTClientException $mqttClientException) {
