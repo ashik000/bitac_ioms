@@ -527,8 +527,8 @@ class InovaceDevice
         $packetContent = $packet->request;
         $packetContentBin = hex2bin($packetContent);
         $deviceTimeStamp  = sprintf("%04u", unpack("Ntimestamp/", substr($packetContentBin, 0, 4))['timestamp']);
-        $deviceTime = Carbon::createFromTimestamp($deviceTimeStamp)->toImmutable();
-        $numberOfLogs = unpack('cport/', substr($packetContentBin, 4, 1))['port'];
+        $deviceTimeObject = Carbon::createFromTimestamp($deviceTimeStamp)->toImmutable();
+        $numberOfLogs = unpack('cnumOfLogs/', substr($packetContentBin, 4, 1))['numOfLogs'];
 
         $devicePortToDeviceStationMap = $this->deviceRepository->findAllDeviceStationsOfADevice($device->id)->mapWithKeys(function ($deviceStation) {
             return [$deviceStation['port'] + 1 => $deviceStation]; // 1 is added to port
@@ -538,6 +538,8 @@ class InovaceDevice
         $productIdToProductMap = $this->productRepository->findAllProductsKeyById();
 
         for($i = 0; $i < $numberOfLogs; $i++) {
+            $logTimeStamp = sprintf("%04u", unpack("Ntimestamp/", substr($packetContentBin, 5 + ($i*7), 4))['timestamp']);
+            $logTimeObject = Carbon::createFromTimestamp($logTimeStamp)->toImmutable();
 
         }
     }
