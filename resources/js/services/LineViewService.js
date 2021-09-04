@@ -6,7 +6,17 @@ export default {
         axios.get('lineview', {
             params: {
                 station_id: filter.stationId,
+                shift_id: filter.stationShiftId,
                 date: filter.date
+            }
+        })
+            .then(r => success(r.data))
+            .catch(e => console.log(e))
+    },
+    fetchStationShift: (filter, success, error) => {
+        axios.get('lineviewStationShift', {
+            params: {
+
             }
         })
             .then(r => success(r.data))
@@ -31,5 +41,34 @@ export default {
         })
             .then(r => success(r.data))
             .catch(e => console.log(e))
+    },
+    fetchOperatorName: (filter, success, error) => {
+        axios.get('getOperatorName', {
+            params: {
+                stationId: filter.stationId,
+                date: filter.date
+            }
+        })
+            .then(r => success(r.data))
+            .catch(e => console.log(e))
+    },
+    storeDefects: (data, success, error) => {
+        axios.post('storeLineviewDefects',data)
+            .then( r=> success(r.data))
+            .catch(e => {
+                error(e);
+        });
+        // axios.post('storeLineviewDefects', {
+        //     params: {
+        //         defectValue: filter.defectValue,
+        //         defectDate: filter.date,
+        //         defectHour: filter.defectTime,
+        //         stationId: filter.stationId,
+        //         stationShiftId: filter.stationShiftId,
+        //         productId: filter.productId,
+        //     }
+        // })
+        //     .then(r => success(r.data))
+        //     .catch(e => console.log(e))
     }
 }

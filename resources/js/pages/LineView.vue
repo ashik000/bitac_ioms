@@ -64,7 +64,7 @@
                 <div class="col-md-2">
                 </div>
                 <div class="col-md-10">
-                  Operator: John Doe
+                  Operator: {{ filter.stationOperatorName }}
                 </div>
               </div>
 
@@ -118,6 +118,22 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="top_downtime_table_header">
+                        <tr>
+                            <th colspan="2">Top Operator Downtime Reasons (last 7 days)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="topOperatorDowntimeReason in topOperatorDowntimeReasons">
+                            <td>{{ topOperatorDowntimeReason.operator_name }}</td>
+                            <td>{{ topOperatorDowntimeReason.duration }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
 
@@ -126,31 +142,15 @@
                     <line-view-graph
                         class="col"
                         :linedata="linedata.logs"
-                        @downtime-clicked="openDowntimeReasonsSelectionModal">
+                        :stationShiftsData="stationShifts.data"
+                        @stationshift-selected="updateStationShiftId"
+                        @downtime-clicked="openDowntimeReasonsSelectionModal"
+                        @reportDefects="submitReportDefects"
+                    >
                     </line-view-graph>
                 </div>
             </div>
 
-        </div>
-
-        <div class="row">
-            <div class="col-md-2">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead class="top_downtime_table_header">
-                            <tr>
-                                <th colspan="2">Top Operator Downtime Reasons (last 7 days)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="topOperatorDowntimeReason in topOperatorDowntimeReasons">
-                                <td>{{ topOperatorDowntimeReason.operator_name }}</td>
-                                <td>{{ topOperatorDowntimeReason.duration }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
 
 
@@ -165,9 +165,7 @@
                     Downtime
                 </button>
                 <button @click="isScrapInputModalShown = true">
-                    <i class="icon material-icons">delete</i>
-                    Scrap
-                    <title>Delete Downtime Reason</title>
+                    Batch Report
                 </button>
             </div>
         </footer>
@@ -225,13 +223,15 @@
             v-if="isDowntimeSummaryModalShown"
             @close="downtimeSummaryModalClosed()"
             :stationId="filter.stationId"
-            :date="filter.selectedDate"></downtime-summary-modal>
+            :date="filter.selectedDate">
+        </downtime-summary-modal>
 
         <scrap-input-model
             v-if="isScrapInputModalShown"
            @close="scrapInputModalClosed()"
            :stationId="filter.stationId"
-           :date="filter.selectedDate"></scrap-input-model>
+           :date="filter.selectedDate">
+        </scrap-input-model>
     </div>
 </template>
 
@@ -250,6 +250,8 @@
     import ScrapInputModel from "../components/lineview/scrapinput/ScrapInputModal";
     import OperatorSelectionModal from "../components/lineview/operatorselection/OperatorSelectionModal";
     import moment from "moment";
+    import downtimeReasonsService from "../services/DowntimeReasons";
+    import toastrService from "../services/ToastrService";
 
     export default {
         name: "LineView",
@@ -273,7 +275,9 @@
             selectedDowntime: null,
             filter: {
                 stationId: 1,
+                stationShiftId: null,
                 stationName: '',
+                stationOperatorName: 'N/A',
                 selectedDate: new Date(),
             },
             downtimeReasons: [],
@@ -314,6 +318,9 @@
             },
             topDowntimeReasons: null,
             topOperatorDowntimeReasons: null,
+            stationShifts: {
+                data: []
+            }
         }),
         watch: {
             gaugeTotalOee(nv, ov){
@@ -376,9 +383,21 @@
             changeSelectedStation(station) {
                 this.filter.stationId = station.id;
                 this.filter.stationName = station.name;
+                // this.filter.stationOperatorName = station.station_operator_name;
                 this.isStationSelectionFormShown = false;
 
                 this.fetchData();
+            },
+            fetchOperatorName() {
+                LineViewService.fetchOperatorName({
+                        stationId: this.filter.stationId,
+                        date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
+                    },
+                    (data) => {
+                        // console.log(data.operatorName)
+                        this.filter.stationOperatorName = data.operatorName;
+                    }
+                );
             },
             openDowntimeReasonsSelectionModal(bar) {
                 if (bar.type === 'downtime') {
@@ -388,6 +407,43 @@
                         this.reasons = reasons;
                     })
                 }
+            },
+            updateStationShiftId(selectedStationShiftId) {
+                this.filter.stationShiftId = selectedStationShiftId;
+                this.fetchData();
+            },
+            submitReportDefects(defectsData) {
+                // console.log('defectvalue '+defectsData.defectValue)
+                // console.log('defectTime '+defectsData.defectTime)
+
+                let hour = defectsData.defectTime;
+                hour = hour.substring(0, hour.length - 3);
+                // console.log('defect hour '+hour);
+
+                // downtimeReasonsService.addGroup({name: this.groupName}, data => {
+                //     this.groups = data;
+                //     this.showGroupForm = false;
+                //     this.showInprogress = false;
+                //     toastrService.showSuccessToast('Downtime reason group added.');
+                //     this.clearReasonGroup();
+                // }, error => {
+                //     this.showInprogress = false;
+                //     toastrService.showErrorToast(error);
+                // });
+
+                // submit the defect
+                LineViewService.storeDefects({
+                    defectValue: defectsData.defectValue,
+                    date: moment(this.filter.selectedDate).format('YYYY-MM-DD'),
+                    defectTime: hour,
+                    stationId: this.filter.stationId,
+                    stationShiftId: this.filter.stationShiftId,
+                    productId: this.products[0].product_id,
+                }, data => {
+                    console.log('success')
+                }, error => {
+                    console.log(error)
+                });
             },
             assignDowntimeReason(reason) {
                 DowntimeReasonsService.assignDowntime({
@@ -400,6 +456,7 @@
             fetchData() {
                 LineViewService.fetchLineViewData({
                         stationId: this.filter.stationId,
+                        stationShiftId: this.filter.stationShiftId,
                         date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
                     },
                     (data) => {
@@ -417,6 +474,15 @@
                         this.isInitialized = true;
                     }
                 );
+
+                this.fetchOperatorName();
+
+            },
+            fetchStationShift() {
+                LineViewService.fetchStationShift({},
+                (data) => {
+                    this.$set(this.stationShifts, 'data', data);
+                });
             },
             fetchTopDowntimeReasons() {
                 LineViewService.fetchTopDowntimeReasons({
@@ -424,7 +490,6 @@
                         end: this.range.end,
                     },
                     (data) => {
-                        console.log('topDowntimeReasons');
                         this.topDowntimeReasons = data;
                         console.log(this.topDowntimeReasons);
                     }
@@ -480,6 +545,8 @@
             setInterval(this.$data._updateData, 10000);
 
             StationsService.fetchAll({}, (data) => {
+                console.log('station service fetch all')
+                console.log(data)
                 this.$set(this, 'stations', data);
                 this.filter.stationId = this.stations[0].id;
                 this.filter.stationName = this.stations[0].name;
@@ -489,7 +556,7 @@
                 this.$set(this, 'downtimeReasons', data);
             });
 
-            this.renderGaugeChart();
+            this.fetchStationShift();
 
             this.fetchTopDowntimeReasons();
             this.fetchTopOperatorDowntimeReasons();

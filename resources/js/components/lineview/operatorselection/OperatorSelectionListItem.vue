@@ -6,7 +6,7 @@
                 <pre>{{ operator.code }}</pre>
             </div>
 
-            <div class="col-sm-3" v-if="operator.stations.length > 0">
+            <div class="col-sm-3" v-if="operator.stations && operator.stations.length > 0">
                 <span v-for="(operatorStation, index) in operator.stations">
                     <span v-if="index < operator.stations.length -1">{{ operatorStation.name + ", " }}</span>
                     <span v-else>{{ operatorStation.name }}</span>
@@ -45,7 +45,7 @@
 
         data: function () {
             return {
-                // assignedStationIds: []
+                assignedStationIds: []
             }
         },
 

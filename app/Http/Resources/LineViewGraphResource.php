@@ -62,6 +62,7 @@ class LineViewGraphResource extends JsonResource
         $productProductionMap = $this->products->mapWithKeys(function (Product $product) {
             return [
                 $product->id => [
+                    'product_id' => $product->id,
                     'product_name' => $product->name,
                     'scrapped'     => 0,
                     'produced'     => 0,

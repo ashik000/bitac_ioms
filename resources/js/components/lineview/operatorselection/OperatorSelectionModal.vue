@@ -58,6 +58,7 @@
             const vm = this;
 
             OperatorsService.fetchAll((data) => {
+                console.log(data)
                 vm.operators = data;
             }, (error) => {
                 console.log(error);
