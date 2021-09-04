@@ -4,35 +4,35 @@
             <canvas width="100%" height="150px" ref="chartElement"/>
         </div>
 
-<!--        <div class="progress-bars-legend">-->
-<!--            <div class="legend-wrap">-->
-<!--                <div class="progress-bar-wrap">-->
-<!--                    <div class="progress" :style="{ width: `${summaryData.availability}%` }" style="background: #03A9F4"></div>-->
-<!--                    <span class="progress-label">{{ `${summaryData.availability.toFixed(2)}%` }}</span>-->
-<!--                </div>-->
-<!--                <p>-->
-<!--                    Availability-->
-<!--                </p>-->
-<!--            </div>-->
-<!--            <div class="legend-wrap">-->
-<!--                <div class="progress-bar-wrap">-->
-<!--                    <div class="progress" :style="{ width: `${summaryData.performance}%` }" style="background: #8BC34A"></div>-->
-<!--                    <span class="progress-label">{{ `${summaryData.performance.toFixed(2)}%` }}</span>-->
-<!--                </div>-->
-<!--                <p>-->
-<!--                    Performance-->
-<!--                </p>-->
-<!--            </div>-->
-<!--            <div class="legend-wrap">-->
-<!--                <div class="progress-bar-wrap">-->
-<!--                    <div class="progress" :style="{ width: `${summaryData.quality}%` }" style="background: #FF9800"></div>-->
-<!--                    <span class="progress-label">{{ `${summaryData.quality.toFixed(2)}%` }}</span>-->
-<!--                </div>-->
-<!--                <p>-->
-<!--                    Quality-->
-<!--                </p>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="progress-bars-legend">
+            <div class="legend-wrap">
+                <div class="progress-bar-wrap">
+                    <div class="progress" :style="{ width: `${summaryData.availability}%` }" style="background: #03A9F4"></div>
+                    <span class="progress-label">{{ `${summaryData.availability.toFixed(2)}%` }}</span>
+                </div>
+                <p>
+                    Availability
+                </p>
+            </div>
+            <div class="legend-wrap">
+                <div class="progress-bar-wrap">
+                    <div class="progress" :style="{ width: `${summaryData.performance}%` }" style="background: #8BC34A"></div>
+                    <span class="progress-label">{{ `${summaryData.performance.toFixed(2)}%` }}</span>
+                </div>
+                <p>
+                    Performance
+                </p>
+            </div>
+            <div class="legend-wrap">
+                <div class="progress-bar-wrap">
+                    <div class="progress" :style="{ width: `${summaryData.quality}%` }" style="background: #FF9800"></div>
+                    <span class="progress-label">{{ `${summaryData.quality.toFixed(2)}%` }}</span>
+                </div>
+                <p>
+                    Quality
+                </p>
+            </div>
+        </div>
     </div>
 </template>
 
