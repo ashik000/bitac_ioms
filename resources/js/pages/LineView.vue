@@ -29,8 +29,7 @@
 
             <div class="col-md-4 col-sm-12 mt-2 oee_summary_graph">
                 <oee-summary-panel
-                    :hourly-data="oeeSummary.hourly"
-                    :summary-data="oeeSummary.summary">
+                    :hourly-data="oeeSummary.hourly">
                 </oee-summary-panel>
             </div>
 
