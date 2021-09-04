@@ -3,6 +3,7 @@
 
 namespace App\Devices;
 
+use App\Data\Models\Device;
 use App\Data\Models\Downtime;
 use App\Data\Models\Operator;
 use App\Data\Models\Packet;
@@ -514,5 +515,30 @@ class InovaceDevice
         );
 
         return $data;
+    }
+
+    /**
+     * @param Device $device
+     * @param Packet $packet
+     *
+     */
+    public function parseLogPacketAndSave(Device $device, Packet $packet)
+    {
+        $packetContent = $packet->request;
+        $packetContentBin = hex2bin($packetContent);
+        $deviceTimeStamp  = sprintf("%04u", unpack("Ntimestamp/", substr($packetContentBin, 0, 4))['timestamp']);
+        $deviceTime = Carbon::createFromTimestamp($deviceTimeStamp)->toImmutable();
+        $numberOfLogs = unpack('cport/', substr($packetContentBin, 4, 1))['port'];
+
+        $devicePortToDeviceStationMap = $this->deviceRepository->findAllDeviceStationsOfADevice($device->id)->mapWithKeys(function ($deviceStation) {
+            return [$deviceStation['port'] + 1 => $deviceStation]; // 1 is added to port
+        });
+
+        $stationIdToStationProductMap = $this->productRepository->findAllStationProductsKeyByStationId();
+        $productIdToProductMap = $this->productRepository->findAllProductsKeyById();
+
+        for($i = 0; $i < $numberOfLogs; $i++) {
+
+        }
     }
 }

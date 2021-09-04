@@ -4,13 +4,12 @@ namespace App\Jobs;
 
 use App\Data\Models\Device;
 use App\Data\Models\Packet;
+use App\Devices\InovaceDevice;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Log\Logger;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Log;
 
 class ParseAndSaveIomsLogPacket implements ShouldQueue
 {
@@ -35,9 +34,8 @@ class ParseAndSaveIomsLogPacket implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(InovaceDevice $deviceManager)
     {
-        Log::debug('Job dispatched');
-        Log::debug($this->device->identifier);
+        $deviceManager->parseLogPacketAndSave($this->device, $this->packet);
     }
 }

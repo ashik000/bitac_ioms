@@ -28,9 +28,6 @@ class DeviceController
      */
     public function parseAndSaveLogPackets($topic, $message, $mqttClient)
     {
-
-        \Log::debug($topic);
-        \Log::debug(bin2hex($message));
         $deviceIdentifier = $this->getDeviceIdentifierFromTopic($topic);
         $device = $this->deviceRepository->findByIdentifier($deviceIdentifier);
         $packet = $this->packetRepository->savePacketFromDevice($device, bin2hex($message));

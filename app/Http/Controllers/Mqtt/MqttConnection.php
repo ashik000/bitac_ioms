@@ -18,7 +18,7 @@ class MqttConnection
      * @param string $clientId
      * @return MQTTClient $mqttClient
      */
-    public static function connect(string $clientId)
+    public static function connect(string $clientId, $setCleanSession=true)
     {
         $server   = config('app.mqtt_broker_url');
         $port     = config('app.mqtt_broker_port');
@@ -26,7 +26,7 @@ class MqttConnection
         $password = config('app.mqtt_broker_password');
 
         $mqtt = new InovaceMqttClient($server, $port, $clientId, null, null, new Logger('mqtt-logger'));
-        $mqtt->connect($username, $password, null, true);
+        $mqtt->connect($username, $password, null, $setCleanSession);
         return $mqtt;
     }
 }
