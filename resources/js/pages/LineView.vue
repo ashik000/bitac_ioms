@@ -1,46 +1,28 @@
 <template>
     <div class="container-fluid">
         <header class="row">
-            <div class="col-md-4" style="background-color: purple;">
-                <div class="gauge-container d-flex flex-direction-row">
-                    <div class="row">
-                        <div class="col-md-3 col-sm-12">
-                            <div class="gauge">
-                                <template>
-                                    <vue-gauge :refid="'oee-gauge'" :options="{'needleValue': this.gaugeTotalOee, 'arcDelimiters':[33, 66], 'arcOverEffect': false, 'arcColors': [ 'red', 'yellow', 'green'] ,'needleColor': 'black'}"></vue-gauge>
-                                </template>
-                                <span>{{ `${gaugeTotalOee}%` }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                            <div class="gauge">
-                                <template>
-                                    <vue-gauge :refid="'availability-gauge'" :options="{'needleValue': this.oeeSummary.summary.availability.toFixed(2), 'arcDelimiters': [], 'arcOverEffect': false, 'arcColors': [ 'blue'] ,'needleColor': 'black'}"></vue-gauge>
-                                </template>
-
-                                <span>{{ `${oeeSummary.summary.availability.toFixed(2)}%` }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                            <div class="gauge">
-                                <template>
-                                    <vue-gauge :refid="'performance-gauge'" :options="{'needleValue': this.gaugePerformance, 'arcDelimiters':[], 'arcOverEffect': false, 'arcColors': [ 'green'] ,'needleColor': 'black'}"></vue-gauge>
-                                </template>
-
-                                <span>{{ `${gaugePerformance}%` }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                            <div class="gauge">
-                                <template>
-                                    <vue-gauge :refid="'oee-gauge'" :options="{'needleValue': this.gaugeQuality, 'arcDelimiters':[], 'arcOverEffect': false, 'arcColors': ['yellow'] ,'needleColor': 'black'}"></vue-gauge>
-                                </template>
-
-                                <span>{{ `${gaugeQuality}%` }}</span>
-                            </div>
-                        </div>
+            <div class="col-md-4">
+                <div class="gauge-container d-flex flex-direction-row flex-nowrap justify-content-between align-items-baseline">
+                    <div class="gaugeL">
+                        <div id="totalOee"></div>
+                        <span>{{ `${gaugeTotalOee}%` }}</span>
+                        <span>STATION OEE</span>
                     </div>
-
+                    <div class="gaugeS">
+                        <div id="totalAvailability"></div>
+                        <span>{{ `${gaugeAvailability}%` }}</span>
+                        <span>AVAILABILITY</span>
+                    </div>
+                    <div class="gaugeS">
+                        <div id="totalPerformance"></div>
+                        <span>{{ `${gaugePerformance}%` }}</span>
+                        <span>PERFORMANCE</span>
+                    </div>
+                    <div class="gaugeS">
+                        <div id="totalQuality"></div>
+                        <span>{{ `${gaugeQuality}%` }}</span>
+                        <span>QUALITY</span>
+                    </div>
                 </div>
             </div>
 
@@ -254,6 +236,7 @@
 </template>
 
 <script>
+    import * as GaugeChart from "gauge-chart"
     import LineViewService from "../services/LineViewService";
     import StationsService from "../services/StationsService";
     import DowntimeReasonsService from '../services/DowntimeReasons'
@@ -266,7 +249,6 @@
     import DowntimeSummaryModal from "../components/lineview/downtimesummary/DowntimeSummaryModal";
     import ScrapInputModel from "../components/lineview/scrapinput/ScrapInputModal";
     import OperatorSelectionModal from "../components/lineview/operatorselection/OperatorSelectionModal";
-    import VueGauge from 'vue-gauge';
     import moment from "moment";
     import downtimeReasonsService from "../services/DowntimeReasons";
     import toastrService from "../services/ToastrService";
@@ -281,7 +263,6 @@
             ProductionSummaryPanel,
             'oee-summary-panel': OEESummaryPanel,
             ScrapInputModel,
-            VueGauge,
         },
         data: () => ({
             currentTime: '',
@@ -325,6 +306,12 @@
             gaugeAvailability: 0,
             gaugePerformance: 0,
             gaugeQuality: 0,
+            gaugeOptions: {
+                hasNeedle: true,
+                needleColor: 'black',
+                arcColors: ['#EAEAEA'],
+                arcDelimiters: [],
+            },
             range: {
                 start: moment().startOf('week').subtract(7, "days").toDate(),
                 end: moment().endOf('day').subtract(7, "days").toDate()
@@ -335,6 +322,33 @@
                 data: []
             }
         }),
+        watch: {
+            gaugeTotalOee(nv, ov){
+                let element = document.querySelector('#totalOee');
+                element.innerHTML = "";
+                GaugeChart.gaugeChart(element, 200, {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
+                        arcDelimiters: [30, 70]}}).updateNeedle(nv);
+            },
+            gaugeAvailability(nv, ov){
+                console.log("Availability");
+                console.log(nv);
+                let element = document.querySelector('#totalAvailability');
+                element.innerHTML = "";
+
+                GaugeChart.gaugeChart(element, 100, this.generateGaugeProperties(nv, '#1947A4')).updateNeedle(nv);
+            },
+            gaugePerformance(nv, ov){
+                let element = document.querySelector('#totalPerformance');
+                element.innerHTML = "";
+                GaugeChart.gaugeChart(element, 100, this.generateGaugeProperties(nv, '#49B92A')).updateNeedle(nv);
+            },
+            gaugeQuality(nv, ov){
+                let element = document.querySelector('#totalQuality');
+                element.innerHTML = "";
+
+                GaugeChart.gaugeChart(element, 100, this.generateGaugeProperties(nv, '#FFA600')).updateNeedle(nv);
+            },
+        },
         methods: {
             showStationSelectionForm(show = false) {
                 this.isStationSelectionFormShown = show;
@@ -452,6 +466,10 @@
                         this.$set(this.linedata, 'logs', logs);
                         this.$set(this.oeeSummary, 'hourly', hourlyMetric);
                         this.$set(this.oeeSummary, 'summary', summaryMetric);
+                        this.gaugeTotalOee = (isNaN((this.oeeSummary.summary.oee * 100).toFixed(2)) || this.oeeSummary.summary.oee === 0) ? 0 : (this.oeeSummary.summary.oee * 100).toFixed(2);
+                        this.gaugeAvailability = (isNaN(this.oeeSummary.summary.availability.toFixed(2)) || this.oeeSummary.summary.availability === 0) ? 0 : this.oeeSummary.summary.availability.toFixed(2);
+                        this.gaugePerformance = (isNaN(this.oeeSummary.summary.performance.toFixed(2)) || this.oeeSummary.summary.performance === 0) ? 0 : this.oeeSummary.summary.performance.toFixed(2);
+                        this.gaugeQuality = (isNaN(this.oeeSummary.summary.quality.toFixed(2)) || this.oeeSummary.summary.quality === 0) ? 0 : this.oeeSummary.summary.quality.toFixed(2);
 
                         this.isInitialized = true;
                     }
@@ -487,16 +505,29 @@
                     }
                 );
             },
+            renderGaugeChart(){
+                let elements = ['#totalOee', '#totalAvailability', '#totalPerformance', '#totalQuality'];
+                for (let i = 0; i < elements.length; i++) {
+                    GaugeChart.gaugeChart(document.querySelector(elements[i]), elements[i] === '#totalOee' ? 200 : 100,
+                      elements[i] === '#totalOee' ? {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
+                      arcDelimiters: [30, 70]}} : {...this.gaugeOptions, ...{arcColors: ['#EAEAEA']}} );
+
+                }
+            },
+            generateGaugeProperties(nv, color){
+                if ([100, 100.00,'100', '100.00', '100.0'].includes(nv)){
+                    return  {...this.gaugeOptions, ...{arcColors: [color], arcDelimiters: []}};
+                }else if([0,0.00,'0', '0.00', '0.0'].includes(nv)){
+                    return  {...this.gaugeOptions, ...{arcColors: ['#EAEAEA'], arcDelimiters: []}};
+                }else {
+                    return  {...this.gaugeOptions, ...{arcColors: [color], arcDelimiters: [nv]}};
+                };
+            },
         },
         computed: {
             formattedSelectedDate() {
                 return moment(this.filter.selectedDate).format('dddd, DD MMMM, YYYY');
             },
-            totalOee(){
-                let oee = isNaN(this.oeeSummary.summary.oee * 100) ? 0 : (this.oeeSummary.summary.oee * 100).toFixed(2);
-                this.gaugeTotalOee = oee;
-                return oee;
-            }
         },
         mounted() {
             const vm = this;
@@ -537,8 +568,4 @@
     }
 </script>
 
-<style scoped>
-.oee_summary_graph {
-    border: 1px solid grey;
-}
-</style>
+
