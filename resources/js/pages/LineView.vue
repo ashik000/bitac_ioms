@@ -556,8 +556,9 @@
                 this.$set(this, 'downtimeReasons', data);
             });
 
-            this.fetchStationShift();
+            this.renderGaugeChart();
 
+            this.fetchStationShift();
             this.fetchTopDowntimeReasons();
             this.fetchTopOperatorDowntimeReasons();
         },
