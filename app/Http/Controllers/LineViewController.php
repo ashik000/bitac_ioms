@@ -206,19 +206,29 @@ class LineViewController extends Controller
 
     public function storeLineviewDefects(Request $request)
     {
-        $scrap = new Scrap();
+        $scrap = Scrap::query()
+            ->where('scraps.station_id', '=', $request['stationId'])
+            ->where('scraps.product_id', '=', $request['productId'])
+            ->where('scraps.date', '=', $request['date'])
+            ->where('scraps.hour', '=', $request['defectTime'])->first();
 
-        $scrap['value'] = $request['defectValue'];
-        $scrap['date'] = $request['date'];
-        $scrap['hour'] = $request['defectTime'];
-        $scrap['station_id'] = $request['stationId'];
-        $scrap['shift_id'] = $request['shiftId'];
-        $scrap['product_id'] = $request['productId'];
-        $scrap['operator_id'] = 1;
-        $scrap['created_by'] = 1;
+        if (empty($scrap)) {
+            $scrap = new Scrap();
+
+            $scrap['value'] = $request['defectValue'];
+            $scrap['date'] = $request['date'];
+            $scrap['hour'] = $request['defectTime'];
+            $scrap['station_id'] = $request['stationId'];
+            $scrap['shift_id'] = $request['shiftId'];
+            $scrap['product_id'] = $request['productId'];
+            $scrap['operator_id'] = 1;
+            $scrap['created_by'] = 1;
+
+        } else {
+            $scrap->value+=$scrap['value'];
+        }
 
         $check = $scrap->save();
-
         if ($check) {
             return true;
         }

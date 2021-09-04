@@ -155,16 +155,17 @@
 
         <footer class="row">
             <div class="controls container-fluid">
-                <button @click="isOperatorSelectionModalShown = true">
-                    <i class="icon material-icons">account_circle</i>
-                    Operator
+                <button class="btn btn-secondary" @click="">
+                    Assign Product
                 </button>
-                <button @click="isDowntimeSummaryModalShown = true">
-                    <i class="icon material-icons">timer</i>
-                    Downtime
+                <button class="btn btn-secondary" @click="isOperatorSelectionModalShown = true">
+                    Assign Operator
                 </button>
-                <button @click="isScrapInputModalShown = true">
-                    Batch Report
+                <button class="btn btn-secondary" @click="isDowntimeSummaryModalShown = true">
+                    Assign Downtime Reason
+                </button>
+                <button class="btn btn-secondary" @click="isScrapInputModalShown = true">
+                    Batch Defect Entry
                 </button>
             </div>
         </footer>
@@ -210,6 +211,13 @@
                 </ul>
             </template>
         </modal>
+
+        <product-selection-modal
+            v-if="isProductSelectionModalShown"
+            @close="productSelectionModalClosed()"
+            :station-id="filter.stationId"
+            :station-name="filter.stationName">
+        </product-selection-modal>
 
         <operator-selection-modal
             v-if="isOperatorSelectionModalShown"
@@ -270,6 +278,7 @@
             isDowntimeReasonsModalShown: false,
             isDowntimeSummaryModalShown: false,
             isOperatorSelectionModalShown: false,
+            isProductSelectionModalShown: false,
             isScrapInputModalShown: false,
             selectedDowntime: null,
             filter: {
@@ -355,6 +364,9 @@
             operatorSelectionModalClosed(){
                 this.isOperatorSelectionModalShown = false;
             },
+            productSelectionModalClosed(){
+                this.isProductSelectionModalShown = false;
+            },
             downtimeSummaryModalClosed() {
                 this.isDowntimeSummaryModalShown = false;
                 this.fetchData();
@@ -412,23 +424,9 @@
                 this.fetchData();
             },
             submitReportDefects(defectsData) {
-                // console.log('defectvalue '+defectsData.defectValue)
-                // console.log('defectTime '+defectsData.defectTime)
-
                 let hour = defectsData.defectTime;
                 hour = hour.substring(0, hour.length - 3);
                 // console.log('defect hour '+hour);
-
-                // downtimeReasonsService.addGroup({name: this.groupName}, data => {
-                //     this.groups = data;
-                //     this.showGroupForm = false;
-                //     this.showInprogress = false;
-                //     toastrService.showSuccessToast('Downtime reason group added.');
-                //     this.clearReasonGroup();
-                // }, error => {
-                //     this.showInprogress = false;
-                //     toastrService.showErrorToast(error);
-                // });
 
                 // submit the defect
                 LineViewService.storeDefects({
