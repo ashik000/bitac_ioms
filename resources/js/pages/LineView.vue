@@ -162,7 +162,9 @@
                         :linedata="linedata.logs"
                         :stationShiftsData="stationShifts.data"
                         @stationshift-selected="updateStationShiftId"
-                        @downtime-clicked="openDowntimeReasonsSelectionModal">
+                        @downtime-clicked="openDowntimeReasonsSelectionModal"
+                        @reportDefects="submitReportDefects"
+                    >
                     </line-view-graph>
                 </div>
             </div>
@@ -181,9 +183,7 @@
                     Downtime
                 </button>
                 <button @click="isScrapInputModalShown = true">
-                    <i class="icon material-icons">delete</i>
-                    Scrap
-                    <title>Delete Downtime Reason</title>
+                    Batch Report
                 </button>
             </div>
         </footer>
@@ -268,6 +268,8 @@
     import OperatorSelectionModal from "../components/lineview/operatorselection/OperatorSelectionModal";
     import VueGauge from 'vue-gauge';
     import moment from "moment";
+    import downtimeReasonsService from "../services/DowntimeReasons";
+    import toastrService from "../services/ToastrService";
 
     export default {
         name: "LineView",
@@ -395,6 +397,39 @@
             updateStationShiftId(selectedStationShiftId) {
                 this.filter.stationShiftId = selectedStationShiftId;
                 this.fetchData();
+            },
+            submitReportDefects(defectsData) {
+                // console.log('defectvalue '+defectsData.defectValue)
+                // console.log('defectTime '+defectsData.defectTime)
+
+                let hour = defectsData.defectTime;
+                hour = hour.substring(0, hour.length - 3);
+                // console.log('defect hour '+hour);
+
+                // downtimeReasonsService.addGroup({name: this.groupName}, data => {
+                //     this.groups = data;
+                //     this.showGroupForm = false;
+                //     this.showInprogress = false;
+                //     toastrService.showSuccessToast('Downtime reason group added.');
+                //     this.clearReasonGroup();
+                // }, error => {
+                //     this.showInprogress = false;
+                //     toastrService.showErrorToast(error);
+                // });
+
+                // submit the defect
+                LineViewService.storeDefects({
+                    defectValue: defectsData.defectValue,
+                    date: moment(this.filter.selectedDate).format('YYYY-MM-DD'),
+                    defectTime: hour,
+                    stationId: this.filter.stationId,
+                    stationShiftId: this.filter.stationShiftId,
+                    productId: this.products[0].product_id,
+                }, data => {
+                    console.log('success')
+                }, error => {
+                    console.log(error)
+                });
             },
             assignDowntimeReason(reason) {
                 DowntimeReasonsService.assignDowntime({

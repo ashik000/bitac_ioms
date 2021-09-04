@@ -19,6 +19,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class LineViewController extends Controller
 {
@@ -201,5 +202,26 @@ class LineViewController extends Controller
         {
             return ['operatorName' => 'N/A'];
         }
+    }
+
+    public function storeLineviewDefects(Request $request)
+    {
+        $scrap = new Scrap();
+
+        $scrap['value'] = $request['defectValue'];
+        $scrap['date'] = $request['date'];
+        $scrap['hour'] = $request['defectTime'];
+        $scrap['station_id'] = $request['stationId'];
+        $scrap['shift_id'] = $request['shiftId'];
+        $scrap['product_id'] = $request['productId'];
+        $scrap['operator_id'] = 1;
+        $scrap['created_by'] = 1;
+
+        $check = $scrap->save();
+
+        if ($check) {
+            return true;
+        }
+        return false;
     }
 }

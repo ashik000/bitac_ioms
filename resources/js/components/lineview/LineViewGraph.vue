@@ -26,6 +26,14 @@
             </svg>
         </button>
 
+
+        <input type="time" :value="defects.defectTime" />
+        <button class="btn btn-danger px-2" v-on:click="decreaseDefect()">-</button>
+        <input type="number" class="defect_value" :value="defects.defectValue" />
+        <button class="btn btn-danger px-2" v-on:click="increaseDefect()">+</button>
+        <button class="btn btn-danger" v-on:click="reportDefect()">Report Defect</button>
+
+
         <select class="form-group" name="changeStationShift" id="changeStationShift"
                 v-model="selectedStationShiftId" @change="onSelectChange($event)"
                 style="float: right">
@@ -151,9 +159,27 @@
             zoomValues : [3600, 1800, 900, 600, 300, 60],
             zoomIndex : 0,
             pageNo: 0,
-            selectedStationShiftId: null
+            selectedStationShiftId: null,
+            updatedDefectVal: null,
+            defects: {
+                defectValue: 1,
+                defectDate: new Date(),
+                defectTime: '00:00:00',
+            },
         }),
         methods: {
+            reportDefect (event) {
+                this.$emit('reportDefects', this.defects);
+            },
+            increaseDefect() {
+                this.defects.defectValue++;
+                // console.log(this.defects.defectValue);
+            },
+            decreaseDefect() {
+                if (this.defects.defectValue >= 1) {
+                    this.defects.defectValue--;
+                }
+            },
             onSelectChange(event) {
                 this.selectedStationShiftId = event.target.value;
                 this.$emit('stationshift-selected', this.selectedStationShiftId);
@@ -214,9 +240,17 @@
                 this.viewBoxAttributes = this.viewBox.x + " " + this.viewBox.y + " " + this.viewBox.w + " " + this.viewBox.h;
             },
         },
+        mounted() {
+            let today = new Date();
+            let min = today.getMinutes();
+            if (min < 10 && min > 0) {
+                min = '0' + min;
+            }
+            // console.log('min '+min)
+            this.defects.defectTime = today.getHours() + ":" + min;
+        },
         updated() {
-            if (this.selectedStationShiftId == null)
-            {
+            if (this.selectedStationShiftId == null) {
                 this.selectedStationShiftId = this.stationShiftsData[0].shift_id;
             }
         }
