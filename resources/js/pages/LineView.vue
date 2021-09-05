@@ -1,8 +1,8 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid mt-4">
         <header class="row">
-            <div class="col-md-4">
-                <div class="gauge-container d-flex flex-direction-row flex-nowrap justify-content-between align-items-baseline">
+            <div class="col mx-2" style="border: 1px solid grey">
+                <div class="gauge-container d-flex flex-direction-row flex-nowrap justify-content-start align-items-baseline">
                     <div class="gaugeL">
                         <div id="totalOee"></div>
                         <span>{{ `${gaugeTotalOee}%` }}</span>
@@ -27,13 +27,13 @@
             </div>
 
 
-            <div class="col-md-4 col-sm-12 mt-2 oee_summary_graph">
+            <div class="col mx-2" style="border: 1px solid grey">
                 <oee-summary-panel
                     :hourly-data="oeeSummary.hourly">
                 </oee-summary-panel>
             </div>
 
-            <div class="col-md-4 col-sm-12 mt-2" style="border: 1px solid grey">
+            <div class="col mx-2" style="border: 1px solid grey">
 
                 <div class="row mt-1">
                     <div class="col-md-2">
@@ -91,15 +91,14 @@
 
                   </div>
                 </div>
-
             </div>
 
         </header>
 
 
 
-        <div class="row mt-2">
-            <div class="col-md-2">
+        <div class="row mt-4">
+            <div class="col-md-2 mt-2">
                 <div class="table-responsive">
                     <table class="table">
                         <thead class="top_downtime_table_header">
@@ -566,4 +565,12 @@
     }
 </script>
 
+<style>
+.gaugeS > span:nth-child(2), .gaugeL > span:nth-child(2){
+    font-weight: bolder;
+}
 
+.gaugeS > span:nth-child(3), .gaugeL > span:nth-child(3){
+    font-size: .8em;
+}
+</style>
