@@ -442,3 +442,12 @@ li.active > span:last-child > button:first-child{
     flex-direction: column;
     align-items: center;
 }
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+input[type=number] {
+    -moz-appearance:textfield;
+}
