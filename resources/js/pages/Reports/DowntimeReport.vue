@@ -1,7 +1,6 @@
 <template>
     <div>
         <reports-common-header
-            reportName="Downtime Report"
             :showPartition="false"
             @rangeSelected="onRangeSelect"
             :reportType="reportType"

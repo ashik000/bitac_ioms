@@ -37,7 +37,7 @@
         <select class="form-group" name="changeStationShift" id="changeStationShift"
                 v-model="selectedStationShiftId" @change="onSelectChange($event)"
                 style="float: right">
-            <option v-for="stationShift in stationShiftsData" :value="stationShift.shift_id">{{ stationShift.shift_name }}</option>
+            <option v-for="stationShift in stationShiftsData" :value="stationShift.shift_id" :key="stationShift.shift_id">{{ stationShift.shift_name }}</option>
         </select>
 
         <table class="line-view-graph">
@@ -77,7 +77,7 @@
                         {{ bar.reason.name }}
                     </span>
                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="bar"
-                             :viewBox="viewBoxAttributes" style="background: #222056;" preserveAspectRatio="none">
+                            :viewBox="viewBoxAttributes" style="background: #222056;" preserveAspectRatio="none">
                             <template v-for="bar in logs.data">
                                 <rect v-if="bar.type == 'log'" :key="bar.type + '-' + bar.id"
                                       :x="bar.second_of_hour"
@@ -91,16 +91,16 @@
                                       fill="#000000"
                                       y="0" height="10"></rect>
 
-                            <rect v-else :key="bar.type + '-' + bar.id"
-                                  class="data-point"
-                                  :x="bar.second_of_hour"
-                                  :width="bar.duration"
-                                  :fill="barColor(bar)"
-                                  y="0" height="10"
-                                  @click="$emit('downtime-clicked', bar)"
-                            >
-                                <title>Start: {{ formatStartTime(bar.start_time) }}, Duration: {{formatDuration(bar.duration)}}, {{bar.reason ? bar.reason.name : ''}}</title>
-                            </rect>
+                                <rect v-else :key="bar.type + '-' + bar.id"
+                                      class="data-point"
+                                      :x="bar.second_of_hour"
+                                      :width="bar.duration"
+                                      :fill="barColor(bar)"
+                                      y="0" height="10"
+                                      @click="$emit('downtime-clicked', bar)"
+                                >
+                                    <title>Start: {{ formatStartTime(bar.start_time) }}, Duration: {{formatDuration(bar.duration)}}, {{bar.reason ? bar.reason.name : ''}}</title>
+                                </rect>
                         </template>
                     </svg>
 
@@ -242,14 +242,20 @@
         },
         mounted() {
             let today = new Date();
+            let hour = today.getHours();
             let min = today.getMinutes();
             if (min < 10 && min > 0) {
                 min = '0' + min;
             }
-            // console.log('min '+min)
-            this.defects.defectTime = today.getHours() + ":" + min;
+            if (hour < 10 && hour > 0) {
+                hour = '0' + hour;
+            }
+            // console.log('today '+today);
+            this.defects.defectTime = hour + ":" + min;
         },
         updated() {
+            // console.log('updated');
+            // console.log(this.stationShiftsData);
             if (this.selectedStationShiftId == null) {
                 this.selectedStationShiftId = this.stationShiftsData[0].shift_id;
             }

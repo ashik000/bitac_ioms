@@ -81,10 +81,10 @@
                     <div class="mt-4 card" style="width: 12rem;">
                       <div class="card-body p-1">
                         <v-date-picker :max-date='new Date()'
-                                       mode='single' v-model='filter.selectedDate'
-                                       :masks="{ input: 'WWW, DD MMMM' }"
-                                       :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent px-2 h5' }"
-                                       @input="changeSelectedDate">
+                                      mode='single' v-model='filter.selectedDate'
+                                      :masks="{ input: 'WWW, DD MMMM' }"
+                                      :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent px-2 h5' }"
+                                      @input="changeSelectedDate">
                         </v-date-picker>
                       </div>
                     </div>
@@ -171,8 +171,8 @@
         </footer>
 
         <modal v-if="isStationSelectionFormShown"
-               class="station-selector-modal"
-               @close="isStationSelectionFormShown = false">
+              class="station-selector-modal"
+              @close="isStationSelectionFormShown = false">
             <template v-slot:header>
                 <h4 class="text-uppercase">Select Station</h4>
             </template>
@@ -195,8 +195,8 @@
         </modal>
 
         <modal v-if="isDowntimeReasonsModalShown"
-               class="reason-selector-modal"
-               @close="isDowntimeReasonsModalShown = false"
+              class="reason-selector-modal"
+              @close="isDowntimeReasonsModalShown = false"
         >
             <template v-slot:header>
                 <h4 class="text-uppercase">Select Downtime Reason</h4>
@@ -234,10 +234,10 @@
         </downtime-summary-modal>
 
         <scrap-input-model
-            v-if="isScrapInputModalShown"
-           @close="scrapInputModalClosed()"
-           :stationId="filter.stationId"
-           :date="filter.selectedDate">
+          v-if="isScrapInputModalShown"
+          @close="scrapInputModalClosed()"
+          :stationId="filter.stationId"
+          :date="filter.selectedDate">
         </scrap-input-model>
     </div>
 </template>
@@ -542,8 +542,8 @@
             setInterval(this.$data._updateData, 10000);
 
             StationsService.fetchAll({}, (data) => {
-                console.log('station service fetch all')
-                console.log(data)
+                // console.log('station service fetch all')
+                // console.log(data)
                 this.$set(this, 'stations', data);
                 this.filter.stationId = this.stations[0].id;
                 this.filter.stationName = this.stations[0].name;

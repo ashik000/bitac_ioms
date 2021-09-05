@@ -1,7 +1,6 @@
 <template>
     <div class="h-100">
         <reports-common-header
-            reportName="OEE Report"
             :showPartition="true"
             @partitionSelected="onPartitionSelect"
             @rangeSelected="onRangeSelect"

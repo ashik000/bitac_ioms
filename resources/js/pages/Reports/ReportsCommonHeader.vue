@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg partitionNav ps-3 pe-3 py-0">
 
-        <div class="row">
+        <div class="row" style="display: flex; justify-content: space-between; width: 1600px;">
             <div class="col-md-7 col-sm-12">
                 <ReportFilters :reportType="reportType" :reportName="reportName" class="w-100">
                 </ReportFilters>
@@ -41,20 +41,20 @@
                         Date Range
                     </span>
                     <v-date-picker class="date-range-picker" v-show="selectedRange.tag === 'custom'"
-                                   :input-props="{ style: `
-                                            background-color: #ffffff;
-                                            color: #3D3B30;
-                                            padding: 0.5rem;
-                                            border-radius: 0.25rem;
-                                            margin: 0.1rem 0;
-                                            width: 200px;
-                                            text-align: center;
-                                            cursor: pointer;
-                                        `
-                                   }"
-                                   mode='range'
-                                   :value='range'
-                                   @input="onDateRangeChanged"/>
+                        :input-props="{ style: `
+                                background-color: #ffffff;
+                                color: #3D3B30;
+                                padding: 0.5rem;
+                                border-radius: 0.25rem;
+                                margin: 0.1rem 0;
+                                width: 200px;
+                                text-align: center;
+                                cursor: pointer;
+                            `
+                        }"
+                        mode='range'
+                        :value='range'
+                        @input="onDateRangeChanged"/>
 
 
                     <div class="dropdown">
@@ -69,7 +69,7 @@
                                 </a>
 
                                 <a href="#" class="dropdown-item"
-                                   @click="changeSelectedRange({ tag: 'custom', title: 'Custom' })">
+                                  @click="changeSelectedRange({ tag: 'custom', title: 'Custom' })">
                                     Custom
                                 </a>
                             </li>
