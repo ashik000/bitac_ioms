@@ -27,9 +27,9 @@
         </button>
 
 
-        <input type="time" :value="defects.defectTime" />
+        <input type="time" :value="defects.defectTime" style="height: 32px;" />
         <button class="btn btn-danger px-2" v-on:click="decreaseDefect()">-</button>
-        <input type="number" class="defect_value" :value="defects.defectValue" />
+        <input type="number" class="defect_value" :value="defects.defectValue" style="width: 60px; height: 32px;" />
         <button class="btn btn-danger px-2" v-on:click="increaseDefect()">+</button>
         <button class="btn btn-danger" v-on:click="reportDefect()">Report Defect</button>
 
@@ -162,10 +162,11 @@
             selectedStationShiftId: null,
             updatedDefectVal: null,
             defects: {
-                defectValue: 1,
+                defectValue: 0,
                 defectDate: new Date(),
                 defectTime: '00:00:00',
             },
+            currentTime: ''
         }),
         methods: {
             reportDefect (event) {
@@ -241,24 +242,19 @@
             },
         },
         mounted() {
-            let today = new Date();
-            let hour = today.getHours();
-            let min = today.getMinutes();
-            if (min < 10 && min > 0) {
-                min = '0' + min;
-            }
-            if (hour < 10 && hour > 0) {
-                hour = '0' + hour;
-            }
-            // console.log('today '+today);
-            this.defects.defectTime = hour + ":" + min;
+            this.$data._clock = () => {
+                this.currentTime = moment().format('HH:mm');
+            };
+
+            setInterval(this.$data._clock, 1000);
         },
         updated() {
             // console.log('updated');
-            // console.log(this.stationShiftsData);
-            if (this.selectedStationShiftId == null) {
+            if (this.selectedStationShiftId === null && this.stationShiftsData.length > 0) {
                 this.selectedStationShiftId = this.stationShiftsData[0].shift_id;
             }
+
+            this.defects.defectTime = this.currentTime;
         }
     }
 </script>
