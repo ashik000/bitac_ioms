@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid mt-4">
         <header class="row">
-            <div class="col mx-2" style="border: 1px solid grey">
+            <div class="col mx-2 line-view-header-card">
                 <div class="gauge-container d-flex flex-direction-row flex-nowrap justify-content-start align-items-baseline">
                     <div class="gaugeL">
                         <div id="totalOee"></div>
@@ -27,13 +27,13 @@
             </div>
 
 
-            <div class="col mx-2" style="border: 1px solid grey">
+            <div class="col mx-2 line-view-header-card">
                 <oee-summary-panel
                     :hourly-data="oeeSummary.hourly">
                 </oee-summary-panel>
             </div>
 
-            <div class="col mx-2" style="border: 1px solid grey">
+            <div class="col mx-2 line-view-header-card">
 
                 <div class="row mt-1">
                     <div class="col-md-2">
@@ -152,10 +152,10 @@
         </div>
 
 
-        <footer class="row">
-            <div class="controls container-fluid" style="display: flex; justify-content: space-around;">
+        <footer class="row fixed-bottom">
+            <div class="controls container-fluid d-flex justify-content-around">
 
-                <div class="card" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isProductSelectionModalShown = true">
+                <div class="card rounded-0" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isProductSelectionModalShown = true">
                   <div class="card-body" style="text-align: center;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
                       <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
@@ -163,7 +163,7 @@
                   </div>
                 </div>
 
-                <div class="card" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isOperatorSelectionModalShown = true">
+                <div class="card rounded-0" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isOperatorSelectionModalShown = true">
                   <div class="card-body" style="text-align: center;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
                       <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -172,7 +172,7 @@
                   </div>
                 </div>
 
-                <div class="card" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isDowntimeSummaryModalShown = true">
+                <div class="card rounded-0" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isDowntimeSummaryModalShown = true">
                   <div class="card-body" style="text-align: center;">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
                         <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
@@ -181,7 +181,7 @@
                   </div>
                 </div>
 
-                <div class="card" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isScrapInputModalShown = true">
+                <div class="card rounded-0" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isScrapInputModalShown = true">
                   <div class="card-body" style="text-align: center;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                       <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
@@ -592,18 +592,3 @@
     }
 </script>
 
-<style>
-.gaugeS > span:nth-child(2), .gaugeL > span:nth-child(2){
-    font-weight: bolder;
-    font-size: 1.3em;
-    position: relative;
-    bottom: 1rem;
-}
-
-.gaugeS > span:nth-child(3), .gaugeL > span:nth-child(3){
-    font-size: .8em;
-    position: relative;
-    bottom: 1rem;
-}
-
-</style>

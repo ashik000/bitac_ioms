@@ -443,6 +443,23 @@ li.active > span:last-child > button:first-child{
     align-items: center;
 }
 
+.gaugeS > span:nth-child(2), .gaugeL > span:nth-child(2){
+    font-weight: bolder;
+    font-size: 1.3em;
+    position: relative;
+    bottom: 1rem;
+}
+
+.gaugeS > span:nth-child(3), .gaugeL > span:nth-child(3){
+    font-size: .8em;
+    position: relative;
+    bottom: 1rem;
+}
+
+.line-view-header-card{
+    border: 2px solid #C5E9FF;
+}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
