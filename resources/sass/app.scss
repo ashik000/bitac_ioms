@@ -7,6 +7,7 @@ html, body{
     height: 100%;
     background-color: #F8FCFF;
 }
+body{scroll-x: hidden;}
 nav > .d-1{
     background: linear-gradient(270deg, rgba(0,160,253,1) 0%, rgb(0, 167, 221) 34%, rgba(0,184,151,1) 100%);
 }
@@ -427,8 +428,8 @@ li.active > span:last-child > button:first-child{
     height: 7rem;
     position: relative;
     bottom: 0.3rem;
-    //display: flex;
-    //flex-direction: column;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     span{
         position: relative;
@@ -437,15 +438,15 @@ li.active > span:last-child > button:first-child{
 
 .gaugeS{
     height: 3.5rem;
-    //display: flex;
-    //flex-direction: column;
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 input[type=number] {
     -moz-appearance:textfield;

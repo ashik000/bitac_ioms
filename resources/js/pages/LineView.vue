@@ -356,7 +356,7 @@
             gaugeTotalOee(nv, ov){
                 let element = document.querySelector('#totalOee');
                 element.innerHTML = "";
-                GaugeChart.gaugeChart(element, 150, {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
+                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 200 : 130, {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
                         arcDelimiters: [30, 70]}}).updateNeedle(nv);
             },
             gaugeAvailability(nv, ov){
@@ -365,18 +365,18 @@
                 let element = document.querySelector('#totalAvailability');
                 element.innerHTML = "";
 
-                GaugeChart.gaugeChart(element, 120, this.generateGaugeProperties(nv, '#1947A4')).updateNeedle(nv);
+                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 120 : 100, this.generateGaugeProperties(nv, '#1947A4')).updateNeedle(nv);
             },
             gaugePerformance(nv, ov){
                 let element = document.querySelector('#totalPerformance');
                 element.innerHTML = "";
-                GaugeChart.gaugeChart(element, 120, this.generateGaugeProperties(nv, '#49B92A')).updateNeedle(nv);
+                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 120 : 100, this.generateGaugeProperties(nv, '#49B92A')).updateNeedle(nv);
             },
             gaugeQuality(nv, ov){
                 let element = document.querySelector('#totalQuality');
                 element.innerHTML = "";
 
-                GaugeChart.gaugeChart(element, 120, this.generateGaugeProperties(nv, '#FFA600')).updateNeedle(nv);
+                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 120 : 100, this.generateGaugeProperties(nv, '#FFA600')).updateNeedle(nv);
             },
         },
         methods: {
@@ -527,7 +527,11 @@
             renderGaugeChart(){
                 let elements = ['#totalOee', '#totalAvailability', '#totalPerformance', '#totalQuality'];
                 for (let i = 0; i < elements.length; i++) {
-                    GaugeChart.gaugeChart(document.querySelector(elements[i]), elements[i] === '#totalOee' ? 150 : 120,
+
+                    let element = document.querySelector(elements[i]);
+                    element.innerHTML = "";
+
+                    GaugeChart.gaugeChart(document.querySelector(elements[i]), elements[i] === '#totalOee' ? (window.innerWidth >= 1920 ? 200 : 130) : (window.innerWidth >= 1920 ? 120 : 100),
                       elements[i] === '#totalOee' ? {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
                       arcDelimiters: [30, 70]}} : {...this.gaugeOptions, ...{arcColors: ['#EAEAEA']}} );
 
