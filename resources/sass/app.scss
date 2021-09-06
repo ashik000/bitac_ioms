@@ -7,7 +7,7 @@ html, body{
     height: 100%;
     background-color: #F8FCFF;
 }
-body{scroll-x: hidden;}
+body{overflow-x: hidden;}
 nav > .d-1{
     background: linear-gradient(270deg, rgba(0,160,253,1) 0%, rgb(0, 167, 221) 34%, rgba(0,184,151,1) 100%);
 }
