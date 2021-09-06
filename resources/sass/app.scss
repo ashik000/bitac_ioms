@@ -426,19 +426,18 @@ li.active > span:last-child > button:first-child{
 .gaugeL{
     height: 7rem;
     position: relative;
-    bottom: 0.7rem;
-    display: flex;
-    flex-direction: column;
+    bottom: 0.3rem;
+    //display: flex;
+    //flex-direction: column;
     align-items: center;
     span{
         position: relative;
-        bottom: 1.1rem;
     }
 }
 
 .gaugeS{
     height: 3.5rem;
-    display: flex;
-    flex-direction: column;
+    //display: flex;
+    //flex-direction: column;
     align-items: center;
 }
