@@ -113,6 +113,7 @@
             stationName: String
         },
         mounted() {
+            console.log('test op')
             let vm = this;
             let filteredStations = this.operator.stations.filter(function(opst){
                 return opst.meta.station_id == vm.stationId;
