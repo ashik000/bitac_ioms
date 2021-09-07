@@ -6,14 +6,14 @@
             <div class="d-flex">
 
                 <div class="btn-group me-4">
-                    <button class="btn rounded-0" v-on:click="zoomIn()" style="background-color: #00b895; color: #fff; outline: none;">
+                    <button class="btn rounded-0" v-on:click="zoomIn()" style="background-color: #00b895; color: #fff; outline: none; border-right: 2px solid #09C8A4 !important;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-zoom-in" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
                             <path d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z"/>
                             <path fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5z"/>
                         </svg>
                     </button>
-                    <button class="btn rounded-0" v-on:click="zoomOut()" style="background-color: #00b895; color: #fff; outline: none;">
+                    <button class="btn rounded-0 me-2" v-on:click="zoomOut()" style="background-color: #00b895; color: #fff; outline: none;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-zoom-out" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
                             <path d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z"/>
@@ -21,7 +21,7 @@
                         </svg>
                     </button>
 
-                    <button class="btn rounded-0" v-on:click="panLeft()" style="background-color: #00b895; color: #fff; outline: none;">
+                    <button class="btn rounded-0" v-on:click="panLeft()" style="background-color: #00b895; color: #fff; outline: none; border-right: 2px solid #09C8A4 !important;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                         </svg>
@@ -33,23 +33,35 @@
                     </button>
                 </div>
 
-                <div class="input-group">
-                    <input type="time" :value="defects.defectTime" />
-                    <button class="btn btn-danger" v-on:click="decreaseDefect()">-</button>
-                    <input type="number" class="defect_value" :value="defects.defectValue" />
-                    <button class="btn btn-danger" v-on:click="increaseDefect()">+</button>
-                    <button class="btn btn-danger" v-on:click="reportDefect()">Report Defect</button>
+                <div class="input-group rounded-3" style="padding: 0.25rem; background-color: rgba(245, 66, 66, 0.25);">
+                    <input type="time"  class="form-control rounded-3 me-2" :value="defects.defectTime" style="border: 1px solid red;"/>
+                    <button class="btn left-radius" v-on:click="decreaseDefect()" style="background-color: #FF0D0D; color: #FFFFFF;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
+                            <path d="M0 8a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1z"/>
+                        </svg>
+                    </button>
+
+                    <input type="number" class="defect_value form-control text-center" :value="defects.defectValue" style="border: 1px solid red;"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-box-seam" style="position: absolute;left: 16.8em;top: .95em;">
+                        <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"></path>
+                    </svg>
+                    <button class="btn right-radius" v-on:click="increaseDefect()" style="background-color: #FF0D0D; color: #FFFFFF;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
+                        </svg>
+                    </button>
+                    <button class="btn ms-3 rounded-3" v-on:click="reportDefect()" style="background-color: #BB2000; color: #FFFFFF;">Report Defect</button>
                 </div>
             </div>
 
-            <select class="form-group" name="changeStationShift" id="changeStationShift"
+            <select class="form-group rounded-0" name="changeStationShift" id="changeStationShift"
                     v-model="selectedStationShiftId" @change="onSelectChange($event)"
-                    style="float: right">
+                    style="background-color: rgb(0, 184, 149); color: rgb(255, 255, 255); outline: none;">
                 <option v-for="stationShift in stationShiftsData" :value="stationShift.shift_id" :key="stationShift.shift_id">{{ stationShift.shift_name }}</option>
             </select>
         </div>
 
-        <table class="line-view-graph">
+        <table class="line-view-graph mt-1">
             <thead>
             <tr>
                 <th style="width: 2%">Hour</th>
@@ -424,5 +436,15 @@
             thead {
             }
         }
+    }
+
+    .left-radius{
+        border-top-left-radius: .3rem !important;
+        border-bottom-left-radius: .3rem !important;
+    }
+
+    .right-radius{
+        border-top-right-radius: .3rem !important;
+        border-bottom-right-radius: .3rem !important;
     }
 </style>
