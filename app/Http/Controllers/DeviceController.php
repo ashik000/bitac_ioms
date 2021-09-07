@@ -32,6 +32,7 @@ class DeviceController
         $device = $this->deviceRepository->findByIdentifier($deviceIdentifier);
         $packet = $this->packetRepository->savePacketFromDevice($device, bin2hex($message));
         dispatch(new ParseAndSaveIomsLogPacket($device, $packet));
+        \Log::debug('Sending ack');
         $mqttClient->sendPublishAcknowledgementAfterProcessing();
     }
 
