@@ -1,7 +1,7 @@
 <template>
     <div class="p-2">
         <div class="chart-wrap">
-            <canvas width="100%" height="150px" ref="chartElement"/>
+            <canvas width="100%" height="200px" ref="chartElement"/>
         </div>
     </div>
 </template>
@@ -109,8 +109,8 @@
                             data: clone(this.hourlyData.oee),
                             pointHoverBackgroundColor: '#9E9E9E',
                             pointHoverRadius: 6,
-                            borderColor: '#9E9E9E',
-                            backgroundColor: '#9E9E9E',
+                            borderColor: '#6D6D6D',
+                            backgroundColor: '#6D6D6D',
                         },
                     ],
                 },
@@ -131,7 +131,7 @@
                             },
                             gridLines: {
                                 offsetGridLines: true,
-                                color: '#000'
+                                display: false,
                             }
                         }],
                         xAxes: [{
@@ -141,12 +141,15 @@
                             },
                             gridLines: {
                                 offsetGridLines: true,
-                                color: '#000',
+                                borderDash: [8, 4],
+                                color: '#BCBCBC',
+
                             }
                         },],
                     },
                     legend: {
-                        display: false,
+                        display: true,
+                        position: 'bottom',
                     },
                     tooltips: {
                         callbacks: {
@@ -161,49 +164,3 @@
         }
     }
 </script>
-
-<style scoped lang="scss">
-    .chart-wrap {
-        position: relative;
-
-        canvas {
-            cursor: pointer;
-        }
-    }
-
-    .progress-bars-legend {
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-
-        justify-content: space-between;
-
-        .legend-wrap {
-            width: 28%;
-            color: #000;
-            text-align: center;
-        }
-
-        .progress-bar-wrap {
-            position: relative;
-            height: 1.25rem;
-            background: #000;
-            border-radius: 0.25rem;
-
-            .progress {
-                height: 1.25rem;
-            }
-
-            .progress-label {
-                position: absolute;
-                display: block;
-
-                left: 0;
-                top: 0;
-                right: 0;
-                border-bottom: 0;
-            }
-        }
-    }
-</style>

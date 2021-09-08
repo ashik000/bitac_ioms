@@ -22,12 +22,12 @@ export const LineViewDataTransformer = (data) => {
         const quality = row.produced ? (( row.produced-row.scrapped) / row.produced) : 0;
 
 
-        hourlyData.labels.push(`${row.hour}`.padStart(2, '0'));
-        hourlyData.availability.push((available * 100).toFixed(2));
-        hourlyData.performance.push((performance * 100).toFixed(2));
-        hourlyData.quality.push((quality * 100).toFixed(2));
-        hourlyData.oee.push((available * performance * quality * 100).toFixed(2));
-        hourlyData.scrapped.push(row.scrapped);
+        hourlyData.labels.unshift(`${row.hour}`.padStart(2, '0'));
+        hourlyData.availability.unshift((available * 100).toFixed(2));
+        hourlyData.performance.unshift((performance * 100).toFixed(2));
+        hourlyData.quality.unshift((quality * 100).toFixed(2));
+        hourlyData.oee.unshift((available * performance * quality * 100).toFixed(2));
+        hourlyData.scrapped.unshift(row.scrapped);
 
         totalSummary.expected_uptime += 3600;
         totalSummary.available_time += row.available_time;
