@@ -238,14 +238,16 @@
             v-if="isProductSelectionModalShown"
             @close="productSelectionModalClosed()"
             :station-id="filter.stationId"
-            :station-name="filter.stationName">
+            :station-name="filter.stationName"
+            :product-id="this.products[0].product_id">
         </product-selection-modal>
 
         <operator-selection-modal
             v-if="isOperatorSelectionModalShown"
             @close="operatorSelectionModalClosed()"
             :station-id="filter.stationId"
-            :station-name="filter.stationName">
+            :station-name="filter.stationName"
+            :operator-id="filter.stationOperatorId">
         </operator-selection-modal>
 
         <downtime-summary-modal
@@ -256,10 +258,10 @@
         </downtime-summary-modal>
 
         <scrap-input-model
-          v-if="isScrapInputModalShown"
-          @close="scrapInputModalClosed()"
-          :stationId="filter.stationId"
-          :date="filter.selectedDate">
+            v-if="isScrapInputModalShown"
+            @close="scrapInputModalClosed()"
+            :stationId="filter.stationId"
+            :date="filter.selectedDate">
         </scrap-input-model>
     </div>
 </template>
@@ -309,6 +311,7 @@
                 stationId: 1,
                 stationShiftId: null,
                 stationName: '',
+                stationOperatorId: null,
                 stationOperatorName: 'N/A',
                 selectedDate: new Date(),
             },
@@ -429,8 +432,9 @@
                         date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
                     },
                     (data) => {
-                        // console.log(data.operatorName)
+                        // console.log(data.operatorId)
                         this.filter.stationOperatorName = data.operatorName;
+                        this.filter.stationOperatorId = data.operatorId;
                     }
                 );
             },
@@ -559,7 +563,7 @@
             this.$data._clock = () => {
                 vm.currentTime = moment().format('LTS');
             };
-            setInterval(this.$data._clock, 1000);
+            setInterval(this.$data._clock, 10000);
 
             this.fetchData();
             this.$data._updateData = () => {

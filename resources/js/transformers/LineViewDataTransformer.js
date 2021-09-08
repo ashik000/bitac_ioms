@@ -44,7 +44,7 @@ export const LineViewDataTransformer = (data) => {
             produced: totalSummary.produced,
             expected: totalSummary.expected,
             scrapped: totalSummary.scrapped,
-            performance: totalSummary.produced * 100 / totalSummary.expected,
+            performance: Math.min(100, totalSummary.produced * 100 / totalSummary.expected),
             availability: totalSummary.available_time * 100 / totalSummary.expected_uptime,
             quality: totalSummary.produced ? (( totalSummary.produced-totalSummary.scrapped) / totalSummary.produced)*100 : 0,
             oee: ((totalSummary.produced/totalSummary.expected) * (totalSummary.available_time / totalSummary.expected_uptime) *
