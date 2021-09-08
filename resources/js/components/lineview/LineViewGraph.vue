@@ -63,26 +63,13 @@
 
         <table class="line-view-graph mt-1">
             <thead>
-            <tr>
-                <th style="width: 2%">Hour</th>
-<!--                <th class="availability-column">:00</th>-->
-<!--                <th class="availability-column"></th>-->
-<!--                <th class="availability-column"></th>-->
-<!--                <th class="availability-column">:15</th>-->
-<!--                <th class="availability-column"></th>-->
-<!--                <th class="availability-column"></th>-->
-<!--                <th class="availability-column">:30</th>-->
-<!--                <th class="availability-column"></th>-->
-<!--                <th class="availability-column"></th>-->
-<!--                <th class="availability-column">:45</th>-->
-<!--                <th class="availability-column"></th>-->
-<!--                <th class="availability-column"></th>-->
-
+            <tr class="text-center">
+                <th style="width: 2%; color: #009FFF;">HOUR</th>
                 <th v-bind:style="{width: headerWidth + '%' }" v-for="i in colspan[zoomIndex]" class="availability-column">{{barLabel(i-1)}}</th>
 
-                <th style="width: 10%">Performance</th>
+                <th style="width: 10%; color: #49B92D;">PERFORMANCE</th>
 
-                <th style="width: 5%">Defect</th>
+                <th style="width: 5%; color: #FF0D0D;">DEFECT</th>
             </tr>
             </thead>
             <tbody>
@@ -137,7 +124,7 @@
                         <span class="expected">{{ logs.expected }}</span>
                     </div>
                 </td>
-                <td>
+                <td :style="{ color: logs.scrapped ? '#FF0D0D' : ''}">
                     <div>
                         <span class="defect_product">
                             {{ logs.scrapped }}
@@ -286,7 +273,7 @@
     table.line-view-graph {
         @extend .table, .table-bordered;
 
-        border: 0.5px solid grey !important;
+        border: 0.5px solid #E5EDF4 !important;
 
         overflow: hidden;
 
@@ -294,9 +281,9 @@
             position: relative;
             padding: 0.25rem 0.75rem;
 
-            border: 0.5px solid grey !important;
+            border: 0.5px solid #E5EDF4 !important;
 
-            color: #000;
+            color: #717F87;
             font-size: 1.2rem;
             font-weight: normal;
         }
@@ -313,7 +300,7 @@
         .availability-column {
             position: relative;
 
-            border: none !important;
+            //border: none !important;
 
             &:after {
                 content: "";
@@ -327,7 +314,7 @@
                 right: -1px;
                 z-index: 10;
 
-                border: 1px dashed #ffffff;
+                //border: 1px dashed #ffffff;
             }
 
             &:nth-of-type(3n + 2) {
@@ -343,7 +330,6 @@
 
         .hour-marker {
             text-align: center;
-            font-weight: bold;
         }
 
         .hour-availability {
@@ -404,8 +390,8 @@
                         content: "/";
                         display: inline-block;
 
-                        padding-left: 1rem;
-                        padding-right: 1rem;
+                        //padding-left: 1rem;
+                        //padding-right: 1rem;
                     }
                 }
             }
