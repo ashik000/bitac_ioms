@@ -19,7 +19,8 @@
                             :key="product.id"
                             :product="product"
                             :station-id="stationId"
-                            :station-name="stationName">
+                            :station-name="stationName"
+                            :product-id="productId">
                         </product-selection-list-item>
                     </ul>
                 </div>
@@ -68,7 +69,8 @@ export default {
 
     props: {
         stationId: Number,
-        stationName: String
+        stationName: String,
+        productId: Number
     }
 
 }

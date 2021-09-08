@@ -188,6 +188,7 @@ class LineViewController extends Controller
                 ['station_operators.end_time', '>=', $checDate]
             ])
             ->select([
+                DB::raw('operators.id as operator_id'),
                 DB::raw('operators.first_name as first_name'),
                 DB::raw('operators.last_name as last_name'),
             ])->distinct()->get();
@@ -195,12 +196,16 @@ class LineViewController extends Controller
         if (count($result) > 0)
         {
             return [
+                'operatorId' => $result[0]->operator_id,
                 'operatorName' => $result[0]->first_name . ' ' . $result[0]->last_name
             ];
         }
         else
         {
-            return ['operatorName' => 'N/A'];
+            return [
+                'operatorId' => null,
+                'operatorName' => 'N/A'
+            ];
         }
     }
 

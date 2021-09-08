@@ -29,19 +29,19 @@ import ToastrService from '../../../services/ToastrService';
         },
 
         methods: {
-          onProductChange(event) {
-              var data = event.target.value;
-              console.log('on product change triggered')
+            onProductChange(event) {
+                var data = event.target.value;
+                console.log('on product change triggered')
 
-              console.log(data);
-              this.triggeredProductId = data;
-              // store the new product id & remove the old ones
-              this.assignProductToStation(this.triggeredProductId, this.stationId);
-          },
-          assignProductToStation(productId, stationId) {
+                console.log(data);
+                this.triggeredProductId = data;
+                // store the new product id & remove the old ones
+                this.assignProductToStation(this.triggeredProductId, this.stationId);
+            },
+            assignProductToStation(productId, stationId) {
             let payload = {
-              productId: productId,
-              stationId: stationId
+                productId: productId,
+                stationId: stationId
             }
             console.log('payload b4 assigning product')
             console.log(payload);
@@ -57,26 +57,33 @@ import ToastrService from '../../../services/ToastrService';
             // }, error => {
             //     console.log(error)
             // });
-          },
+            },
         },
 
         props: {
             product: Object,
             stationId: Number,
-            stationName: String
+            stationName: String,
+            productId: Number,
         },
         mounted() {
+            console.log('test product mount')
+            console.log(this.product);
             let vm = this;
 
-            if (vm.stationId !== null) {
-              stationProductService.fetchAll(vm.stationId, (data) => {
-                  console.log('station product loaded');
-                  // console.log(data[0].product_id);
-                  vm.checkedVal = data[0].product_id;
-              }, (error) => {
-                  console.log(error);
-              });
-            }
+            vm.checkedVal = vm.productId;
+            console.log('check productId')
+            console.log(vm.productId);
+
+            // if (vm.stationId !== null) {
+            //     stationProductService.fetchAll(vm.stationId, (data) => {
+            //         console.log('station product loaded');
+            //         // console.log(data[0].product_id);
+            //         vm.checkedVal = data[0].product_id;
+            //     }, (error) => {
+            //         console.log(error);
+            //     });
+            // }
         },
         computed:{
 

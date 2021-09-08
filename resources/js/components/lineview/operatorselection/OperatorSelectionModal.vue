@@ -19,7 +19,8 @@
                             :key="operator.id"
                             :operator="operator"
                             :station-id="stationId"
-                            :station-name="stationName">
+                            :station-name="stationName"
+                            :operator-id="operatorId">
                         </operator-selection-list-item>
                     </ul>
                 </div>
@@ -60,6 +61,8 @@
             OperatorsService.fetchAll((data) => {
                 console.log(data)
                 vm.operators = data;
+                console.log('pre operators')
+                console.log(vm.operators)
             }, (error) => {
                 console.log(error);
             });
@@ -67,7 +70,8 @@
 
         props: {
             stationId: Number,
-            stationName: String
+            stationName: String,
+            operatorId: String,
         }
 
     }

@@ -7,7 +7,7 @@
             </div>
 
             <div class="col-sm-3" v-if="operator.stations && operator.stations.length > 0">
-                <span v-for="(operatorStation, index) in operator.stations">
+                <span v-for="(operatorStation, index) in operator.stations" :key="operatorStation.id">
                     <span v-if="index < operator.stations.length -1">{{ operatorStation.name + ", " }}</span>
                     <span v-else>{{ operatorStation.name }}</span>
                 </span>
@@ -15,11 +15,18 @@
             <div class="col-sm-3" v-else>
                 <span>None</span>
             </div>
+
             <div class="col-sm-4">
+              <div class="form-check">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" :value="operator.id" @change="onOperatorChange($event)" :checked="operator.id == checkedVal">
+              </div>
+            </div>
+
+            <!-- <div class="col-sm-4">
                 <template v-if="alreadyAssigned">
                     <div class="d-flex flex-direction-row justify-content-end">
                         <button class="btn" style="background-color: white;border-color: white;" @click="removeOperator(operator.stations)">
-                            <i class="icon material-icons" style="font-size:30px; color:grey;">delete</i>
+                            Delete
                         </button>
                     </div>
                 </template>
@@ -27,11 +34,11 @@
                     <div class="d-flex flex-row flex-nowrap justify-content-between">
                         <VueCtkDateTimePicker id="startTimeSelect" :no-label="true" :right="true" v-model="operator.startTime" :inline="false" format="YYYY-MM-DD hh:mm:ss" formatted="YYYY-MM-DD hh:mm:ss" />
                         <button class="btn py-0 px-1 border-white bg-white" @click="assignOperator(operator.id)">
-                            <i class="icon material-icons" style="font-size:30px; color:grey;">add</i>
+                            Add
                         </button>
                     </div>
                 </template>
-            </div>
+            </div> -->
         </div>
     </li>
 
@@ -45,11 +52,18 @@
 
         data: function () {
             return {
-                assignedStationIds: []
+                assignedStationIds: [],
+                checkedVal: null,
             }
         },
 
         methods: {
+            onOperatorChange: function (event) {
+                var data = event.target.value;
+                console.log('on operator change triggered')
+
+                console.log(data);
+            },
             getAssignedStationIdsFromObject: function () {
                 this.operator.stations.forEach((value, index) => {
                     this.assignedStationIds.push(value.id);
@@ -110,17 +124,25 @@
         props: {
             operator: Object,
             stationId: Number,
-            stationName: String
+            stationName: String,
+            operatorId: String,
         },
         mounted() {
-            console.log('test op')
+            console.log('test operator mount')
+            console.log(this.operator);
+
             let vm = this;
-            let filteredStations = this.operator.stations.filter(function(opst){
-                return opst.meta.station_id == vm.stationId;
-            });
-            if(filteredStations && filteredStations.length > 0){
-                this.$set(this.operator, 'startTime' , filteredStations[0].meta.start_time);
-            }
+            vm.checkedVal = vm.operatorId;     // to set the default value of the radio button means set the operatorId
+            // console.log('check operatorId')
+            // console.log(vm.operatorId);
+
+            // let filteredStations = this.operator.stations.filter(function(opst){
+            //     return opst.meta.station_id == vm.stationId;
+            // });
+            // if(filteredStations && filteredStations.length > 0){
+            //     this.$set(this.operator, 'startTime' , filteredStations[0].meta.start_time);
+            // }
+
         },
         computed:{
             alreadyAssigned: function (){
