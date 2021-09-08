@@ -587,6 +587,7 @@ class InovaceDevice
                 $downtimePrevDuration = $downtimePrevStartTime->copy()->endOfHour()->diffInSeconds($downtimePrevStartTime);
 
                 $downtimes[] = [
+                    'id'                => ++$topDowntimeId,
                     'start_time'        => $downtimePrevStartTime,
                     'duration'          => $downtimePrevDuration,
                     'production_log_id' => $topProductionLogId,
@@ -606,6 +607,7 @@ class InovaceDevice
 //                    $downtimeEnd = $downtimeStart->copy()->addSeconds($downtimeDuration);
 
                     $downtimes[] = [
+                        'id'                => ++$topDowntimeId,
                         'start_time'        => $hour->copy()->startOfHour(),
                         'duration'          => $downtimeDuration,
                         'production_log_id' => $topProductionLogId,
