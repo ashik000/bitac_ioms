@@ -770,10 +770,4 @@ class InovaceDevice
         $packet->processing_end = now();
         $packet->save();
     }
-
-//    public function diffInHours($endHourObject, CarbonImmutable $startHourObject)
-//    {
-//        Log::debug('Inside diff in hours function');
-//        return $endHourObject->diffInHours($startHourObject);
-//    }
 }

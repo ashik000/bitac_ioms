@@ -7,6 +7,7 @@ use App\Data\Repositories\DeviceRepository;
 use App\Data\Repositories\PacketRepository;
 use App\Http\Controllers\Mqtt\InovaceMqttClient;
 use App\Jobs\ParseAndSaveIomsLogPacket;
+use Illuminate\Support\Facades\Log;
 
 class DeviceController
 {
