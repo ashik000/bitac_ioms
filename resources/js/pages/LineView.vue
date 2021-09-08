@@ -278,6 +278,7 @@
     import DowntimeSummaryModal from "../components/lineview/downtimesummary/DowntimeSummaryModal";
     import ScrapInputModel from "../components/lineview/scrapinput/ScrapInputModal";
     import OperatorSelectionModal from "../components/lineview/operatorselection/OperatorSelectionModal";
+    import ProductSelectionModal from "../components/lineview/productselection/ProductSelectionModal";
     import moment from "moment";
     import downtimeReasonsService from "../services/DowntimeReasons";
     import toastrService from "../services/ToastrService";
@@ -286,6 +287,7 @@
         name: "LineView",
         components: {
             OperatorSelectionModal,
+            ProductSelectionModal,
             Modal,
             DowntimeSummaryModal,
             LineViewGraph,

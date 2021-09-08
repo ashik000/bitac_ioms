@@ -28,6 +28,7 @@
 
         <template v-slot:footer>
             <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
+            <button class="btn btn-success ms-2" >Assign</button>
         </template>
     </modal>
 
@@ -57,9 +58,9 @@ export default {
     mounted: function (){
         const vm = this;
 
-        ProductsService.fetchAll((data) => {
+        ProductsService.fetchAll([], (data) => {
             console.log(data)
-            vm.operators = data;
+            vm.products = data;
         }, (error) => {
             console.log(error);
         });
