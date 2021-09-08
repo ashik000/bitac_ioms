@@ -51,6 +51,7 @@
                         </svg>
                     </button>
                     <button class="btn ms-3 rounded-3" v-on:click="reportDefect()" style="background-color: #BB2000; color: #FFFFFF;">Report Defect</button>
+                    <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
                 </div>
             </div>
 
@@ -187,7 +188,8 @@
                 defectDate: new Date(),
                 defectTime: '00:00:00',
             },
-            currentTime: ''
+            currentTime: '',
+            showInprogress: false,
         }),
         methods: {
             reportDefect (event) {
@@ -263,17 +265,22 @@
             },
         },
         mounted() {
-            this.$data._clock = () => {
-                this.currentTime = moment().format('HH:mm');
-            };
+            // this.$data._clock = () => {
+            // };
+            this.currentTime = moment().format('HH:mm');
 
-            setInterval(this.$data._clock, 1000);
+            console.log('current time')
+            console.log(this.currentTime)
+
+            // setInterval(this.$data._clock, 1000);
         },
         updated() {
             // console.log('updated');
             if (this.selectedStationShiftId === null && this.stationShiftsData.length > 0) {
                 this.selectedStationShiftId = this.stationShiftsData[0].shift_id;
             }
+
+            this.$emit('stationshift-selected', this.selectedStationShiftId);
 
             this.defects.defectTime = this.currentTime;
         }

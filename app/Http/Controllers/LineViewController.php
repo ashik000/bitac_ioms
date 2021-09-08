@@ -224,7 +224,7 @@ class LineViewController extends Controller
             $scrap['date'] = $request['date'];
             $scrap['hour'] = $request['defectTime'];
             $scrap['station_id'] = $request['stationId'];
-            $scrap['shift_id'] = $request['shiftId'];
+            $scrap['shift_id'] = $request['stationShiftId'];
             $scrap['product_id'] = $request['productId'];
             $scrap['operator_id'] = 1;
             $scrap['created_by'] = 1;

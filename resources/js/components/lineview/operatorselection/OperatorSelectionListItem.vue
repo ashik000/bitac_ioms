@@ -54,6 +54,7 @@
             return {
                 assignedStationIds: [],
                 checkedVal: null,
+                selectedOperatorId: null
             }
         },
 
@@ -62,8 +63,26 @@
                 var data = event.target.value;
                 console.log('on operator change triggered')
 
-                console.log(data);
+                this.selectedOperatorId = data;
+
+                console.log(this.selectedOperatorId);
+                this.assignOperator(this.selectedOperatorId);
             },
+
+            assignOperator: function (operatorId) {
+                stationOperatorService.assignOperator
+            },
+
+            // stationOperatorService.assignOperator({
+            //     operator_id: this.selectedOperatorId,
+            //     station_id: stationId,
+            // }, data => {
+            //     console.log('success')
+            //     ToastrService.showSuccessToast('Operator assigned to station successfully');
+            // }, error => {
+            //     console.log(error)
+            // });
+
             getAssignedStationIdsFromObject: function () {
                 this.operator.stations.forEach((value, index) => {
                     this.assignedStationIds.push(value.id);
@@ -133,6 +152,9 @@
 
             let vm = this;
             vm.checkedVal = vm.operatorId;     // to set the default value of the radio button means set the operatorId
+
+
+
             // console.log('check operatorId')
             // console.log(vm.operatorId);
 

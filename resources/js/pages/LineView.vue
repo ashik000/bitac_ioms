@@ -146,6 +146,7 @@
                         @reportDefects="submitReportDefects"
                     >
                     </line-view-graph>
+                    <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
                 </div>
             </div>
 
@@ -284,6 +285,7 @@
     import moment from "moment";
     import downtimeReasonsService from "../services/DowntimeReasons";
     import toastrService from "../services/ToastrService";
+import ToastrService from '../services/ToastrService';
 
     export default {
         name: "LineView",
@@ -355,7 +357,8 @@
             topOperatorDowntimeReasons: null,
             stationShifts: {
                 data: []
-            }
+            },
+            showInprogress: false,
         }),
         watch: {
             gaugeTotalOee(nv, ov){
@@ -365,8 +368,8 @@
                         arcDelimiters: [30, 70]}}).updateNeedle(nv);
             },
             gaugeAvailability(nv, ov){
-                console.log("Availability");
-                console.log(nv);
+                // console.log("Availability");
+                // console.log(nv);
                 let element = document.querySelector('#totalAvailability');
                 element.innerHTML = "";
 
@@ -448,6 +451,8 @@
                 }
             },
             updateStationShiftId(selectedStationShiftId) {
+                console.log('when update shiftId triggers')
+                console.log(selectedStationShiftId);
                 this.filter.stationShiftId = selectedStationShiftId;
                 this.fetchData();
             },
@@ -457,6 +462,7 @@
                 // console.log('defect hour '+hour);
 
                 // submit the defect
+                this.showInprogress = true;
                 LineViewService.storeDefects({
                     defectValue: defectsData.defectValue,
                     date: moment(this.filter.selectedDate).format('YYYY-MM-DD'),
@@ -465,9 +471,13 @@
                     stationShiftId: this.filter.stationShiftId,
                     productId: this.products[0].product_id,
                 }, data => {
+                    this.showInprogress = false;
                     console.log('success')
+                    ToastrService.showSuccessToast('Defect added successfully.');
                 }, error => {
-                    console.log(error)
+                    console.log(error);
+                    this.showInprogress = false;
+                    ToastrService.showErrorToast('Error! Try again.');
                 });
             },
             assignDowntimeReason(reason) {
@@ -563,7 +573,7 @@
             this.$data._clock = () => {
                 vm.currentTime = moment().format('LTS');
             };
-            setInterval(this.$data._clock, 10000);
+            setInterval(this.$data._clock, 1000);
 
             this.fetchData();
             this.$data._updateData = () => {
@@ -571,7 +581,7 @@
                     vm.fetchData();
                 }
             };
-            setInterval(this.$data._updateData, 10000);
+            setInterval(this.$data._updateData, 1000);
 
             StationsService.fetchAll({}, (data) => {
                 // console.log('station service fetch all')
