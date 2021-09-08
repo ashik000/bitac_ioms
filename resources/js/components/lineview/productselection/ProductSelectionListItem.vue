@@ -3,7 +3,7 @@
         <div class="row">
 
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" :checked="product.id == checkedVal">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" :value="product.id" @change="onProductChange($event)" :checked="product.id == checkedVal">
                 <label class="form-check-label" for="flexRadioDefault1">
                     {{ product.name }}
                 </label>
@@ -15,6 +15,7 @@
 
 <script>
     import stationProductService from "../../../services/StationProductService"
+import ToastrService from '../../../services/ToastrService';
 
     export default {
         name: "ProductSelectionListItem",
@@ -22,64 +23,41 @@
         data: function () {
             return {
                 assignedStationIds: [],
-                checkedVal: 1
+                checkedVal: 0,
+                triggeredProductId: 0,
             }
         },
 
         methods: {
-            // getAssignedStationIdsFromObject: function () {
-            //     this.product.stations.forEach((value, index) => {
-            //         this.assignedStationIds.push(value.id);
-            //     });
-            // },
+          onProductChange(event) {
+              var data = event.target.value;
+              console.log('on product change triggered')
 
-            // removeProduct: function (productStations) {
-            //     productStations.forEach((value, index) => {
-            //         if(value.id === this.stationId){
-            //             stationProductService.deleteStationProduct(value.meta.id, (data) => {
-            //                 this.product.stations.splice(index, 1);
-            //             }, (error) => {
-            //                 console.log(error);
-            //             });
-            //             return;
-            //         }
-            //     });
-            // },
+              console.log(data);
+              this.triggeredProductId = data;
+              // store the new product id & remove the old ones
+              this.assignProductToStation(this.triggeredProductId, this.stationId);
+          },
+          assignProductToStation(productId, stationId) {
+            let payload = {
+              productId: productId,
+              stationId: stationId
+            }
+            console.log('payload b4 assigning product')
+            console.log(payload);
 
-            // assignProduct: function (productId) {
-            //     const vm = this;
-            //     const request = {
-            //         station_id: this.stationId,
-            //         product_id: productId,
-            //         // start_time : this.product.startTime
-            //     };
+            // on hold
 
-            //     stationProductService.createOrUpdateStationProduct(request, function(data){
-            //         let stationProduct = data.filter(function(d){
-            //             return d.product_id === vm.product.id && d.station_id === vm.stationId;
-            //         });
-
-            //         let stationProductMeta = {
-            //             'id': stationProduct[0].id,
-            //             'product_id': stationProduct[0].product_id,
-            //             'station_id': stationProduct[0].station_id,
-            //         }
-
-            //         let station = {
-            //             'id': vm.stationId,
-            //             'name': vm.stationName,
-            //             'meta': stationProductMeta
-            //         };
-            //         if(vm.product.stations && vm.product.stations instanceof Array){
-            //             vm.product.stations.push(station);
-            //         } else {
-            //             vm.product.stations = [];
-            //             vm.product.stations.push(station);
-            //         }
-            //     }, (error) => {
-            //         console.log(error);
-            //     });
-            // }
+            // stationProductService.assignProductToStation({
+            //     product_id: productId,
+            //     station_id: stationId,
+            // }, data => {
+            //     console.log('success')
+            //     ToastrService.showSuccessToast('Product assigned to station successfully');
+            // }, error => {
+            //     console.log(error)
+            // });
+          },
         },
 
         props: {
@@ -88,42 +66,21 @@
             stationName: String
         },
         mounted() {
-            this.ch
-            // console.log('test item')
             let vm = this;
 
-            // let filteredStations = this.product.stations.filter(function(opst){
-            //     return opst.meta.station_id == vm.stationId;
-            // });
-            // if(filteredStations && filteredStations.length > 0){
-            //     this.$set(this.product, 'startTime' , filteredStations[0].meta.start_time);
-            // }
+            if (vm.stationId !== null) {
+              stationProductService.fetchAll(vm.stationId, (data) => {
+                  console.log('station product loaded');
+                  // console.log(data[0].product_id);
+                  vm.checkedVal = data[0].product_id;
+              }, (error) => {
+                  console.log(error);
+              });
+            }
         },
         computed:{
-            // alreadyAssigned: function (){
-            //     return this.assignedStationIds.indexOf(this.stationId) != -1;
-            // },
-            // assignedStationIds(){
-            //     let arr = [];
-            //     this.product.stations.forEach((value, index) => {
-            //         arr.push(value.id);
-            //     });
-            //     return arr;
-            // }
+
         },
-        updated() {
-            // this.checkedVal = 2
-            // console.log('pre');
-            // console.log(stationId);
-            // if (stationId !== null) {
-            //   stationProductService.fetchAll(stationId, (data) => {
-            //       console.log('stationProductService');
-            //       console.log(data)
-            //   }, (error) => {
-            //       console.log(error);
-            //   });
-            // }
-        }
     }
 </script>
 
