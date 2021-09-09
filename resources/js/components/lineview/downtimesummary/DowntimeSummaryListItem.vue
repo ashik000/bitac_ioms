@@ -8,21 +8,20 @@
             </div>
             <div class="col-sm-3">
                 <div class="dropdown">
-                    <button class="btn dropdown-toggle list-item-dropdown" type="button"
-                            data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ downtime.selectedReasonGroupName }}
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="float: right">
-                        <a class="dropdown-item" href="#" v-for="reasonGroup in reasonGroups" :key="reasonGroup.id" @click="reasonGroupSelected(downtime,reasonGroup);">{{reasonGroup.name}}</a>
-                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li v-for="reasonGroup in reasonGroups" :key="reasonGroup.id"
+                            @click="reasonGroupSelected(downtime,reasonGroup);">
+                            <a class="dropdown-item" href="#">{{reasonGroup.name}}</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="dropdown">
-                    <button class="btn dropdown-toggle list-item-dropdown" type="button"
-                            data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ downtime.selectedReasonName }}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -32,7 +31,7 @@
             </div>
             <div class="col-sm-1">
                 <button class="btn" style="background-color: white;border-color: white;" @click="reasonSelected(downtime,null)">
-                    <i class="icon material-icons" style="font-size:30px; color:grey;">delete</i>
+                    <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon>
                 </button>
             </div>
         </div>
@@ -46,8 +45,18 @@
         name: "DowntimeSummaryListItem.vue",
         data: ()=>{
             return {
-                filteredReasons: []
+                selectedReasonGroupId: null
             }
+        },
+        computed: {
+            filteredReasons: function () { 
+                // console.log(this.selectedReasonGroupId);
+                var id = this.selectedReasonGroupId;
+                return this.allReasons.filter(function(i) {
+                    // console.log(i);
+                    return id === null || i.downtime_reason_group.id === id;
+                });
+            }            
         },
         props:{
             downtime : Object,
@@ -67,10 +76,8 @@
             reasonGroupSelected(downtime, reasonGroup){
                 downtime.selectedReasonGroupName = reasonGroup.name;
                 downtime.selectedReasonName = "Please Select";
-                this.filteredReasons = [];
-                this.filteredReasons = this.allReasons.filter(function(i){
-                    return i.reason_group.id === reasonGroup.id;
-                });
+                this.selectedReasonGroupId = reasonGroup.id;
+
             },
             reasonSelected(downtime, reason){
                 downtime.reason = reason;
@@ -80,6 +87,8 @@
                     downtime.selectedReasonGroupName = "Please Select";
                     downtime.selectedReasonName = "Please Select";
                 }
+                // console.log('b4 emit');
+                // console.log(downtime);
                 this.$emit("downtimeReasonAssigned", {
                     downtime: downtime,
                     downtimeReason: reason,

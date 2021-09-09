@@ -70,26 +70,10 @@
                     operatorId: this.selectedOperatorId
                 }, data => {
                     ToastrService.showSuccessToast('Operator updated successfully.');
+                    this.$emit('close');
                 }, error => {
                     ToastrService.showErrorToast('Error! Try again.');
                 })
-
-                // LineViewService.storeDefects({
-                //     defectValue: defectsData.defectValue,
-                //     date: moment(this.filter.selectedDate).format('YYYY-MM-DD'),
-                //     defectTime: hour,
-                //     stationId: this.filter.stationId,
-                //     stationShiftId: this.filter.stationShiftId,
-                //     productId: this.products[0].product_id,
-                // }, data => {
-                //     this.showInprogress = false;
-                //     console.log('success')
-                //     ToastrService.showSuccessToast('Defect added successfully.');
-                // }, error => {
-                //     console.log(error);
-                //     this.showInprogress = false;
-                //     ToastrService.showErrorToast('Error! Try again.');
-                // });
             }
         },
         mounted: function (){

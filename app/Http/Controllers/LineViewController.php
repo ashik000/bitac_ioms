@@ -176,8 +176,6 @@ class LineViewController extends Controller
 
         $checkDate = Carbon::parse($date)->format('Y-m-d H:i:s');
 
-        Log::debug('checkDateCarbon: ' . $checkDate);
-
         $result = StationOperator::query()
             ->leftJoin('stations', 'stations.id', '=', 'station_operators.station_id')
             ->leftJoin('operators', 'operators.id', '=', 'station_operators.operator_id')

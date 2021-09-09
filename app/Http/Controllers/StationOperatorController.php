@@ -133,7 +133,11 @@ class StationOperatorController extends Controller
         
         if ($stationOperator) {
             // remove previous operator
-            $stationOperator->delete();
+            if ($stationOperator->operator_id != $operatorId) {
+                $stationOperator->delete();
+            } else {
+                return TRUE;
+            }
         }
 
         $newStationOperator = new StationOperator();

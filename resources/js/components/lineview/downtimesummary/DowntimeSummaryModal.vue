@@ -23,13 +23,15 @@
                             :reasonGroups="reasonGroups"
                             :allReasons="allReasons"
                             @downtimeReasonAssigned="reasonAssigned"
-                            v-if="!downtime.filteredOut"></downtime-summary-list-item>
+                            v-if="!downtime.filteredOut">
+                        </downtime-summary-list-item>
                     </ul>
                 </div>
             </div>
         </template>
         <template v-slot:footer>
-                <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
+            <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
+            <button class="btn btn-success ms-2" @click="assignDowntimeReason();" >Assign</button>
         </template>
 
     </modal>
@@ -39,6 +41,7 @@
     import Modal from "../../Modal";
     import DowntimeSummaryService from "../../../services/DowntimeSummaryService";
     import DowntimeReasonService from "../../../services/DowntimeReasons";
+    import ToastrService from "../../../services/ToastrService";
     import DowntimeSummaryFilter from "./DowntimeSummaryFilter";
     import DowntimeSummaryListItem from "./DowntimeSummaryListItem";
 
@@ -58,6 +61,9 @@
                 uncommentedDowntimeDurationInSeconds: 0,
                 plannedDowntimeDurationInSeconds: 0,
                 unplannedDowntimeDurationInSeconds: 0,
+                downtimeId: null,
+                downtimeReasonId: null,
+                eventData: null,
             }
         },
         components: {
@@ -67,14 +73,35 @@
         },
         methods:{
             reasonAssigned(eventData){
+                this.eventData = eventData;
+                // console.log(eventData);
+                this.downtimeId = eventData.downtime.id;
+                this.downtimeReasonId = eventData.downtimeReason ? eventData.downtimeReason.id : null;
+                // DowntimeReasonService.assignDowntime({
+                //     downtimeId: eventData.downtime.id,
+                //     downtimeReasonId: eventData.downtimeReason ? eventData.downtimeReason.id : null,
+                // },()=>{
+                //     // show toastr
+                //     console.log("downtime reason successfully assigned.");
+                //     for(let i =0; i< this.downtimeSummary.length;i++){
+                //         if(this.downtimeSummary[i].id === eventData.downtime.id){
+                //             this.downtimeSummary[i].reason = eventData.downtimeReason;
+                //             break;
+                //         }
+                //     }
+                //     this.processDowntimeSummaryData();
+                // });
+            },
+            assignDowntimeReason(){
                 DowntimeReasonService.assignDowntime({
-                    downtimeId: eventData.downtime.id,
-                    downtimeReasonId: eventData.downtimeReason ? eventData.downtimeReason.id : null,
+                    downtimeId: this.downtimeId,
+                    downtimeReasonId: this.downtimeReasonId,
                 },()=>{
-                    console.log("downtime reason successfully assigned.");
+                    ToastrService.showSuccessToast('Downtime reason successfully assigned.');
+                    // console.log("downtime reason successfully assigned.");
                     for(let i =0; i< this.downtimeSummary.length;i++){
-                        if(this.downtimeSummary[i].id === eventData.downtime.id){
-                            this.downtimeSummary[i].reason = eventData.downtimeReason;
+                        if(this.downtimeSummary[i].id === this.eventData.downtime.id){
+                            this.downtimeSummary[i].reason = this.eventData.downtimeReason;
                             break;
                         }
                     }
@@ -134,10 +161,12 @@
         mounted: function () {
             const vm = this;
             DowntimeReasonService.fetchAllGroups(function (resData) {
-               vm.reasonGroups = resData;
+                vm.reasonGroups = resData;
             });
             DowntimeReasonService.fetchAll(null,function (resData) {
-                    vm.allReasons = resData;
+                // console.log('all reasons')
+                // console.log(JSON.stringify(resData['downtime_reason_list']))
+                vm.allReasons = resData['downtime_reason_list'];
             });
             DowntimeSummaryService.getDowntimeSummary(
                 moment(vm.date).format('DD-MM-YYYY'),

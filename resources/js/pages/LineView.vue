@@ -42,20 +42,20 @@
                         </svg>
                     </div>
                     <div class="col-md-10">
-                      <div class="dropdown">
-                        <label for="station-picker" style="font-weight: 500; font-size: 1.2rem;">STATION:</label>
-                        <button class="btn btn-light dropdown-toggle" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false">
-                          {{ filter.stationName }}
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                          <li v-for="station in stations"
-                              :key="station.id"
-                              @click.prevent="changeSelectedStation(station)">
-                            <a class="dropdown-item" href="#">{{ station.name }}&nbsp;<i class="material-icons" v-if="station.id === filter.stationId">done</i>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
+                        <div class="dropdown">
+                            <label for="station-picker" style="font-weight: 500; font-size: 1.2rem;">STATION:</label>
+                            <button class="btn btn-light dropdown-toggle" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ filter.stationName }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li v-for="station in stations"
+                                    :key="station.id"
+                                    @click.prevent="changeSelectedStation(station)">
+                                <a class="dropdown-item" href="#">{{ station.name }}&nbsp;<i class="material-icons" v-if="station.id === filter.stationId">done</i>
+                                </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
