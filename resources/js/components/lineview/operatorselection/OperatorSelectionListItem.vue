@@ -17,9 +17,9 @@
             </div>
 
             <div class="col-sm-4">
-              <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" :value="operator.id" @change="onOperatorChange($event)" :checked="operator.id == checkedVal">
-              </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" :value="operator.id" @change="onOperatorChange($event)" :checked="operator.id == checkedVal">
+                </div>
             </div>
 
             <!-- <div class="col-sm-4">
@@ -66,12 +66,15 @@
                 this.selectedOperatorId = data;
 
                 console.log(this.selectedOperatorId);
-                this.assignOperator(this.selectedOperatorId);
+                
+                this.$emit('update-operator', this.selectedOperatorId);
+
+                // this.assignOperator(this.selectedOperatorId);
             },
 
-            assignOperator: function (operatorId) {
-                stationOperatorService.assignOperator
-            },
+            // assignOperator: function (operatorId) {
+            //     stationOperatorService.assignOperator
+            // },
 
             // stationOperatorService.assignOperator({
             //     operator_id: this.selectedOperatorId,
@@ -144,7 +147,7 @@
             operator: Object,
             stationId: Number,
             stationName: String,
-            operatorId: String,
+            operatorId: Number,
         },
         mounted() {
             console.log('test operator mount')
@@ -152,8 +155,6 @@
 
             let vm = this;
             vm.checkedVal = vm.operatorId;     // to set the default value of the radio button means set the operatorId
-
-
 
             // console.log('check operatorId')
             // console.log(vm.operatorId);
@@ -177,7 +178,9 @@
                 });
                 return arr;
             }
-        }
+        },
+        // updated() {
+        // }
     }
 </script>
 

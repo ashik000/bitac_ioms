@@ -573,7 +573,7 @@ import ToastrService from '../services/ToastrService';
             this.$data._clock = () => {
                 vm.currentTime = moment().format('LTS');
             };
-            setInterval(this.$data._clock, 1000);
+            setInterval(this.$data._clock, 200000);
 
             this.fetchData();
             this.$data._updateData = () => {
@@ -581,7 +581,7 @@ import ToastrService from '../services/ToastrService';
                     vm.fetchData();
                 }
             };
-            setInterval(this.$data._updateData, 1000);
+            setInterval(this.$data._updateData, 200000);
 
             StationsService.fetchAll({}, (data) => {
                 // console.log('station service fetch all')

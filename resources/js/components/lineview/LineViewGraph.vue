@@ -256,8 +256,8 @@
             // };
             this.currentTime = moment().format('HH:mm');
 
-            console.log('current time')
-            console.log(this.currentTime)
+            // console.log('current time')
+            // console.log(this.currentTime)
 
             // setInterval(this.$data._clock, 1000);
         },
@@ -267,7 +267,7 @@
                 this.selectedStationShiftId = this.stationShiftsData[0].shift_id;
             }
 
-            this.$emit('stationshift-selected', this.selectedStationShiftId);
+            // this.$emit('stationshift-selected', this.selectedStationShiftId);
 
             this.defects.defectTime = this.currentTime;
         }

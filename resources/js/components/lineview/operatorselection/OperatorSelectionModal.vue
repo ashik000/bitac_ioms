@@ -20,7 +20,9 @@
                             :operator="operator"
                             :station-id="stationId"
                             :station-name="stationName"
-                            :operator-id="operatorId">
+                            :operator-id="operatorId"
+                            @update-operator="updateOperator"
+                            >
                         </operator-selection-list-item>
                     </ul>
                 </div>
@@ -29,6 +31,7 @@
 
         <template v-slot:footer>
             <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
+            <button class="btn btn-success ms-2" @click="assignOperatorToStation();" >Assign</button>
         </template>
     </modal>
 
@@ -37,13 +40,16 @@
 <script>
     import Modal from "../../Modal";
     import OperatorsService from "../../../services/OperatorsService";
+    import stationOperatorService from "../../../services/StationOperatorService";
+    import ToastrService from "../../../services/ToastrService";
     import OperatorSelectionListItem from "./OperatorSelectionListItem";
 
     export default {
         name: "OperatorSelectionModal",
         data: function () {
             return {
-                operators: []
+                operators: [],
+                selectedOperatorId: null,
             }
         },
 
@@ -53,7 +59,38 @@
         },
 
         methods: {
+            updateOperator(selectedOperatorId) {
+                console.log('when updateOperator emit triggers on modal')
+                console.log(selectedOperatorId);
+                this.selectedOperatorId = selectedOperatorId;
+            },
+            assignOperatorToStation() {
+                stationOperatorService.assignOperatorToStation({
+                    stationId: this.stationId,
+                    operatorId: this.selectedOperatorId
+                }, data => {
+                    ToastrService.showSuccessToast('Operator updated successfully.');
+                }, error => {
+                    ToastrService.showErrorToast('Error! Try again.');
+                })
 
+                // LineViewService.storeDefects({
+                //     defectValue: defectsData.defectValue,
+                //     date: moment(this.filter.selectedDate).format('YYYY-MM-DD'),
+                //     defectTime: hour,
+                //     stationId: this.filter.stationId,
+                //     stationShiftId: this.filter.stationShiftId,
+                //     productId: this.products[0].product_id,
+                // }, data => {
+                //     this.showInprogress = false;
+                //     console.log('success')
+                //     ToastrService.showSuccessToast('Defect added successfully.');
+                // }, error => {
+                //     console.log(error);
+                //     this.showInprogress = false;
+                //     ToastrService.showErrorToast('Error! Try again.');
+                // });
+            }
         },
         mounted: function (){
             const vm = this;
@@ -71,7 +108,7 @@
         props: {
             stationId: Number,
             stationName: String,
-            operatorId: String,
+            operatorId: Number,
         }
 
     }

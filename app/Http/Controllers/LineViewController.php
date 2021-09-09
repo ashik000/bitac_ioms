@@ -172,20 +172,19 @@ class LineViewController extends Controller
     public function getOperatorName(Request $request)
     {
         $stationId = $request->get('stationId');
-//        $stationId = 1;
-
         $date      = $request->get('date');
 
-//        $date = '2019-11-01';
-        $checDate = Carbon::parse($date)->format('Y-m-d H:i:s');
+        $checkDate = Carbon::parse($date)->format('Y-m-d H:i:s');
+
+        Log::debug('checkDateCarbon: ' . $checkDate);
 
         $result = StationOperator::query()
             ->leftJoin('stations', 'stations.id', '=', 'station_operators.station_id')
             ->leftJoin('operators', 'operators.id', '=', 'station_operators.operator_id')
             ->where([
                 ['station_operators.station_id', '=', $stationId],
-                ['station_operators.start_time', '<=', $checDate],
-                ['station_operators.end_time', '>=', $checDate]
+                ['station_operators.start_time', '<=', $checkDate],
+                // ['station_operators.end_time', '>=', $checkDate]
             ])
             ->select([
                 DB::raw('operators.id as operator_id'),
