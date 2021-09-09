@@ -115,17 +115,17 @@
 
 
                 </td>
-                <td style="width: 10%" class="hour-metric">
-                    <div>
+                <td style="width: 10%" class="hour-metric text-center">
+                    <div class="d-inline">
                         <span
                             class="produced"
                             :class="{ 'text-danger': (logs.produced * 100 / logs.expected) <= logs.performance_threshold  }">
                             {{ logs.produced }}
-                        </span>
+                        </span>/
                         <span class="expected">{{ logs.expected }}</span>
                     </div>
                 </td>
-                <td :style="{ color: logs.scrapped ? '#FF0D0D' : ''}">
+                <td :style="{ color: logs.scrapped ? '#FF0D0D' : ''}" class="text-center">
                     <div>
                         <span class="defect_product">
                             {{ logs.scrapped }}
@@ -392,15 +392,6 @@
                     flex-grow: 1;
                 }
 
-                .expected {
-                    &:before {
-                        content: "/";
-                        display: inline-block;
-
-                        //padding-left: 1rem;
-                        //padding-right: 1rem;
-                    }
-                }
             }
         }
     }
