@@ -141,7 +141,7 @@
                 if(event.type==='planned') this.isPlannedSelected = event.isSelected;
                 if(event.type==='unplanned') this.isUnplannedSelected = event.isSelected;
 
-                if(!this.isUncommentedSelected && !this.isPlannedSelected && !this.isUnplannedSelected && !this.isAllSelected){
+                if(!this.isUncommentedSelected && !this.isPlannedSelected && !this.isUnplannedSelected){
                     for(let i =0; i<this.downtimeSummary.length;i++){
                         // this.$set(this.downtimeSummary[i], 'filteredOut', this.isAllSelected);
                         this.$set(this.downtimeSummary[i], 'filteredOut', false);
