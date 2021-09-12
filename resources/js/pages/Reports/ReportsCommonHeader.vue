@@ -290,7 +290,7 @@ export default {
             this.fetchOEEData();
         },
         onRangeSelect(eventData) {
-            console.log(`parent received rangeselected event: start: ${eventData.start} , end: ${eventData.end}`);
+            console.log(`parent received range selected event: start: ${eventData.start} , end: ${eventData.end}`);
             this.selectedRange.start = eventData.start;
             this.selectedRange.end = eventData.end;
             this.fetchOEEData();

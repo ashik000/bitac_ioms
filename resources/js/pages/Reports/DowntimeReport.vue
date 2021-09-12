@@ -83,7 +83,8 @@
                 planned: [],
                 unplanned: []
             },
-            tableData: []
+            tableData: [],
+            reportNameX: 'Downtime Report'
         }),
         computed:{
             reportTableTitle(){
@@ -212,6 +213,7 @@
         },
         mounted (){
             this.fetchDowntimeData();
+            this.$emit('reportNameX', this.reportNameX);
         }
     }
 </script>

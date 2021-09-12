@@ -88,7 +88,8 @@
                 quality: [],
                 oee: [],
             },
-            tableData: []
+            tableData: [],
+            reportNameX: 'OEE Report'
         }),
         computed:{
             reportTableTitle(){
@@ -180,6 +181,7 @@
         },
         mounted(){
             this.fetchOEEData();
+            this.$emit('reportNameX', this.reportNameX);
         }
     }
 </script>
