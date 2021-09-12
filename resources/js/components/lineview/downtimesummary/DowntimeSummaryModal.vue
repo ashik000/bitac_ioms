@@ -10,9 +10,10 @@
         <template v-slot:content>
             <div class="container" style="width: 960px; ">
                 <div class="row" style="margin-left: 0!important; margin-bottom: 10px; cursor: pointer">
-                    <downtime-summary-filter class="col-sm-4" type="uncommented" :count="uncommentedDowntimeCount" :totalHour="uncommentedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
-                    <downtime-summary-filter class="col-sm-4" type="planned" :count="plannedDowntimeCount" :totalHour="plannedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
-                    <downtime-summary-filter class="col-sm-4" type="unplanned" :count="unplannedDowntimeCount" :totalHour="unplannedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
+                    <downtime-summary-filter class="col-sm-3" type="uncommented" :count="uncommentedDowntimeCount" :totalHour="uncommentedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
+                    <downtime-summary-filter class="col-sm-3" type="planned" :count="plannedDowntimeCount" :totalHour="plannedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
+                    <downtime-summary-filter class="col-sm-3" type="unplanned" :count="unplannedDowntimeCount" :totalHour="unplannedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
+                    <downtime-summary-filter class="col-sm-3" type="all" :count="allDowntimeCount" :totalHour="allDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
                 </div>
                 <div style="overflow-y: scroll; height: 400px;">
                     <ul class="list-group">
@@ -52,12 +53,15 @@
                 downtimeSummary: [],
                 reasonGroups: [],
                 allReasons: [],
+                isAllSelected: true,
                 isUncommentedSelected: false,
                 isPlannedSelected: false,
                 isUnplannedSelected: false,
+                allDowntimeCount: 0,
                 uncommentedDowntimeCount: 0,
                 plannedDowntimeCount: 0,
                 unplannedDowntimeCount: 0,
+                allDowntimeDurationInSeconds: 0,
                 uncommentedDowntimeDurationInSeconds: 0,
                 plannedDowntimeDurationInSeconds: 0,
                 unplannedDowntimeDurationInSeconds: 0,
@@ -77,20 +81,6 @@
                 // console.log(eventData);
                 this.downtimeId = eventData.downtime.id;
                 this.downtimeReasonId = eventData.downtimeReason ? eventData.downtimeReason.id : null;
-                // DowntimeReasonService.assignDowntime({
-                //     downtimeId: eventData.downtime.id,
-                //     downtimeReasonId: eventData.downtimeReason ? eventData.downtimeReason.id : null,
-                // },()=>{
-                //     // show toastr
-                //     console.log("downtime reason successfully assigned.");
-                //     for(let i =0; i< this.downtimeSummary.length;i++){
-                //         if(this.downtimeSummary[i].id === eventData.downtime.id){
-                //             this.downtimeSummary[i].reason = eventData.downtimeReason;
-                //             break;
-                //         }
-                //     }
-                //     this.processDowntimeSummaryData();
-                // });
             },
             assignDowntimeReason(){
                 DowntimeReasonService.assignDowntime({
@@ -109,9 +99,11 @@
                 });
             },
             processDowntimeSummaryData(){
+                this.allDowntimeCount = 0;
                 this.uncommentedDowntimeCount=0;
                 this.plannedDowntimeCount=0;
                 this.unplannedDowntimeCount=0;
+                this.allDowntimeDurationInSeconds=0;
                 this.uncommentedDowntimeDurationInSeconds=0;
                 this.plannedDowntimeDurationInSeconds=0;
                 this.unplannedDowntimeDurationInSeconds=0;
@@ -131,16 +123,27 @@
                         } else if(this.downtimeSummary[i].reason.type === 'unplanned'){
                             this.unplannedDowntimeCount++;
                             this.unplannedDowntimeDurationInSeconds += this.downtimeSummary[i].duration;
+                        } else if(this.downtimeSummary[i].reason.type === 'uncommented'){  
+                            this.uncommentedDowntimeCount++;
+                            this.uncommentedDowntimeDurationInSeconds += this.downtimeSummary[i].duration;
                         }
                     }
                 }
+                this.allDowntimeCount = parseInt(this.uncommentedDowntimeCount)+parseInt(this.plannedDowntimeCount)+parseInt(this.unplannedDowntimeCount);
+                this.allDowntimeDurationInSeconds = parseInt(this.uncommentedDowntimeDurationInSeconds)+parseInt(this.plannedDowntimeDurationInSeconds)+parseInt(this.unplannedDowntimeDurationInSeconds);
+                console.log('all downtime')
+                console.log(this.allDowntimeCount);
+                console.log(this.allDowntimeDurationInSeconds);
             },
             filterChanged(event){
+                if(event.type==='all') this.isAllSelected = event.isSelected;
                 if(event.type==='uncommented') this.isUncommentedSelected = event.isSelected;
                 if(event.type==='planned') this.isPlannedSelected = event.isSelected;
                 if(event.type==='unplanned') this.isUnplannedSelected = event.isSelected;
+
                 if(!this.isUncommentedSelected && !this.isPlannedSelected && !this.isUnplannedSelected){
                     for(let i =0; i<this.downtimeSummary.length;i++){
+                        // this.$set(this.downtimeSummary[i], 'filteredOut', this.isAllSelected);
                         this.$set(this.downtimeSummary[i], 'filteredOut', false);
                     }
                 } else {
@@ -150,9 +153,12 @@
                                 this.$set(this.downtimeSummary[i], 'filteredOut', !this.isUnplannedSelected);
                             } else if(this.downtimeSummary[i].reason.type==='planned'){
                                 this.$set(this.downtimeSummary[i], 'filteredOut', !this.isPlannedSelected);
+                            } else if (this.downtimeSummary[i].reason.type==='uncommented'){
+                                this.$set(this.downtimeSummary[i], 'filteredOut', !this.isUncommentedSelected);
                             }
                         } else {
-                            this.$set(this.downtimeSummary[i], 'filteredOut', !this.isUncommentedSelected);
+                            this.$set(this.downtimeSummary[i], 'filteredOut', !this.isAllSelected);
+                            // this.$set(this.downtimeSummary[i], 'filteredOut', !this.isUncommentedSelected);
                         }
                     }
                 }
@@ -173,6 +179,8 @@
                 vm.stationId,
                 function (resData) {
                     vm.downtimeSummary = resData;
+                    // console.log('downtime summary')
+                    // console.log(resData)
                     vm.processDowntimeSummaryData();
                 }
             )

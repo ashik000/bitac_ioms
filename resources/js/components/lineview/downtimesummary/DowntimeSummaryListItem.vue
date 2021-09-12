@@ -87,7 +87,7 @@
                     downtime.selectedReasonGroupName = "Please Select";
                     downtime.selectedReasonName = "Please Select";
                 }
-                // console.log('b4 emit');
+
                 // console.log(downtime);
                 this.$emit("downtimeReasonAssigned", {
                     downtime: downtime,

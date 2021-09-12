@@ -6,9 +6,7 @@ use App\Data\Models\Downtime;
 use App\Data\Models\ProductionLog;
 use App\Data\Models\Scrap;
 use App\Data\Models\SlowProduction;
-use App\Data\Models\Station;
 use App\Data\Models\StationOperator;
-use App\Data\Models\StationShift;
 use App\Data\Repositories\ProductionLogRepository;
 use App\Data\Repositories\ProductRepository;
 use App\Data\Repositories\ScrapRepository;
@@ -16,24 +14,22 @@ use App\Data\Repositories\ShiftRepository;
 use App\Http\Resources\LineViewGraphResource;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class LineViewController extends Controller
 {
     public function lineviewData(Request $request, ProductRepository $productsRepository, ShiftRepository $shiftRepository, ProductionLogRepository $productionLogRepository, ScrapRepository $scrapRepository)
     {
         $stationId = $request->input('station_id');
-        $shiftId = $request->input('shift_id');
+        $shiftId   = $request->input('shift_id');
         $date      = $request->input('date');
 
         $dateX = $date;
 
         $date = Carbon::parse($date)->toImmutable();
 
-        $products = $productsRepository->findProductsOfStation($stationId);
+        $products                      = $productsRepository->findProductsOfStation($stationId);
         $productIdToStationProductsMap = $productsRepository->findAllStationProductsOfAStationKeyByProductId($stationId);
 
         if (isset($shiftId) && isset($stationId))
@@ -42,19 +38,20 @@ class LineViewController extends Controller
         }
 
         $start_time = isset($shiftDetails[0]->start_time) ? $dateX . ' ' . $shiftDetails[0]->start_time : $date->startOfDay();
-        $end_time = isset($shiftDetails[0]->end_time) ? $dateX . ' ' . $shiftDetails[0]->end_time : $date->endOfDay();
+        $end_time   = isset($shiftDetails[0]->end_time) ? $dateX . ' ' . $shiftDetails[0]->end_time : $date->endOfDay();
 
         $productionLogs = $productionLogRepository->fetchProductionLogs([
             'station_id' => $stationId,
 //            'between'    => [
-//                'start' => $date->startOfDay(),
-//                'end'   => $date->endOfDay(),
-//            ],
-            'between' => [
+            //                'start' => $date->startOfDay(),
+            //                'end'   => $date->endOfDay(),
+            //            ],
+            'between'    => [
                 'start' => $start_time,
-                'end' => $end_time
+                'end'   => $end_time
             ]
-        ])->groupBy(function (ProductionLog $log) {
+        ])->groupBy(function (ProductionLog $log)
+        {
             return Carbon::parse($log->produced_at)->hour;
         });
 
@@ -62,20 +59,22 @@ class LineViewController extends Controller
             'station_id' => $stationId,
             'between'    => [
                 'start' => $start_time,
-                'end'   => $end_time,
-            ],
+                'end'   => $end_time
+            ]
         ])->load(['reason.downtimeReasonGroup'])
-         ->groupBy(function (Downtime $log) {
-             return Carbon::parse($log->start_time)->hour;
-         });
+            ->groupBy(function (Downtime $log)
+        {
+                return Carbon::parse($log->start_time)->hour;
+            });
 
         $slowLogs = $productionLogRepository->fetchSlowLogs([
             'station_id' => $stationId,
             'between'    => [
                 'start' => $start_time,
-                'end'   => $end_time,
-            ],
-        ])->groupBy(function (SlowProduction $log) {
+                'end'   => $end_time
+            ]
+        ])->groupBy(function (SlowProduction $log)
+        {
             return Carbon::parse($log->start_time)->hour;
         });
 
@@ -92,37 +91,43 @@ class LineViewController extends Controller
     public function topDowntimeReasons(Request $request)
     {
         $start = CarbonImmutable::parse($request->get('start'));
-        $end = CarbonImmutable::parse($request->get('end'));
+        $end   = CarbonImmutable::parse($request->get('end'));
 
-//        $start = '2019-09-24';
-//        $end = '2019-09-30';
+        $start = date('Y-m-d', strtotime($start));
+        $end   = date('Y-m-d', strtotime($end));
 
         $query = Downtime::query();
         $query->join('production_logs', 'downtimes.production_log_id', '=', 'production_logs.id')
             ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
-            ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
+            ->leftJoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
             ->leftJoin('downtime_reasons', 'downtimes.reason_id', '=', 'downtime_reasons.id')
             ->whereBetween('downtimes.start_time', [
-                $start->startOfDay(),
-                $end->endOfDay()
+                $start,
+                $end
             ])
-            ->groupBy([DB::raw('DATE(downtimes.start_time)'),'downtime_reasons.type','downtimes.reason_id','downtime_reasons.name'])
+            ->groupBy([DB::raw('DATE(downtimes.start_time)'), 'downtime_reasons.type', 'downtimes.reason_id', 'downtime_reasons.name'])
             ->orderBy(DB::raw('SUM(downtimes.duration)'), 'DESC')
             ->select([
                 'reason_id',
                 DB::raw('downtime_reasons.name as reason_name'),
                 DB::raw('COUNT(*) as count'),
                 DB::raw('SUM(downtimes.duration) as duration'),
-                DB::raw('DATE(downtimes.start_time) as date'),
+                DB::raw('DATE(downtimes.start_time) as date')
             ]);
 
         $result = $query->take(5)->get();
 
-        foreach ($result as &$row) {
-            $seconds = $row['duration'];
-            $minutes = floor($seconds / 60);
-            $hours = floor($minutes / 60).'hrs '.($minutes - floor($minutes / 60) * 60).'mins';
+        foreach ($result as &$row)
+        {
+            $seconds         = $row['duration'];
+            $minutes         = floor($seconds / 60);
+            $hours           = floor($minutes / 60) . 'hrs ' . ($minutes - floor($minutes / 60) * 60) . 'mins';
             $row['duration'] = $hours;
+            if ($row['reason_id'] == null)
+            {
+                $row['reason_name'] = 'N/A';
+                $row['reason_id']   = 0;
+            }
         }
 
         return $result;
@@ -131,18 +136,21 @@ class LineViewController extends Controller
     public function topOperatorDowntimeReasons(Request $request)
     {
         $start = CarbonImmutable::parse($request->get('start'));
-        $end = CarbonImmutable::parse($request->get('end'));
+        $end   = CarbonImmutable::parse($request->get('end'));
 
-//        $start = '2019-09-24';
-//        $end = '2019-09-30';
+        $start = date('Y-m-d', strtotime($start));
+        $end   = date('Y-m-d', strtotime($end));
+
+        //    $start = '2021-09-05';
+        //    $end = '2021-09-11';
 
         $result = Downtime::query()
             ->join('production_logs', 'downtimes.production_log_id', '=', 'production_logs.id')
             ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
-            ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
+            ->leftJoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
             ->join('operators', 'operators.id', '=', 'downtimes.operator_id')
-            ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
-            ->groupBy('operator_id','station_id','station_group_id','stations.name','station_groups.name','operators.first_name','operators.last_name')
+            ->whereBetween('downtimes.start_time', [$start, $end])
+            ->groupBy('operator_id', 'station_id', 'station_group_id', 'stations.name', 'station_groups.name', 'operators.first_name', 'operators.last_name')
             ->orderBy(DB::raw('SUM(downtimes.duration)'), 'DESC')
             ->select([
                 'station_id',
@@ -156,13 +164,14 @@ class LineViewController extends Controller
                 DB::raw('SUM(duration) as duration')
             ])->take(5)->get();
         $totalSum = $result->sum('duration');
-        foreach ($result as &$row) {
-            $row['stop_percent'] = $row['duration'] / $totalSum;
+        foreach ($result as &$row)
+        {
+            $row['stop_percent']  = $row['duration'] / $totalSum;
             $row['operator_name'] = $row['operator_first_name'] . ' ' . $row['operator_last_name'];
-            $seconds = $row['duration'];
-            $minutes = floor($seconds / 60);
-            $hours = floor($minutes / 60).'hrs '.($minutes - floor($minutes / 60) * 60).'mins';
-            $row['duration'] = $hours;
+            $seconds              = $row['duration'];
+            $minutes              = floor($seconds / 60);
+            $hours                = floor($minutes / 60) . 'hrs ' . ($minutes - floor($minutes / 60) * 60) . 'mins';
+            $row['duration']      = $hours;
             unset($row['operator_first_name']);
             unset($row['operator_last_name']);
         }
@@ -181,26 +190,26 @@ class LineViewController extends Controller
             ->leftJoin('operators', 'operators.id', '=', 'station_operators.operator_id')
             ->where([
                 ['station_operators.station_id', '=', $stationId],
-                ['station_operators.start_time', '<=', $checkDate],
+                ['station_operators.start_time', '<=', $checkDate]
                 // ['station_operators.end_time', '>=', $checkDate]
             ])
             ->select([
                 DB::raw('operators.id as operator_id'),
                 DB::raw('operators.first_name as first_name'),
-                DB::raw('operators.last_name as last_name'),
+                DB::raw('operators.last_name as last_name')
             ])->distinct()->get();
 
         if (count($result) > 0)
         {
             return [
-                'operatorId' => $result[0]->operator_id,
+                'operatorId'   => $result[0]->operator_id,
                 'operatorName' => $result[0]->first_name . ' ' . $result[0]->last_name
             ];
         }
         else
         {
             return [
-                'operatorId' => null,
+                'operatorId'   => null,
                 'operatorName' => 'N/A'
             ];
         }
@@ -214,24 +223,28 @@ class LineViewController extends Controller
             ->where('scraps.date', '=', $request['date'])
             ->where('scraps.hour', '=', $request['defectTime'])->first();
 
-        if (empty($scrap)) {
+        if (empty($scrap))
+        {
             $scrap = new Scrap();
 
-            $scrap['value'] = $request['defectValue'];
-            $scrap['date'] = $request['date'];
-            $scrap['hour'] = $request['defectTime'];
-            $scrap['station_id'] = $request['stationId'];
-            $scrap['shift_id'] = $request['stationShiftId'];
-            $scrap['product_id'] = $request['productId'];
+            $scrap['value']       = $request['defectValue'];
+            $scrap['date']        = $request['date'];
+            $scrap['hour']        = $request['defectTime'];
+            $scrap['station_id']  = $request['stationId'];
+            $scrap['shift_id']    = $request['stationShiftId'];
+            $scrap['product_id']  = $request['productId'];
             $scrap['operator_id'] = 1;
-            $scrap['created_by'] = 1;
+            $scrap['created_by']  = 1;
 
-        } else {
-            $scrap->value+=$scrap['value'];
+        }
+        else
+        {
+            $scrap->value += $scrap['value'];
         }
 
         $check = $scrap->save();
-        if ($check) {
+        if ($check)
+        {
             return true;
         }
         return false;

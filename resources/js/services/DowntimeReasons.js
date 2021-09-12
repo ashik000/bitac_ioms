@@ -65,14 +65,6 @@ export default {
                 console.log(e.response.data)
             })
     },
-    // assignDowntime(data, success, error) {
-    //     axios.post(`assignDowntimeReason`, data)
-    //         .then(r => success(r.data))
-    //         .catch(e => {
-    //             // error('Try again');
-    //             console.log(e.response.data)
-    //         })
-    // },
     assignDowntime: (data, success, error) => {
         axios.post('assignDowntimeReason',data)
             .then( r=> success(r.data))

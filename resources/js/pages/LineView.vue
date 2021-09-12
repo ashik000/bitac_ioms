@@ -109,7 +109,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="topDowntimeReason in topDowntimeReasons">
+                            <tr v-if="!showTableTopDowntimeReasons">
+                                <td class="text-center">No data found</td>
+                            </tr>
+                            <tr v-else v-for="topDowntimeReason in topDowntimeReasons">
                                 <td>{{ topDowntimeReason.reason_name }}</td>
                                 <td>{{ topDowntimeReason.duration }}</td>
                             </tr>
@@ -125,10 +128,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="topOperatorDowntimeReason in topOperatorDowntimeReasons">
-                            <td>{{ topOperatorDowntimeReason.operator_name }}</td>
-                            <td>{{ topOperatorDowntimeReason.duration }}</td>
-                        </tr>
+                            <tr v-if="!showTableTopOperartorDowntimeReasons">
+                                <td class="text-center">No data found</td>
+                            </tr>
+                            <tr v-else v-for="topOperatorDowntimeReason in topOperatorDowntimeReasons">
+                                <td>{{ topOperatorDowntimeReason.operator_name }}</td>
+                                <td>{{ topOperatorDowntimeReason.duration }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -284,8 +290,7 @@
     import ProductSelectionModal from "../components/lineview/productselection/ProductSelectionModal";
     import moment from "moment";
     import downtimeReasonsService from "../services/DowntimeReasons";
-    import toastrService from "../services/ToastrService";
-import ToastrService from '../services/ToastrService';
+    import ToastrService from '../services/ToastrService';
 
     export default {
         name: "LineView",
@@ -350,8 +355,8 @@ import ToastrService from '../services/ToastrService';
                 arcDelimiters: [],
             },
             range: {
-                start: moment().startOf('week').subtract(7, "days").toDate(),
-                end: moment().endOf('day').subtract(7, "days").toDate()
+                start: moment().startOf('week').subtract(6, "days").toDate(),
+                end: moment().endOf('day').toDate()
             },
             topDowntimeReasons: null,
             topOperatorDowntimeReasons: null,
@@ -511,7 +516,8 @@ import ToastrService from '../services/ToastrService';
                 );
 
                 this.fetchOperatorName();
-
+                this.fetchTopDowntimeReasons();
+                this.fetchTopOperatorDowntimeReasons();
             },
             fetchStationShift() {
                 LineViewService.fetchStationShift({},
@@ -567,13 +573,19 @@ import ToastrService from '../services/ToastrService';
             formattedSelectedDate() {
                 return moment(this.filter.selectedDate).format('dddd, DD MMMM, YYYY');
             },
+            showTableTopDowntimeReasons(){
+                return this.topDowntimeReasons && this.topDowntimeReasons.length > 0;
+            },
+            showTableTopOperartorDowntimeReasons(){
+                return this.topOperatorDowntimeReasons && this.topOperatorDowntimeReasons.length > 0;
+            },
         },
         mounted() {
             const vm = this;
             this.$data._clock = () => {
                 vm.currentTime = moment().format('LTS');
             };
-            setInterval(this.$data._clock, 200000);
+            setInterval(this.$data._clock, 20000);
 
             this.fetchData();
             this.$data._updateData = () => {
@@ -581,7 +593,7 @@ import ToastrService from '../services/ToastrService';
                     vm.fetchData();
                 }
             };
-            setInterval(this.$data._updateData, 200000);
+            setInterval(this.$data._updateData, 20000);
 
             StationsService.fetchAll({}, (data) => {
                 // console.log('station service fetch all')
@@ -598,8 +610,6 @@ import ToastrService from '../services/ToastrService';
             this.renderGaugeChart();
 
             this.fetchStationShift();
-            this.fetchTopDowntimeReasons();
-            this.fetchTopOperatorDowntimeReasons();
         },
         destroyed() {
             clearInterval(this.$data._clock);
