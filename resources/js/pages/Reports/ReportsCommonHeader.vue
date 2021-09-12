@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg partitionNav ps-3 pe-3 py-0">
 
-        <div class="row" style="display: flex; justify-content: space-between; width: 1600px;">
+        <div class="row d-flex justify-content-between" style="width: 1600px;">
             <div class="col-md-7 col-sm-12">
                 <ReportFilters :reportType="reportType" :reportName="reportName" class="w-100">
                 </ReportFilters>
@@ -36,7 +36,7 @@
             </div>
 
             <div class="col-md-2 col-sm-12">
-                <div class="date-range-picker-wrap mt-3" style="float: right">
+                <div class="date-range-picker-wrap mt-3 float-right">
                     <span class="range-picker-label">
                         Date Range
                     </span>
@@ -54,7 +54,8 @@
                         }"
                         mode='range'
                         :value='range'
-                        @input="onDateRangeChanged"/>
+                        @input="onDateRangeChanged">
+                    </v-date-picker>
 
 
                     <div class="dropdown">
@@ -79,11 +80,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
     </nav>
 </template>
 
@@ -138,12 +134,7 @@ export default {
             start: moment().startOf('day').toDate(),
             end: moment().endOf('day').toDate()
         },
-        // reportType: 'station',
         selectedPartition: 'hourly',
-        // selectedRange: {
-        //     start: moment().startOf('day').toDate(),
-        //     end: moment().endOf('day').toDate()
-        // },
         selectedReportType: 'station',
         selectedStationId: 0,
         selectedStation: null,
