@@ -4,8 +4,8 @@
             :showPartition="false"
             @rangeSelected="onRangeSelect"
             :reportType="reportType"
-            :reportName="reportName"
-        ></reports-common-header>
+            :reportName="reportName">
+        </reports-common-header>
 
         <report-container>
             <template v-slot:reportContainer>
