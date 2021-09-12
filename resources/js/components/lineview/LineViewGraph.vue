@@ -76,7 +76,7 @@
             <tbody>
             <tr v-for="logs in linedata" :key="logs.hour">
                 <td style="width: 1%" class="hour-marker">{{ `${logs.hour}`.padStart(2, '0') }}</td>
-                <td :colspan="colspan[zoomIndex]" class="hour-availability">
+                <td :colspan="colspan[zoomIndex]" class="hour-availability text-white">
                     <span class="downtime-title" :key="'reason-' + bar.id"
                           v-for="bar in logs.data"
                           v-if="bar.type == 'downtime' && bar.reason"
@@ -112,8 +112,6 @@
                                 </rect>
                         </template>
                     </svg>
-
-
                 </td>
                 <td style="width: 10%" class="hour-metric text-center">
                     <div class="d-inline">
