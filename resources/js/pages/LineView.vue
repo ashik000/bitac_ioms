@@ -305,7 +305,6 @@
             ScrapInputModel,
         },
         data: () => ({
-            currentTime: '',
             isInitialized: false,
             isStationSelectionFormShown: false,
             isDowntimeReasonsModalShown: false,
@@ -364,6 +363,8 @@
                 data: []
             },
             showInprogress: false,
+            dataUpdateTimer: null,
+            clockUpdateTimer: null,
         }),
         watch: {
             gaugeTotalOee(nv, ov){
@@ -532,7 +533,6 @@
                     },
                     (data) => {
                         this.topDowntimeReasons = data;
-                        console.log(this.topDowntimeReasons);
                     }
                 );
             },
@@ -582,18 +582,13 @@
         },
         mounted() {
             const vm = this;
-            this.$data._clock = () => {
-                vm.currentTime = moment().format('LTS');
-            };
-            setInterval(this.$data._clock, 20000);
-
             this.fetchData();
             this.$data._updateData = () => {
                 if (moment().diff(vm.filter.selectedDate, 'day') === 0) {
                     vm.fetchData();
                 }
             };
-            setInterval(this.$data._updateData, 20000);
+            this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
 
             StationsService.fetchAll({}, (data) => {
                 // console.log('station service fetch all')
@@ -612,8 +607,7 @@
             this.fetchStationShift();
         },
         destroyed() {
-            clearInterval(this.$data._clock);
-            clearInterval(this.$data._updateData);
+            clearInterval(this.dataUpdateTimer);
         }
     }
 </script>
