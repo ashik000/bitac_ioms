@@ -27,5 +27,12 @@ export default {
         axios.get('stationOperators')
             .then( r=> success(r.data))
             .catch(e => error(e))
+    },
+    assignOperatorToStation: (data, success, error) => {
+        axios.post('assignOperatorToStation',data)
+            .then( r=> success(r.data))
+            .catch(e => {
+                error(e);
+        });
     }
 }

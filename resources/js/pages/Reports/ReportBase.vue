@@ -2,11 +2,11 @@
     <div class="container-fluid wrapper wrapper-top-4">
         <div class="row card-wrapper gx-0">
             <div class="section col-md-2 h-100">
-                <ReportSideBar v-on:reportTypeChanged="changeReportType" :reportType="reportType">
+                <ReportSideBar v-on:reportTypeChanged="changeReportType" :reportName="reportName" :reportType="reportType">
                 </ReportSideBar>
             </div>
             <div class="section col-md-10 h-100">
-                <router-view :reportType="reportType"></router-view>
+                <router-view :reportType="reportType" @reportNameX="updateReportName"></router-view>
             </div>
         </div>
     </div>
@@ -37,14 +37,17 @@
             'report-table-by-operator': ReportTableOEEByOperator,
         },
         data: () => ({
-            reportType: 'station'
+            reportType: 'station',
+            reportName: 'report name loading'
         }),
         methods : {
             changeReportType(type) {
                 this.reportType = type;
-                this.selectedReportType = type;  // quite unnecessary
-                // console.log('test '+type); -> base passes the selected report type
+                this.selectedReportType = type;
             },
-        }
+            updateReportName(reportNameX) {
+                this.reportName = reportNameX;
+            },
+        },
     }
 </script>

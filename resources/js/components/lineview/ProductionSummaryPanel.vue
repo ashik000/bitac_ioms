@@ -1,16 +1,28 @@
 <template>
-    <div>
-        <div class="d-flex justify-content-between">
-            <p class="display-4 text-white">{{ produced }} pcs</p>
-            <p class="display-4 text-success">{{ totalOee }} %</p>
-        </div>
-        <ul class="line-product-list">
-            <li class="line-item" v-for="product in products">
-                <span class="product-name">{{ product.product_name }}</span>
-                <span class="quality">
-                    <span class="produced">{{ product.produced }}</span>
-                    <span class="scrapped">{{ product.scrapped }}</span>
-                </span>
+    <div class="mt-2 mb-2">
+        <ul class="list-unstyled">
+            <li class="mb-2" v-for="product in products">
+                <span class="mb-1" style="font-weight: 500;">PRODUCING: <span style="font-weight: 500; color: green;">{{ product.product_name }}</span></span>
+                <br>
+                <div class="row">
+                    <div class="col md-6">
+                        <div class="card mb-1" style="width: 6.5rem;">
+                            <div class="card-body p-1">
+                                <p style="font-weight: 500;" class="card-text">PRODUCED: <br> <span style="color: green; font-size: 2.5rem;">{{ product.produced }}</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card mb-1" style="width: 6.5rem;">
+                            <div class="card-body p-1">
+                                <p style="font-weight: 500;" class="card-text">DEFECT: <br> <span style="color: red; font-size: 2.5rem;">{{ product.scrapped }}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </li>
         </ul>
     </div>
@@ -34,55 +46,3 @@
         }
     }
 </script>
-
-<style scoped lang="scss">
-    @import "#/app.scss";
-
-    .line-product-list {
-        padding: 0;
-        list-style: none;
-
-        color: #ffffff;
-        font-size: 1.25rem;
-
-        .line-item {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: space-between;
-
-            .scrapped {
-                &:before {
-                    font-family: "Material Icons";
-                    content: "\e5cd";
-                    color: #ff1111;
-                    display: inline-block;
-                    padding-left: 0.5rem;
-                    padding-right: 0.5rem;
-                }
-                color: #ff1111;
-            }
-
-            &:first-of-type {
-                font-size: 1.5rem;
-                font-weight: 600;
-
-                padding-bottom: 1rem;
-                margin-bottom: 1rem;
-                //border-bottom: 0.25rem solid $primary-color-accent;
-
-                .produced {
-                    &:before {
-                        font-family: "Material Icons";
-                        content: "\e5ca";
-                        color: #14a76c;
-                        display: inline-block;
-                        padding-left: 0.5rem;
-                        padding-right: 0.5rem;
-                    }
-                    color: #14a76c;
-                }
-            }
-        }
-    }
-</style>

@@ -6,8 +6,8 @@
                 <pre>{{ operator.code }}</pre>
             </div>
 
-            <div class="col-sm-3" v-if="operator.stations.length > 0">
-                <span v-for="(operatorStation, index) in operator.stations">
+            <div class="col-sm-3" v-if="operator.stations && operator.stations.length > 0">
+                <span v-for="(operatorStation, index) in operator.stations" :key="operatorStation.id">
                     <span v-if="index < operator.stations.length -1">{{ operatorStation.name + ", " }}</span>
                     <span v-else>{{ operatorStation.name }}</span>
                 </span>
@@ -15,22 +15,11 @@
             <div class="col-sm-3" v-else>
                 <span>None</span>
             </div>
+
             <div class="col-sm-4">
-                <template v-if="alreadyAssigned">
-                    <div class="d-flex flex-direction-row justify-content-end">
-                        <button class="btn" style="background-color: white;border-color: white;" @click="removeOperator(operator.stations)">
-                            <i class="icon material-icons" style="font-size:30px; color:grey;">delete</i>
-                        </button>
-                    </div>
-                </template>
-                <template v-else>
-                    <div class="d-flex flex-row flex-nowrap justify-content-between">
-                        <VueCtkDateTimePicker id="startTimeSelect" :no-label="true" :right="true" v-model="operator.startTime" :inline="false" format="YYYY-MM-DD hh:mm:ss" formatted="YYYY-MM-DD hh:mm:ss" />
-                        <button class="btn py-0 px-1 border-white bg-white" @click="assignOperator(operator.id)">
-                            <i class="icon material-icons" style="font-size:30px; color:grey;">add</i>
-                        </button>
-                    </div>
-                </template>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" :value="operator.id" @change="onOperatorChange($event)" :checked="operator.id == checkedVal">
+                </div>
             </div>
         </div>
     </li>
@@ -45,94 +34,35 @@
 
         data: function () {
             return {
-                // assignedStationIds: []
+                assignedStationIds: [],
+                checkedVal: null,
+                selectedOperatorId: null
             }
         },
 
         methods: {
-            getAssignedStationIdsFromObject: function () {
-                this.operator.stations.forEach((value, index) => {
-                    this.assignedStationIds.push(value.id);
-                });
+            onOperatorChange: function (event) {
+                var data = event.target.value;
+                console.log('on operator change triggered')
+                this.selectedOperatorId = data;
+                console.log(this.selectedOperatorId);
+                this.$emit('update-operator', this.selectedOperatorId);
             },
-
-            removeOperator: function (operatorStations) {
-                operatorStations.forEach((value, index) => {
-                    if(value.id === this.stationId){
-                        stationOperatorService.deleteStationOperator(value.meta.id, (data) => {
-                            this.operator.stations.splice(index, 1);
-                        }, (error) => {
-                            console.log(error);
-                        });
-                        return;
-                    }
-                });
-            },
-
-            assignOperator: function (operatorId) {
-                const vm = this;
-                const request = {
-                    station_id: this.stationId,
-                    operator_id: operatorId,
-                    start_time : this.operator.startTime
-                };
-
-                stationOperatorService.createOrUpdateStationOperator(request, function(data){
-                    let stationOperator = data.filter(function(d){
-                        return d.operator_id === vm.operator.id && d.station_id === vm.stationId;
-                    });
-
-                    let stationOperatorMeta = {
-                        'id': stationOperator[0].id,
-                        'operator_id': stationOperator[0].operator_id,
-                        'station_id': stationOperator[0].station_id,
-                        'start_time': stationOperator[0].start_time,
-                        'end_time': stationOperator[0].end_time
-                    }
-
-                    let station = {
-                        'id': vm.stationId,
-                        'name': vm.stationName,
-                        'meta': stationOperatorMeta
-                    };
-                    if(vm.operator.stations && vm.operator.stations instanceof Array){
-                        vm.operator.stations.push(station);
-                    } else {
-                        vm.operator.stations = [];
-                        vm.operator.stations.push(station);
-                    }
-                }, (error) => {
-                    console.log(error);
-                });
-            }
         },
 
         props: {
             operator: Object,
             stationId: Number,
-            stationName: String
+            stationName: String,
+            operatorId: Number,
         },
         mounted() {
+            console.log('test operator mount')
+            console.log(this.operator);
+
             let vm = this;
-            let filteredStations = this.operator.stations.filter(function(opst){
-                return opst.meta.station_id == vm.stationId;
-            });
-            if(filteredStations && filteredStations.length > 0){
-                this.$set(this.operator, 'startTime' , filteredStations[0].meta.start_time);
-            }
+            vm.checkedVal = vm.operatorId;     // to set the default value of the radio button means set the operatorId
         },
-        computed:{
-            alreadyAssigned: function (){
-                return this.assignedStationIds.indexOf(this.stationId) != -1;
-            },
-            assignedStationIds(){
-                let arr = [];
-                this.operator.stations.forEach((value, index) => {
-                    arr.push(value.id);
-                });
-                return arr;
-            }
-        }
     }
 </script>
 

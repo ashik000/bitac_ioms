@@ -117,4 +117,20 @@ class StationProductController extends Controller
         $stationProducts = StationProduct::where('station_id',$stationId)->get()->load('product');
         return response()->json($stationProducts,200);
     }
+
+    // public function assignProductToStation(Request $request)
+    // {
+    //     $data = $request->all();
+    //     $stationProduct = StationProduct::where('station_id',$data['station_id'])->where('product_id',$data['product_id'])->first();
+    //     if(empty($stationProduct)){
+    //         $stationProduct = new StationProduct();
+    //         $stationProduct->product_id = $data['product_id'];
+    //         $stationProduct->station_id = $data['station_id'];
+    
+    //         $stationProduct->save();
+    //     }
+
+    //     $stationProducts = StationProduct::where('station_id',$data['station_id'])->get()->load('product');
+    //     return response()->json($stationProducts,200);
+    // }
 }

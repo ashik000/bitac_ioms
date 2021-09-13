@@ -43,7 +43,7 @@
             },
             reportName: {
                 type: String,
-                default: 'OEE Report',
+                default: 'OEE REPORT'
             }
         },
         methods: {

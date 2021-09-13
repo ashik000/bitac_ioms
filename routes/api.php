@@ -37,6 +37,8 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::resource('scraps','ScrapController');
     Route::resource('operators','OperatorController');
     Route::get('lineview', ['as' => 'lineview.graphdata', 'uses' => 'LineViewController@lineviewData']);
+    Route::get('topDowntimeReasons', 'LineViewController@topDowntimeReasons');
+    Route::get('topOperatorDowntimeReasons', 'LineViewController@topOperatorDowntimeReasons');
     Route::get('report',['uses'=>'ReportController@index']);
     Route::get('getHourlyProducedAndScrapedCountOfADay',['uses'=>'ReportController@getHourlyProducedAndScrapedCountOfADay']);
     Route::get('getDowntimeSummary',['uses'=>'DowntimeController@getDowntimeSummary']);
@@ -50,7 +52,10 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('report/downtime/by/product',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationProduct']);
     Route::get('report/downtime/by/shift',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationShift']);
     Route::get('report/downtime/by/operator',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationOperator']);
-    Route::get('testDowntime','DowntimeReportController@testDowntime');
+    Route::get('lineviewStationShift','LineViewController@getLineViewStationShifts');
+    Route::get('getOperatorName','LineViewController@getOperatorName');
+    Route::post('storeLineviewDefects','LineViewController@storeLineviewDefects');
+    Route::post('assignOperatorToStation','StationOperatorController@assignOperatorToStation');
 });
 
 Route::middleware(['auth:api'])->group(function () {

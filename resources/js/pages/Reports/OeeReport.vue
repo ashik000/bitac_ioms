@@ -1,7 +1,6 @@
 <template>
     <div class="h-100">
         <reports-common-header
-            reportName="OEE Report"
             :showPartition="true"
             @partitionSelected="onPartitionSelect"
             @rangeSelected="onRangeSelect"
@@ -89,7 +88,8 @@
                 quality: [],
                 oee: [],
             },
-            tableData: []
+            tableData: [],
+            reportNameX: 'OEE Report'
         }),
         computed:{
             reportTableTitle(){
@@ -181,6 +181,7 @@
         },
         mounted(){
             this.fetchOEEData();
+            this.$emit('reportNameX', this.reportNameX);
         }
     }
 </script>

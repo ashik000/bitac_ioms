@@ -26,5 +26,12 @@ export default {
         axios.get('stationProducts')
             .then( r=> success(r.data))
             .catch(e => error(e))
-    }
+    },
+    // assignProductToStation: (payload, success, error) => {
+    //   axios.post('assignProductToStation', payload)
+    //     .then( r=> success(r.data))
+    //     .catch(e => {
+    //       error(e);
+    //   });
+    // }
 }
