@@ -1,8 +1,8 @@
 <template>
     <nav class="navbar navbar-expand-lg partitionNav ps-3 pe-3 py-0">
 
-        <div class="row d-flex justify-content-between" style="width: 1600px;">
-            <div class="col-md-7 col-sm-12">
+        <div class="row justify-content-between" style="width: 1600px;">
+            <div class="col-md-6 col-sm-12">
                 <ReportFilters :reportType="reportType" :reportName="reportName" class="w-100">
                 </ReportFilters>
             </div>
@@ -35,8 +35,8 @@
                 </ul>
             </div>
 
-            <div class="col-md-2 col-sm-12">
-                <div class="date-range-picker-wrap mt-3 float-right">
+            <div class="col-md-3 col-sm-12">
+                <div class="date-range-picker-wrap mt-3" style="float: right;">
                     <span class="range-picker-label">
                         Date Range
                     </span>
@@ -65,12 +65,12 @@
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                             <li>
                                 <a href="#" class="dropdown-item"
-                                   v-for="item in rangeSelections" @click="changeSelectedRange(item)">
+                                    v-for="item in rangeSelections" @click="changeSelectedRange(item)">
                                     {{ item.title }}
                                 </a>
 
                                 <a href="#" class="dropdown-item"
-                                  @click="changeSelectedRange({ tag: 'custom', title: 'Custom' })">
+                                    @click="changeSelectedRange({ tag: 'custom', title: 'Custom' })">
                                     Custom
                                 </a>
                             </li>
