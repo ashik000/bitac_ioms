@@ -1,13 +1,10 @@
 <template>
-    <li class="list-group-item listitemm">
+    <li class="list-group-item listitemm border">
         <div class="row">
-            <div class="col-sm-1">
-                <i class="icon material-icons" style="font-size:30px;">schedule</i>
-            </div>
             <div class="col-sm-5">
                 <span>{{ timeRange }} {{ scrap.name }}</span>
             </div>
-            <div class="col-sm-3"></div>
+            <div class="col-sm-4"></div>
             <div class="col-sm-3">
                 <input class="input" type="number" @blur="scrap.updated=true" v-model.number="scrap.scraped"><span> / {{ scrap.produced }}</span>
             </div>
@@ -16,7 +13,6 @@
 </template>
 
 <script>
-
     export default {
         name: "ScrapInputListItem",
         data: ()=>{
@@ -27,9 +23,9 @@
             scrap : Object,
         },
         computed: {
-          timeRange(){
-              return moment().hour(this.scrap.hour).startOf('hour').format("hh:mm a") + " - " + moment().hour(this.scrap.hour).endOf('hour').format("hh:mm a");
-          }
+            timeRange(){
+                return moment().hour(this.scrap.hour).startOf('hour').format("hh:mm a") + " - " + moment().hour(this.scrap.hour).endOf('hour').format("hh:mm a");
+            }
         }
     }
 </script>
