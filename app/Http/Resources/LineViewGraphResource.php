@@ -43,7 +43,7 @@ class LineViewGraphResource extends JsonResource
 
     public function __construct( $products, $logs, $downtimes, $slows, $scraps, $productIdToStationProductsMap)
     {
-        $this->products                      = $products;
+        $this->products                      = $products == null? collect() : $products;
         $this->logs                          = $logs;
         $this->downtimes                     = $downtimes;
         $this->slows                         = $slows;
