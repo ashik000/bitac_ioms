@@ -2,8 +2,12 @@
 
 namespace App\Exceptions;
 
+use Arcanedev\LogViewer\Entities\Log;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use League\OAuth2\Server\Exception\OAuthServerException;
 
 class Handler extends ExceptionHandler
 {
@@ -42,13 +46,25 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Throwable $exception
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function render($request, \Throwable $exception)
     {
-        if ($exception->getMessage() == 'Invalid scope(s) provided.') {
-            return response()->json('Forbidden', 403);
+        if ($exception instanceof \Illuminate\Validation\UnauthorizedException) {
+            return response()->json([
+                'message' => 'You do not have access to do that.'
+            ], 403);
         }
-        return response()->json(['message' => 'Something went wrong'], 500);
+
+        if ($exception instanceof AuthorizationException || $exception instanceof AuthenticationException) {
+            \Log::debug('oauth exception');
+            return response()->json([
+                'message' => 'You do not have access to do that.'
+            ], 401);
+        }
+
+        return response()->json([
+            'message' => 'Something went wrong.'
+        ], 500);
     }
 }

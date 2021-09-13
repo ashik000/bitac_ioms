@@ -10,7 +10,7 @@ export default {
     },
     logout(data, success, error) {
         axios.post('logout')
-            .then(r => success(r.data))
+            .then(r => success(r.message))
             .catch(e => {
                 error(e);
             })

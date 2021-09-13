@@ -100,6 +100,8 @@ class LoginController extends Controller
         auth()->user()->tokens->each(function ($token, $key) {
             $token->delete();
         });
-        return response()->json('Logged out successfully', 200);
+        return response()->json([
+            'message' => 'Logged out successfully'
+        ], 200);
     }
 }
