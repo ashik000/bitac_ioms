@@ -59,38 +59,37 @@
                     </div>
                 </div>
 
-              <div class="row my-1">
-                <div class="col-md-2">
+                <div class="row my-1">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10">
+                        Operator: {{ filter.stationOperatorName }}
+                    </div>
                 </div>
-                <div class="col-md-10">
-                  Operator: {{ filter.stationOperatorName }}
-                </div>
-              </div>
 
                 <div class="row">
-                  <div class="col-md-6">
-                    <production-summary-panel
-                        :produced="oeeSummary.summary.produced"
-                        :expected="oeeSummary.summary.expected"
-                        :oee="oeeSummary.summary.oee"
-                        :products="products">
-                    </production-summary-panel>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="mt-4 card" style="width: 12rem;">
-                      <div class="card-body p-1">
-                        <v-date-picker :max-date='new Date()'
-                                      mode='single' v-model='filter.selectedDate'
-                                      :masks="{ input: 'WWW, DD MMMM' }"
-                                      :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent px-2 h5' }"
-                                      @input="changeSelectedDate">
-                        </v-date-picker>
-                      </div>
+                    <div class="col-md-6">
+                        <production-summary-panel
+                            :produced="oeeSummary.summary.produced"
+                            :expected="oeeSummary.summary.expected"
+                            :oee="oeeSummary.summary.oee"
+                            :products="products">
+                        </production-summary-panel>
                     </div>
 
-                  </div>
+                    <div class="col-md-6">
+                        <div class="mt-4 card" style="width: 12rem;">
+                            <div class="card-body p-1">
+                                <v-date-picker :max-date='new Date()'
+                                    mode='single' v-model='filter.selectedDate'
+                                    :masks="{ input: 'WWW, DD MMMM' }"
+                                    :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent px-2 h5' }"
+                                    @input="changeSelectedDate">
+                                </v-date-picker>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
 
         </header>
@@ -163,45 +162,45 @@
             <div class="controls container-fluid d-flex justify-content-around">
 
                 <div class="card rounded-0" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isProductSelectionModalShown = true">
-                  <div class="card-body" style="text-align: center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
-                      <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
-                    </svg>&nbsp;ASSIGN PRODUCT
-                  </div>
+                    <div class="card-body" style="text-align: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
+                            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+                        </svg>&nbsp;ASSIGN PRODUCT
+                    </div>
                 </div>
 
                 <div class="card rounded-0" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isOperatorSelectionModalShown = true">
-                  <div class="card-body" style="text-align: center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
-                      <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                      <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
-                    </svg>&nbsp;ASSIGN OPERATOR
-                  </div>
+                    <div class="card-body" style="text-align: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                        </svg>&nbsp;ASSIGN OPERATOR
+                    </div>
                 </div>
 
                 <div class="card rounded-0" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isDowntimeSummaryModalShown = true">
-                  <div class="card-body" style="text-align: center;">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
-                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-                      </svg>&nbsp;ASSIGN DOWNTIME REASON
-                  </div>
+                    <div class="card-body" style="text-align: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                        </svg>&nbsp;ASSIGN DOWNTIME REASON
+                    </div>
                 </div>
 
                 <div class="card rounded-0" style="width: auto; flex-grow: 1; cursor: pointer;" @click="isScrapInputModalShown = true">
-                  <div class="card-body" style="text-align: center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                      <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-                    </svg>&nbsp;BATCH DEFECT ENTRY
-                  </div>
+                    <div class="card-body" style="text-align: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                        </svg>&nbsp;BATCH DEFECT ENTRY
+                    </div>
                 </div>
 
             </div>
         </footer>
 
         <modal v-if="isStationSelectionFormShown"
-              class="station-selector-modal"
-              @close="isStationSelectionFormShown = false">
+            class="station-selector-modal"
+            @close="isStationSelectionFormShown = false">
             <template v-slot:header>
                 <h4 class="text-uppercase">Select Station</h4>
             </template>
@@ -224,8 +223,8 @@
         </modal>
 
         <modal v-if="isDowntimeReasonsModalShown"
-              class="reason-selector-modal"
-              @close="isDowntimeReasonsModalShown = false"
+            class="reason-selector-modal"
+            @close="isDowntimeReasonsModalShown = false"
         >
             <template v-slot:header>
                 <h4 class="text-uppercase">Select Downtime Reason</h4>
@@ -554,8 +553,8 @@
                     element.innerHTML = "";
 
                     GaugeChart.gaugeChart(document.querySelector(elements[i]), elements[i] === '#totalOee' ? (window.innerWidth >= 1920 ? 200 : 130) : (window.innerWidth >= 1920 ? 120 : 100),
-                      elements[i] === '#totalOee' ? {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
-                      arcDelimiters: [30, 70]}} : {...this.gaugeOptions, ...{arcColors: ['#EAEAEA']}} );
+                        elements[i] === '#totalOee' ? {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
+                        arcDelimiters: [30, 70]}} : {...this.gaugeOptions, ...{arcColors: ['#EAEAEA']}} );
 
                 }
             },
