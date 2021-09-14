@@ -230,13 +230,12 @@
                 <h4 class="text-uppercase">Select Downtime Reason</h4>
             </template>
             <template v-slot:content>
-                <ul class="reasons-list">
-                    <li v-for="reason in downtimeReasons"
-                        :key="reason.id"
-                        @click.prevent="assignDowntimeReason(reason)">
-                        {{ reason.name }}
-                    </li>
-                </ul>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action"
+                        v-for="reason in downtimeReasons" :key="reason.id"
+                        @click.prevent="assignDowntimeReason(reason)">{{ reason.name }}</a>
+                </div>
+                <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
         </modal>
 
@@ -288,7 +287,6 @@
     import OperatorSelectionModal from "../components/lineview/operatorselection/OperatorSelectionModal";
     import ProductSelectionModal from "../components/lineview/productselection/ProductSelectionModal";
     import moment from "moment";
-    import downtimeReasonsService from "../services/DowntimeReasons";
     import ToastrService from '../services/ToastrService';
 
     export default {
@@ -487,11 +485,15 @@
                 });
             },
             assignDowntimeReason(reason) {
+                this.showInprogress = true;
                 DowntimeReasonsService.assignDowntime({
                     downtimeId: this.selectedDowntime.id,
                     downtimeReasonId: reason.id,
                 }, data => {
                     this.isDowntimeReasonsModalShown = false;
+                    this.showInprogress = false;
+                    ToastrService.showSuccessToast('Downtime reason assigned successfully.');
+                    this.fetchData();
                 });
             },
             fetchData() {
@@ -615,9 +617,8 @@
             this.fetchStationShift();
         },
         destroyed() {
-            clearInterval(this.$data._clock);
-            clearInterval(this.$data._updateData);
+            // clearInterval(this.$data._clock);
+            // clearInterval(this.$data._updateData);
         }
     }
 </script>
-
