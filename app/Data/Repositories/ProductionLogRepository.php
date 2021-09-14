@@ -119,4 +119,23 @@ class ProductionLogRepository
 
         return $query->get();
     }
+
+    public function fetchLastProductionLog()
+    {
+        return ProductionLog::orderBy('id', 'desc')->first();
+    }
+
+    public function fetchLastDowntime()
+    {
+        return Downtime::orderBy('id', 'desc')->first();
+    }
+
+    public function fetchLastSlowProduction()
+    {
+        return SlowProduction::orderBy('id', 'desc')->first();
+    }
+
+    public function saveNewProductionLog() {
+
+    }
 }

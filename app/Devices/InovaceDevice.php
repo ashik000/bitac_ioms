@@ -3,6 +3,8 @@
 
 namespace App\Devices;
 
+use App\Data\Models\Device;
+use App\Data\Models\DeviceStation;
 use App\Data\Models\Downtime;
 use App\Data\Models\Operator;
 use App\Data\Models\Packet;
@@ -15,6 +17,7 @@ use App\Data\Repositories\DeviceRepository;
 use App\Data\Repositories\ProductionLogRepository;
 use App\Data\Repositories\ProductRepository;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Exception;
 use DB;
 use Log;
@@ -514,5 +517,259 @@ class InovaceDevice
         );
 
         return $data;
+    }
+
+
+    public function parseLogPacketAndSave(Device $device, Packet $packet)
+    {
+        $packetContent = $packet->request;
+        $packetContentBin = hex2bin($packetContent);
+        $deviceTimeStamp  = sprintf("%04u", unpack("Ntimestamp/", substr($packetContentBin, 0, 4))['timestamp']);
+        $deviceTimeObject = Carbon::createFromTimestamp($deviceTimeStamp);
+        $numberOfLogs = unpack('cnumOfLogs/', substr($packetContentBin, 4, 1))['numOfLogs'];
+
+        $productionLogs = [];
+        $downTimes = [];
+        $slowProductions = [];
+
+        $devicePortToDeviceStationMap = $this->deviceRepository->findAllDeviceStationsOfADevice($device->id)->mapWithKeys(function ($deviceStation) {
+            return [$deviceStation['port'] + 1 => $deviceStation]; // 1 is added to port
+        });
+
+        $stationIdToStationProductMap = $this->productRepository->findAllStationProductsKeyByStationId();
+        $productIdToProductMap = $this->productRepository->findAllProductsKeyById();
+
+        $previousProductionLog = null;
+        $topProductionLog = $this->productionLogRepository->fetchLastProductionLog();
+        $topSlowProduction = $this->productionLogRepository->fetchLastSlowProduction();
+        $topDowntime = $this->productionLogRepository->fetchLastDowntime();
+
+        $topProductionLogId = empty($topProductionLog)? 1 : $topProductionLog->id + 1;
+        $topSlowProductionId = empty($topSlowProduction)? 1 : $topSlowProduction->id + 1;
+        $topDowntimeId = empty($topDowntime)? 1 : $topDowntime->id + 1;
+
+
+        for ($i = 0; $i < $numberOfLogs; $i++) {
+
+            $startingIndex = 5 + ($i*7);
+            $logTimeStamp = sprintf("%04u", unpack("Ntimestamp/", substr($packetContentBin, $startingIndex, 4))['timestamp']);
+            $logTimeObject = Carbon::createFromTimestamp($logTimeStamp);
+            //we are omitting the length of packets, channel length bytes because for logs, the length of packets will always be 1
+            $port = unpack('cport/', substr($packetContentBin, $startingIndex+6, 1))['port'];
+
+            $deviceStation = $devicePortToDeviceStationMap->get($port+1);
+            if(empty($deviceStation)) continue;
+            $stationProduct = $stationIdToStationProductMap->get($deviceStation->station_id);
+            if(empty($stationProduct)) continue;
+
+            $previousProductionLog = $this->productionLogRepository->findLastProductionLogByStationIdAndProductId($deviceStation->station_id, $stationProduct->product_id);
+
+            if ($previousProductionLog == null) {
+                $previousProductionLog = new ProductionLog();
+                $previousProductionLog->produced_at = $logTimeObject->copy()->startOfHour();
+            }
+
+            $productionLogs[] = [
+                'id' => ++$topProductionLogId,
+                'station_id' => $deviceStation->station_id,
+                'product_id' => $stationProduct->product_id,
+                'produced_at' => $logTimeObject,
+                'synced_at' => now(),
+                'cycle_interval' => $cycleInterval = $logTimeObject->diffInSeconds($previousProductionLog->produced_at),
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+
+            $hourDiff = $logTimeObject->copy()->startOfHour()->diffInHours(Carbon::parse($previousProductionLog->produced_at)->startOfHour());
+
+            if ($hourDiff >= 2) {
+                $downtimePrevStartTime = Carbon::parse($previousProductionLog->produced_at);
+                $downtimePrevDuration = $downtimePrevStartTime->copy()->endOfHour()->diffInSeconds($downtimePrevStartTime);
+
+                $downtimes[] = [
+                    'id'                => ++$topDowntimeId,
+                    'start_time'        => $downtimePrevStartTime,
+                    'duration'          => $downtimePrevDuration,
+                    'production_log_id' => $topProductionLogId,
+                    'shift_id'          => null,
+                    'operator_id'       => null,
+                    'created_at'        => now(),
+                    'updated_at'        => now()
+                ];
+
+                $hour = $downtimePrevStartTime->copy()->addHours(1)->addSeconds(-10);
+                $remainingHours = $logTimeObject->copy()->startOfHour()->diffInHours(Carbon::parse($previousProductionLog->produced_at)->startOfHour());
+
+                for ($j = 0; $j < $remainingHours-1; $j++) {
+
+//                    $downtimeStart = $hour->copy()->startOfHour();
+                    $downtimeDuration = 3600;
+//                    $downtimeEnd = $downtimeStart->copy()->addSeconds($downtimeDuration);
+
+                    $downtimes[] = [
+                        'id'                => ++$topDowntimeId,
+                        'start_time'        => $hour->copy()->startOfHour(),
+                        'duration'          => $downtimeDuration,
+                        'production_log_id' => $topProductionLogId,
+                        'shift_id'          => null,
+                        'operator_id'       => null,
+                        'created_at'        => now(),
+                        'updated_at'        => now()
+                    ];
+                    $hour->addHours(1);
+                }
+                $previousProductionLog->produced_at = $hour->startOfHour();
+                $cycleInterval = $logTimeObject->diffInSeconds($previousProductionLog->produced_at);
+            }
+
+            try {
+
+                $differentHour = $logTimeObject->hour != Carbon::parse($previousProductionLog->produced_at)->hour;
+
+                if ($cycleInterval > $stationProduct->cycle_time + $stationProduct->cycle_timeout) { //downtime, slowprod exists
+                    $downtimeSecond = $cycleInterval - ($stationProduct->cycle_time + $stationProduct->cycle_timeout);
+                    if ($differentHour) { //there must be a downtime or slow prod or good prod that lies between two hours
+                        $downtimeStart = Carbon::parse($previousProductionLog->produced_at);
+                        $downtimeEnd = $downtimeStart->copy()->addSeconds($downtimeSecond);
+
+                        if ($downtimeStart->hour != $downtimeEnd->hour) {// 2 downtimes, 1 slowprod
+                            $downtimePrevDuration = $downtimeStart->copy()->endOfHour()->diffInSeconds($downtimeStart) + 1;
+                            $downtimeNextDuration = $downtimeSecond - $downtimePrevDuration;
+
+
+                            $downTimes[] = [
+                                'id'                => ++$topDowntimeId,
+                                'start_time'        => $downtimeStart,
+                                'duration'          => $downtimePrevDuration,
+                                'production_log_id' => $topProductionLogId,
+                                'shift_id'          => null,
+                                'operator_id'       => null,
+                                'created_at'        => now(),
+                                'updated_at'        => now()
+                            ];
+
+                            $downTimes[] = [
+                                'id'                => ++$topDowntimeId,
+                                'start_time'        => $downtimeEnd->copy()->startOfHour(),
+                                'duration'          => $downtimeNextDuration,
+                                'production_log_id' => $topProductionLogId,
+                                'shift_id'          => null,
+                                'operator_id'       => null,
+                                'created_at'        => now(),
+                                'updated_at'        => now()
+                            ];
+
+                            $slowProductions[] = [
+                                'id'                => ++$topSlowProductionId,
+                                'production_log_id' => $topProductionLogId,
+                                'start_time'        => $downtimeEnd,
+                                'duration'          => $stationProduct->cycle_timeout,
+                                'created_at'        => now(),
+                                'updated_at'        => now()
+                            ];
+                        }
+                        else if ($downtimeEnd->copy()->addSeconds($stationProduct->cycle_timeout)->hour != $downtimeEnd->hour) { //1 downtime, 2 slowprod
+
+                            $downTimes[] = [
+                                'id'                => ++$topSlowProductionId,
+                                'start_time'        => $downtimeStart,
+                                'duration'          => $downtimeSecond,
+                                'production_log_id' => $topProductionLogId,
+                                'shift_id'          => null,
+                                'operator_id'       => null,
+                                'created_at'        => now(),
+                                'updated_at'        => now()
+                            ];
+
+                            $slowProdPrevDuration = $downtimeEnd->copy()->endOfHour()->diffInSeconds($downtimeEnd) + 1;
+
+                            $slowProductions[] = [
+                                'id'                => ++$topSlowProductionId,
+                                'production_log_id' => $topProductionLogId,
+                                'start_time'        => $downtimeEnd,
+                                'duration'          => $slowProdPrevDuration
+                            ];
+
+                            $slowProductions[] = [
+                                'id'                => ++$topSlowProductionId,
+                                'production_log_id' => $topProductionLogId,
+                                'start_time'        => $downtimeEnd->copy()->addSeconds($stationProduct->cycle_timeout)->startOfHour(),
+                                'duration'          => $stationProduct->cycle_timeout - $slowProdPrevDuration
+                            ];
+                        }
+                    }
+                    else { //same hour but downtime and slowprod both exist
+
+                        $downtimeStart = Carbon::parse($previousProductionLog->produced_at);
+
+                        $downTimes[] = [
+                            'id'                => ++$topDowntimeId,
+                            'start_time'        => $downtimeStart,
+                            'duration'          => $downtimeSecond,
+                            'production_log_id' => $topProductionLogId,
+                            'shift_id'          => null,
+                            'operator_id'       => null,
+                            'created_at'        => now(),
+                            'updated_at'        => now()
+                        ];
+
+                        $slowProductions[] = [
+                            'id'                => ++$topSlowProductionId,
+                            'production_log_id' => $topProductionLogId,
+                            'start_time'        => $downtimeStart->copy()->addSeconds($downtimeSecond),
+                            'duration'          => $stationProduct->cycle_timeout,
+                            'created_at'        => now(),
+                            'updated_at'        => now()
+                        ];
+                    }
+                }
+                else if ($cycleInterval > $stationProduct->cycle_time) { //only slow production exists
+                    $slowProductionTimeSeconds = $cycleInterval - $stationProduct->cycle_time;
+                    $slowProductionStart = Carbon::parse($previousProductionLog->produced_at);
+                    $slowProductionEnd = $slowProductionStart->copy()->addSeconds($slowProductionTimeSeconds);
+                    if ($slowProductionStart->hour != $slowProductionEnd->hour) { //two slowprod
+
+                        $slowProdPrevDuration = $slowProductionStart->copy()->endOfHour()->diffInSeconds($slowProductionStart) + 1;
+
+
+                        $slowProductions[] = [
+                            'id'                => ++$topSlowProductionId,
+                            'production_log_id' => $topProductionLogId,
+                            'start_time'        => $slowProductionStart,
+                            'duration'          => $slowProdPrevDuration,
+                            'created_at'        => now(),
+                            'updated_at'        => now()
+                        ];
+
+                        $slowProductions[] = [
+                            'id'                => ++$topSlowProductionId,
+                            'production_log_id' => $topProductionLogId,
+                            'start_time'        => $slowProductionEnd->copy()->startOfHour(),
+                            'duration'          => $slowProductionTimeSeconds - $slowProdPrevDuration,
+                            'created_at'        => now(),
+                            'updated_at'        => now()
+                        ];
+                    }
+                    else { //one slowprod
+
+                        $slowProductions[] = [
+                            'id'                => ++$topSlowProductionId,
+                            'production_log_id' => $topProductionLogId,
+                            'start_time'        => $previousProductionLog->produced_at,
+                            'duration'          => $slowProductionTimeSeconds,
+                            'created_at'        => now(),
+                            'updated_at'        => now()
+                        ];
+                    }
+                }
+            } catch (Exception $ex) {
+                Log::error($ex);
+            }
+        }
+        ProductionLog::insert($productionLogs);
+        Downtime::insert($downTimes);
+        SlowProduction::insert($slowProductions);
+        $packet->processing_end = now();
+        $packet->save();
     }
 }
