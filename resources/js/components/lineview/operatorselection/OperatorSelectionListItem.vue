@@ -1,5 +1,5 @@
 <template>
-    <li class="list-group-item listitemm">
+    <li class="list-group-item listitemm border">
         <div class="row">
             <div class="col-sm-5">
                 <span>{{ operator.first_name + " " + operator.last_name }}</span>
@@ -18,7 +18,9 @@
 
             <div class="col-sm-4">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" :value="operator.id" @change="onOperatorChange($event)" :checked="operator.id == checkedVal">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                        :value="operator.id" @change="onOperatorChange($event)" :checked="operator.id == checkedVal"
+                        style="float: right;" />
                 </div>
             </div>
         </div>

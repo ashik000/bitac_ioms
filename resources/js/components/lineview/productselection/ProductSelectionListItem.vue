@@ -1,12 +1,14 @@
 <template>
-    <li class="list-group-item listitemm">
+    <li class="list-group-item listitemm border">
         <div class="row">
 
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" :value="product.id" @change="onProductChange($event)" :checked="product.id == checkedVal">
                 <label class="form-check-label" for="flexRadioDefault1">
                     {{ product.name }}
                 </label>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                    :value="product.id" @change="onProductChange($event)" :checked="product.id == checkedVal"
+                    style="float: right;" />
             </div>
 
         </div>

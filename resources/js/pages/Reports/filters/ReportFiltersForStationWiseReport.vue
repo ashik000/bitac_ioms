@@ -84,8 +84,3 @@
     }
 </script>
 
-<style scoped>
-.station_wise_select, option {
-  width: 120px!important;
-}
-</style>

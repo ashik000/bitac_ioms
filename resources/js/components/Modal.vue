@@ -2,7 +2,7 @@
     <transition name="modal">
         <div class="mask">
             <div class="modal-wrap" :class="{ 'modal-lg' : size == 'lg' }">
-                <header class="header">
+                <header class="modal-header">
                     <slot name="header"></slot>
                 </header>
                 <div class="content">
@@ -78,7 +78,7 @@
 
             .header, .content, .footer {
                 padding: 0.75rem 1rem;
-                marging-top: 1rem;
+                margin-top: 1rem;
             }
 
             .header {

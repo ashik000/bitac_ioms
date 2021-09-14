@@ -2,8 +2,8 @@
     <modal @close="$emit('close')">
         <template v-slot:header>
             <div class="container" style="width: 960px; ">
-                <div class="row" style="margin-left: 0!important; margin-bottom: 10px;">
-                    <h5>Select Product</h5>
+                <div class="row" style="margin-left: 0!important;">
+                    <h5>Assign Product</h5>
                 </div>
             </div>
         </template>
