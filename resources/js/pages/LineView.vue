@@ -56,15 +56,10 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
-                </div>
-
-                <div class="row my-1">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-10">
                         Operator: {{ filter.stationOperatorName }}
                     </div>
                 </div>
+
 
                 <div class="row">
                     <div class="col-md-6">
@@ -76,17 +71,24 @@
                         </production-summary-panel>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="justify-content: center;display: flex;align-items: baseline;">
+
+                        <b-icon class="mx-1" icon="caret-left-fill" aria-hidden="true" @click="changeSelectedDate('PREV')" style="cursor: pointer;"></b-icon>
+
                         <div class="mt-4 card" style="width: 12rem;">
                             <div class="card-body p-1">
                                 <v-date-picker :max-date='new Date()'
                                     mode='single' v-model='filter.selectedDate'
                                     :masks="{ input: 'WWW, DD MMMM' }"
-                                    :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent px-2 h5' }"
+                                    :input-props="{ class: 'date-picker-input border-0 w-full bg-transparent' }"
                                     @input="changeSelectedDate">
                                 </v-date-picker>
                             </div>
                         </div>
+
+                        <b-icon class="mx-1" icon="caret-right-fill" aria-hidden="true" @click="changeSelectedDate('NEXT')"
+                                :disabled="filter.selectedDate >= new Date().setHours(0,0,0,0)" style="cursor: pointer;"></b-icon>
+
                     </div>
                 </div>
 
@@ -123,7 +125,7 @@
                     <table class="table">
                         <thead class="top_downtime_table_header">
                         <tr>
-                            <th colspan="2">Top Operator Downtime Reasons (last 7 days)</th>
+                            <th colspan="2">Top Operator Downtime (last 7 days)</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -617,8 +619,8 @@
             this.fetchStationShift();
         },
         destroyed() {
-            // clearInterval(this.$data._clock);
-            // clearInterval(this.$data._updateData);
+            clearInterval(this.$data._clock);
+            clearInterval(this.$data._updateData);
         }
     }
 </script>
