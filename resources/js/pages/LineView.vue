@@ -51,8 +51,8 @@
                                 <li v-for="station in stations"
                                     :key="station.id"
                                     @click.prevent="changeSelectedStation(station)">
-                                <a class="dropdown-item" href="#">{{ station.name }}&nbsp;<i class="material-icons" v-if="station.id === filter.stationId">done</i>
-                                </a>
+                                    <a class="dropdown-item" href="#">{{ station.name }}&nbsp;<i class="material-icons"
+                                        v-if="station.id === filter.stationId">done</i></a>
                                 </li>
                             </ul>
                         </div>
