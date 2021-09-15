@@ -32,8 +32,8 @@ export default {
             .then(r => success(r.data))
             .catch(e => console.log(e))
     },
-    fetchTopOperatorDowntimeReasons: (filter, success, error) => {
-        axios.get('topOperatorDowntimeReasons', {
+    fetchTopOperatorDowntimes: (filter, success, error) => {
+        axios.get('topOperatorDowntimes', {
             params: {
                 end: filter.end,
                 start: filter.start

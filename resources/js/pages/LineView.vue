@@ -132,7 +132,7 @@
                             <tr v-if="!showTableTopOperartorDowntimeReasons">
                                 <td class="text-center">No data found</td>
                             </tr>
-                            <tr v-else v-for="topOperatorDowntimeReason in topOperatorDowntimeReasons">
+                            <tr v-else v-for="topOperatorDowntime in topOperatorDowntimes">
                                 <td>{{ topOperatorDowntimeReason.operator_name }}</td>
                                 <td>{{ topOperatorDowntimeReason.duration }}</td>
                             </tr>
@@ -358,7 +358,7 @@
                 end: moment().endOf('day').toDate()
             },
             topDowntimeReasons: null,
-            topOperatorDowntimeReasons: null,
+            topOperatorDowntimes: null,
             stationShifts: {
                 data: []
             },
@@ -457,8 +457,8 @@
                 }
             },
             updateStationShiftId(selectedStationShiftId) {
-                console.log('when update shiftId triggers')
-                console.log(selectedStationShiftId);
+                // console.log('when update shiftId triggers')
+                // console.log(selectedStationShiftId);
                 this.filter.stationShiftId = selectedStationShiftId;
                 this.fetchData();
             },
@@ -521,8 +521,6 @@
                 );
 
                 this.fetchOperatorName();
-                this.fetchTopDowntimeReasons();
-                this.fetchTopOperatorDowntimeReasons();
             },
             fetchStationShift() {
                 LineViewService.fetchStationShift({},
@@ -540,14 +538,15 @@
                         console.log(this.topDowntimeReasons);
                     }
                 );
+                console.log('topDR mounted');
             },
-            fetchTopOperatorDowntimeReasons() {
-                LineViewService.fetchTopOperatorDowntimeReasons({
+            fetchTopOperatorDowntimes() {
+                LineViewService.fetchTopOperatorDowntimes({
                         start: this.range.start,
                         end: this.range.end,
                     },
                     (data) => {
-                        this.topOperatorDowntimeReasons = data;
+                        this.topOperatorDowntimes = data;
                     }
                 );
             },
@@ -582,7 +581,7 @@
                 return this.topDowntimeReasons && this.topDowntimeReasons.length > 0;
             },
             showTableTopOperartorDowntimeReasons(){
-                return this.topOperatorDowntimeReasons && this.topOperatorDowntimeReasons.length > 0;
+                return this.topOperatorDowntimes && this.topOperatorDowntimes.length > 0;
             },
         },
         mounted() {
@@ -617,6 +616,9 @@
             this.renderGaugeChart();
 
             this.fetchStationShift();
+
+            this.fetchTopDowntimeReasons();
+            this.fetchTopOperatorDowntimes();
         },
         destroyed() {
             clearInterval(this.$data._clock);

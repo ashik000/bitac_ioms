@@ -133,7 +133,7 @@ class LineViewController extends Controller
         return $result;
     }
 
-    public function topOperatorDowntimeReasons(Request $request)
+    public function topOperatorDowntimes(Request $request)
     {
         $start = CarbonImmutable::parse($request->get('start'));
         $end   = CarbonImmutable::parse($request->get('end'));
