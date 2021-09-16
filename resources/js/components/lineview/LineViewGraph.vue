@@ -50,21 +50,22 @@
             </select>
         </div>
 
-        <table class="line-view-graph mt-1">
-            <thead>
-            <tr class="text-center">
-                <th style="width: 2%; color: #009FFF;">HOUR</th>
-                <th v-bind:style="{width: headerWidth + '%' }" v-for="i in colspan[zoomIndex]" class="availability-column">{{barLabel(i-1)}}</th>
+        <div class="table-container y-scroll mt-2">
+            <table class="line-view-graph">
+                <thead>
+                <tr class="text-center">
+                    <th style="width: 2%; color: #009FFF;">HOUR</th>
+                    <th v-bind:style="{width: headerWidth + '%' }" v-for="i in colspan[zoomIndex]" class="availability-column">{{barLabel(i-1)}}</th>
 
-                <th style="width: 10%; color: #49B92D;">PERFORMANCE</th>
+                    <th style="width: 10%; color: #49B92D;">PERFORMANCE</th>
 
-                <th style="width: 5%; color: #FF0D0D;">DEFECT</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="logs in linedata" :key="logs.hour">
-                <td style="width: 1%" class="hour-marker">{{ `${logs.hour}`.padStart(2, '0') }}</td>
-                <td :colspan="colspan[zoomIndex]" class="hour-availability text-white">
+                    <th style="width: 5%; color: #FF0D0D;">DEFECT</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="logs in linedata" :key="logs.hour">
+                    <td style="width: 1%" class="hour-marker">{{ `${logs.hour}`.padStart(2, '0') }}</td>
+                    <td :colspan="colspan[zoomIndex]" class="hour-availability text-white">
                     <span class="downtime-title" :key="'reason-' + bar.id"
                           v-for="bar in logs.data"
                           v-if="bar.type == 'downtime' && bar.reason"
@@ -74,7 +75,7 @@
                         {{ bar.reason.name }}
                     </span>
                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="bar"
-                            :viewBox="viewBoxAttributes" style="background: #222056;" preserveAspectRatio="none">
+                             :viewBox="viewBoxAttributes" style="background: #222056;" preserveAspectRatio="none">
                             <template v-for="bar in logs.data">
                                 <rect v-if="bar.type == 'log'" :key="bar.type + '-' + bar.id"
                                       :x="bar.second_of_hour"
@@ -98,29 +99,30 @@
                                 >
                                     <title>Start: {{ formatStartTime(bar.start_time) }}, Duration: {{formatDuration(bar.duration)}}, {{bar.reason ? bar.reason.name : ''}}</title>
                                 </rect>
-                        </template>
-                    </svg>
-                </td>
-                <td style="width: 10%" class="hour-metric text-center">
-                    <div class="d-inline">
+                            </template>
+                        </svg>
+                    </td>
+                    <td style="width: 10%" class="hour-metric text-center">
+                        <div class="d-inline">
                         <span
                             class="produced"
                             :class="{ 'text-danger': (logs.produced * 100 / logs.expected) <= logs.performance_threshold  }">
                             {{ logs.produced }}
                         </span>/
-                        <span class="expected">{{ logs.expected }}</span>
-                    </div>
-                </td>
-                <td :style="{ color: logs.scrapped ? '#FF0D0D' : ''}" class="text-center">
-                    <div>
+                            <span class="expected">{{ logs.expected }}</span>
+                        </div>
+                    </td>
+                    <td :style="{ color: logs.scrapped ? '#FF0D0D' : ''}" class="text-center">
+                        <div>
                         <span class="defect_product">
                             {{ logs.scrapped }}
                         </span>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -414,5 +416,19 @@
     .right-radius{
         border-top-right-radius: .3rem !important;
         border-bottom-right-radius: .3rem !important;
+    }
+
+    .table-container{border: 2px solid #C5E9FF;}
+
+    @media only screen and (max-width: 3800px) {
+        .table-container{
+            height: 30rem;
+        }
+    }
+
+    @media only screen and (max-width: 1600px) {
+        .table-container{
+            height: 18rem;
+        }
     }
 </style>
