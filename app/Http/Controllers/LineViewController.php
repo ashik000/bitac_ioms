@@ -150,11 +150,11 @@ class LineViewController extends Controller
             ->leftJoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
             ->join('operators', 'operators.id', '=', 'downtimes.operator_id')
             ->whereBetween('downtimes.start_time', [$start, $end])
-            ->groupBy('operator_id', 'station_id', 'station_group_id', 'stations.name', 'station_groups.name', 'operators.first_name', 'operators.last_name')
+            ->groupBy('downtimes.operator_id', 'station_id', 'station_group_id', 'stations.name', 'station_groups.name', 'operators.first_name', 'operators.last_name')
             ->orderBy(DB::raw('SUM(downtimes.duration)'), 'DESC')
             ->select([
                 'station_id',
-                'operator_id',
+                'downtimes.operator_id',
                 'station_group_id',
                 DB::raw('stations.name as station_name'),
                 DB::raw('station_groups.name as station_group_name'),
