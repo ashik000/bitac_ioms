@@ -59,6 +59,7 @@
 <script>
 import ReportMenuItem from '../components/ReportMenuItem';
 import loginService from '../services/LoginService';
+import toastrService from '../services/ToastrService'
 
 export default {
     name: 'App',
@@ -80,6 +81,7 @@ export default {
                     tokenExpiration: null,
                     role: null
                 });
+                toastrService.showSuccessToast(response)
                 this.$router.push({
                     name : 'login'
                 })
