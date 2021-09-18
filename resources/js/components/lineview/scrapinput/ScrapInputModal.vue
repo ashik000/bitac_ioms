@@ -30,7 +30,7 @@
                     <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
                 </div>
                 <div class="col-sm-1">
-                    <button class="btn btn-success" @click.prevent="save">Submit</button>
+                    <button class="btn btn-success ms-3" @click.prevent="save">Submit</button>
                 </div>
             </div>
         </template>

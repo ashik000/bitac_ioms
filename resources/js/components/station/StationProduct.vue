@@ -67,27 +67,27 @@
                                 {{ product.name }}
                             </option>
                         </select>
-                        <label>Cycle Time</label>
+                        <label class="mt-2">Cycle Time</label>
                         <input type="number" v-model="stationProduct.cycle_time" class="form-control"
                                placeholder="Enter Cycle Time">
-                        <label>Cycle Unit</label>
+                        <label class="mt-2">Cycle Unit</label>
                         <select class="form-control" v-model="stationProduct.cycle_unit">
                             <option value="SEC_PER_PCS">SEC_PER_PCS</option>
                             <option value="PCS_PER_SEC">PCS_PER_SEC</option>
                             <option value="PCS_PER_MINUTE">PCS_PER_MINUTE</option>
                             <option value="PCS_PER_HOUR">PCS_PER_HOUR</option>
                         </select>
-                        <label>Cycle Timeout</label>
+                        <label class="mt-2">Cycle Timeout</label>
                         <input type="number" v-model="stationProduct.cycle_timeout" class="form-control"
                                placeholder="Enter Cycle Timeout">
-                        <label>Units Per Signal</label>
+                        <label class="mt-2">Units Per Signal</label>
                         <input type="number" v-model="stationProduct.units_per_signal" class="form-control"
                                placeholder="Enter Units Per Signal">
-                        <label>Performance Threshold</label>
+                        <label class="mt-2">Performance Threshold</label>
                         <input type="number" v-model="stationProduct.performance_threshold" class="form-control"
                                placeholder="Enter Performance Threshold">
                     </div>
-                    <button class="btn btn-primary" @click.prevent="createStationProduct()">Submit</button>
+                    <button class="btn btn-primary mt-2" @click.prevent="createStationProduct()">Submit</button>
                 </form>
             </template>
             <template v-slot:footer>

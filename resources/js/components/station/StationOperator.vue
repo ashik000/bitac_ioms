@@ -48,7 +48,7 @@
                                 {{ operator.first_name + operator.last_name + " " + operator.code }}
                             </option>
                         </select>
-                        <label for="startTimeSelect">Select Start Date and Time</label>
+                        <label for="startTimeSelect" class="mt-2">Select start date and time</label>
                         <VueCtkDateTimePicker id="startTimeSelect" v-model="stationOperator.start_time" :inline="true" format="YYYY-MM-DD HH:mm:ss" formatted="YYYY-MM-DD HH:mm:ss" />
                     </div>
                     <button style="float: right;" class="btn btn-primary" @click.prevent="createStationOperator()">Submit</button>

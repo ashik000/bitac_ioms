@@ -76,7 +76,7 @@
                                 {{ shift.name }}
                             </option>
                         </select>
-                        <label>Days</label>
+                        <label class="mt-2">Days</label>
                         <div class="center-flex">
                             <div @click="toggleSelectedShiftDays(index)" style="cursor: pointer" :class="day === '1'? 'day-circle-active' : 'day-circle-inactive'" v-for="(day, index) in selectedShiftDays">{{dayToNameMap[index].name}}</div>
                         </div>

@@ -29,7 +29,7 @@
 
         <template v-slot:footer>
             <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
-            <button class="btn btn-success ms-2" >Assign</button>
+            <button class="btn btn-success ms-3" >Assign</button>
         </template>
     </modal>
 

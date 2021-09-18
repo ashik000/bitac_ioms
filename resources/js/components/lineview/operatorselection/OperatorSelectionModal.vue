@@ -2,14 +2,14 @@
     <modal @close="$emit('close')">
         <template v-slot:header>
             <div class="container" style="width: 960px; ">
-                <div class="row" style="margin-left: 0!important; margin-bottom: 10px;">
+                <div class="row" style="margin-left: 0!important;">
                     <h5>Select Operator</h5>
                 </div>
             </div>
         </template>
         <template v-slot:content>
             <div class="container" style="width: 960px; ">
-                <div class="row" style="margin-left: 0!important; margin-bottom: 10px;">
+                <div class="row" style="margin-left: 0!important;">
                     <span>Current Station: {{ stationName }}</span>
                 </div>
                 <div style="overflow-y: scroll; height: 400px;">
@@ -31,7 +31,7 @@
 
         <template v-slot:footer>
             <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
-            <button class="btn btn-success ms-2" @click="assignOperatorToStation();" >Assign</button>
+            <button class="btn btn-success ms-3" @click="assignOperatorToStation();" >Assign</button>
         </template>
     </modal>
 

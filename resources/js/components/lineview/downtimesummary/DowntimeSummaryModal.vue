@@ -32,7 +32,7 @@
         </template>
         <template v-slot:footer>
             <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
-            <button class="btn btn-success ms-2" @click="assignDowntimeReason();" >Assign</button>
+            <button class="btn btn-success ms-3" @click="assignDowntimeReason();" >Assign</button>
         </template>
 
     </modal>
