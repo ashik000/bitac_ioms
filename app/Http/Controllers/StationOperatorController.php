@@ -123,6 +123,20 @@ class StationOperatorController extends Controller
         return app(StationOperatorController::class)->index();
     }
 
+    public function findStationOperatorByStationId(Request $request)
+    {
+        $data = $request->all();
+        $stationId = $data['station_id'];
+        $stationOperators = StationOperator::active()->where('station_id', '=', $stationId)->get();
+        $stationOperators->map(function ($stationOperator) {
+            $stationOperator->operator_name = $stationOperator->operator->first_name . ' ' . $stationOperator->operator->last_name;
+            $stationOperator->operator_code = $stationOperator->operator->code;
+            $stationOperator->operator->makeHidden(['deleted_at', 'created_at', 'updated_at']);
+            $stationOperator->station->makeHidden(['deleted_at', 'created_at', 'updated_at']);
+        });
+        return response()->json($stationOperators->makeHidden(['deleted_at', 'created_at', 'updated_at']), 200);
+    }
+
     public function assignOperatorToStation(Request $request)
     {
         $data       = $request->all();
