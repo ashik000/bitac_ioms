@@ -43,8 +43,8 @@
                     </div>
                     <div class="col-md-10">
                         <div class="dropdown">
-                            <label for="station-picker" style="font-weight: 500; font-size: 1.2rem;">STATION:</label>
-                            <button class="btn btn-light dropdown-toggle" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false">
+                            <label for="station-picker" style="font-weight: 500; font-size: 1.2rem; padding-top: 1px">STATION:</label>
+                            <button class="btn btn-light dropdown-toggle" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0px;font-size: 20px;font-weight: 500;">
                                 {{ filter.stationName }}
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">

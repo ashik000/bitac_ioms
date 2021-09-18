@@ -5,18 +5,16 @@
                 <span class="mb-1" style="font-weight: 500;">PRODUCING: <span style="font-weight: 500; color: green;">{{ product.product_name }}</span></span>
                 <br>
                 <div class="row">
-                    <div class="col md-6">
-                        <div class="card mb-1" style="width: 6.5rem;">
+                    <div class="col-md-12" style="display: flex;">
+                        <div class="card mb-1" style="width: 6.5rem; background-color: #F8FCFF;">
                             <div class="card-body p-1">
-                                <p style="font-weight: 500;" class="card-text">PRODUCED: <br> <span style="color: green; font-size: 2.5rem;">{{ product.produced }}</span></p>
+                                <p style="font-weight: 500;" class="card-text text-center">PRODUCED: <br> <span style="color: green; font-size: 2.5rem;">{{ product.produced }}</span></p>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="col-md-6">
-                        <div class="card mb-1" style="width: 6.5rem;">
+                        <div class="card mb-1" style="width: 6.5rem; background-color: #F8FCFF;">
                             <div class="card-body p-1">
-                                <p style="font-weight: 500;" class="card-text">DEFECT: <br> <span style="color: red; font-size: 2.5rem;">{{ product.scrapped }}</span></p>
+                                <p style="font-weight: 500;" class="card-text text-center">DEFECT: <br> <span style="color: red; font-size: 2.5rem;">{{ product.scrapped }}</span></p>
                             </div>
                         </div>
                     </div>
