@@ -45,4 +45,9 @@ class DeviceRepository implements PaginatedResultInterface, RawQueryBuilderOutpu
     public function findAllDeviceStationsOfADevice($deviceId) {
         return DeviceStation::where('device_id', '=', $deviceId)->get();
     }
+
+    public function batchInsertDevice(array $devices)
+    {
+        Device::insert($devices);
+    }
 }
