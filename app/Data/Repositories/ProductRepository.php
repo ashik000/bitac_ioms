@@ -12,6 +12,8 @@ use App\Data\Repositories\Interfaces\RawQueryBuilderOutputInterface;
 use App\Data\Repositories\Traits\PaginatedOutputTrait;
 use App\Data\Repositories\Traits\ProcessOutputTrait;
 use App\Data\Repositories\Traits\RawQueryBuilderOutputTrait;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\ErrorHandler\Debug;
 
 class ProductRepository implements PaginatedResultInterface, RawQueryBuilderOutputInterface
 {
@@ -20,12 +22,20 @@ class ProductRepository implements PaginatedResultInterface, RawQueryBuilderOutp
     public function findProductsOfStation(int $stationId)
     {
         $station = Station::find($stationId);
+        $products = $station->products;
 
-        if (empty($station)) {
-            return null;
+//        Log::debug($products);
+
+        foreach ($products as $key => $res) {
+//            Log::debug('test');
+//            Log::debug($res->meta->start_time);
+            if (empty($res->meta->start_time)) {
+                unset($products[$key]);
+            }
         }
+//        Log::debug($products);
 
-        return $station->products;
+        return $products;
     }
 
     public function findStationProductAndProductByStationId(int $stationId)

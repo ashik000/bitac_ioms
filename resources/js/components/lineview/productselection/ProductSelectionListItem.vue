@@ -34,31 +34,10 @@
             onProductChange(event) {
                 var data = event.target.value;
                 console.log('on product change triggered')
-
                 console.log(data);
                 this.triggeredProductId = data;
                 // store the new product id & remove the old ones
-                this.assignProductToStation(this.triggeredProductId, this.stationId);
-            },
-            assignProductToStation(productId, stationId) {
-            let payload = {
-                productId: productId,
-                stationId: stationId
-            }
-            console.log('payload b4 assigning product')
-            console.log(payload);
-
-            // on hold
-
-            // stationProductService.assignProductToStation({
-            //     product_id: productId,
-            //     station_id: stationId,
-            // }, data => {
-            //     console.log('success')
-            //     ToastrService.showSuccessToast('Product assigned to station successfully');
-            // }, error => {
-            //     console.log(error)
-            // });
+                this.$emit('update-product', this.triggeredProductId);
             },
         },
 

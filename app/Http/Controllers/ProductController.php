@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Data\Models\Product;
+use App\Data\Models\StationProduct;
 use App\Data\Repositories\ProductRepository;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Resources\ProductCollection;
@@ -117,5 +118,17 @@ class ProductController extends Controller
     {
         $products = Product::where('product_group_id', $id)->get();
         return new ProductCollection($products);
+    }
+
+    public function stationProductsByStationId(Request $request) {
+        $stationId = $request->get('station_id');
+        $query = Product::query();
+        $query->leftJoin('station_products', 'station_products.product_id', '=', 'products.id')
+            ->where([['station_products.station_id', '=', $stationId]])
+            ->select('products.*');
+        $result = $query->get();
+        if (count($result) > 0) {
+            return $result;
+        }
     }
 }

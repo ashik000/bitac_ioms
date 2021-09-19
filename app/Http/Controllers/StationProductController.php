@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Data\Models\StationProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StationProductController extends Controller
 {
@@ -118,19 +119,52 @@ class StationProductController extends Controller
         return response()->json($stationProducts,200);
     }
 
-    // public function assignProductToStation(Request $request)
-    // {
-    //     $data = $request->all();
-    //     $stationProduct = StationProduct::where('station_id',$data['station_id'])->where('product_id',$data['product_id'])->first();
-    //     if(empty($stationProduct)){
-    //         $stationProduct = new StationProduct();
-    //         $stationProduct->product_id = $data['product_id'];
-    //         $stationProduct->station_id = $data['station_id'];
-    
-    //         $stationProduct->save();
-    //     }
+    public function assignProductToStation(Request $request)
+    {
+        $data = $request->all();
+        $stationProduct = StationProduct::where('station_id',$data['station_id'])->where('product_id',$data['product_id'])->first();
 
-    //     $stationProducts = StationProduct::where('station_id',$data['station_id'])->get()->load('product');
-    //     return response()->json($stationProducts,200);
-    // }
+        if (!empty($stationProduct)) {
+            // when product found on the db
+            if (!empty($stationProduct['start_time'])) {
+                // no update because already selected
+                return response()->json('success1',200);
+            }
+            else {
+                // assign start_time and set null to others
+                DB::beginTransaction();
+
+                $update_check = DB::table('station_products')
+                    ->where('id', $stationProduct['id'])
+                    ->update(['start_time' => now()]);
+
+                if ($update_check) {
+                    // make other station products null
+                    $other_check = DB::table('station_products')
+                        ->where('station_id', $data['station_id'])
+                        ->where('id',  '<>', $stationProduct['id'])
+                        ->update(['start_time' => null]);
+
+                    if ($other_check) {
+                        DB::commit();
+                        // return success msg
+                        return response()->json('success2',200);
+                    }
+//                    else {
+//                        DB::rollback();
+//                        // return error msg
+//                        return response()->json('error 3',400);
+//                    }
+                } else {
+                    DB::rollback();
+                    // return error msg
+                    return response()->json('error 2',400);
+                }
+            }
+        } else {
+            // product not found
+            return response()->json('error 1',400);
+        }
+    }
+
 }

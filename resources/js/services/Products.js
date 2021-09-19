@@ -67,5 +67,14 @@ export default {
                 error('Try again');
                 console.log(e.response.data)
             })
-    }
+    },
+    fetchAllByStationId(filter, success, error) {
+        axios.get('stationProductsByStationId', {
+            params: {
+                station_id: filter.stationId,
+            }
+        })
+            .then(r => success(r.data))
+            .catch(e => console.log(e.response.data))
+    },
 }

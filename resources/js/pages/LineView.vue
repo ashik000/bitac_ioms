@@ -246,7 +246,7 @@
             @close="productSelectionModalClosed()"
             :station-id="filter.stationId"
             :station-name="filter.stationName"
-            :product-id="this.products[0].product_id">
+            :product-id="(this.products.length > 0) ? this.products[0].product_id : 0">
         </product-selection-modal>
 
         <operator-selection-modal
@@ -592,7 +592,7 @@
                     vm.fetchData();
                 }
             };
-            this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
+            // this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
 
             StationsService.fetchAll({}, (data) => {
                 // console.log('station service fetch all')
@@ -616,7 +616,7 @@
             this.fetchTopOperatorDowntimes();
         },
         destroyed() {
-            clearInterval(this.dataUpdateTimer);
+            // clearInterval(this.dataUpdateTimer);
         }
     }
 </script>

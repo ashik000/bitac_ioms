@@ -56,6 +56,8 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('getOperatorName','LineViewController@getOperatorName');
     Route::post('storeLineviewDefects','LineViewController@storeLineviewDefects');
     Route::post('assignOperatorToStation','StationOperatorController@assignOperatorToStation');
+    Route::post('assignProductToStation','StationProductController@assignProductToStation');
+    Route::get('stationProductsByStationId','ProductController@stationProductsByStationId');
 });
 
 Route::middleware(['auth:api'])->group(function () {
