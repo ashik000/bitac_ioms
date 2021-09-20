@@ -6,24 +6,24 @@
             <div class="d-flex">
 
                 <div class="btn-group me-4">
-                    <button class="btn rounded-0" v-on:click="zoomIn()" style="background-color: #00b895; color: #fff; outline: none; border-right: 2px solid #09C8A4 !important;">
+                    <button class="btn rounded-0 padding_bottom_ten_pixel" v-on:click="zoomIn()" style="background-color: #00b895; color: #fff; outline: none; border-right: 2px solid #09C8A4 !important;">
                         <b-icon-zoom-in></b-icon-zoom-in>
                     </button>
-                    <button class="btn rounded-0 me-2" v-on:click="zoomOut()" style="background-color: #00b895; color: #fff; outline: none;">
+                    <button class="btn rounded-0 me-2 padding_bottom_ten_pixel" v-on:click="zoomOut()" style="background-color: #00b895; color: #fff; outline: none;">
                         <b-icon-zoom-out></b-icon-zoom-out>
                     </button>
 
-                    <button class="btn rounded-0" v-on:click="panLeft()" style="background-color: #00b895; color: #fff; outline: none; border-right: 2px solid #09C8A4 !important;">
+                    <button class="btn rounded-0 padding_bottom_ten_pixel" v-on:click="panLeft()" style="background-color: #00b895; color: #fff; outline: none; border-right: 2px solid #09C8A4 !important;">
                         <b-icon-chevron-left></b-icon-chevron-left>
                     </button>
-                    <button class="btn rounded-0" v-on:click="panRight()" style="background-color: #00b895; color: #fff; outline: none;">
+                    <button class="btn rounded-0 padding_bottom_ten_pixel" v-on:click="panRight()" style="background-color: #00b895; color: #fff; outline: none;">
                         <b-icon-chevron-right></b-icon-chevron-right>
                     </button>
                 </div>
 
                 <div class="input-group rounded-3" style="padding: 0.25rem; background-color: rgba(245, 66, 66, 0.25);">
                     <input type="time"  class="form-control rounded-3 me-2" :value="defects.defectTime" style="border: 1px solid red;"/>
-                    <button class="btn left-radius" v-on:click="decreaseDefect()" style="background-color: #FF0D0D; color: #FFFFFF;">
+                    <button class="btn left-radius padding_bottom_ten_pixel" v-on:click="decreaseDefect()" style="background-color: #FF0D0D; color: #FFFFFF;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
                             <path d="M0 8a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1z"/>
                         </svg>
@@ -33,19 +33,19 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-box-seam" style="position: absolute;left: 16.8em;top: .95em;z-index: 3;">
                         <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"></path>
                     </svg>
-                    <button class="btn right-radius" v-on:click="increaseDefect()" style="background-color: #FF0D0D; color: #FFFFFF;">
+                    <button class="btn right-radius padding_bottom_ten_pixel" v-on:click="increaseDefect()" style="background-color: #FF0D0D; color: #FFFFFF;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                             <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
                         </svg>
                     </button>
-                    <button class="btn ms-3 rounded-3" v-on:click="reportDefect()" style="background-color: #BB2000; color: #FFFFFF;">Report Defect</button>
+                    <button class="btn ms-3 rounded-3 padding_bottom_ten_pixel" v-on:click="reportDefect()" style="background-color: #BB2000; color: #FFFFFF;">Report Defect</button>
                     <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
                 </div>
             </div>
 
-            <select class="form-group rounded-0" name="changeStationShift" id="changeStationShift"
+            <select class="form-group rounded border-0" name="changeStationShift" id="changeStationShift"
                     v-model="selectedStationShiftId" @change="onSelectChange($event)"
-                    style="background-color: rgb(0, 184, 149); color: rgb(255, 255, 255); outline: none;">
+                    style="background-color: rgb(0, 184, 149); color: rgb(255, 255, 255); outline: none; padding-left: 5px;">
                 <option v-for="stationShift in stationShiftsData" :value="stationShift.shift_id" :key="stationShift.shift_id">{{ stationShift.shift_name }}</option>
             </select>
         </div>

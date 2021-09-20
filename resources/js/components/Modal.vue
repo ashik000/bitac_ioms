@@ -2,7 +2,7 @@
     <transition name="modal">
         <div class="mask">
             <div class="modal-wrap" :class="{ 'modal-lg' : size == 'lg' }">
-                <header class="modal-header">
+                <header class="modal-title" style="padding-top: 15px;">
                     <slot name="header"></slot>
                 </header>
                 <div class="content">
@@ -11,7 +11,7 @@
                 <footer class="footer">
                     <slot name="footer"></slot>
                 </footer>
-                <button type="button" class="btn-close" aria-label="Close" @click="$emit('close')"></button>
+                <button type="button" class="btn-close" aria-label="Close" @click="$emit('close')" style="right: 0.90rem!important;"></button>
             </div>
         </div>
     </transition>

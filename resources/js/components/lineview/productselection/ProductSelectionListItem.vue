@@ -1,6 +1,6 @@
 <template>
     <li class="list-group-item listitemm border">
-        <div class="row">
+        <div class="row" @click="selectProduct(product.id)" style="cursor: pointer;">
 
             <div class="form-check">
                 <label class="form-check-label" for="flexRadioDefault1">
@@ -39,6 +39,13 @@
                 // store the new product id & remove the old ones
                 this.$emit('update-product', this.triggeredProductId);
             },
+            selectProduct(prod_id) {
+                console.log('selectProduct triggered')
+                console.log(prod_id);
+                this.checkedVal = prod_id;
+                console.log('selectProduct triggered')
+                console.log(this.checkedVal);
+            }
         },
 
         props: {
