@@ -51,8 +51,9 @@
                                 <li v-for="station in stations"
                                     :key="station.id"
                                     @click.prevent="changeSelectedStation(station)">
-                                    <a class="dropdown-item" href="#">{{ station.name }}&nbsp;<i class="material-icons"
-                                        v-if="station.id === filter.stationId">done</i></a>
+                                    <a class="dropdown-item" href="#">{{ station.name }}&nbsp;
+                                        <b-icon-check-circle v-if="station.id === filter.stationId"></b-icon-check-circle>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -592,7 +593,7 @@
                     vm.fetchData();
                 }
             };
-            this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
+            // this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
 
             StationsService.fetchAll({}, (data) => {
                 // console.log('station service fetch all')
