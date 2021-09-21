@@ -11,11 +11,13 @@ use App\Data\Repositories\ProductionLogRepository;
 use App\Data\Repositories\ProductRepository;
 use App\Data\Repositories\ScrapRepository;
 use App\Data\Repositories\ShiftRepository;
+use App\Http\Requests\StoreEventFileRequest;
 use App\Http\Resources\LineViewGraphResource;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class LineViewController extends Controller
 {
@@ -249,4 +251,15 @@ class LineViewController extends Controller
         }
         return false;
     }
+
+    public function storeEventFile(StoreEventFileRequest $request)
+    {
+        $postdata = $request['file'];
+        $myfile   = time();
+        Storage::disk('local')->put($myfile, $postdata);
+
+        return response()->json(['status' => 200, 'message' => 'File uploaded successfully', 'file' => $myfile]);
+        // return response()->json(['status' => 200, 'message' => 'Text found', 'text' => $postdata]);
+    }
+
 }

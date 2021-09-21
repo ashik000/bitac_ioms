@@ -22,7 +22,7 @@
                             :station-name="stationName"
                             :product-id="productId"
                             @update-product="updateProduct"
-                            >
+                            :isChecked="selectedProductId === product.id">
                         </product-selection-list-item>
                     </ul>
                 </div>

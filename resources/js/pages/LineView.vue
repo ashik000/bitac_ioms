@@ -43,8 +43,8 @@
                     </div>
                     <div class="col-md-10">
                         <div class="dropdown">
-                            <label for="station-picker" style="font-weight: 500; font-size: 1.2rem; padding-top: 1px">STATION:</label>
-                            <button class="btn btn-light dropdown-toggle" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0px;font-size: 20px;font-weight: 500;">
+                            <label for="station-picker" style="font-weight: 500; font-size: 1.35rem; padding-top: 1px">STATION:</label>
+                            <button class="btn btn-light dropdown-toggle" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0px;font-size: 20px;font-weight: 500;margin-top: -12px;">
                                 {{ filter.stationName }}
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -593,7 +593,7 @@
                     vm.fetchData();
                 }
             };
-            // this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
+            this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
 
             StationsService.fetchAll({}, (data) => {
                 // console.log('station service fetch all')

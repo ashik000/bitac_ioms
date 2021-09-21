@@ -50,13 +50,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, \Throwable $exception)
     {
-        if ($exception instanceof \Illuminate\Validation\UnauthorizedException) {
+        if ($exception instanceof \Illuminate\Validation\UnauthorizedException)
+        {
             return response()->json([
                 'message' => 'You do not have access to do that.'
             ], 403);
         }
 
-        if ($exception instanceof AuthorizationException || $exception instanceof AuthenticationException) {
+        if ($exception instanceof AuthorizationException || $exception instanceof AuthenticationException)
+        {
             \Log::debug('oauth exception');
             return response()->json([
                 'message' => 'You do not have access to do that.'
