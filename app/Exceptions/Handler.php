@@ -6,6 +6,8 @@ use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
+use League\OAuth2\Server\Exception\OAuthServerException;
 
 class Handler extends ExceptionHandler
 {
@@ -25,7 +27,7 @@ class Handler extends ExceptionHandler
      */
     protected $dontFlash = [
         'password',
-        'password_confirmation'
+        'password_confirmation',
     ];
 
     /**
@@ -63,9 +65,12 @@ class Handler extends ExceptionHandler
             ], 401);
         }
 
-        // \Log::error($exception);
-        return response()->json([
-            'message' => 'Something went wrong.'
-        ], 500);
+        Log::error($exception);
+
+//        return response()->json([
+//            'message' => 'Something went wrong.'
+//        ], 500);
+
+        return parent::render($request, $exception);
     }
 }

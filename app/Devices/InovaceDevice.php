@@ -586,7 +586,7 @@ class InovaceDevice
                 $downtimePrevStartTime = Carbon::parse($previousProductionLog->produced_at);
                 $downtimePrevDuration = $downtimePrevStartTime->copy()->endOfHour()->diffInSeconds($downtimePrevStartTime);
 
-                $downtimes[] = [
+                $downTimes[] = [
                     'id'                => ++$topDowntimeId,
                     'start_time'        => $downtimePrevStartTime,
                     'duration'          => $downtimePrevDuration,
@@ -599,14 +599,13 @@ class InovaceDevice
 
                 $hour = $downtimePrevStartTime->copy()->addHours(1)->addSeconds(-10);
                 $remainingHours = $logTimeObject->copy()->startOfHour()->diffInHours(Carbon::parse($previousProductionLog->produced_at)->startOfHour());
-
                 for ($j = 0; $j < $remainingHours-1; $j++) {
-
 //                    $downtimeStart = $hour->copy()->startOfHour();
                     $downtimeDuration = 3600;
 //                    $downtimeEnd = $downtimeStart->copy()->addSeconds($downtimeDuration);
 
-                    $downtimes[] = [
+
+                    $downTimes[] = [
                         'id'                => ++$topDowntimeId,
                         'start_time'        => $hour->copy()->startOfHour(),
                         'duration'          => $downtimeDuration,
@@ -767,6 +766,7 @@ class InovaceDevice
             }
         }
         ProductionLog::insert($productionLogs);
+        Log::debug($downTimes);
         Downtime::insert($downTimes);
         SlowProduction::insert($slowProductions);
         $packet->processing_end = now();
