@@ -78,9 +78,11 @@ export default {
                 }, data => {
                     console.log('success')
                     ToastrService.showSuccessToast('Product assigned to the station successfully.');
+                    this.$emit('close');
                 }, error => {
-                    console.log(error)
+                    // console.log(error)
                     ToastrService.showErrorToast('Error! Try again.')
+                    this.$emit('close');
                 });
             }
         }

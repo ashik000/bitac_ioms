@@ -228,7 +228,7 @@
             @close="isDowntimeReasonsModalShown = false"
         >
             <template v-slot:header>
-                <h4 class="text-uppercase">Select Downtime Reason</h4>
+                <h4 class="text-uppercase px-5">Select Downtime Reason</h4>
             </template>
             <template v-slot:content>
                 <div class="list-group">

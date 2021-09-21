@@ -42,7 +42,7 @@ export default {
         }
     },
     showInfoToast(message) {
-        toastr.warning(message, 'Info!');
+        toastr.info(message, 'Info!');
         toastr.options = {
             "closeButton": true,
             "debug": false,

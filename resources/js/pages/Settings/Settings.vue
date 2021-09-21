@@ -4,28 +4,28 @@
             <div class="px-3 pt-2 border-bottom mb-3 d-2">
                 <div class="container d-flex flex-wrap justify-content-left">
 
-                    <ul class="nav col-12 col-lg-auto my-2 justify-content-left my-md-0 text-small">
-                        <li>
+                    <ul id="settings_menu" class="nav col-12 col-lg-auto my-2 justify-content-left my-md-0 text-small" v-bind:class="active2" v-on:click.prevent>
+                        <li class="stations" v-on:click="makeActive2('stations')">
                             <router-link to="/settings/stations" active-class="active" class="nav-link text-white">
                                 Stations
                             </router-link>
                         </li>
-                        <li>
+                        <li class="products" v-on:click="makeActive2('products')">
                             <router-link to="/settings/products" active-class="active" class="nav-link text-white">
                                 Products
                             </router-link>
                         </li>
-                        <li>
+                        <li class="shifts" v-on:click="makeActive2('shifts')">
                             <router-link to="/settings/shifts" active-class="active" class="nav-link text-white">
                                 Shifts
                             </router-link>
                         </li>
-                        <li>
+                        <li class="operators" v-on:click="makeActive2('operators')">
                             <router-link to="/settings/operators" active-class="active" class="nav-link text-white">
                                 Operators
                             </router-link>
                         </li>
-                        <li>
+                        <li class="downtime_reasons" v-on:click="makeActive2('downtime_reasons')">
                             <router-link to="/settings/downtime_reasons" active-class="active" class="nav-link text-white">
                                 Downtime Reasons
                             </router-link>
@@ -46,6 +46,25 @@
 <script>
 export default {
     name: 'Settings',
-    data: () => ({})
+    data: () => ({
+        active2: 'stations'
+    }),
+    methods:{
+        makeActive2: function(item){
+            this.active2 = item;
+        }
+    },
 }
 </script>
+
+<style lang="scss" scoped>
+    #settings_menu.stations .stations,
+    #settings_menu.products .products,
+    #settings_menu.shifts .shifts,
+    #settings_menu.operators .operators,
+    #settings_menu.downtime_reasons .downtime_reasons{
+        background-color:#00b79c;
+        border-radius: 5px;
+        margin: 0 2px 0 2px;
+    }
+</style>

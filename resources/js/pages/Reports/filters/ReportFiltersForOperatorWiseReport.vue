@@ -3,21 +3,21 @@
         <div class="row w-100">
             <div class="col-sm-4">
                 <label>Select Station Group</label>
-                <select class="form-control" v-model="selectedStationGroupId" >
+                <select class="form-select" v-model="selectedStationGroupId" >
                     <option value="0">All</option>
                     <option v-for="stationGroup in StationGroup" :value="stationGroup.id" :key="stationGroup.id">{{ stationGroup.name }}</option>
                 </select>
             </div>
             <div class="col-sm-4">
                 <label>Select Station</label>
-                <select class="form-control" v-model="selectedStationId" @change="stationChanged">
+                <select class="form-select" v-model="selectedStationId" @change="stationChanged">
                     <option value="0">All</option>
                     <option v-for="station in filteredStations" :value="station.id" :key="station.id">{{ station.name }}</option>
                 </select>
             </div>
             <div class="col-sm-4">
                 <label>Select Operator (With station)</label>
-                <select class="form-control" v-model="selectedStationOperatorId">
+                <select class="form-select" v-model="selectedStationOperatorId">
                     <option value="0">All</option>
                     <option v-for="so in filteredStationOperators" :value="so.id" :key="so.id">{{ so.name }}</option>
                 </select>

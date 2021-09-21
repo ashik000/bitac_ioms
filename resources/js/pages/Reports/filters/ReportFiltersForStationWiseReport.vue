@@ -4,7 +4,7 @@
             <div class="col-sm-6">
                 <div class="">
                     <label>Select Station Group</label>
-                    <select class="form-control station_wise_select" v-model="selectedStationGroupId">
+                    <select class="form-select station_wise_select" v-model="selectedStationGroupId">
                         <option value="0">All</option>
                         <option v-for="stationGroup in StationGroup" :value="stationGroup.id" :key="stationGroup.id">{{ stationGroup.name }}</option>
                     </select>
@@ -13,7 +13,7 @@
             <div class="col-sm-6">
                 <div class="">
                     <label>Select Station</label>
-                    <select class="form-control station_wise_select" v-model="selectedStationId">
+                    <select class="form-select station_wise_select" v-model="selectedStationId">
                         <option value="0">All</option>
                         <option v-for="station in filteredStations" :value="station.id" :key="station.id">{{ station.name }}</option>
                     </select>

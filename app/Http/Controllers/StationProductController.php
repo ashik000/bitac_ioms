@@ -158,12 +158,12 @@ class StationProductController extends Controller
                 } else {
                     DB::rollback();
                     // return error msg
-                    return response()->json('error 2',400);
+                    return response()->json('error2',400);
                 }
             }
         } else {
             // product not found
-            return response()->json('error 1',400);
+            return response()->json('error1',400);
         }
     }
 

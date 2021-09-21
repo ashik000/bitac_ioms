@@ -4,23 +4,23 @@
     <div class="px-3 py-2 d-1">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-start justify-content-lg-start main-header-flex-container">
-                <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small top_menu" v-bind:class="active" v-on:click.prevent>
                     <li>
                         <router-link to="/lineview">
                             <img src="/storage/images/walton-logo.png" alt="walton-logo" style="height: 40px;">
                         </router-link>
                     </li>
-                    <li>
+                    <li class="dashboard" v-on:click="makeActive('dashboard')">
                         <router-link to="/dashboard" class="nav-link text-white" active-class="active">
                             Dashboard
                         </router-link>
                     </li>
-                    <li>
+                    <li class="lineview" v-on:click="makeActive('lineview')">
                         <router-link to="/lineview" class="nav-link text-white" active-class="active">
                             Lineview
                         </router-link>
                     </li>
-                    <li>
+                    <li class="reports" v-on:click="makeActive('reports')">
                         <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Reports
                         </a>
@@ -29,7 +29,7 @@
                             <li><router-link class="dropdown-item" to="/reports/downtime-report">Downtime</router-link></li>
                         </ul>
                     </li>
-                    <li>
+                    <li class="settings" v-on:click="makeActive('settings')">
                         <router-link v-if="authorized" to="/settings/stations" class="nav-link text-white" active-class="active">
                             Settings
                         </router-link>
@@ -65,6 +65,7 @@ export default {
     name: 'App',
     data: () => ({
         currentTime: '',
+        active: 'dashboard'
     }),
     components: {
         ReportMenuItem
@@ -88,6 +89,9 @@ export default {
             }, error => {
 
             });
+        },
+        makeActive: function(item) {
+            this.active = item;
         }
     },
     mounted() {
@@ -103,7 +107,33 @@ export default {
         },
         authorized() {
             return this.$store.getters.isAdmin || this.$store.getters.isManager;
+        },
+    },
+    created() {
+        // console.log(this.$router.currentRoute.path);
+
+        if (this.$router.currentRoute.path == '/dashboard') {
+            this.active = 'dashboard';
+        } else if (this.$router.currentRoute.path == '/lineview') {
+            this.active = 'lineview';
+        } else if (this.$router.currentRoute.path == '/reports/oee-report') {
+            this.active = 'reports';
+        } else if (this.$router.currentRoute.path == '/reports/downtime-report') {
+            this.active = 'reports';
+        } else if (this.$router.currentRoute.path == '/settings/stations') {
+            this.active = 'settings';
         }
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    ul.dashboard .dashboard,
+    ul.lineview .lineview,
+    ul.reports .reports,
+    ul.settings .settings{
+        background-color:#0d6efd;
+        border-radius: 5px;
+        margin: 0 2px 0 2px;
+    }
+</style>
