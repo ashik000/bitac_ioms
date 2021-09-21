@@ -7,8 +7,7 @@
                     {{ product.name }}
                 </label>
                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
-                    :value="product.id" @change="onProductChange($event)" :checked="product.id == checkedVal"
-                    style="float: right;" />
+                    :value="product.id" :checked="isChecked" style="float: right;" />
             </div>
 
         </div>
@@ -45,6 +44,7 @@
                 this.checkedVal = prod_id;
                 console.log('selectProduct triggered')
                 console.log(this.checkedVal);
+                this.$emit('update-product', prod_id);
             }
         },
 
@@ -53,6 +53,7 @@
             stationId: Number,
             stationName: String,
             productId: Number,
+            isChecked: Boolean,
         },
         mounted() {
             console.log('test product mount')

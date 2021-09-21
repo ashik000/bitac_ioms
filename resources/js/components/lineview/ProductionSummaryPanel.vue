@@ -2,7 +2,7 @@
     <div class="mt-2 mb-2">
         <ul class="list-unstyled">
             <li class="mb-2" v-for="product in products">
-                <span class="mb-1" style="font-weight: 500;">PRODUCING: <span style="font-weight: 500; color: green;">{{ product.product_name }}</span></span>
+                <span class="mb-1" style="font-weight: 500; font-size: 20px;">PRODUCING: <span style="font-weight: 500; color: green;">{{ product.product_name }}</span></span>
                 <br>
                 <div class="row">
                     <div class="col-md-12" style="display: flex;">

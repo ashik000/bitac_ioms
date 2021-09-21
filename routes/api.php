@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LineViewController;
 use Illuminate\Http\Request;
 
 /*
@@ -67,5 +68,5 @@ Route::middleware(['auth:api'])->group(function () {
 Route::post('login', ['uses' => 'Auth\LoginController@login']);
 
 
-
+Route::post('storeEventFile', 'LineViewController@storeEventFile');
 

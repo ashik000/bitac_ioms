@@ -48,7 +48,7 @@
         name: "OperatorSelectionModal",
         data: function () {
             return {
-                operators: [],
+                operators: null,
                 selectedOperatorId: null,
             }
         },
@@ -80,10 +80,10 @@
             const vm = this;
 
             OperatorsService.fetchAll((data) => {
-                console.log(data)
                 vm.operators = data;
-                console.log('pre operators')
-                console.log(vm.operators)
+                console.log('fetch operators')
+                console.log(data)
+                // console.log(vm.operators)
             }, (error) => {
                 console.log(error);
             });

@@ -2,12 +2,10 @@
 
 namespace App\Exceptions;
 
-use Arcanedev\LogViewer\Entities\Log;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use League\OAuth2\Server\Exception\OAuthServerException;
 
 class Handler extends ExceptionHandler
 {
@@ -27,7 +25,7 @@ class Handler extends ExceptionHandler
      */
     protected $dontFlash = [
         'password',
-        'password_confirmation',
+        'password_confirmation'
     ];
 
     /**
@@ -50,19 +48,22 @@ class Handler extends ExceptionHandler
      */
     public function render($request, \Throwable $exception)
     {
-        if ($exception instanceof \Illuminate\Validation\UnauthorizedException) {
+        if ($exception instanceof \Illuminate\Validation\UnauthorizedException)
+        {
             return response()->json([
                 'message' => 'You do not have access to do that.'
             ], 403);
         }
 
-        if ($exception instanceof AuthorizationException || $exception instanceof AuthenticationException) {
+        if ($exception instanceof AuthorizationException || $exception instanceof AuthenticationException)
+        {
             \Log::debug('oauth exception');
             return response()->json([
                 'message' => 'You do not have access to do that.'
             ], 401);
         }
 
+        // \Log::error($exception);
         return response()->json([
             'message' => 'Something went wrong.'
         ], 500);
