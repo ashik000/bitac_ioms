@@ -428,7 +428,7 @@
 
     @media only screen and (max-width: 1600px) {
         .table-container{
-            height: 18rem;
+            height: 17rem;
         }
     }
 </style>
