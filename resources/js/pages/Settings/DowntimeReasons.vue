@@ -31,7 +31,7 @@
                     <template v-slot:row="{ row }">
                         <div class="d-flex justify-content-between align-items-center">
                             {{ row.name }}
-                            <span style="float: right;">
+                            <span class="float-end">
                                 <button type="button" class="btn btn-primary btn-sm" @click.prevent="showDowntimeEditModal(row)">
                                     <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
                                 </button>
