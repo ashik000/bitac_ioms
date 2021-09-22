@@ -784,7 +784,6 @@ class InovaceDevice
             $previousProductionLog = $pLog;
         }
         ProductionLog::insert($productionLogs);
-        Log::debug($downTimes);
         Downtime::insert($downTimes);
         SlowProduction::insert($slowProductions);
         $packet->processing_end = now();
