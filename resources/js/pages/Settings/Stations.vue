@@ -8,7 +8,7 @@
                         <span class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
                             {{ item.name }}
                         </span>
-                        <span style="float: right;">
+                        <span class="float-end">
                             <button type="button" class="btn btn-primary btn-sm" @click.prevent="showGroupEditModal(item)">
                                 <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
                             </button>
