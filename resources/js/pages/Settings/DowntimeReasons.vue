@@ -1,11 +1,12 @@
 <template>
     <span>
+        <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
         <div class="card-wrapper row">
             <aside class="section col-md-3 col-sm-12 h-100">
                 <DowntimeReasonGroup sectionHeader="Reason Groups"
-                              :items="groups"
-                              @action-clicked="openGroupAddModal"
-                              @item-selected="" buttonText="Add Reason Group">
+                            :items="groups"
+                            @action-clicked="openGroupAddModal"
+                            @item-selected="" buttonText="Add Reason Group">
                     <template v-slot="{ item }">
                         <span class="hide_overflow_text anchor_btn" @click.prevent="loadGroupData(item.id)">
                             {{ item.name }}
@@ -21,12 +22,12 @@
                     </template>
                 </DowntimeReasonGroup>
             </aside>
+
             <section class="section col-md-9 col-sm-12 h-100">
                 <DowntimeReasonList :items="reasons"
-                               sectionHeader="Reasons"
-                               @action-clicked="showReasonForm = true">
-<!--                    <template v-slot:columnHeaders>-->
-<!--                    </template>-->
+                            sectionHeader="Reasons"
+                            @action-clicked="showReasonForm = true">
+
 
                     <template v-slot:row="{ row }">
                         <div class="d-flex justify-content-between align-items-center">
@@ -170,18 +171,18 @@
                 });
             },
             showReasonDeleteModal(row){
-              this.showReasonDeleteForm = true;
-              this.reasonId = row.id;
-              this.reasonName = row.name;
+                this.showReasonDeleteForm = true;
+                this.reasonId = row.id;
+                this.reasonName = row.name;
             },
             closeShowReasonForm(){
-              this.showReasonForm = false;
-              this.showReasonDeleteForm = false;
-              this.reasonId = null;
-              this.reasonName = null;
-              this.selectedGroupId = null;
-              this.type = null;
-              this.modalTitleText = "Add";
+                this.showReasonForm = false;
+                this.showReasonDeleteForm = false;
+                this.reasonId = null;
+                this.reasonName = null;
+                this.selectedGroupId = null;
+                this.type = null;
+                this.modalTitleText = "Add";
             },
             updateDowntimeReason(){
                 this.showInprogress = true;
@@ -280,16 +281,20 @@
             },
             loadGroupData(groupId){
                 // console.log(groupId);
+                this.showInprogress = true;
                 downtimeReasonsService.fetchAllDowntimeReasonsByGroupId(groupId, reasons => {
                     this.reasons = reasons['downtime_reason_list'];
+                    this.showInprogress = false;
                 });
             },
         },
         mounted() {
             downtimeReasonsService.fetchAllGroups(groups => {
                 this.groups = groups;
+                this.showInprogress = true;
                 downtimeReasonsService.fetchAllDowntimeReasonsByGroupId(this.groups[0].id, reasons => {
                     this.reasons = reasons['downtime_reason_list'];
+                    this.showInprogress = false;
                 });
             });
             // downtimeReasonsService.fetchAll([], reasons => {

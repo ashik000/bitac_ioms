@@ -10,6 +10,7 @@
             </button>
         </header>
         <div>
+            <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             <table class="table table-bordered settings-station-table" v-if="showStationShiftList">
                 <thead>
                 <tr>
@@ -117,10 +118,10 @@
             selectedShiftId:null,
             selectedShiftDays: [],
             stationShift:{
-              id:null,
-              shift_id:null,
-              scheduleString:"",
-              scheduleDisplayString :"",
+                id:null,
+                shift_id:null,
+                scheduleString:"",
+                scheduleDisplayString :"",
             },
             dayToNameMap :[
                 {name: "SAT", value: 0},
@@ -130,7 +131,8 @@
                 {name: "WED", value: 4},
                 {name: "THU", value: 5},
                 {name: "FRI", value: 6},
-            ]
+            ],
+            showInprogress: false,
         }),
         methods:{
 
@@ -192,9 +194,11 @@
                 this.selectedShiftDays.fill('0', 0, this.selectedShiftDays.length);
             },
             getAllStationShifts(){
+                this.showInprogress = true;
                 stationShiftService.fetchAll(this.stationId,r => {
                     this.stationShifts = r;
                     console.log(r);
+                    this.showInprogress = false;
                 },e=>{
                     console.log(e);
                 })

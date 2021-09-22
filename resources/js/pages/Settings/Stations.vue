@@ -1,6 +1,6 @@
 <template>
     <span>
-
+        <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
         <div class="card-wrapper row">
             <div class="section col-md-3 col-sm-12 h-100">
                 <StationGroup sectionHeader="Station Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Stations Group">
@@ -22,9 +22,9 @@
 
             <div class="section col-md-9 col-sm-12 h-100">
                 <StationList :items="stations"
-                               sectionHeader="Stations"
-                               :selected-id="selectedStationId"
-                               @action-clicked="openStationAddModal">
+                                sectionHeader="Stations"
+                                :selected-id="selectedStationId"
+                                @action-clicked="openStationAddModal">
 
                     <template v-slot:row="{ row }">
                         <h2 class="accordion-header" id="panelsStayOpen-headingOne" @click="setSelectedStationId(row)">
@@ -352,8 +352,10 @@ export default {
             this.selectedStationId = item.id;
         },
         loadGroupData(groupId){
+            this.showInprogress = true;
             stationService.fetchAllStationsByGroupId(groupId, stations => {
                 this.stations = stations;
+                this.showInprogress = false;
             });
         },
     },
@@ -364,10 +366,12 @@ export default {
     },
     mounted() {
         stationService.fetchAllGroups(groups => {
+            this.showInprogress = true;
             this.groups = groups;
             stationService.fetchAllStationsByGroupId(this.groups[0].id, stations => {
                 // console.log(stations);
                 this.stations = stations;
+                this.showInprogress = false;
             });
         });
     }

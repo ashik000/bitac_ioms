@@ -9,6 +9,7 @@
             </button>
         </header>
         <div>
+            <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             <table class="table table-bordered settings-station-table" v-if="showStationOperatorsTable">
                 <thead>
                     <tr>
@@ -104,7 +105,8 @@
                 station_id: null,
                 operator_id: null,
                 start_time : null,
-            }
+            },
+            showInprogress: false,
         }),
         watch: {
             stationId: function(newStationId, oldStationId) {
@@ -114,9 +116,11 @@
         },
         methods: {
             fetchStationOperators() {
+                this.showInprogress = true;
                 stationOperatorService.fetchAll(this.stationId, r => {
                     this.stationOperators = r;
                     console.log(r);
+                    this.showInprogress = false;
                 }, e => {
                     console.log(e);
                 });

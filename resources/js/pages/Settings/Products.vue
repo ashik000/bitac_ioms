@@ -1,5 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div>
+        <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
         <div class="card-wrapper row">
             <div class="section col-md-3 col-sm-12 h-100">
                 <ProductGroup sectionHeader="Product Groups" :items="groups" @action-clicked="openGroupAddModal" buttonText="Add Product Group">
@@ -284,8 +285,10 @@
             },
             loadGroupData(groupId){
                 // console.log(groupId);
+                this.showInprogress = true;
                 productService.fetchAllProductsByGroupId(groupId, products => {
                     this.products = products;
+                    this.showInprogress = false;
                 });
             },
 
@@ -298,9 +301,11 @@
         mounted() {
             productService.fetchAllGroups(groups => {
                 this.groups = groups;
+                this.showInprogress = true;
                 productService.fetchAllProductsByGroupId(this.groups[0].id, products => {
                     // console.log(products);
                     this.products = products;
+                    this.showInprogress = false;
                 });
             });
             // productService.fetchAll([], products => {
