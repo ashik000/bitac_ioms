@@ -1,26 +1,26 @@
 <template>
     <span  v-bind:class="{'top-nav':(showNav)}">
     <nav v-if="showNav">
-    <div class="px-3 py-2 d-1">
+    <div class="px-3 d-1">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-start justify-content-lg-start main-header-flex-container">
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small top_menu" v-bind:class="active" v-on:click.prevent>
-                    <li>
+                    <li class="padding_y_ten_px">
                         <router-link to="/lineview">
                             <img src="/storage/images/walton-logo.png" alt="walton-logo" style="height: 40px;">
                         </router-link>
                     </li>
-                    <li class="dashboard" v-on:click="makeActive('dashboard')">
+                    <li class="dashboard padding_y_ten_px" v-on:click="makeActive('dashboard')">
                         <router-link to="/dashboard" class="nav-link text-white" active-class="active">
                             Dashboard
                         </router-link>
                     </li>
-                    <li class="lineview" v-on:click="makeActive('lineview')">
+                    <li class="lineview padding_y_ten_px" v-on:click="makeActive('lineview')">
                         <router-link to="/lineview" class="nav-link text-white" active-class="active">
                             Lineview
                         </router-link>
                     </li>
-                    <li class="reports" v-on:click="makeActive('reports')">
+                    <li class="reports padding_y_ten_px" v-on:click="makeActive('reports')">
                         <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Reports
                         </a>
@@ -29,7 +29,7 @@
                             <li><router-link class="dropdown-item" to="/reports/downtime-report">Downtime</router-link></li>
                         </ul>
                     </li>
-                    <li class="settings" v-on:click="makeActive('settings')">
+                    <li class="settings padding_y_ten_px" v-on:click="makeActive('settings')">
                         <router-link v-if="authorized" to="/settings/stations" class="nav-link text-white" active-class="active">
                             Settings
                         </router-link>
@@ -132,8 +132,10 @@ export default {
     ul.lineview .lineview,
     ul.reports .reports,
     ul.settings .settings{
-        background-color:#0d6efd;
-        border-radius: 5px;
+        background-color: #035FA3;
         margin: 0 2px 0 2px;
+    }
+    .padding_y_ten_px {
+        padding: 8px 0 8px 0;
     }
 </style>
