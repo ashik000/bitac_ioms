@@ -10,18 +10,20 @@
                             <img src="/storage/images/walton-logo.png" alt="walton-logo" style="height: 40px;">
                         </router-link>
                     </li>
-                    <li class="dashboard padding_y_ten_px" v-on:click="makeActive('dashboard')">
-                        <router-link to="/dashboard" class="nav-link text-white" active-class="active">
-                            Dashboard
-                        </router-link>
-                    </li>
-                    <li class="lineview padding_y_ten_px" v-on:click="makeActive('lineview')">
+<!--                    <li class="dashboard padding_y_ten_px" v-on:click="makeActive('dashboard')">-->
+<!--                        <router-link to="/dashboard" class="nav-link text-white" active-class="active">-->
+<!--                            Dashboard-->
+<!--                        </router-link>-->
+<!--                    </li>-->
+                    <li class="lineview padding_y_ten_px ms-5" v-on:click="makeActive('lineview')">
                         <router-link to="/lineview" class="nav-link text-white" active-class="active">
+                            <b-icon icon="graph-up" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
                             Lineview
                         </router-link>
                     </li>
                     <li class="reports padding_y_ten_px" v-on:click="makeActive('reports')">
                         <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <b-icon icon="file-bar-graph" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
                             Reports
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -31,6 +33,7 @@
                     </li>
                     <li class="settings padding_y_ten_px" v-on:click="makeActive('settings')">
                         <router-link v-if="authorized" to="/settings/stations" class="nav-link text-white" active-class="active">
+                            <b-icon icon="gear" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
                             Settings
                         </router-link>
                     </li>
