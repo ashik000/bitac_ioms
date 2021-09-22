@@ -65,15 +65,15 @@
                         <label>Name</label>
                         <input type="text" v-model="shiftName" class="form-control" placeholder="Enter Shift Name" />
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mt-2">
                         <label>Shift Start Time</label>
                         <VueCtkDateTimePicker v-model="shiftStartTime" format="HH:mm" formatted="HH:mm" :only-time="true" :no-label="true" label="Select Start Time" />
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mt-2">
                         <label>Shift End Time</label>
                         <VueCtkDateTimePicker v-model="shiftEndTime" format="HH:mm" formatted="HH:mm" :only-time="true" :no-label="true" label="Select End Time" />
                     </div>
-                    <button class="btn btn-primary" >Submit</button>
+                    <button class="btn btn-primary mt-2">Submit</button>
                 </form>
                 <b-overlay :show="showAddInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
