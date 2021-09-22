@@ -123,13 +123,13 @@
               scheduleDisplayString :"",
             },
             dayToNameMap :[
-                {name: "SAT", value: 0},
-                {name: "SUN", value: 1},
-                {name: "MON", value: 2},
-                {name: "TUE", value: 3},
-                {name: "WED", value: 4},
-                {name: "THU", value: 5},
-                {name: "FRI", value: 6},
+                {name: "SUN", value: 0},
+                {name: "MON", value: 1},
+                {name: "TUE", value: 2},
+                {name: "WED", value: 3},
+                {name: "THU", value: 4},
+                {name: "FRI", value: 5},
+                {name: "SAT", value: 6},
             ]
         }),
         methods:{

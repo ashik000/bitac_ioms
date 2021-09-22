@@ -17,6 +17,16 @@ class ShiftRepository implements PaginatedResultInterface, RawQueryBuilderOutput
 {
     use ProcessOutputTrait, PaginatedOutputTrait, RawQueryBuilderOutputTrait;
 
+    public const DAY_TO_NAME_MAP = [
+            0 => "SUN",
+            1 => "MON",
+            2 => "TUE",
+            3 => "WED",
+            4 => "THU",
+            5 => "FRI",
+            6 => "SAT",
+    ];
+
     public function findShiftsOfStation()
     {
         $query = StationShift::query();
@@ -37,6 +47,20 @@ class ShiftRepository implements PaginatedResultInterface, RawQueryBuilderOutput
         }
 
         return $result;
+    }
+
+    public function findAllShiftsOfDeviceGroupByStationId(int $deviceId)
+    {
+        $query = StationShift::query();
+        return $query
+                ->join('shifts', 'shifts.id', '=', 'station_shifts.shift_id')
+                ->join('stations', 'stations.id', '=', 'station_shifts.station_id')
+                ->join('device_stations', 'device_stations.station_id', '=', 'stations.id')
+                ->where('device_stations.device_id', '=', $deviceId)
+                ->select(['shifts.*', 'station_shifts.station_id', 'station_shifts.schedule'])
+                ->get()
+                ->sortBy('start_time')
+                ->groupBy('station_id');
     }
 
     public function fetchShiftDetails($stationId, $shiftId)
