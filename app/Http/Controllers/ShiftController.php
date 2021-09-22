@@ -17,7 +17,7 @@ class ShiftController extends Controller
      * @return ShiftCollection
      */
     public function index(Request $request){
-        return new ShiftCollection(Shift::all());
+        return new ShiftCollection(Shift::all()->sortBy('name')->values());
     }
 
     /**
@@ -40,7 +40,7 @@ class ShiftController extends Controller
         $shift-> start_time = $request['start_time'];
         $shift-> end_time = $request['end_time'];
         $shift->save();
-        return new ShiftCollection(Shift::all());
+        return app(ShiftController::class)->index($request);
     }
 
     /**
@@ -75,7 +75,7 @@ class ShiftController extends Controller
         $shift-> start_time = $request['start_time'];
         $shift-> end_time = $request['end_time'];
         $shift->save();
-        return new ShiftCollection(Shift::all());
+        return app(ShiftController::class)->index($request);
     }
 
     /**
@@ -84,9 +84,9 @@ class ShiftController extends Controller
      * @param  int  $id
      * @return ShiftCollection
      */
-    public function destroy($id){
+    public function destroy(Request $request, $id){
         $shift = Shift::find($id);
         $shift->delete();
-        return new ShiftCollection(Shift::all());
+        return app(ShiftController::class)->index($request);
     }
 }

@@ -8,7 +8,7 @@ use PhpMqtt\Client\Exceptions\MQTTClientException;
 class LogSubscriber
 {
 
-    private const LOG_SUBSCRIPTION_TOPIC = 'ioms/dev/+/logs';
+    private const LOG_SUBSCRIPTION_TOPIC = 'ioms2/dev/+/logs';
     protected $deviceController;
 
     public function __construct(DeviceController $deviceController)

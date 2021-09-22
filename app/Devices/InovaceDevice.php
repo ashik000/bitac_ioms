@@ -568,7 +568,7 @@ class InovaceDevice
             $stationProduct = $stationIdToStationProductMap->get($deviceStation->station_id);
             if(empty($stationProduct)) continue;
 
-            if(empty($previousProductionLog)) $previousProductionLog = $this->productionLogRepository->findLastProductionLogByStationIdAndProductId($deviceStation->station_id, $stationProduct->product_id);
+            $previousProductionLog = $this->productionLogRepository->findLastProductionLogByStationIdAndProductId($deviceStation->station_id, $stationProduct->product_id);
 
             if ($previousProductionLog == null) {
                 $previousProductionLog = new ProductionLog();
@@ -583,7 +583,7 @@ class InovaceDevice
                 'product_id' => $stationProduct->product_id,
                 'produced_at' => $logTimeObject,
                 'synced_at' => now(),
-                'shift_id' => $shift?? $shift->id,
+                'shift_id' => empty($shift)? null : $shift['id'],
                 'operator_id' => null,
                 'cycle_interval' => $cycleInterval = $logTimeObject->diffInSeconds($previousProductionLog->produced_at),
                 'created_at' => now(),
@@ -606,7 +606,7 @@ class InovaceDevice
                     'start_time'        => $downtimePrevStartTime,
                     'duration'          => $downtimePrevDuration,
                     'production_log_id' => $topProductionLogId,
-                    'shift_id'          => $dTimeShift?? $dTimeShift->id,
+                    'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
                     'operator_id'       => null,
                     'created_at'        => now(),
                     'updated_at'        => now()
@@ -624,7 +624,7 @@ class InovaceDevice
                         'start_time'        => $hour->copy()->startOfHour(),
                         'duration'          => $downtimeDuration,
                         'production_log_id' => $topProductionLogId,
-                        'shift_id'          => $dTimeShift?? $dTimeShift->id,
+                        'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
                         'operator_id'       => null,
                         'created_at'        => now(),
                         'updated_at'        => now()
@@ -655,7 +655,7 @@ class InovaceDevice
                                 'start_time'        => $downtimeStart,
                                 'duration'          => $downtimePrevDuration,
                                 'production_log_id' => $topProductionLogId,
-                                'shift_id'          => $previousDTimeShift?? $previousDTimeShift->id,
+                                'shift_id'          => empty($previousDTimeShift)? null : $previousDTimeShift['id'],
                                 'operator_id'       => null,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
@@ -667,7 +667,7 @@ class InovaceDevice
                                 'start_time'        => $downtimeEnd->copy()->startOfHour(),
                                 'duration'          => $downtimeNextDuration,
                                 'production_log_id' => $topProductionLogId,
-                                'shift_id'          => $nextDTimeShift?? $nextDTimeShift->id,
+                                'shift_id'          => empty($nextDTimeShift)? null : $nextDTimeShift['id'],
                                 'operator_id'       => null,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
@@ -690,7 +690,7 @@ class InovaceDevice
                                 'start_time'        => $downtimeStart,
                                 'duration'          => $downtimeSecond,
                                 'production_log_id' => $topProductionLogId,
-                                'shift_id'          => $dTimeShift?? $dTimeShift->id,
+                                'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
                                 'operator_id'       => null,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
@@ -723,7 +723,7 @@ class InovaceDevice
                             'start_time'        => $downtimeStart,
                             'duration'          => $downtimeSecond,
                             'production_log_id' => $topProductionLogId,
-                            'shift_id'          => $dTimeShift?? $dTimeShift->id,
+                            'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
                             'operator_id'       => null,
                             'created_at'        => now(),
                             'updated_at'        => now()
@@ -781,7 +781,7 @@ class InovaceDevice
             } catch (Exception $ex) {
                 Log::error($ex);
             }
-            $previousProductionLog = $pLog;
+//            $previousProductionLog = $pLog;
         }
         ProductionLog::insert($productionLogs);
         Downtime::insert($downTimes);
@@ -797,9 +797,10 @@ class InovaceDevice
         $selectedShift = null;
         if(empty($shiftList)) return null;
         $shiftList = collect($shiftList)->sortBy('start_time')->toArray();
+        $timeStamp = $producedAt->toTimeString();
         foreach ($shiftList as $shift) {
-            if(substr($shift->schedule, $day, 1) != '1') continue;
-            if($shift->start_time <= $producedAt && $shift->end_time >= $producedAt) {
+            if(substr($shift['schedule'], $day, 1) != '1') continue;
+            if($shift['start_time'] <= $timeStamp && $shift['end_time'] >= $timeStamp) {
                 $selectedShift = $shift;
                 break;
             }
