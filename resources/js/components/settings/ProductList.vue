@@ -23,13 +23,13 @@
             </div>
         </div>
         <div class="card-body y-scroll">
-            <div class="list-group">
-                <li v-for="item in filteredItems" :key="item.id" :class="{ selected: item.id == selectedId }" class="list-group-item">
+            <ul class="list-group">
+                <li v-for="item in filteredItems" :key="item.id" :class="{ selected: item.id == selectedId }" class="list-group-item mb-2" style="background-color: #FBFBFB; border: 2px solid #F3F3F3;">
                     <slot :row="item" name="row">
                         {{ item }}
                     </slot>
                 </li>
-            </div>
+            </ul>
         </div>
     </div>
 </template>
