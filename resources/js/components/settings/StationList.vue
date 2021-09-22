@@ -5,7 +5,7 @@
                 {{ sectionHeader }}
             </div>
 
-            <div class="d-flex">
+            <div class="d-flex pe-3">
                 <div class="input-group remove-width">
                     <input type="text" class="form-control btn-sm rounded-2" placeholder="Search" aria-label="Stations search" aria-describedby="Stations search">
                     <button class="btn transparent-search-button" type="button">

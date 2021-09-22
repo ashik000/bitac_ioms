@@ -5,7 +5,7 @@
                 {{ sectionHeader }}
             </div>
 
-            <div class="d-flex">
+            <div class="d-flex pe-3">
                 <div class="input-group remove-width">
                     <input v-model="searchString" type="text" class="form-control rounded-2 btn-sm" placeholder="Search" aria-label="Downtime reason search" aria-describedby="Downtime Reason search">
                     <button class="btn transparent-search-button" type="button">
