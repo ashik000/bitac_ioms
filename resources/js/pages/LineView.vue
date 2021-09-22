@@ -591,7 +591,7 @@
                     vm.fetchData();
                 }
             };
-            this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
+            // this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
 
             StationsService.fetchAll({}, (data) => {
                 // console.log('station service fetch all')

@@ -54,6 +54,35 @@ export default {
             this.active2 = item;
         }
     },
+    created() {
+        // console.log('settings routes')
+
+        switch (this.$router.currentRoute.path) {
+            case '/settings/stations':
+                this.active = 'settings';
+                this.active2 = 'stations';
+                break;
+            case '/settings/products':
+                this.active = 'settings';
+                this.active2 = 'products';
+                break;
+            case '/settings/shifts':
+                this.active = 'settings';
+                this.active2 = 'shifts';
+                break;
+            case '/settings/operators':
+                this.active = 'settings';
+                this.active2 = 'operators';
+                break;
+            case '/settings/downtime_reasons':
+                this.active = 'settings';
+                this.active2 = 'downtime_reasons';
+                break;
+            default:
+                this.active = 'settings';
+                this.active2 = 'stations';
+        }
+    }
 }
 </script>
 

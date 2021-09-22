@@ -112,16 +112,36 @@ export default {
     created() {
         // console.log(this.$router.currentRoute.path);
 
-        if (this.$router.currentRoute.path == '/dashboard') {
-            this.active = 'dashboard';
-        } else if (this.$router.currentRoute.path == '/lineview') {
-            this.active = 'lineview';
-        } else if (this.$router.currentRoute.path == '/reports/oee-report') {
-            this.active = 'reports';
-        } else if (this.$router.currentRoute.path == '/reports/downtime-report') {
-            this.active = 'reports';
-        } else if (this.$router.currentRoute.path == '/settings/stations') {
-            this.active = 'settings';
+        switch (this.$router.currentRoute.path) {
+            case '/dashboard':
+                this.active = 'dashboard';
+                break;
+            case '/lineview':
+                this.active = 'lineview';
+                break;
+            case '/reports/oee-report':
+                this.active = 'reports';
+                break;
+            case '/reports/downtime-report':
+                this.active = 'reports';
+                break;
+            case '/settings/stations':
+                this.active = 'settings';
+                break;
+            case '/settings/products':
+                this.active = 'settings';
+                break;
+            case '/settings/shifts':
+                this.active = 'settings';
+                break;
+            case '/settings/operators':
+                this.active = 'settings';
+                break;
+            case '/settings/downtime_reasons':
+                this.active = 'settings';
+                break;
+            default:
+                this.active = 'dashboard';
         }
     }
 }
