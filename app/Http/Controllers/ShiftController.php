@@ -17,7 +17,7 @@ class ShiftController extends Controller
      * @return ShiftCollection
      */
     public function index(Request $request){
-        return new ShiftCollection(Shift::all()->orderBy('name'));
+        return new ShiftCollection(Shift::all());
     }
 
     /**
