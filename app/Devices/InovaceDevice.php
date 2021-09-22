@@ -799,7 +799,7 @@ class InovaceDevice
         if(empty($shiftList)) return null;
         $shiftList = collect($shiftList)->sortBy('start_time')->toArray();
         foreach ($shiftList as $shift) {
-            if(substr($shift->schedule, $producedAt->dayOfWeek, 1) != '1') continue;
+            if(substr($shift->schedule, $day, 1) != '1') continue;
             if($shift->start_time <= $producedAt && $shift->end_time >= $producedAt) {
                 $selectedShift = $shift;
                 break;
