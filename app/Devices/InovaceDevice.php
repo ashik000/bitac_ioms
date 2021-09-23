@@ -605,7 +605,7 @@ class InovaceDevice
                 $downtimePrevDuration = $downtimePrevStartTime->copy()->endOfHour()->diffInSeconds($downtimePrevStartTime);
 
                 $dTimeShift = $this->findShiftOfStation($stationIdToShiftListMap, $deviceStation->station_id, $downtimePrevStartTime);
-                $stationOperator = $this->findOperatorOfStation($stationIdToOperatorListMap, $deviceStation->station_id, );
+                $stationOperator = $this->findOperatorOfStation($stationIdToOperatorListMap, $deviceStation->station_id, $downtimePrevStartTime);
 
                 $downTimes[] = [
                     'id'                => ++$topDowntimeId,
@@ -613,7 +613,7 @@ class InovaceDevice
                     'duration'          => $downtimePrevDuration,
                     'production_log_id' => $topProductionLogId,
                     'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
-                    'operator_id'       => null,
+                    'operator_id'       => empty($stationOperator)? null : $stationOperator->operator_id,
                     'created_at'        => now(),
                     'updated_at'        => now()
                 ];
@@ -624,6 +624,7 @@ class InovaceDevice
                     $downtimeStart = $hour->copy()->startOfHour();
                     $downtimeDuration = 3600;
                     $dTimeShift = $this->findShiftOfStation($stationIdToShiftListMap, $deviceStation->station_id, $downtimeStart);
+                    $stationOperator = $this->findOperatorOfStation($stationIdToOperatorListMap, $deviceStation->station_id, $downtimeStart);
 
                     $downTimes[] = [
                         'id'                => ++$topDowntimeId,
@@ -631,7 +632,7 @@ class InovaceDevice
                         'duration'          => $downtimeDuration,
                         'production_log_id' => $topProductionLogId,
                         'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
-                        'operator_id'       => null,
+                        'operator_id'       => empty($stationOperator)? null : $stationOperator->operator_id,
                         'created_at'        => now(),
                         'updated_at'        => now()
                     ];
@@ -656,25 +657,27 @@ class InovaceDevice
                             $downtimeNextDuration = $downtimeSecond - $downtimePrevDuration;
 
                             $previousDTimeShift = $this->findShiftOfStation($stationIdToShiftListMap, $deviceStation->station_id, $downtimeStart);
+                            $prevStationOperator = $this->findOperatorOfStation($stationIdToOperatorListMap, $deviceStation->station_id, $downtimeStart);
                             $downTimes[] = [
                                 'id'                => ++$topDowntimeId,
                                 'start_time'        => $downtimeStart,
                                 'duration'          => $downtimePrevDuration,
                                 'production_log_id' => $topProductionLogId,
                                 'shift_id'          => empty($previousDTimeShift)? null : $previousDTimeShift['id'],
-                                'operator_id'       => null,
+                                'operator_id'       => empty($prevStationOperator)? null : $prevStationOperator->id,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
                             ];
 
                             $nextDTimeShift = $this->findShiftOfStation($stationIdToShiftListMap, $deviceStation->station_id, $downtimeEnd->copy()->startOfHour());
+                            $nextStationOperator = $this->findOperatorOfStation($stationIdToOperatorListMap, $deviceStation->station_id, $downtimeEnd->copy()->startOfHour());
                             $downTimes[] = [
                                 'id'                => ++$topDowntimeId,
                                 'start_time'        => $downtimeEnd->copy()->startOfHour(),
                                 'duration'          => $downtimeNextDuration,
                                 'production_log_id' => $topProductionLogId,
                                 'shift_id'          => empty($nextDTimeShift)? null : $nextDTimeShift['id'],
-                                'operator_id'       => null,
+                                'operator_id'       => empty($nextStationOperator)? null : $nextStationOperator->id,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
                             ];
@@ -691,13 +694,14 @@ class InovaceDevice
                         else if ($downtimeEnd->copy()->addSeconds($stationProduct->cycle_timeout)->hour != $downtimeEnd->hour) { //1 downtime, 2 slowprod
 
                             $dTimeShift = $this->findShiftOfStation($stationIdToShiftListMap, $deviceStation->station_id, $downtimeStart);
+                            $stationOperator = $this->findOperatorOfStation($stationIdToOperatorListMap, $deviceStation->station_id, $downtimeStart);
                             $downTimes[] = [
                                 'id'                => ++$topSlowProductionId,
                                 'start_time'        => $downtimeStart,
                                 'duration'          => $downtimeSecond,
                                 'production_log_id' => $topProductionLogId,
                                 'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
-                                'operator_id'       => null,
+                                'operator_id'       => empty($stationOperator) ? null: $stationOperator->operator_id,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
                             ];
@@ -724,13 +728,14 @@ class InovaceDevice
                         $downtimeStart = Carbon::parse($previousProductionLog->produced_at);
 
                         $dTimeShift = $this->findShiftOfStation($stationIdToShiftListMap, $deviceStation->station_id, $downtimeStart);
+                        $stationOperator = $this->findOperatorOfStation($stationIdToOperatorListMap, $deviceStation->station_id, $downtimeStart);
                         $downTimes[] = [
                             'id'                => ++$topDowntimeId,
                             'start_time'        => $downtimeStart,
                             'duration'          => $downtimeSecond,
                             'production_log_id' => $topProductionLogId,
                             'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
-                            'operator_id'       => null,
+                            'operator_id'       => empty($stationOperator)? null : $stationOperator->operator_id,
                             'created_at'        => now(),
                             'updated_at'        => now()
                         ];
