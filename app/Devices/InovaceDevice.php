@@ -533,7 +533,7 @@ class InovaceDevice
         $packetContent = $packet->request;
         $packetContentBin = hex2bin($packetContent);
         $deviceTimeStamp  = sprintf("%04u", unpack("Ntimestamp/", substr($packetContentBin, 0, 4))['timestamp']);
-        $deviceTimeObject = Carbon::createFromTimestamp($deviceTimeStamp);
+//        $deviceTimeObject = Carbon::createFromTimestamp($deviceTimeStamp);
         $numberOfLogs = unpack('cnumOfLogs/', substr($packetContentBin, 4, 1))['numOfLogs'];
 
         $productionLogs = [];
@@ -545,7 +545,6 @@ class InovaceDevice
         });
 
         $stationIdToStationProductMap = $this->productRepository->findAllStationProductsKeyByStationId();
-        $productIdToProductMap = $this->productRepository->findAllProductsKeyById();
 
         $stationIdToShiftListMap = $this->shiftRepository->findAllShiftsOfDeviceGroupByStationId($device->id);
         $stationIdToOperatorListMap = $this->operatorRepository->findAllOperatorsOfDeviceGroupByStationId($device->id);
