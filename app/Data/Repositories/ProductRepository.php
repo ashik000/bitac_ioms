@@ -49,7 +49,7 @@ class ProductRepository implements PaginatedResultInterface, RawQueryBuilderOutp
     }
 
     public function findAllStationProductsKeyByStationId() {
-        return StationProduct::all()->keyBy('station_id');
+        return StationProduct::whereNotNull('start_time')->get()->keyBy('station_id');
     }
 
     public function findAllStationProductsOfAStationKeyByProductId($stationId) {
