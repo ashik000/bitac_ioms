@@ -372,8 +372,6 @@
                         arcDelimiters: [30, 70]}}).updateNeedle(nv);
             },
             gaugeAvailability(nv, ov){
-                // console.log("Availability");
-                // console.log(nv);
                 let element = document.querySelector('#totalAvailability');
                 element.innerHTML = "";
 
@@ -428,7 +426,6 @@
             changeSelectedStation(station) {
                 this.filter.stationId = station.id;
                 this.filter.stationName = station.name;
-                // this.filter.stationOperatorName = station.station_operator_name;
                 this.isStationSelectionFormShown = false;
 
                 this.fetchData();
@@ -439,7 +436,6 @@
                         date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
                     },
                     (data) => {
-                        // console.log(data.operatorId)
                         this.filter.stationOperatorName = data.operatorName;
                         this.filter.stationOperatorId = data.operatorId;
                     }
@@ -450,22 +446,17 @@
                     this.isDowntimeReasonsModalShown = true;
                     this.selectedDowntime = bar;
                     DowntimeReasonsService.fetchAll([], reasons => {
-                        // console.log('downtimeReasonSelectOnBar');
-                        // console.log(reasons);
                         this.downtimeReasons = reasons['downtime_reason_list'];
                     })
                 }
             },
             updateStationShiftId(selectedStationShiftId) {
-                // console.log('when update shiftId triggers')
-                // console.log(selectedStationShiftId);
                 this.filter.stationShiftId = selectedStationShiftId;
                 this.fetchData();
             },
             submitReportDefects(defectsData) {
                 let hour = defectsData.defectTime;
                 hour = hour.substring(0, hour.length - 3);
-                // console.log('defect hour '+hour);
 
                 // submit the defect
                 this.showInprogress = true;

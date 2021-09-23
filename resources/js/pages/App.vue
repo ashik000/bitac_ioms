@@ -1,27 +1,29 @@
 <template>
     <span  v-bind:class="{'top-nav':(showNav)}">
     <nav v-if="showNav">
-    <div class="px-3 py-2 d-1">
+    <div class="px-3 d-1">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-start justify-content-lg-start main-header-flex-container">
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small top_menu" v-bind:class="active" v-on:click.prevent>
-                    <li>
+                    <li class="padding_y_ten_px">
                         <router-link to="/lineview">
                             <img src="/storage/images/walton-logo.png" alt="walton-logo" style="height: 40px;">
                         </router-link>
                     </li>
-                    <li class="dashboard" v-on:click="makeActive('dashboard')">
-                        <router-link to="/dashboard" class="nav-link text-white" active-class="active">
-                            Dashboard
-                        </router-link>
-                    </li>
-                    <li class="lineview" v-on:click="makeActive('lineview')">
+<!--                    <li class="dashboard padding_y_ten_px" v-on:click="makeActive('dashboard')">-->
+<!--                        <router-link to="/dashboard" class="nav-link text-white" active-class="active">-->
+<!--                            Dashboard-->
+<!--                        </router-link>-->
+<!--                    </li>-->
+                    <li class="lineview padding_y_ten_px ms-5" v-on:click="makeActive('lineview')">
                         <router-link to="/lineview" class="nav-link text-white" active-class="active">
+                            <b-icon icon="graph-up" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
                             Lineview
                         </router-link>
                     </li>
-                    <li class="reports" v-on:click="makeActive('reports')">
+                    <li class="reports padding_y_ten_px" v-on:click="makeActive('reports')">
                         <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <b-icon icon="file-bar-graph" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
                             Reports
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -29,8 +31,9 @@
                             <li><router-link class="dropdown-item" to="/reports/downtime-report">Downtime</router-link></li>
                         </ul>
                     </li>
-                    <li class="settings" v-on:click="makeActive('settings')">
+                    <li class="settings padding_y_ten_px" v-on:click="makeActive('settings')">
                         <router-link v-if="authorized" to="/settings/stations" class="nav-link text-white" active-class="active">
+                            <b-icon icon="gear" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
                             Settings
                         </router-link>
                     </li>
@@ -82,7 +85,7 @@ export default {
                     tokenExpiration: null,
                     role: null
                 });
-                toastrService.showSuccessToast(response)
+                toastrService.showSuccessToast('Logout')
                 this.$router.push({
                     name : 'login'
                 })
@@ -100,6 +103,12 @@ export default {
         };
 
         setInterval(this.$data._clock, 1000);
+
+        switch (this.$router.currentRoute.name) {
+            case '/lineview':
+                this.active = 'lineview';
+            break;
+        }
     },
     computed :{
         showNav(){
@@ -112,16 +121,36 @@ export default {
     created() {
         // console.log(this.$router.currentRoute.path);
 
-        if (this.$router.currentRoute.path == '/dashboard') {
-            this.active = 'dashboard';
-        } else if (this.$router.currentRoute.path == '/lineview') {
-            this.active = 'lineview';
-        } else if (this.$router.currentRoute.path == '/reports/oee-report') {
-            this.active = 'reports';
-        } else if (this.$router.currentRoute.path == '/reports/downtime-report') {
-            this.active = 'reports';
-        } else if (this.$router.currentRoute.path == '/settings/stations') {
-            this.active = 'settings';
+        switch (this.$router.currentRoute.path) {
+            case '/dashboard':
+                this.active = 'dashboard';
+                break;
+            case '/lineview':
+                this.active = 'lineview';
+                break;
+            case '/reports/oee-report':
+                this.active = 'reports';
+                break;
+            case '/reports/downtime-report':
+                this.active = 'reports';
+                break;
+            case '/settings/stations':
+                this.active = 'settings';
+                break;
+            case '/settings/products':
+                this.active = 'settings';
+                break;
+            case '/settings/shifts':
+                this.active = 'settings';
+                break;
+            case '/settings/operators':
+                this.active = 'settings';
+                break;
+            case '/settings/downtime_reasons':
+                this.active = 'settings';
+                break;
+            default:
+                this.active = 'dashboard';
         }
     }
 }
@@ -132,8 +161,10 @@ export default {
     ul.lineview .lineview,
     ul.reports .reports,
     ul.settings .settings{
-        background-color:#0d6efd;
-        border-radius: 5px;
+        background-color: #035FA3;
         margin: 0 2px 0 2px;
+    }
+    .padding_y_ten_px {
+        padding: 8px 0 8px 0;
     }
 </style>

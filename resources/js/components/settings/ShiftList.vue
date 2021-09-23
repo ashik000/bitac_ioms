@@ -5,9 +5,9 @@
                 {{ sectionHeader }}
             </div>
 
-            <div class="d-flex">
+            <div class="d-flex pe-1">
                 <div class="input-group remove-width">
-                    <input type="text" v-model="searchString" class="form-control" placeholder="Search" aria-label="Shift search" aria-describedby="Shift search">
+                    <input type="text" v-model="searchString" class="form-control rounded-2" placeholder="Search" aria-label="Shift search" aria-describedby="Shift search">
                     <button class="btn transparent-search-button" type="button">
                         <b-icon icon="search" aria-hidden="true"></b-icon>
                     </button>

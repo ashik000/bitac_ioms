@@ -1,31 +1,31 @@
 <template>
     <span>
         <nav>
-            <div class="px-3 pt-2 border-bottom mb-3 d-2">
+            <div class="px-3 border-bottom mb-3 d-2">
                 <div class="container d-flex flex-wrap justify-content-left">
 
                     <ul id="settings_menu" class="nav col-12 col-lg-auto my-2 justify-content-left my-md-0 text-small" v-bind:class="active2" v-on:click.prevent>
-                        <li class="stations" v-on:click="makeActive2('stations')">
+                        <li class="stations padding_y" v-on:click="makeActive2('stations')">
                             <router-link to="/settings/stations" active-class="active" class="nav-link text-white">
                                 Stations
                             </router-link>
                         </li>
-                        <li class="products" v-on:click="makeActive2('products')">
+                        <li class="products padding_y" v-on:click="makeActive2('products')">
                             <router-link to="/settings/products" active-class="active" class="nav-link text-white">
                                 Products
                             </router-link>
                         </li>
-                        <li class="shifts" v-on:click="makeActive2('shifts')">
+                        <li class="shifts padding_y" v-on:click="makeActive2('shifts')">
                             <router-link to="/settings/shifts" active-class="active" class="nav-link text-white">
                                 Shifts
                             </router-link>
                         </li>
-                        <li class="operators" v-on:click="makeActive2('operators')">
+                        <li class="operators padding_y" v-on:click="makeActive2('operators')">
                             <router-link to="/settings/operators" active-class="active" class="nav-link text-white">
                                 Operators
                             </router-link>
                         </li>
-                        <li class="downtime_reasons" v-on:click="makeActive2('downtime_reasons')">
+                        <li class="downtime_reasons padding_y" v-on:click="makeActive2('downtime_reasons')">
                             <router-link to="/settings/downtime_reasons" active-class="active" class="nav-link text-white">
                                 Downtime Reasons
                             </router-link>
@@ -54,6 +54,35 @@ export default {
             this.active2 = item;
         }
     },
+    created() {
+        // console.log('settings routes')
+
+        switch (this.$router.currentRoute.path) {
+            case '/settings/stations':
+                this.active = 'settings';
+                this.active2 = 'stations';
+                break;
+            case '/settings/products':
+                this.active = 'settings';
+                this.active2 = 'products';
+                break;
+            case '/settings/shifts':
+                this.active = 'settings';
+                this.active2 = 'shifts';
+                break;
+            case '/settings/operators':
+                this.active = 'settings';
+                this.active2 = 'operators';
+                break;
+            case '/settings/downtime_reasons':
+                this.active = 'settings';
+                this.active2 = 'downtime_reasons';
+                break;
+            default:
+                this.active = 'settings';
+                this.active2 = 'stations';
+        }
+    }
 }
 </script>
 
@@ -63,8 +92,11 @@ export default {
     #settings_menu.shifts .shifts,
     #settings_menu.operators .operators,
     #settings_menu.downtime_reasons .downtime_reasons{
-        background-color:#00b79c;
-        border-radius: 5px;
+        background-color: #007eda;
         margin: 0 2px 0 2px;
+        padding: 5px 0 5px 0;
+    }
+    .padding_y {
+        padding: 5px 0 5px 0;
     }
 </style>
