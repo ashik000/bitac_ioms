@@ -2,7 +2,7 @@
     <span>
         <div class="card-wrapper row">
             <b-overlay :show="showUpdateInprogress" opacity="0.6">
-                <div class="col-12">
+                <div class="col-12 h-100">
                     <ShiftList :items="shifts" sectionHeader="Shifts" @action-clicked="openShiftAddModal">
                         <template v-slot:columnHeaders>
                             <tr>
@@ -28,7 +28,7 @@
                             </td>
                             <td class="text-center">
                                 <div v-if="selectedShiftId === row.id" >
-                                    <VueCtkDateTimePicker input-size="sm" v-model="row.end_time" format="HH:mm" formatted="HH:mm" :only-time="true" :no-label="true" label="Select Start Time" />
+                                    <VueCtkDateTimePicker input-size="sm" v-model="row.end_time" format="HH:mm" formatted="HH:mm" :only-time="true" :no-label="true" label="Select End Time" />
                                 </div>
                                 <span v-else>{{ row.end_time }}</span>
                             </td>
