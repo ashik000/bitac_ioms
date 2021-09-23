@@ -46,6 +46,7 @@
 
 <script>
     import loginService from '../../services/LoginService';
+    import ToastrService from '../../services/ToastrService';
     export default {
         name: "login",
         data: () => ({
@@ -80,7 +81,8 @@
                         role: null
                     };
                     this.$store.commit('addAuthProperties', authProperties);
-                    this.$toasted.show('Bad Credentials', {duration: 1000, type: "error"});
+                    ToastrService.showErrorToast('Bad Credentials');
+                    // this.$toasted.show('Bad Credentials', {duration: 1000, type: "error"});
                 })
             },
         }
