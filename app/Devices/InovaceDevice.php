@@ -532,7 +532,7 @@ class InovaceDevice
     {
         $packetContent = $packet->request;
         $packetContentBin = hex2bin($packetContent);
-        $deviceTimeStamp  = sprintf("%04u", unpack("Ntimestamp/", substr($packetContentBin, 0, 4))['timestamp']);
+//        $deviceTimeStamp  = sprintf("%04u", unpack("Ntimestamp/", substr($packetContentBin, 0, 4))['timestamp']);
 //        $deviceTimeObject = Carbon::createFromTimestamp($deviceTimeStamp);
         $numberOfLogs = unpack('cnumOfLogs/', substr($packetContentBin, 4, 1))['numOfLogs'];
 
