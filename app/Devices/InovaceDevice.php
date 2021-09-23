@@ -14,6 +14,7 @@ use App\Data\Models\SlowProduction;
 use App\Data\Models\StationOperator;
 use App\Data\Models\StationShift;
 use App\Data\Repositories\DeviceRepository;
+use App\Data\Repositories\OperatorRepository;
 use App\Data\Repositories\ProductionLogRepository;
 use App\Data\Repositories\ProductRepository;
 use App\Data\Repositories\ShiftRepository;
@@ -31,16 +32,19 @@ class InovaceDevice
     protected $productRepository;
     protected $productionLogRepository;
     protected $shiftRepository;
+    protected $operatorRepository;
 
     public function __construct(DeviceRepository $deviceRepository,
                                 ProductRepository $productRepository,
                                 ProductionLogRepository $productionLogRepository,
-                                ShiftRepository $shiftRepository)
+                                ShiftRepository $shiftRepository,
+                                OperatorRepository $operatorRepository)
     {
         $this->deviceRepository = $deviceRepository;
         $this->productRepository = $productRepository;
         $this->productionLogRepository = $productionLogRepository;
         $this->shiftRepository = $shiftRepository;
+        $this->operatorRepository = $operatorRepository;
     }
 
 
@@ -544,6 +548,7 @@ class InovaceDevice
         $productIdToProductMap = $this->productRepository->findAllProductsKeyById();
 
         $stationIdToShiftListMap = $this->shiftRepository->findAllShiftsOfDeviceGroupByStationId($device->id);
+        $stationIdToOperatorListMap = $this->operatorRepository->findAllOperatorsOfDeviceGroupByStationId($device->id);
 
         $previousProductionLog = null;
         $topProductionLog = $this->productionLogRepository->fetchLastProductionLog();
@@ -576,6 +581,7 @@ class InovaceDevice
             }
 
             $shift = $this->findShiftOfStation($stationIdToShiftListMap, $deviceStation->station_id, $logTimeObject->copy());
+            $stationOperator = $this->findOperatorOfStation($stationIdToOperatorListMap, $deviceStation->station_id, $logTimeObject->copy());
 
             $productionLogs[] = [
                 'id' => ++$topProductionLogId,
@@ -584,7 +590,7 @@ class InovaceDevice
                 'produced_at' => $logTimeObject,
                 'synced_at' => now(),
                 'shift_id' => empty($shift)? null : $shift['id'],
-                'operator_id' => null,
+                'operator_id' => empty($stationOperator)? null : $stationOperator->operator_id, //object for operators and array for shifts is a very bad design
                 'cycle_interval' => $cycleInterval = $logTimeObject->diffInSeconds($previousProductionLog->produced_at),
                 'created_at' => now(),
                 'updated_at' => now()
@@ -806,5 +812,19 @@ class InovaceDevice
             }
         }
         return $selectedShift;
+    }
+
+    public function findOperatorOfStation($stationIdToOperatorListMap, int $stationId, Carbon $producedAt)
+    {
+        $operatorList = $stationIdToOperatorListMap->get($stationId);
+        if(empty($operatorList)) return null;
+        $operatorList = collect($operatorList)->sortBy('start_time');
+        $selectedOperator = null;
+        foreach ($operatorList as $operator) {
+            if($producedAt >= $operator->start_time && (empty($operator->end_time) || (!empty($operator->end_time) && $producedAt <= $operator->end_time))) {
+                $selectedOperator = $operator;
+            }
+        }
+        return $selectedOperator;
     }
 }
