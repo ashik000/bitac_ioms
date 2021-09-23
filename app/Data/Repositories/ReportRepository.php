@@ -185,13 +185,15 @@ class ReportRepository
 
 
         $downtimeResult = $downtimeQuery->get()->reduce(function ($carry, $item) {
-            if(empty($carry[date('j M Y', strtotime($item->date))])) $carry[date('j M Y', strtotime($item->date))] = [
-                'planned_duration' => 0,
-                'unplanned_duration' => 0,
-                'reasons' => []
-            ];
+            if(empty($carry[date('j M Y', strtotime($item->date))])) {
+                $carry[date('j M Y', strtotime($item->date))] = [
+                    'planned_duration' => 0,
+                    'unplanned_duration' => 0,
+                    'reasons' => []
+                ];
+            }
             $carry[date('j M Y', strtotime($item->date))]['planned_duration'] += $item->reason_type == 'planned' ? $item->duration : 0;
-            $carry[date('j M Y', strtotime($item->date))]['unplanned_duration'] += $item->reason_type == 'unplanned' ? $item->duration : 0;
+            $carry[date('j M Y', strtotime($item->date))]['unplanned_duration'] += $item->reason_type != 'planned' ? $item->duration : 0;
             $carry[date('j M Y', strtotime($item->date))]['reasons'][$item->reason_name] = $item->duration;
             return $carry;
         }, [
