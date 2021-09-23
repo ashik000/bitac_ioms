@@ -46,6 +46,7 @@ class ProductionLog extends Model
 
     protected $fillable = [
         'id',
+        'packet_id',
         'station_id',
         'product_id',
         'produced_at',

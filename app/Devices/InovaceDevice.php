@@ -584,6 +584,7 @@ class InovaceDevice
 
             $productionLogs[] = [
                 'id' => ++$topProductionLogId,
+                'packet_id' => $packet->id,
                 'station_id' => $deviceStation->station_id,
                 'product_id' => $stationProduct->product_id,
                 'produced_at' => $logTimeObject,
@@ -794,9 +795,9 @@ class InovaceDevice
             }
             $previousProductionLog->produced_at = $logTimeObject->copy();
         }
-        ProductionLog::insert($productionLogs);
-        Downtime::insert($downTimes);
-        SlowProduction::insert($slowProductions);
+        ProductionLog::insertOrIgnore($productionLogs);
+        Downtime::insertOrIgnore($downTimes);
+        SlowProduction::insertOrIgnore($slowProductions);
         $packet->processing_end = now();
         $packet->save();
     }
