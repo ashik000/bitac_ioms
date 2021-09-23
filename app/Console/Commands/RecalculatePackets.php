@@ -46,7 +46,7 @@ class RecalculatePackets extends Command
         $startTime = $timeRangeArray[0];
         $endTime = $timeRangeArray[1];
 
-        $device = Device::where('identifier', $deviceIdentifier)->get();
+        $device = Device::where('identifier', $deviceIdentifier)->first();
         $packets = Packet::where('device_id', $device->id)
                             ->whereBetween('created_at', [$startTime, $endTime])
                             ->orderBy('created_at')
