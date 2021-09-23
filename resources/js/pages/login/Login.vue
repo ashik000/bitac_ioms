@@ -72,7 +72,8 @@
                     // window.localStorage.setItem('role', response.role);
                     this.$router.push({
                         name: 'lineview'
-                    })
+                    });
+                    ToastrService.showSuccessToast('Login Successful');
                 }, error => {
                     let authProperties = {
                         token: null,

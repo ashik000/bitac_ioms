@@ -85,7 +85,7 @@ export default {
                     tokenExpiration: null,
                     role: null
                 });
-                toastrService.showSuccessToast(response)
+                toastrService.showSuccessToast('Logout')
                 this.$router.push({
                     name : 'login'
                 })
@@ -103,6 +103,12 @@ export default {
         };
 
         setInterval(this.$data._clock, 1000);
+
+        switch (this.$router.currentRoute.name) {
+            case '/lineview':
+                this.active = 'lineview';
+            break;
+        }
     },
     computed :{
         showNav(){
