@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Data\Models\Packet;
 use App\Data\Repositories\DeviceRepository;
 use App\Data\Repositories\PacketRepository;
+use App\Devices\InovaceDevice;
 use App\Http\Controllers\Mqtt\InovaceMqttClient;
 use App\Jobs\ParseAndSaveIomsLogPacket;
 use Illuminate\Support\Facades\Log;
@@ -14,12 +15,15 @@ class DeviceController
 
     protected $deviceRepository;
     protected $packetRepository;
+    protected $inovaceDevice;
 
     public function __construct(DeviceRepository $deviceRepository,
-                                PacketRepository $packetRepository)
+                                PacketRepository $packetRepository,
+                                InovaceDevice $inovaceDevice)
     {
         $this->deviceRepository = $deviceRepository;
         $this->packetRepository = $packetRepository;
+        $this->inovaceDevice = $inovaceDevice;
     }
 
     /**
@@ -32,8 +36,7 @@ class DeviceController
         $deviceIdentifier = $this->getDeviceIdentifierFromTopic($topic);
         $device = $this->deviceRepository->findByIdentifier($deviceIdentifier);
         $packet = $this->packetRepository->savePacketFromDevice($device, bin2hex($message));
-        dispatch(new ParseAndSaveIomsLogPacket($device, $packet))->onQueue('default');
-        \Log::debug('Sending ack');
+        $this->inovaceDevice->parseLogPacketAndSave($device, $packet);
         $mqttClient->sendPublishAcknowledgementAfterProcessing();
     }
 

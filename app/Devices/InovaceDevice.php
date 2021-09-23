@@ -568,7 +568,7 @@ class InovaceDevice
             $stationProduct = $stationIdToStationProductMap->get($deviceStation->station_id);
             if(empty($stationProduct)) continue;
 
-            $previousProductionLog = $this->productionLogRepository->findLastProductionLogByStationIdAndProductId($deviceStation->station_id, $stationProduct->product_id);
+            if($previousProductionLog == null) $previousProductionLog = $this->productionLogRepository->findLastProductionLogByStationIdAndProductId($deviceStation->station_id, $stationProduct->product_id);
 
             if ($previousProductionLog == null) {
                 $previousProductionLog = new ProductionLog();
@@ -612,7 +612,7 @@ class InovaceDevice
                     'updated_at'        => now()
                 ];
 
-                $hour = $downtimePrevStartTime->copy()->addHours(1)->addSeconds(-10);
+                $hour = $downtimePrevStartTime->copy()->addHours(1);
                 $remainingHours = $logTimeObject->copy()->startOfHour()->diffInHours(Carbon::parse($previousProductionLog->produced_at)->startOfHour());
                 for ($j = 0; $j < $remainingHours-1; $j++) {
                     $downtimeStart = $hour->copy()->startOfHour();
@@ -781,7 +781,7 @@ class InovaceDevice
             } catch (Exception $ex) {
                 Log::error($ex);
             }
-//            $previousProductionLog = $pLog;
+            $previousProductionLog->produced_at = $logTimeObject->copy();
         }
         ProductionLog::insert($productionLogs);
         Downtime::insert($downTimes);
