@@ -49,7 +49,7 @@ class ShiftRepository implements PaginatedResultInterface, RawQueryBuilderOutput
         return $result;
     }
 
-    public function findAllShiftsOfDeviceGroupByStationId(int $deviceId)
+    public function findAllShiftsOfDeviceSortedGroupByStationId(int $deviceId)
     {
         $query = StationShift::query();
         return $query

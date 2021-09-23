@@ -52,7 +52,7 @@ class OperatorRepository implements PaginatedResultInterface, RawQueryBuilderOut
         return false;
     }
 
-    public function findAllOperatorsOfDeviceGroupByStationId(int $deviceId)
+    public function findAllOperatorsOfDeviceSortedGroupByStationId(int $deviceId)
     {
         $query = StationOperator::query();
         return $query->join('stations', 'stations.id', '=', 'station_operators.station_id')
@@ -60,6 +60,7 @@ class OperatorRepository implements PaginatedResultInterface, RawQueryBuilderOut
                     ->where('device_stations.device_id', '=', $deviceId)
                     ->select('station_operators.*')
                     ->get()
+                    ->sortBy('start_time')
                     ->groupBy('station_id');
     }
 

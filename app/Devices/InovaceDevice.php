@@ -546,8 +546,8 @@ class InovaceDevice
 
         $stationIdToStationProductMap = $this->productRepository->findAllStationProductsKeyByStationId();
 
-        $stationIdToShiftListMap = $this->shiftRepository->findAllShiftsOfDeviceGroupByStationId($device->id);
-        $stationIdToOperatorListMap = $this->operatorRepository->findAllOperatorsOfDeviceGroupByStationId($device->id);
+        $stationIdToShiftListMap = $this->shiftRepository->findAllShiftsOfDeviceSortedGroupByStationId($device->id);
+        $stationIdToOperatorListMap = $this->operatorRepository->findAllOperatorsOfDeviceSortedGroupByStationId($device->id);
 
         $previousProductionLog = null;
         $topProductionLog = $this->productionLogRepository->fetchLastProductionLog();
@@ -605,6 +605,7 @@ class InovaceDevice
                 $downtimePrevDuration = $downtimePrevStartTime->copy()->endOfHour()->diffInSeconds($downtimePrevStartTime);
 
                 $dTimeShift = $this->findShiftOfStation($stationIdToShiftListMap, $deviceStation->station_id, $downtimePrevStartTime);
+                $stationOperator = $this->findOperatorOfStation($stationIdToOperatorListMap, $deviceStation->station_id, );
 
                 $downTimes[] = [
                     'id'                => ++$topDowntimeId,
@@ -801,7 +802,7 @@ class InovaceDevice
         $day = $producedAt->dayOfWeek;
         $selectedShift = null;
         if(empty($shiftList)) return null;
-        $shiftList = collect($shiftList)->sortBy('start_time')->toArray();
+//        $shiftList = collect($shiftList)->sortBy('start_time')->toArray();
         $timeStamp = $producedAt->toTimeString();
         foreach ($shiftList as $shift) {
             if(substr($shift['schedule'], $day, 1) != '1') continue;
@@ -817,7 +818,7 @@ class InovaceDevice
     {
         $operatorList = $stationIdToOperatorListMap->get($stationId);
         if(empty($operatorList)) return null;
-        $operatorList = collect($operatorList)->sortBy('start_time');
+        $operatorList = collect($operatorList);
         $selectedOperator = null;
         foreach ($operatorList as $operator) {
             if($producedAt >= $operator->start_time && (empty($operator->end_time) || (!empty($operator->end_time) && $producedAt <= $operator->end_time))) {
