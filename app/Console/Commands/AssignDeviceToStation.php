@@ -14,7 +14,7 @@ class AssignDeviceToStation extends Command
      *
      * @var string
      */
-    protected $signature = 'inovace:map-device {--I|identifier=} {--P|port=} {--S|Station=}';
+    protected $signature = 'inovace:map-device {--I|identifier=} {--P|port=} {--S|station=}';
 
     /**
      * The console command description.
