@@ -29,7 +29,7 @@ export default {
         axios.delete(`operators/${id}`)
             .then(r => success(r.data.operator_list))
             .catch(e => {
-                error('Try again');
+                error('You don\'t have permission to delete this.');
                 console.log(e.response.data)
             });
     }

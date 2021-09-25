@@ -133,14 +133,6 @@
                 this.showOperatorForm = true;
             },
 
-            showOperatorEditModal: function (item) {
-                this.showOperatorForm = true;
-                this.operatorId = item.id;
-                this.firstName = item.first_name;
-                this.lastName = item.last_name;
-                this.operatorCode = item.code;
-            },
-
             showOperatorDeleteModal: function (item) {
                 this.showOperatorDeleteForm = true;
                 this.operatorId = item.id;
@@ -164,7 +156,6 @@
                 }, (error) => {
                     this.showInprogress = false;
                     toastrService.showErrorToast(error);
-                    // console.log(error);
                 });
             },
 
@@ -196,7 +187,7 @@
                 }, (error) => {
                     this.showInprogress = false;
                     toastrService.showErrorToast(error);
-                    // console.log(error);
+                    this.closeModal();
                 });
             },
 
