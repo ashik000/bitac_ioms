@@ -132,8 +132,8 @@
                                 <td class="text-center">No data found</td>
                             </tr>
                             <tr v-else v-for="topOperatorDowntime in topOperatorDowntimes">
-                                <td>{{ topOperatorDowntimeReason.operator_name }}</td>
-                                <td>{{ topOperatorDowntimeReason.duration }}</td>
+                                <td>{{ topOperatorDowntime.operator_name }}</td>
+                                <td>{{ topOperatorDowntime.duration }}</td>
                             </tr>
                         </tbody>
                     </table>

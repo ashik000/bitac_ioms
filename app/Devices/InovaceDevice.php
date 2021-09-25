@@ -120,7 +120,7 @@ class InovaceDevice
 //            $shiftIds = $stationIdToStationShiftMap->get($deviceStation->station_id)->pluck('shift_id');
 //            $operatorIds = StationOperator::where('station_id', '=', $deviceStation->station_id)->get()->pluck('operator_id');
 
-            $previousProductionLog = $this->productionLogRepository->findLastProductionLogByStationIdAndProductId($deviceStation->station_id, $product->id);
+            $previousProductionLog = $this->productionLogRepository->findLastProductionLogByStationIdAndProductIdBeforeGivenTime($deviceStation->station_id, $product->id, $logTimestamp);
             $parsedProductionLogPacket->setCycleTime($stationProduct->cycle_time);
 
             if ($previousProductionLog == null) {
@@ -572,7 +572,7 @@ class InovaceDevice
             $stationProduct = $stationIdToStationProductMap->get($deviceStation->station_id);
             if(empty($stationProduct)) continue;
 
-            if($previousProductionLog == null) $previousProductionLog = $this->productionLogRepository->findLastProductionLogByStationIdAndProductId($deviceStation->station_id, $stationProduct->product_id);
+            if($previousProductionLog == null) $previousProductionLog = $this->productionLogRepository->findLastProductionLogByStationIdAndProductIdBeforeGivenTime($deviceStation->station_id, $stationProduct->product_id, $logTimeObject);
 
             if ($previousProductionLog == null) {
                 $previousProductionLog = new ProductionLog();

@@ -7,6 +7,7 @@ namespace App\Data\Repositories;
 use App\Data\Models\Downtime;
 use App\Data\Models\ProductionLog;
 use App\Data\Models\SlowProduction;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
@@ -19,6 +20,17 @@ class ProductionLogRepository
                             ->where('product_id', '=', $productId)
                             ->orderBy('produced_at', 'desc')
                             ->first();
+
+        return empty($log) ? null : $log;
+    }
+
+    public function findLastProductionLogByStationIdAndProductIdBeforeGivenTime(int $stationId, int $productId, Carbon $logTime)
+    {
+        $log = ProductionLog::where('station_id', '=', $stationId)
+            ->where('product_id', '=', $productId)
+            ->where('produced_at', '<=', $logTime)
+            ->orderBy('produced_at', 'desc')
+            ->first();
 
         return empty($log) ? null : $log;
     }
