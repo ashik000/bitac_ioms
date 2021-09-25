@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Data\Models\Shift;
+use App\Data\Models\StationShift;
 use App\Http\Requests\ShiftCreateRequest;
 use App\Http\Resources\ShiftCollection;
 use App\Http\Resources\ShiftResource;
 use Illuminate\Http\Request;
+use Illuminate\Validation\UnauthorizedException;
 
 class ShiftController extends Controller
 {
@@ -86,6 +88,8 @@ class ShiftController extends Controller
      */
     public function destroy(Request $request, $id){
         $shift = Shift::find($id);
+        $stationShift = StationShift::where('shift_id', $shift->id)->first();
+        if(!empty($stationShift)) throw new UnauthorizedException();
         $shift->delete();
         return app(ShiftController::class)->index($request);
     }

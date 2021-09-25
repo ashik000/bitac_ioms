@@ -9,6 +9,7 @@ use App\Http\Requests\ProductCreateRequest;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
+use Illuminate\Validation\UnauthorizedException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class ProductController extends Controller
@@ -101,6 +102,8 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
+        $stationProduct = StationProduct::where('product_id', $product->id)->first();
+        if(!empty($stationProduct)) throw new UnauthorizedException();
         $checkDelete = $this->productRepository->deleteProduct($id);
         if(!$checkDelete) throw new BadRequestException();
         $products = $this->productRepository->fetchAllProductsByGroup($product['product_group_id'], $orderBy = 'asc');

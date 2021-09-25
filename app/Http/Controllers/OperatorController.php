@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Data\Models\Operator;
+use App\Data\Models\StationOperator;
 use App\Data\Repositories\OperatorRepository;
 use App\Http\Requests\OperatorCreateRequest;
 use App\Http\Resources\OperatorCollection;
 use App\Http\Resources\OperatorResource;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Validation\UnauthorizedException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class OperatorController extends Controller
@@ -103,6 +105,8 @@ class OperatorController extends Controller
      */
     public function destroy($id)
     {
+        $stationOperator = StationOperator::where('operator_id', $id)->first();
+        if(!empty($stationOperator)) throw new UnauthorizedException();
         $checkDelete = $this->operatorRepository->deleteOperator($id);
         if(!$checkDelete) throw new BadRequestException();
         $operators = $this->operatorRepository->fetchAllOperator('asc');
