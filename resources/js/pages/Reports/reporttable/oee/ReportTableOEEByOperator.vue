@@ -1,5 +1,5 @@
 <template>
-    <table class="table">
+    <table class="table reportTable">
         <thead>
         <tr>
             <th v-if="!stationOperatorId">Operator</th>
@@ -13,7 +13,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="row in tableData" v-if="tableData && tableData.length >0">
+        <tr v-for="row in tableData" v-if="showTable">
             <td v-if="!stationOperatorId">{{ row.operator_name }}</td>
             <td v-if="!stationOperatorId">{{ row.station_name }}</td>
             <td v-if="!stationOperatorId">{{ row.station_group_name }}</td>
@@ -23,8 +23,8 @@
             <td>{{ (row.performance * 100).toFixed(2) }} %</td>
             <td>{{ (row.oee * 100).toFixed(2) }} %</td>
         </tr>
-        <tr v-else>
-            <td colspan="7" v-if="!stationId" style="text-align: center; color:red;">No Data Found</td>
+        <tr v-if="!showTable">
+            <td colspan="7" v-if="!stationOperatorId" style="text-align: center; color:red;">No Data Found</td>
             <td colspan="6" v-else style="text-align: center; color:red">No Data Found</td>
         </tr>
         </tbody>
@@ -41,7 +41,6 @@
         }),
         props:{
             stationOperatorId: {
-                type: Number,
                 default: 0
             },
             start: {
@@ -87,26 +86,11 @@
         mounted(){
             const vm = this;
             vm.fetchData();
+        },
+        computed:{
+            showTable(){
+                return this.tableData && this.tableData.length > 0;
+            }
         }
     }
 </script>
-
-<style scoped>
-    table {
-        border: 1px solid black !important;
-    }
-
-    thead {
-        background-color: #0f0f0f;
-        color: white;
-        border: 1px solid black !important;
-    }
-
-    th, td, tr {
-        border: 1px solid black !important;
-    }
-
-    tbody {
-        color: #dddddd
-    }
-</style>

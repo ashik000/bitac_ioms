@@ -14,7 +14,9 @@ export default {
     createOrUpdateStationOperator: function (data, success, error) {
         axios.post('stationOperators',data)
             .then( r=> success(r.data))
-            .catch(e => error(e))
+            .catch(e => {
+                error(e);
+            });
     },
     deleteStationOperator: function (stationOperatorId, success, error) {
         axios.delete('stationOperators/'+stationOperatorId)
@@ -25,5 +27,12 @@ export default {
         axios.get('stationOperators')
             .then( r=> success(r.data))
             .catch(e => error(e))
+    },
+    assignOperatorToStation: (data, success, error) => {
+        axios.post('assignOperatorToStation',data)
+            .then( r=> success(r.data))
+            .catch(e => {
+                error(e);
+        });
     }
 }

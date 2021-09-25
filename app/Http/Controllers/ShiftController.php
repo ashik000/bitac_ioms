@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Data\Models\Shift;
+use App\Data\Models\StationShift;
 use App\Http\Requests\ShiftCreateRequest;
 use App\Http\Resources\ShiftCollection;
 use App\Http\Resources\ShiftResource;
 use Illuminate\Http\Request;
+use Illuminate\Validation\UnauthorizedException;
 
 class ShiftController extends Controller
 {
@@ -17,7 +19,7 @@ class ShiftController extends Controller
      * @return ShiftCollection
      */
     public function index(Request $request){
-        return new ShiftCollection(Shift::all());
+        return new ShiftCollection(Shift::all()->sortBy('name')->values());
     }
 
     /**
@@ -40,7 +42,7 @@ class ShiftController extends Controller
         $shift-> start_time = $request['start_time'];
         $shift-> end_time = $request['end_time'];
         $shift->save();
-        return new ShiftCollection(Shift::all());
+        return app(ShiftController::class)->index($request);
     }
 
     /**
@@ -75,7 +77,7 @@ class ShiftController extends Controller
         $shift-> start_time = $request['start_time'];
         $shift-> end_time = $request['end_time'];
         $shift->save();
-        return new ShiftCollection(Shift::all());
+        return app(ShiftController::class)->index($request);
     }
 
     /**
@@ -84,9 +86,11 @@ class ShiftController extends Controller
      * @param  int  $id
      * @return ShiftCollection
      */
-    public function destroy($id){
+    public function destroy(Request $request, $id){
         $shift = Shift::find($id);
+        $stationShift = StationShift::where('shift_id', $shift->id)->first();
+        if(!empty($stationShift)) throw new UnauthorizedException();
         $shift->delete();
-        return new ShiftCollection(Shift::all());
+        return app(ShiftController::class)->index($request);
     }
 }

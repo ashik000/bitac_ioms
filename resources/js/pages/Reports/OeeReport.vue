@@ -1,33 +1,31 @@
 <template>
-    <div>
+    <div class="h-100">
         <reports-common-header
-            reportName="OEE Report"
             :showPartition="true"
             @partitionSelected="onPartitionSelect"
-            @rangeSelected="onRangeSelect"></reports-common-header>
-        <report-container @reportTypeChanged="onReportTypeChange">
+            @rangeSelected="onRangeSelect"
+            :reportType="reportType"
+            :reportName="reportName"
+        >
+        </reports-common-header>
+
+        <report-container>
             <template v-slot:reportContainer>
                 <div>
-                    <report-filters
-                        @stationChanged="onStationChange"
-                        @stationProductSelected="onStationProductSelect"
-                        @stationShiftSelected="onStationShiftSelect"
-                        @stationOperatorSelected="onStationOperatorSelect"
-                        :reportType="selectedReportType"></report-filters>
-                    <div style="background-color: #343345; width: 100%; padding: 30px;">
+                    <div>
                         <div class="report-page">
                             <div class="chart-wrapper">
                                 <oee-chart :title="title" :dataset="dataset"/>
                             </div>
                         </div>
-                        <div style="margin-top:30px;">
-                            <div style="margin-bottom: 10px;">
-                                <span style="font-size: 18px; color:#dddddd">{{ reportTableTitle }}</span>
-                            </div>
-                            <report-table-by-station :stationId="selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
-                            <report-table-by-product :stationProductId="selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
-                            <report-table-by-shift :stationShiftId="selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>
-                            <report-table-by-operator :stationOperatorId="selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='operator'"></report-table-by-operator>
+                        <div>
+<!--                            <div>-->
+<!--                                <span>{{ reportTableTitle }}</span>-->
+<!--                            </div>-->
+                            <report-table-by-station :stationId="reportPageFilters.selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
+                            <report-table-by-product :stationProductId="reportPageFilters.selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
+                            <report-table-by-shift :stationShiftId="reportPageFilters.selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>
+                            <report-table-by-operator :stationOperatorId="reportPageFilters.selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='operator'"></report-table-by-operator>
                         </div>
                     </div>
                 </div>
@@ -47,18 +45,29 @@
     import ReportTableOEEByProduct from './reporttable/oee/ReportTableOEEByProduct';
     import ReportTableOEEByShift from './reporttable/oee/ReportTableOEEByShift';
     import ReportTableOEEByOperator from './reporttable/oee/ReportTableOEEByOperator';
+    import { mapState } from 'vuex';
 
     export default {
         name: "OeeReport",
+        props: {
+            reportType: {
+                type: String,
+                default: 'station'
+            },
+            reportName: {
+                type: String,
+                default: 'oee'
+            }
+        },
         components: {
             ReportFilters,
-            ReportsCommonHeader,
             ReportContainer,
             'oee-chart': OEEChart,
             'report-table-by-station': ReportTableOEEByStation,
             'report-table-by-product': ReportTableOEEByProduct,
             'report-table-by-shift': ReportTableOEEByShift,
             'report-table-by-operator': ReportTableOEEByOperator,
+            'reports-common-header': ReportsCommonHeader
         },
         data: () => ({
             selectedPartition: 'hourly',
@@ -67,13 +76,9 @@
                 end: moment().endOf('day').toDate()
             },
             selectedReportType: 'station',
-            selectedStationId: 0,
             selectedStation: null,
-            selectedStationProductId: 0,
             selectedStationProduct: null,
-            selectedStationShiftId: 0,
             selectedStationShift: null,
-            selectedStationOperatorId: 0,
             selectedStationOperator: null,
             title: '',
             dataset: {
@@ -83,40 +88,44 @@
                 quality: [],
                 oee: [],
             },
-            tableData: []
+            tableData: [],
+            reportNameX: 'OEE Report'
         }),
         computed:{
             reportTableTitle(){
                 if(this.selectedReportType === 'station'){
-                    if(this.selectedStationId){
+                    if(this.reportPageFilters.selectedStationId){
                         if(this.selectedStation) return `Station: ${this.selectedStation.name}`;
                         return '';
                     } else {
                         return 'All Stations';
                     }
                 } else if(this.selectedReportType === 'product'){
-                    if(this.selectedStationProductId){
+                    if(this.reportPageFilters.selectedStationProductId){
                         if(this.selectedStationProduct) return `Station: ${this.selectedStationProduct.station_name} > Product: ${this.selectedStationProduct.product_name}`;
                         return '';
                     } else {
                         return 'All Products';
                     }
                 } else if(this.selectedReportType === 'shift'){
-                    if(this.selectedStationShiftId){
+                    if(this.reportPageFilters.selectedStationShiftId){
                         if(this.selectedStationShift) return `Station: ${this.selectedStationShift.station_name} > Shift: ${this.selectedStationShift.shift_name}`;
                         return '';
                     } else {
                         return 'All Shifts';
                     }
                 } else if(this.selectedReportType === 'operator'){
-                    if(this.selectedStationOperatorId){
+                    if(this.reportPageFilters.selectedStationOperatorId){
                         if(this.selectedStationOperator) return `Station: ${this.selectedStationOperator.station_name} > Operator: ${this.selectedStationOperator.operator_name}`;
                         return '';
                     } else {
                         return 'All Operators';
                     }
                 }
-            }
+            },
+            ...mapState({
+                reportPageFilters: 'reportPageFilters',
+            })
         },
         methods: {
             onPartitionSelect(eventData) {
@@ -135,48 +144,12 @@
                 this.selectedReportType = eventData;
                 this.fetchOEEData();
             },
-            onStationChange(eventData) {
-                console.log("parent received station changed event: " + JSON.stringify(eventData));
-                this.selectedStationId = Number.parseInt(eventData.stationId);
-                this.selectedStation = eventData.station;
-                this.selectedStationProductId = null;
-                this.selectedStationShiftId = null;
-                this.selectedStationOperatorId = null;
-                this.fetchOEEData();
-            },
-            onStationProductSelect(eventData) {
-                console.log("parent received station-product change event: " + JSON.stringify(eventData));
-                this.selectedStationProductId = Number.parseInt(eventData.stationProductId);
-                this.selectedStationProduct = eventData.stationProduct;
-                this.selectedStationId = null;
-                this.selectedStationShiftId = null;
-                this.selectedStationOperatorId = null;
-                this.fetchOEEData();
-            },
-            onStationShiftSelect(eventData) {
-                console.log("parent received station-shift change event: " + eventData);
-                this.selectedStationShiftId = Number.parseInt(eventData.stationShiftId);
-                this.selectedStationShift = eventData.stationShift;
-                this.selectedStationId = null;
-                this.selectedStationProductId = null;
-                this.selectedStationOperatorId = null;
-                this.fetchOEEData();
-            },
-            onStationOperatorSelect(eventData) {
-                console.log("parent received station-operator change event: " + eventData);
-                this.selectedStationOperatorId = Number.parseInt(eventData.stationOperatorId);
-                this.selectedStationOperator = eventData.stationOperator;
-                this.selectedStationId = null;
-                this.selectedStationProductId = null;
-                this.selectedStationShiftId = null;
-                this.fetchOEEData();
-            },
             fetchOEEData() {
                 let data = {
-                    stationId: this.selectedStationId,
-                    stationProductId: this.selectedStationProductId,
-                    stationShiftId: this.selectedStationShiftId,
-                    stationOperatorId: this.selectedStationOperatorId,
+                    stationId: this.reportPageFilters.selectedStationId,
+                    stationProductId: this.reportPageFilters.selectedStationProductId,
+                    stationShiftId: this.reportPageFilters.selectedStationShiftId,
+                    stationOperatorId: this.reportPageFilters.selectedStationOperatorId,
                     start: moment(this.selectedRange.start).format('YYYY-MM-DD'),
                     endTime: moment(this.selectedRange.end).format('YYYY-MM-DD'),
                     type: this.selectedPartition
@@ -193,14 +166,22 @@
                 });
             },
         },
+        watch: {
+            reportType: function (newReportType, oldReportType) {
+                this.selectedReportType = newReportType;
+                this.fetchOEEData();
+                // console.log('new report type '+newReportType);
+            },
+            reportPageFilters: {
+                handler(newFilters, oldFilters) {
+                    this.fetchOEEData();
+                },
+                deep: true
+            }
+        },
         mounted(){
             this.fetchOEEData();
+            this.$emit('reportNameX', this.reportNameX);
         }
     }
 </script>
-
-<style scoped>
-    th, td, tr, thead{
-        border:1px solid black!important;
-    }
-</style>

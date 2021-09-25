@@ -33,8 +33,26 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProductionLog extends Model
 {
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+    }
+
     public function station()
     {
         return $this->belongsTo(Station::class, 'station_id');
     }
+
+    protected $fillable = [
+        'id',
+        'packet_id',
+        'station_id',
+        'product_id',
+        'produced_at',
+        'synced_at',
+        'cycle_interval'
+    ];
+
+    public $timestamps = true;
 }

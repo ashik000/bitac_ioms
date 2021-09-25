@@ -2,7 +2,7 @@
     <modal @close="$emit('close')">
         <template v-slot:header>
             <div class="container" style="width: 960px; ">
-                <div class="row" style="margin-left: 0!important; margin-bottom: 10px;">
+                <div class="row" style="margin-left: 0!important;">
                     <h5>Scrap</h5>
                 </div>
             </div>
@@ -17,7 +17,8 @@
                         <scrap-input-list-item
                             v-for="(scrap, index) in scrapList"
                             :key="`scraped-${index}`"
-                            :scrap="scrap"></scrap-input-list-item>
+                            :scrap="scrap">
+                        </scrap-input-list-item>
                     </ul>
                 </div>
             </div>
@@ -26,10 +27,10 @@
             <div class="row" style="width: 100%; padding-right: 5%">
                 <div class="col-sm-10"></div>
                 <div class="col-sm-1">
-                    <button class="btn btn-outline-primary" @click.prevent="save">Save</button>
+                    <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
                 </div>
                 <div class="col-sm-1">
-                    <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
+                    <button class="btn btn-success ms-3" @click.prevent="save">Submit</button>
                 </div>
             </div>
         </template>
@@ -51,9 +52,9 @@
             }
         },
         computed: {
-          totalScrap(){
-            return this.scrapList.reduce((sum, item) => sum + (item.scraped && item.scraped>=0 ? item.scraped : 0) , 0);
-          }
+            totalScrap(){
+                return this.scrapList.reduce((sum, item) => sum + (item.scraped && item.scraped>=0 ? item.scraped : 0) , 0);
+            }
         },
         components: {
             modal: Modal,

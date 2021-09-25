@@ -10,6 +10,12 @@ export const store = new Vuex.Store({
            refreshToken: null,
            tokenExpiration: null,
            role: null
+       },
+       reportPageFilters: {
+           selectedStationId: null,
+           selectedStationProductId: null,
+           selectedStationShiftId: null,
+           selectedStationOperatorId: null,
        }
    },
    getters: {
@@ -34,11 +40,35 @@ export const store = new Vuex.Store({
            }else{
                window.localStorage.setItem('user_info', JSON.stringify(auth));
            }
+       },
+       UPDATE_STATION_ID(state, stationId) {
+           state.reportPageFilters.selectedStationId = stationId;
+       },
+       UPDATE_STATION_PRODUCT_ID(state, stationProductId) {
+           state.reportPageFilters.selectedStationProductId = stationProductId;
+       },
+       UPDATE_STATION_SHIFT_ID(state, stationShiftId) {
+           state.reportPageFilters.selectedStationShiftId = stationShiftId;
+       },
+       UPDATE_STATION_OPERATOR_ID(state, stationOperatorId) {
+           state.reportPageFilters.selectedStationOperatorId = stationOperatorId;
        }
    },
    actions: {
        addAuthProperties(context, auth) {
            context.commit('addAuthProperties', auth);
+       },
+       selectedStationId({ commit }, stationId) {
+           commit('UPDATE_STATION_ID', stationId);
+       },
+       selectedStationProductId({ commit }, stationProductId) {
+           commit('UPDATE_STATION_PRODUCT_ID', stationProductId);
+       },
+       selectedStationShiftId({ commit }, stationShiftId) {
+           commit('UPDATE_STATION_SHIFT_ID', stationShiftId);
+       },
+       selectedStationOperatorId({ commit }, stationOperatorId) {
+           commit('UPDATE_STATION_OPERATOR_ID', stationOperatorId);
        }
    }
 });

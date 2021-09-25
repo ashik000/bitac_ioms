@@ -13,7 +13,9 @@ export default {
     createOrUpdateStationProduct: function (data, success, error) {
         axios.post('stationProducts',data)
             .then( r=> success(r.data))
-            .catch(e => error(e))
+            .catch(e => {
+                error(e);
+            });
     },
     deleteStationProduct: function (stationProductId, success, error) {
         axios.delete('stationProducts/'+stationProductId)
@@ -24,5 +26,12 @@ export default {
         axios.get('stationProducts')
             .then( r=> success(r.data))
             .catch(e => error(e))
+    },
+    assignProductToStation: (payload, success, error) => {
+      axios.post('assignProductToStation', payload)
+        .then(r=> success(r.data))
+        .catch(e => {
+          error(e);
+      });
     }
 }

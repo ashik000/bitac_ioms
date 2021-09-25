@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Data\Models\Downtime;
+use App\Data\Models\DowntimeReason;
 use App\Http\Resources\DowntimeLineData;
+use App\Http\Resources\DowntimeReasonCollection;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
@@ -26,6 +28,18 @@ class DowntimeController extends Controller
         $downtimes->load('reason.downtimeReasonGroup');
 
         return DowntimeLineData::collection($downtimes);
+    }
+
+    /**
+     * get list of downtime reasons by group id
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return DowntimeReasonCollection
+     */
+    public function downtimeReasonsByGroupId($id) {
+        $downtime_reasons = DowntimeReason::where('reason_group_id', $id)->orderBy('name', 'asc')->get();
+        return new DowntimeReasonCollection($downtime_reasons);
     }
 
     public function testMyFunctions(Request $request, ProductionLogRepository $productionLogRepository){

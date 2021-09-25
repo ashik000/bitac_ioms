@@ -3,14 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Data\Models\Operator;
+use App\Data\Models\StationOperator;
+use App\Data\Repositories\OperatorRepository;
 use App\Http\Requests\OperatorCreateRequest;
 use App\Http\Resources\OperatorCollection;
 use App\Http\Resources\OperatorResource;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Validation\UnauthorizedException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class OperatorController extends Controller
 {
+    /**
+     * @var OperatorRepository
+     */
+    private $operatorRepository;
+
+    public function __construct(OperatorRepository $operatorRepository)
+    {
+        $this->operatorRepository = $operatorRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +32,8 @@ class OperatorController extends Controller
      */
     public function index()
     {
-        return new OperatorCollection(Operator::all()->load('stations'));
+        $operators = $this->operatorRepository->fetchAllOperator('asc');
+        return new OperatorCollection($operators);
     }
 
     /**
@@ -39,13 +54,10 @@ class OperatorController extends Controller
      */
     public function store(OperatorCreateRequest $request)
     {
-        //
-        $operator = new Operator();
-        $operator->first_name = $request['first_name'];
-        $operator->last_name = $request['last_name'];
-        $operator->code = $request['code'];
-        $operator->save();
-        return new OperatorCollection(Operator::all());
+        $checkStore = $this->operatorRepository->storeOperator($request);
+        if(!$checkStore) throw new BadRequestException();
+        $operators = $this->operatorRepository->fetchAllOperator('asc');
+        return new OperatorCollection($operators);
     }
 
     /**
@@ -56,7 +68,6 @@ class OperatorController extends Controller
      */
     public function show($id)
     {
-        //
         return new OperatorResource(Operator::find($id));
     }
 
@@ -80,13 +91,10 @@ class OperatorController extends Controller
      */
     public function update(OperatorCreateRequest $request, $id)
     {
-        //
-        $operator = Operator::find($id);
-        $operator->first_name = $request['first_name'];
-        $operator->last_name = $request['last_name'];
-        $operator->code = $request['code'];
-        $operator->save();
-        return new OperatorCollection(Operator::all());
+        $checkUpdate = $this->operatorRepository->updateOperator($request, $id);
+        if(!$checkUpdate) throw new BadRequestException();
+        $operators = $this->operatorRepository->fetchAllOperator('asc');
+        return new OperatorCollection($operators);
     }
 
     /**
@@ -97,10 +105,12 @@ class OperatorController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $operator = Operator::find($id);
-        $operator->delete();
-        return new OperatorCollection(Operator::all());
+        $stationOperator = StationOperator::where('operator_id', $id)->first();
+        if(!empty($stationOperator)) throw new UnauthorizedException();
+        $checkDelete = $this->operatorRepository->deleteOperator($id);
+        if(!$checkDelete) throw new BadRequestException();
+        $operators = $this->operatorRepository->fetchAllOperator('asc');
+        return new OperatorCollection($operators);
     }
 
 }

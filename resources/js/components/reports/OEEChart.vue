@@ -1,8 +1,8 @@
 <template>
     <div class="wrap">
-        <h2 class="report-title">{{ title }}</h2>
+        <h4 class="text-center text-uppercase">{{ title }}</h4>
 
-        <div class="chart-container" style="position: relative; height:40vh; width:100%; margin: auto;">
+        <div class="chart-container">
             <canvas height="360" ref="chartElement"/>
         </div>
     </div>
@@ -99,13 +99,13 @@
                             borderWidth: 2,
                             lineTension: 0,
                             pointBackgroundColor: '#222629',
-                            pointBorderColor: '#03A9F4',
+                            pointBorderColor: '#1947a4',
                             pointBorderWidth: 1,
-                            pointHoverBackgroundColor: '#03A9F4',
+                            pointHoverBackgroundColor: '#1947a4',
                             pointHoverBorderWidth	: 2,
                             pointHoverRadius: 6,
-                            borderColor: '#03A9F4',
-                            backgroundColor: '#03A9F4',
+                            borderColor: '#1947a4',
+                            backgroundColor: '#1947a4',
                             grace: '10%',
                         },
                         {
@@ -124,7 +124,7 @@
                         yAxes: [{
                             display: true,
                             ticks: {
-                                fontColor: '#ffffff',
+                                fontColor: '#000',
                                 max: 100,
                                 min: 0,
                                 beginAtZero: true,
@@ -136,17 +136,18 @@
                             },
                             gridLines: {
                                 offsetGridLines: true,
-                                color: 'rgba(255, 255, 255, 0.15)'
+                                color: '#e8e8e8',
+                                lineWidth: 2,
+                                drawBorder: false
                             }
                         }],
                         xAxes: [{
                             barPercentage: 0.5,
                             ticks: {
-                                fontColor: '#ffffff',
+                                fontColor: '#000',
                             },
                             gridLines: {
-                                offsetGridLines: true,
-                                color: 'rgba(255, 255, 255, 0.15)'
+                                display: false,
                             }
                         }],
                     },
@@ -167,16 +168,3 @@
     }
 </script>
 
-<style scoped lang="scss">
-    .wrap {
-        padding: 2rem;
-
-        background: #0f0f0f;
-
-        .report-title {
-            color: #ffffff;
-            margin: 1.5rem 1rem;
-        }
-
-    }
-</style>

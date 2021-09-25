@@ -8,7 +8,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Log;
 
-
 class StationOperatorController extends Controller
 {
     /**
@@ -19,10 +18,11 @@ class StationOperatorController extends Controller
     public function index()
     {
         $stationOperators = StationOperator::active()->get();
-        $stationOperators->map(function ($stationOperator) {
-            $stationOperator->operator_name = $stationOperator->operator->first_name . ' ' . $stationOperator->operator->last_name;
-            $stationOperator->station_name = $stationOperator->station->name;
-            $stationOperator->station_group_id = $stationOperator->station->stationGroup->id;
+        $stationOperators->map(function ($stationOperator)
+        {
+            $stationOperator->operator_name      = $stationOperator->operator->first_name . ' ' . $stationOperator->operator->last_name;
+            $stationOperator->station_name       = $stationOperator->station->name;
+            $stationOperator->station_group_id   = $stationOperator->station->stationGroup->id;
             $stationOperator->station_group_name = $stationOperator->station->stationGroup->name;
         });
         return response()->json($stationOperators->makeHidden(['deleted_at', 'created_at', 'updated_at', 'station', 'operator']), 200);
@@ -46,24 +46,27 @@ class StationOperatorController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $stationId = $data['station_id'];
-        $operatorId = $data['operator_id'];
-        $startTime = $data['start_time'];
+        $data            = $request->all();
+        $stationId       = $data['station_id'];
+        $operatorId      = $data['operator_id'];
+        $startTime       = $data['start_time'];
         $stationOperator = StationOperator::where('station_id', '=', $stationId)
             ->where('operator_id', '=', $operatorId)
             ->where('end_time', '=', null)->first();
 
-        if (empty($stationOperator)) {
+        if (empty($stationOperator))
+        {
             $stationOperator = new StationOperator();
         }
-        $stationOperator->station_id = $stationId;
+        $stationOperator->station_id  = $stationId;
         $stationOperator->operator_id = $operatorId;
-        $stationOperator->start_time = !empty($startTime) ? Carbon::parse($startTime) : Carbon::now();
-        $stationOperator->end_time = null;
+        $stationOperator->start_time  = !empty($startTime) ? Carbon::parse($startTime) : Carbon::now();
+        $stationOperator->end_time    = null;
         try {
             $stationOperator->save();
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex)
+        {
             Log::error($ex);
             return response()->json([
                 'title' => 'error'
@@ -114,7 +117,7 @@ class StationOperatorController extends Controller
      */
     public function destroy($id)
     {
-        $stationOperator = StationOperator::find($id);
+        $stationOperator           = StationOperator::find($id);
         $stationOperator->end_time = Carbon::now();
         $stationOperator->save();
         return app(StationOperatorController::class)->index();
@@ -133,4 +136,47 @@ class StationOperatorController extends Controller
         });
         return response()->json($stationOperators->makeHidden(['deleted_at', 'created_at', 'updated_at']), 200);
     }
+
+    public function assignOperatorToStation(Request $request)
+    {
+        $data       = $request->all();
+        $stationId  = $data['stationId'];
+        $operatorId = $data['operatorId'];
+        $startTime  = date('Y-m-d H:i:s');
+        $endTime    = null;
+
+        $stationOperator = StationOperator::where('station_id', '=', $stationId)
+            ->where('operator_id', '=', $operatorId)->first();
+
+        if ($stationOperator)
+        {
+            // remove previous operator
+            if ($stationOperator->operator_id != $operatorId)
+            {
+                $stationOperator->delete();
+            }
+            else
+            {
+                return TRUE;
+            }
+        }
+
+        $newStationOperator = new StationOperator();
+
+        $newStationOperator->station_id  = $stationId;
+        $newStationOperator->operator_id = $operatorId;
+        $newStationOperator->start_time  = Carbon::parse($startTime);
+        $newStationOperator->end_time    = $endTime;
+
+        try {
+            $newStationOperator->save();
+            // return success response
+            return TRUE;
+        }
+        catch (Exception $ex)
+        {
+            return FALSE;
+        }
+    }
+
 }

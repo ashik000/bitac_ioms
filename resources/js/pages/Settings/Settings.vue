@@ -1,77 +1,102 @@
 <template>
-    <div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-theme">
-            <div class="container-fluid">
-                <ul class="navbar-nav mr-auto">
-                    <router-link to="/settings/downtime_reasons" active-class="active" class="nav-item" tag="li">
-                        <a href="/settings/downtime_reasons" class="nav-link">
-                            <span class="sr-only">(current)</span>
-                            Downtime Reasons
-                        </a>
-                    </router-link>
-                    <router-link to="/settings/products" active-class="active" class="nav-item" tag="li">
-                        <a class="nav-link">
-                            Products
-                        </a>
-                    </router-link>
+    <span>
+        <nav>
+            <div class="px-3 border-bottom mb-3 d-2">
+                <div class="container d-flex flex-wrap justify-content-left">
 
-                    <router-link to="/settings/stations" active-class="active" class="nav-item" tag="li">
-                        <a class="nav-link">
-                            Stations
-                        </a>
-                    </router-link>
+                    <ul id="settings_menu" class="nav col-12 col-lg-auto my-2 justify-content-left my-md-0 text-small" v-bind:class="active2" v-on:click.prevent>
+                        <li class="stations padding_y" v-on:click="makeActive2('stations')">
+                            <router-link to="/settings/stations" active-class="active" class="nav-link text-white">
+                                Stations
+                            </router-link>
+                        </li>
+                        <li class="products padding_y" v-on:click="makeActive2('products')">
+                            <router-link to="/settings/products" active-class="active" class="nav-link text-white">
+                                Products
+                            </router-link>
+                        </li>
+                        <li class="shifts padding_y" v-on:click="makeActive2('shifts')">
+                            <router-link to="/settings/shifts" active-class="active" class="nav-link text-white">
+                                Shifts
+                            </router-link>
+                        </li>
+                        <li class="operators padding_y" v-on:click="makeActive2('operators')">
+                            <router-link to="/settings/operators" active-class="active" class="nav-link text-white">
+                                Operators
+                            </router-link>
+                        </li>
+                        <li class="downtime_reasons padding_y" v-on:click="makeActive2('downtime_reasons')">
+                            <router-link to="/settings/downtime_reasons" active-class="active" class="nav-link text-white">
+                                Downtime Reasons
+                            </router-link>
+                        </li>
+                    </ul>
 
-                    <router-link to="/settings/shifts" active-class="active" class="nav-item" tag="li">
-                        <a class="nav-link">
-                            Shifts
-                        </a>
-                    </router-link>
-
-                    <router-link to="/settings/operators" active-class="active" class="nav-item" tag="li">
-                        <a class="nav-link">
-                            Operators
-                        </a>
-                    </router-link>
-                </ul>
+                </div>
             </div>
         </nav>
 
-        <div class="container-fluid py-4">
+        <div class="container-fluid wrapper">
             <router-view></router-view>
         </div>
-    </div>
+
+    </span>
 </template>
 
 <script>
-    export default {
-        name: 'Settings',
-        data: () => ({})
+export default {
+    name: 'Settings',
+    data: () => ({
+        active2: 'stations'
+    }),
+    methods:{
+        makeActive2: function(item){
+            this.active2 = item;
+        }
+    },
+    created() {
+        // console.log('settings routes')
+
+        switch (this.$router.currentRoute.path) {
+            case '/settings/stations':
+                this.active = 'settings';
+                this.active2 = 'stations';
+                break;
+            case '/settings/products':
+                this.active = 'settings';
+                this.active2 = 'products';
+                break;
+            case '/settings/shifts':
+                this.active = 'settings';
+                this.active2 = 'shifts';
+                break;
+            case '/settings/operators':
+                this.active = 'settings';
+                this.active2 = 'operators';
+                break;
+            case '/settings/downtime_reasons':
+                this.active = 'settings';
+                this.active2 = 'downtime_reasons';
+                break;
+            default:
+                this.active = 'settings';
+                this.active2 = 'stations';
+        }
     }
+}
 </script>
 
-<style scoped lang="scss">
-    .navbar {
-        background: #222056;
-        padding: 0;
-
-        .nav-item {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-
-            .nav-link {
-                border: none;
-                color: #646389;
-                font-size: 16px;
-                line-height: 2.5rem;
-            }
-
-            &.active {
-                .nav-link {
-                    color: #dddddd;
-                }
-                padding-bottom: 0.25rem;
-                border-bottom: 0.25rem solid #dddddd;
-            }
-        }
+<style lang="scss" scoped>
+    #settings_menu.stations .stations,
+    #settings_menu.products .products,
+    #settings_menu.shifts .shifts,
+    #settings_menu.operators .operators,
+    #settings_menu.downtime_reasons .downtime_reasons{
+        background-color: #007eda;
+        margin: 0 2px 0 2px;
+        padding: 5px 0 5px 0;
+    }
+    .padding_y {
+        padding: 5px 0 5px 0;
     }
 </style>
