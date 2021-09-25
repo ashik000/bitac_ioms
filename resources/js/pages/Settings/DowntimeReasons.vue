@@ -291,7 +291,8 @@
         mounted() {
             downtimeReasonsService.fetchAllGroups(groups => {
                 this.groups = groups;
-                this.showInprogress = true;
+                if(groups.length < 1) this.showInprogress = false;
+                else this.showInprogress = true;
                 downtimeReasonsService.fetchAllDowntimeReasonsByGroupId(this.groups[0].id, reasons => {
                     this.reasons = reasons['downtime_reason_list'];
                     this.showInprogress = false;
