@@ -24,9 +24,7 @@ class StoreEventFileRequest extends FormRequest
     public function rules()
     {
         return [
-            // take json
-            'text' => 'required|string'
-            // 'file' => 'required|file'
+            'file' => 'required|file'
         ];
     }
 }

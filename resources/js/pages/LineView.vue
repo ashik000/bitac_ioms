@@ -502,10 +502,10 @@
                         this.$set(this.linedata, 'logs', logs);
                         this.$set(this.oeeSummary, 'hourly', hourlyMetric);
                         this.$set(this.oeeSummary, 'summary', summaryMetric);
-                        this.gaugeTotalOee = (isNaN((this.oeeSummary.summary.oee * 100).toFixed(2)) || this.oeeSummary.summary.oee === 0) ? 0 : (this.oeeSummary.summary.oee * 100).toFixed(2);
-                        this.gaugeAvailability = (isNaN(this.oeeSummary.summary.availability.toFixed(2)) || this.oeeSummary.summary.availability === 0) ? 0 : this.oeeSummary.summary.availability.toFixed(2);
-                        this.gaugePerformance = (isNaN(this.oeeSummary.summary.performance.toFixed(2)) || this.oeeSummary.summary.performance === 0) ? 0 : this.oeeSummary.summary.performance.toFixed(2);
-                        this.gaugeQuality = (isNaN(this.oeeSummary.summary.quality.toFixed(2)) || this.oeeSummary.summary.quality === 0) ? 0 : this.oeeSummary.summary.quality.toFixed(2);
+                        this.gaugeTotalOee = (isNaN((this.oeeSummary.summary.oee * 100).toFixed(2)) || this.oeeSummary.summary.oee === 0) ? 0 : Math.ceil((this.oeeSummary.summary.oee * 100).toFixed(2));
+                        this.gaugeAvailability = (isNaN(this.oeeSummary.summary.availability.toFixed(2)) || this.oeeSummary.summary.availability === 0) ? 0 : Math.ceil(this.oeeSummary.summary.availability.toFixed(2));
+                        this.gaugePerformance = (isNaN(this.oeeSummary.summary.performance.toFixed(2)) || this.oeeSummary.summary.performance === 0) ? 0 : Math.ceil(this.oeeSummary.summary.performance.toFixed(2));
+                        this.gaugeQuality = (isNaN(this.oeeSummary.summary.quality.toFixed(2)) || this.oeeSummary.summary.quality === 0) ? 0 : Math.ceil(this.oeeSummary.summary.quality.toFixed(2));
 
                         this.isInitialized = true;
                     }
