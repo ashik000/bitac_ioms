@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class LineViewController extends Controller
@@ -254,12 +255,14 @@ class LineViewController extends Controller
 
     public function storeEventFile(StoreEventFileRequest $request)
     {
-        $postdata = $request['file'];
-        $myfile   = time();
-        Storage::disk('local')->put($myfile, $postdata);
+        $file                  = $request['file'];
+        $fileNameWithExtension = $file->getClientOriginalName();
+        $fileName              = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
+        // $currentDateTime = Carbon::now()->format('Y-m-d_H-i-s');
+        $extension = $file->getClientOriginalExtension();
+        Storage::disk('local')->put("/public/eventLogs/" . $fileName . '.' . $extension, File::get($file));
 
-        return response()->json(['status' => 200, 'message' => 'File uploaded successfully', 'file' => $myfile]);
-        // return response()->json(['status' => 200, 'message' => 'Text found', 'text' => $postdata]);
+        return response()->json(['status' => 200, 'message' => 'File uploaded successfully', 'file' => $fileNameWithExtension]);
     }
 
 }

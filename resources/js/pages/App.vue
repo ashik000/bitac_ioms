@@ -85,7 +85,7 @@ export default {
                     tokenExpiration: null,
                     role: null
                 });
-                toastrService.showSuccessToast('Logout')
+                toastrService.showSuccessToast('Logout successful')
                 this.$router.push({
                     name : 'login'
                 })
