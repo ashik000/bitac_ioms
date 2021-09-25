@@ -22,7 +22,10 @@ export default {
     deleteShift: function (id, success, error) {
         axios.delete(`shifts/${id}`)
             .then(r => success(r.data.shift_list))
-            .catch(e => error(e));
+            .catch(e => {
+                error('You don\'t have permission to delete this.');
+                console.log(e.response.data)
+            });
     }
 }
 

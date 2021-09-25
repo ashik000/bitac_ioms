@@ -102,6 +102,7 @@
     import ShiftList from "../../components/settings/ShiftList";
     import shiftsService from '../../services/ShiftsService';
     import groupMixin from '../../mixins/groupMixin';
+    import toastrService from '../../services/ToastrService';
 
     export default {
         name: "Shifts",
@@ -128,14 +129,6 @@
                 this.showShiftForm = true;
             },
 
-            showShiftEditModal: function (item) {
-                this.showShiftForm = true;
-                this.shiftId = item.id;
-                this.shiftName = item.name;
-                this.shiftStartTime = item.start_time;
-                this.shiftEndTime = item.end_time;
-            },
-
             showShiftDeleteModal: function (item) {
                 this.showShiftDeleteForm = true;
                 this.shiftId = item.id;
@@ -155,9 +148,10 @@
                     this.shifts = data;
                     this.closeModal();
                     this.showAddInprogress = false;
+                    toastrService.showSuccessToast('Shift created.');
                 } , (error) => {
-                    console.log(error);
                     this.showAddInprogress = false;
+                    toastrService.showErrorToast(error);
                 });
             },
 
@@ -172,9 +166,10 @@
                     this.shifts = data;
                     this.closeModal();
                     this.showUpdateInprogress = false;
+                    toastrService.showSuccessToast('Shift updated.');
                 }, (error) => {
-                    console.log(error);
                     this.showUpdateInprogress = false;
+                    toastrService.showErrorToast(error);
                 });
             },
 
@@ -183,7 +178,8 @@
                     this.shifts = data;
                     this.closeModal();
                 }, (error) => {
-                    console.log(error);
+                    this.closeModal();
+                    toastrService.showErrorToast(error);
                 });
             },
 

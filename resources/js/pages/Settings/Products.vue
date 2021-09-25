@@ -128,8 +128,8 @@
     import ProductList from "../../components/settings/ProductList";
     import productService from '../../services/Products';
     import toastrService from '../../services/ToastrService';
-    // import stationService from '../../services/StationsService';
     import groupMixin from '../../mixins/groupMixin';
+
     export default {
         name: "Products",
         components: {ProductGroup, ProductList},
@@ -159,6 +159,7 @@
                 }, error => {
                     this.showInprogress = false;
                     toastrService.showErrorToast(error);
+                    this.closeProductModal();
                 });
             },
             showProductDeleteModal(item){
@@ -203,7 +204,6 @@
                     }, error =>{
                         this.showInprogress = true;
                         toastrService.showErrorToast(error);
-                        // console.log(error);
                     })
                 }
             },
