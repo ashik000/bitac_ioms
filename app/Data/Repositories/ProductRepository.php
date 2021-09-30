@@ -23,18 +23,6 @@ class ProductRepository implements PaginatedResultInterface, RawQueryBuilderOutp
     {
         $station = Station::find($stationId);
         $products = $station->products;
-
-//        Log::debug($products);
-
-        foreach ($products as $key => $res) {
-//            Log::debug('test');
-//            Log::debug($res->meta->start_time);
-            if (empty($res->meta->start_time)) {
-                unset($products[$key]);
-            }
-        }
-//        Log::debug($products);
-
         return $products;
     }
 
