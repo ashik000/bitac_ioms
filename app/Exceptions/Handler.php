@@ -50,6 +50,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, \Throwable $exception)
     {
+        if($exception instanceof NotFoundException) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], $exception->getCode());
+        }
+
         if ($exception instanceof \Illuminate\Validation\UnauthorizedException)
         {
             return response()->json([
