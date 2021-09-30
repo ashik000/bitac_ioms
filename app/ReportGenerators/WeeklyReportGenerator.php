@@ -45,11 +45,11 @@ class WeeklyReportGenerator implements ReportGenerator
             ->get();
 
         $weeklyReports = collect();
-        $reports->each(function (Report $report) use ($start, $lastReportId, &$weeklyReports)
+        $reports->each(function (Report $report) use ($start, &$lastReportId, &$weeklyReports)
         {
             $weeklyReport               = $report->replicate(['tag', 'generated_at', 'created_at', 'updated_at']);
             $weeklyReport->tag          = 'weekly';
-            $weeklyReport->id           = $lastReportId++;
+            $weeklyReport->id           = ++$lastReportId;
             $weeklyReport->generated_at = $start->endOfDay()->toDateTimeString();
 
             $weeklyReports[] = $weeklyReport;
