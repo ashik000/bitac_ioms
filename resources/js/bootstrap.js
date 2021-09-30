@@ -63,8 +63,9 @@ axios.interceptors.response.use((response) => (response), function (error) {
         // window.localStorage.setItem('refresh_token', '');
         // window.localStorage.setItem('token_expiration', '');
         // window.localStorage.setItem('role', '');
-        window.location = '/login';
+        if(window.location.pathname !== '/login') window.location = '/login';
     }
+    return Promise.reject(error);
 });
 
 /**
