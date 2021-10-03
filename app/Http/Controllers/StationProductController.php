@@ -8,6 +8,7 @@ use App\Exceptions\NotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\UnauthorizedException;
+use App\Exceptions\BadRequestException;
 
 class StationProductController extends Controller
 {
@@ -71,10 +72,10 @@ class StationProductController extends Controller
         $stationProduct->product_id = $data['product_id'];
         $stationProduct->station_id = $data['station_id'];
         $stationProduct->cycle_time = $data['cycle_time'];
+        if($stationProduct->cycle_time < 1) throw new BadRequestException("Cycle time is invalid");
         $stationProduct->cycle_unit = $data['cycle_unit'];
         $stationProduct->cycle_timeout = $data['cycle_timeout'];
         $stationProduct->units_per_signal = $data['units_per_signal'];
-//        $stationProduct->deleted_at = null;
         $stationProduct->performance_threshold = $data['performance_threshold'];
         $stationProduct->save();
         $stationProducts = StationProduct::where('station_id',$data['station_id'])->get()->load('product');

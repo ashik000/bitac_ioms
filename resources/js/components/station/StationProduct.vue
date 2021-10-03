@@ -115,6 +115,7 @@
 <script>
     import stationProductService from '../../services/StationProductService';
     import productService from '../../services/Products';
+    import toastrService from '../../services/ToastrService';
 
     export default {
         name: "StationProduct",
@@ -183,6 +184,9 @@
                 stationProductService.createOrUpdateStationProduct(this.stationProduct, r => {
                     this.stationProducts = r;
                     this.closeStationProductModal();
+                }, e => {
+                    console.log(e);
+                    toastrService.showErrorToast('Product cannot be assigned to station');
                 });
             },
             openStationProductCreateModal() {
