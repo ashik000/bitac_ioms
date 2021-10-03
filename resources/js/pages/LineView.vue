@@ -510,7 +510,6 @@
 
                         var assignedProducts = this.products.filter(prod => prod.start_time !== null);
                         this.currentProduct = assignedProducts.length > 0? assignedProducts[0] : null;
-                        console.log(this.currentProduct);
                         this.isInitialized = true;
                     }
                 );

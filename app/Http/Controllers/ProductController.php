@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Data\Models\Product;
+use App\Data\Models\Station;
 use App\Data\Models\StationProduct;
 use App\Data\Repositories\ProductRepository;
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
@@ -125,13 +127,9 @@ class ProductController extends Controller
 
     public function stationProductsByStationId(Request $request) {
         $stationId = $request->get('station_id');
-        $query = Product::query();
-        $query->leftJoin('station_products', 'station_products.product_id', '=', 'products.id')
-            ->where([['station_products.station_id', '=', $stationId]])
-            ->select('products.*');
-        $result = $query->get();
-        if (count($result) > 0) {
-            return $result;
-        }
+        $station = Station::where('id', $stationId)->first();
+        if(empty($station)) throw new NotFoundException();
+        $products = $station->products()->get();
+        return $products;
     }
 }
