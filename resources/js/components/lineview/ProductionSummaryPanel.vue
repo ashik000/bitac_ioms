@@ -1,7 +1,7 @@
 <template>
     <div class="mt-2 mb-2">
         <ul class="list-unstyled">
-            <li class="mb-2" v-for="product in products">
+            <li class="mb-2" v-for="product in filteredProducts">
                 <div class="text-truncate" style="font-size: 17px;">PRODUCING: <span class="text-truncate" style="font-weight: 500; color: green;">{{ product.product_name }}</span></div>
 
                 <div class="row">
@@ -42,6 +42,9 @@
         computed: {
             totalOee(){
                 return isNaN(this.oee * 100) ? 0 : (this.oee * 100).toFixed(2);
+            },
+            filteredProducts() {
+                return this.products.filter(prod => prod.start_time != null);
             }
         }
     }

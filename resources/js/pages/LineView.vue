@@ -245,7 +245,7 @@
             @close="productSelectionModalClosed()"
             :station-id="filter.stationId"
             :station-name="filter.stationName"
-            :product-id="(this.products.length > 0) ? this.products[0].product_id : 0">
+            :product-id="currentProduct != null? currentProduct.product_id : 0">
         </product-selection-modal>
 
         <operator-selection-modal
@@ -311,6 +311,7 @@
             isProductSelectionModalShown: false,
             isScrapInputModalShown: false,
             selectedDowntime: null,
+            currentProduct: null,
             filter: {
                 stationId: 1,
                 stationShiftId: null,
@@ -507,6 +508,9 @@
                         this.gaugePerformance = (isNaN(this.oeeSummary.summary.performance.toFixed(2)) || this.oeeSummary.summary.performance === 0) ? 0 : Math.ceil(this.oeeSummary.summary.performance.toFixed(2));
                         this.gaugeQuality = (isNaN(this.oeeSummary.summary.quality.toFixed(2)) || this.oeeSummary.summary.quality === 0) ? 0 : Math.ceil(this.oeeSummary.summary.quality.toFixed(2));
 
+                        var assignedProducts = this.products.filter(prod => prod.start_time !== null);
+                        this.currentProduct = assignedProducts.length > 0? assignedProducts[0] : null;
+                        console.log(this.currentProduct);
                         this.isInitialized = true;
                     }
                 );

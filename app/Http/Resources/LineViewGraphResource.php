@@ -66,6 +66,7 @@ class LineViewGraphResource extends JsonResource
                     'product_name' => $product->name,
                     'scrapped'     => 0,
                     'produced'     => 0,
+                    'start_time'   => $product->meta->start_time
                 ],
             ];
         })->toArray();

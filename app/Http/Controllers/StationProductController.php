@@ -3,11 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Data\Models\StationProduct;
+use App\Data\Repositories\ProductionLogRepository;
+use App\Exceptions\NotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\UnauthorizedException;
 
 class StationProductController extends Controller
 {
+
+    protected $productionLogRepository;
+
+    public function __construct(ProductionLogRepository $productionLogRepository)
+    {
+        $this->productionLogRepository = $productionLogRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -113,6 +124,9 @@ class StationProductController extends Controller
     public function destroy($id)
     {
         $stationProduct = StationProduct::find($id);
+        if(empty($stationProduct)) throw new NotFoundException("Station Product not found");
+        $productionLog = $this->productionLogRepository->findLastProductionLogByStationIdAndProductId($stationProduct->station_id, $stationProduct->product_id);
+        if(!empty($productionLog)) throw new UnauthorizedException();
         $stationId = $stationProduct->station_id;
         $stationProduct->delete();
         $stationProducts = StationProduct::where('station_id',$stationId)->get()->load('product');

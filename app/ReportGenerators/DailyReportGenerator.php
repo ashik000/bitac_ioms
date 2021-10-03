@@ -42,11 +42,11 @@ class DailyReportGenerator implements ReportGenerator
             ->get();
 
         $dailyReports = collect();
-        $reports->each(function (Report $report) use ($start, $lastReportId, &$dailyReports)
+        $reports->each(function (Report $report) use ($start, &$lastReportId, &$dailyReports)
         {
             $dailyReport               = $report->replicate(['tag', 'generated_at', 'created_at', 'updated_at']);
             $dailyReport->tag          = 'daily';
-            $dailyReport->id           = $lastReportId++;
+            $dailyReport->id           = ++$lastReportId;
             $dailyReport->generated_at = $start->endOfDay()->toDateTimeString();
 
             $dailyReports[] = $dailyReport;
