@@ -15,7 +15,7 @@
                     <downtime-summary-filter class="col-sm-3" type="unplanned" :count="unplannedDowntimeCount" :totalHour="unplannedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
                     <downtime-summary-filter class="col-sm-3" type="all" :count="allDowntimeCount" :totalHour="allDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
                 </div>
-                <div style="overflow-y: scroll; height: 400px;">
+                <div>
                     <ul class="list-group">
                         <downtime-summary-list-item
                             v-for="downtime in downtimeSummary"

@@ -589,16 +589,12 @@
             this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
 
             StationsService.fetchAll({}, (data) => {
-                // console.log('station service fetch all')
-                // console.log(data)
                 this.$set(this, 'stations', data);
                 this.filter.stationId = this.stations[0].id;
                 this.filter.stationName = this.stations[0].name;
             });
 
             DowntimeReasonsService.fetchAll({}, (data) => {
-                // console.log('downtime reasons service fetch all')
-                // console.log(data)
                 this.$set(this, 'downtimeReasons', data);
             });
 

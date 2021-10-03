@@ -12,7 +12,7 @@
                 <div class="row" style="margin-left: 0!important; margin-bottom: 10px;">
                     <span>Current Station: {{ stationName }}</span>
                 </div>
-                <div style="overflow-y: scroll; height: 400px;">
+                <div>
                     <ul class="list-group">
                         <product-selection-list-item
                             v-for="product in products"
@@ -60,27 +60,19 @@ export default {
 
     methods: {
         updateProduct(selectedProductId) {
-            console.log('when updateProduct emit triggers on modal')
-            console.log(selectedProductId);
             this.selectedProductId = selectedProductId;
         },
         assignProductToStation() {
             if (this.selectedProductId === this.productId) {
                 ToastrService.showInfoToast('Product already assigned');
             } else {
-                console.log('prev productId')
-                console.log(this.productId)
-                console.log('prev stationId')
-                console.log(this.stationId)
                 stationProductService.assignProductToStation({
                     product_id: this.selectedProductId,
                     station_id: this.stationId,
                 }, data => {
-                    console.log('success')
                     ToastrService.showSuccessToast('Product assigned to the station successfully.');
                     this.$emit('close');
                 }, error => {
-                    // console.log(error)
                     ToastrService.showErrorToast('Error! Try again.')
                     this.$emit('close');
                 });
@@ -89,13 +81,9 @@ export default {
     },
     mounted: function (){
         const vm = this;
-        console.log('stationID check')
-        console.log(this.stationId)
         ProductsService.fetchAllByStationId({
             stationId: this.stationId
         }, (data) => {
-            console.log('fetchallbystationid')
-            console.log(data)
             vm.products = data;
         }, (error) => {
             console.log(error);
@@ -110,7 +98,3 @@ export default {
 
 }
 </script>
-
-<style scoped>
-
-</style>

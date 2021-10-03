@@ -12,7 +12,7 @@
                 <div class="row" style="margin-bottom: 15px">
                     <span style="color: #868e96; padding-left: 15px">Total Scrap : {{ totalScrap }}</span>
                 </div>
-                <div style="overflow-y: scroll; height: 400px;">
+                <div>
                     <ul class="list-group">
                         <scrap-input-list-item
                             v-for="(scrap, index) in scrapList"

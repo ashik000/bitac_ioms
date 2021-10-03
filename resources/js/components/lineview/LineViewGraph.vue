@@ -6,17 +6,17 @@
             <div class="d-flex">
 
                 <div class="btn-group me-4">
-                    <button class="btn rounded-0 padding_bottom_ten_pixel" v-on:click="zoomIn()" style="background-color: #00b895; color: #fff; outline: none; border-right: 2px solid #09C8A4 !important;">
+                    <button class="btn rounded-0 padding_bottom_ten_pixel" v-on:click="zoomIn()" style="width: 3rem;background-color: #00b895; color: #fff; outline: none; border-right: 2px solid #09C8A4 !important;">
                         <b-icon-zoom-in></b-icon-zoom-in>
                     </button>
-                    <button class="btn rounded-0 me-2 padding_bottom_ten_pixel" v-on:click="zoomOut()" style="background-color: #00b895; color: #fff; outline: none;">
+                    <button class="btn rounded-0 me-2 padding_bottom_ten_pixel" v-on:click="zoomOut()" style="width: 3rem;background-color: #00b895; color: #fff; outline: none;">
                         <b-icon-zoom-out></b-icon-zoom-out>
                     </button>
 
-                    <button class="btn rounded-0 padding_bottom_ten_pixel" v-on:click="panLeft()" style="background-color: #00b895; color: #fff; outline: none; border-right: 2px solid #09C8A4 !important;">
+                    <button class="btn rounded-0 padding_bottom_ten_pixel" v-on:click="panLeft()" style="width: 3rem;background-color: #00b895; color: #fff; outline: none; border-right: 2px solid #09C8A4 !important;">
                         <b-icon-chevron-left></b-icon-chevron-left>
                     </button>
-                    <button class="btn rounded-0 padding_bottom_ten_pixel" v-on:click="panRight()" style="background-color: #00b895; color: #fff; outline: none;">
+                    <button class="btn rounded-0 padding_bottom_ten_pixel" v-on:click="panRight()" style="width: 3rem;background-color: #00b895; color: #fff; outline: none;">
                         <b-icon-chevron-right></b-icon-chevron-right>
                     </button>
                 </div>

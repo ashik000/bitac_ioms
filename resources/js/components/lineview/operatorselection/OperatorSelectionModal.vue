@@ -12,7 +12,7 @@
                 <div class="row" style="margin-left: 0!important;">
                     <span>Current Station: {{ stationName }}</span>
                 </div>
-                <div style="overflow-y: scroll; height: 400px;">
+                <div>
                     <ul class="list-group">
                         <operator-selection-list-item
                             v-for="operator in operators"
@@ -22,6 +22,7 @@
                             :station-name="stationName"
                             :operator-id="operatorId"
                             @update-operator="updateOperator"
+                            :isChecked="selectedOperatorId === operator.id"
                             >
                         </operator-selection-list-item>
                     </ul>
@@ -49,7 +50,7 @@
         data: function () {
             return {
                 operators: null,
-                selectedOperatorId: null,
+                selectedOperatorId: this.operatorId,
             }
         },
 
@@ -60,8 +61,6 @@
 
         methods: {
             updateOperator(selectedOperatorId) {
-                console.log('when updateOperator emit triggers on modal')
-                console.log(selectedOperatorId);
                 this.selectedOperatorId = selectedOperatorId;
             },
             assignOperatorToStation() {
@@ -81,9 +80,6 @@
 
             OperatorsService.fetchAll((data) => {
                 vm.operators = data;
-                console.log('fetch operators')
-                console.log(data)
-                // console.log(vm.operators)
             }, (error) => {
                 console.log(error);
             });
@@ -97,7 +93,3 @@
 
     }
 </script>
-
-<style scoped>
-
-</style>
