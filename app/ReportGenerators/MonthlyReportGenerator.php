@@ -45,7 +45,7 @@ class MonthlyReportGenerator implements ReportGenerator
             ->get();
 
         $monthlyReports = collect();
-        $reports->each(function (Report $report) use ($start, $lastReportId, &$monthlyReports)
+        $reports->each(function (Report $report) use ($start, &$lastReportId, &$monthlyReports)
         {
             $monthlyReport               = $report->replicate(['tag', 'generated_at', 'created_at', 'updated_at']);
             $monthlyReport->tag          = 'monthly';

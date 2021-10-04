@@ -150,9 +150,9 @@ class DowntimeReportRepository
                 ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
                 ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
                 ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
-                ->groupBy('shift_id','station_id','stations.station_group_id','stations.name','station_groups.name','shifts.name')
+                ->groupBy('downtimes.shift_id','station_id','stations.station_group_id','stations.name','station_groups.name','shifts.name')
                 ->select([
-                    'shift_id',
+                    'downtimes.shift_id',
                     'station_id',
                     'station_group_id',
                     DB::raw('stations.name as station_name'),
@@ -175,7 +175,7 @@ class DowntimeReportRepository
                 ->leftJoin('downtime_reason_groups', 'downtime_reasons.reason_group_id', '=', 'downtime_reason_groups.id')
                 ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
                 ->where('station_id', '=', $stationShift->station_id)
-                ->where('shift_id', '=', $stationShift->shift_id)
+                ->where('downtimes.shift_id', '=', $stationShift->shift_id)
                 ->groupBy(['downtimes.reason_id','downtime_reasons.name','downtime_reasons.reason_group_id','downtime_reasons.type','downtime_reason_groups.name'])
                 ->select([
                     'reason_id',
@@ -213,10 +213,10 @@ class DowntimeReportRepository
                 ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
                 ->join('operators', 'operators.id', '=', 'downtimes.operator_id')
                 ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
-                ->groupBy('operator_id','station_id','station_group_id','stations.name','station_groups.name','operators.first_name','operators.last_name')
+                ->groupBy('downtimes.operator_id','station_id','station_group_id','stations.name','station_groups.name','operators.first_name','operators.last_name')
                 ->select([
                     'station_id',
-                    'operator_id',
+                    'downtimes.operator_id',
                     'station_group_id',
                     DB::raw('stations.name as station_name'),
                     DB::raw('station_groups.name as station_group_name'),
@@ -239,7 +239,7 @@ class DowntimeReportRepository
                 ->leftJoin('downtime_reason_groups', 'downtime_reasons.reason_group_id', '=', 'downtime_reason_groups.id')
                 ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
                 ->where('station_id', '=', $stationOperator->station_id)
-                ->where('operator_id', '=', $stationOperator->operator_id)
+                ->where('downtimes.operator_id', '=', $stationOperator->operator_id)
                 ->groupBy(['downtimes.reason_id','downtime_reasons.name','downtime_reasons.reason_group_id','downtime_reasons.type','downtime_reason_groups.name'])
                 ->select([
                     'reason_id',
