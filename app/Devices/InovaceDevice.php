@@ -797,10 +797,13 @@ class InovaceDevice
         }
         try {
             Log::debug('Saving logs for packet ' . $packet->id);
+            Log::debug($productionLogs);
             ProductionLog::insertOrIgnore($productionLogs);
             Log::debug('Saved production logs');
+            Log::debug($downTimes);
             Downtime::insertOrIgnore($downTimes);
             Log::debug('Saved downtimes');
+            Log::debug($slowProductions);
             SlowProduction::insertOrIgnore($slowProductions);
             Log::debug('Saved slow productions');
             $packet->processing_end = now();
