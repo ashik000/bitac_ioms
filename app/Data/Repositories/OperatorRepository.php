@@ -16,7 +16,7 @@ class OperatorRepository implements PaginatedResultInterface, RawQueryBuilderOut
     use ProcessOutputTrait, PaginatedOutputTrait, RawQueryBuilderOutputTrait;
 
     public function fetchAllOperator($orderBy) {
-        return Operator::orderBy('first_name', $orderBy)->get();
+        return Operator::orderBy('first_name', $orderBy)->with('stations')->get();
     }
 
     public function storeOperator($request) {

@@ -11,6 +11,8 @@ use App\Data\Repositories\ProductionLogRepository;
 use App\Data\Repositories\ProductRepository;
 use App\Data\Repositories\ScrapRepository;
 use App\Data\Repositories\ShiftRepository;
+use App\Devices\InovaceDevice;
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\StoreEventFileRequest;
 use App\Http\Resources\LineViewGraphResource;
 use Carbon\Carbon;
@@ -181,12 +183,12 @@ class LineViewController extends Controller
         return $result;
     }
 
-    public function getOperatorName(Request $request)
+    public function getOperatorOfStation(Request $request)
     {
         $stationId = $request->get('stationId');
         $date      = $request->get('date');
 
-        $checkDate = Carbon::parse($date)->format('Y-m-d H:i:s');
+        $checkDate = Carbon::parse($date)->addHour(now()->hour)->addMinutes(now()->minute)->addSeconds(now()->second);
 
         $result = StationOperator::query()
             ->leftJoin('stations', 'stations.id', '=', 'station_operators.station_id')
@@ -195,27 +197,33 @@ class LineViewController extends Controller
                 ['station_operators.station_id', '=', $stationId],
                 ['station_operators.start_time', '<=', $checkDate]
                 // ['station_operators.end_time', '>=', $checkDate]
-            ])
+            ])->where(function($q) use($checkDate) {
+                $q->whereNull('station_operators.end_time')
+                    ->orWhere('station_operators.end_time', '>=', $checkDate);
+            })
             ->select([
                 DB::raw('operators.id as operator_id'),
                 DB::raw('operators.first_name as first_name'),
-                DB::raw('operators.last_name as last_name')
-            ])->distinct()->get();
+                DB::raw('operators.last_name as last_name'),
+                'start_time',
+                'end_time'
+            ])->get();
 
-        if (count($result) > 0)
-        {
-            return [
-                'operatorId'   => $result[0]->operator_id,
-                'operatorName' => $result[0]->first_name . ' ' . $result[0]->last_name
-            ];
-        }
-        else
-        {
+        $currentOperator = app(InovaceDevice::class)->findCurrentOperator($result, $checkDate);
+
+        \Log::debug($currentOperator);
+
+        if(empty($currentOperator)) {
             return [
                 'operatorId'   => null,
                 'operatorName' => 'N/A'
             ];
         }
+
+        return [
+            'operatorId'   => $currentOperator->operator_id,
+            'operatorName' => $currentOperator->first_name . ' ' . $currentOperator->last_name
+        ];
     }
 
     public function storeLineviewDefects(Request $request)

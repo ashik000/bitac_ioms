@@ -65,8 +65,8 @@
             },
             assignOperatorToStation() {
                 stationOperatorService.assignOperatorToStation({
-                    stationId: this.stationId,
-                    operatorId: this.selectedOperatorId
+                    station_id: this.stationId,
+                    operator_id: this.selectedOperatorId
                 }, data => {
                     ToastrService.showSuccessToast('Operator updated successfully.');
                     this.$emit('close');
@@ -80,6 +80,7 @@
 
             OperatorsService.fetchAll((data) => {
                 vm.operators = data;
+                console.log(JSON.stringify(vm.operators));
             }, (error) => {
                 console.log(error);
             });

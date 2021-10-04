@@ -29,7 +29,7 @@ export default {
             .catch(e => error(e))
     },
     assignOperatorToStation: (data, success, error) => {
-        axios.post('assignOperatorToStation',data)
+        axios.post('stationOperators',data)
             .then( r=> success(r.data))
             .catch(e => {
                 error(e);
