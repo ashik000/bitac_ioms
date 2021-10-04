@@ -8,7 +8,7 @@ use PhpMqtt\Client\Exceptions\MQTTClientException;
 class LogSubscriber
 {
 
-    private const LOG_SUBSCRIPTION_TOPIC = 'ioms/dev/+/logs';
+    private const LOG_SUBSCRIPTION_TOPIC = 'ioms2/dev/+/logs';
     protected $deviceController;
 
     public function __construct(DeviceController $deviceController)
@@ -21,7 +21,7 @@ class LogSubscriber
         while(!$connected) {
             sleep(5);
             try {
-                $mqttClient = MqttConnection::connect('IOMS Subscribe Logs', false);
+                $mqttClient = MqttConnection::connect('IOMS Subscribe Logs local', false);
                 \Log::debug('Subscribed to ' . self::LOG_SUBSCRIPTION_TOPIC);
                 error_log('Subscribed to ' . self::LOG_SUBSCRIPTION_TOPIC);
                 $mqttClient->subscribe(self::LOG_SUBSCRIPTION_TOPIC, function ($topic, $message) use($mqttClient) {

@@ -10,10 +10,10 @@
         <template v-slot:content>
             <div class="container" style="width: 960px; ">
                 <div class="row" style="margin-left: 0!important; margin-bottom: 10px; cursor: pointer">
-                    <downtime-summary-filter class="col-sm-3" type="uncommented" :count="uncommentedDowntimeCount" :totalHour="uncommentedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
-                    <downtime-summary-filter class="col-sm-3" type="planned" :count="plannedDowntimeCount" :totalHour="plannedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
-                    <downtime-summary-filter class="col-sm-3" type="unplanned" :count="unplannedDowntimeCount" :totalHour="unplannedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
-                    <downtime-summary-filter class="col-sm-3" type="all" :count="allDowntimeCount" :totalHour="allDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged"></downtime-summary-filter>
+                    <downtime-summary-filter class="col-sm-3" type="uncommented" :count="uncommentedDowntimeCount" :totalHour="uncommentedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged" :currentlySelected="currentlySelected"></downtime-summary-filter>
+                    <downtime-summary-filter class="col-sm-3" type="planned" :count="plannedDowntimeCount" :totalHour="plannedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged" :currentlySelected="currentlySelected"></downtime-summary-filter>
+                    <downtime-summary-filter class="col-sm-3" type="unplanned" :count="unplannedDowntimeCount" :totalHour="unplannedDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged" :currentlySelected="currentlySelected"></downtime-summary-filter>
+                    <downtime-summary-filter class="col-sm-3" type="all" :count="allDowntimeCount" :totalHour="allDowntimeDurationInSeconds" @downtimeFilterSelected="filterChanged" :currentlySelected="currentlySelected"></downtime-summary-filter>
                 </div>
                 <div>
                     <ul class="list-group">
@@ -68,6 +68,7 @@
                 downtimeId: null,
                 downtimeReasonId: null,
                 eventData: null,
+                currentlySelected: '',
             }
         },
         components: {
@@ -78,7 +79,6 @@
         methods:{
             reasonAssigned(eventData){
                 this.eventData = eventData;
-                // console.log(eventData);
                 this.downtimeId = eventData.downtime.id;
                 this.downtimeReasonId = eventData.downtimeReason ? eventData.downtimeReason.id : null;
             },
@@ -88,7 +88,6 @@
                     downtimeReasonId: this.downtimeReasonId,
                 },()=>{
                     ToastrService.showSuccessToast('Downtime reason successfully assigned.');
-                    // console.log("downtime reason successfully assigned.");
                     for(let i =0; i< this.downtimeSummary.length;i++){
                         if(this.downtimeSummary[i].id === this.eventData.downtime.id){
                             this.downtimeSummary[i].reason = this.eventData.downtimeReason;
@@ -131,34 +130,55 @@
                 }
                 this.allDowntimeCount = parseInt(this.uncommentedDowntimeCount)+parseInt(this.plannedDowntimeCount)+parseInt(this.unplannedDowntimeCount);
                 this.allDowntimeDurationInSeconds = parseInt(this.uncommentedDowntimeDurationInSeconds)+parseInt(this.plannedDowntimeDurationInSeconds)+parseInt(this.unplannedDowntimeDurationInSeconds);
-                console.log('all downtime')
-                console.log(this.allDowntimeCount);
-                console.log(this.allDowntimeDurationInSeconds);
             },
-            filterChanged(event){
-                if(event.type==='all') this.isAllSelected = event.isSelected;
-                if(event.type==='uncommented') this.isUncommentedSelected = event.isSelected;
-                if(event.type==='planned') this.isPlannedSelected = event.isSelected;
-                if(event.type==='unplanned') this.isUnplannedSelected = event.isSelected;
+            filterChanged(event) {
+                this.currentlySelected = event.type;
+                if(event.type==='all') {
+                    this.isAllSelected = true;
+                    this.isUncommentedSelected = false;
+                    this.isPlannedSelected = false;
+                    this.isUnplannedSelected = false;
+                    this.updateDowntimeLists();
+                }
+                if(event.type==='uncommented') {
+                    this.isUncommentedSelected = true;
+                    this.isAllSelected = false;
+                    this.isPlannedSelected = false;
+                    this.isUnplannedSelected = false;
+                    this.updateDowntimeLists();
+                }
+                if(event.type==='planned') {
+                    this.isPlannedSelected = true;
+                    this.isAllSelected = false;
+                    this.isUncommentedSelected = false;
+                    this.isUnplannedSelected = false;
+                    this.updateDowntimeLists();
+                }
+                if(event.type==='unplanned') {
+                    this.isUnplannedSelected = true;
+                    this.isPlannedSelected = false;
+                    this.isAllSelected = false;
+                    this.isUncommentedSelected = false;
+                    this.updateDowntimeLists();
+                }
+            },
 
-                if(!this.isUncommentedSelected && !this.isPlannedSelected && !this.isUnplannedSelected){
-                    for(let i =0; i<this.downtimeSummary.length;i++){
-                        // this.$set(this.downtimeSummary[i], 'filteredOut', this.isAllSelected);
-                        this.$set(this.downtimeSummary[i], 'filteredOut', false);
+            updateDowntimeLists() {
+                for(let i =0; i<this.downtimeSummary.length;i++) {
+                    this.$set(this.downtimeSummary[i], 'filteredOut', true);
+                    if(this.isAllSelected) {
+                        this.$set(this.downtimeSummary[i], 'filteredOut', !this.isAllSelected);
+                        continue;
                     }
-                } else {
-                    for(let i =0; i<this.downtimeSummary.length;i++){
-                        if(this.downtimeSummary[i].reason){
-                            if(this.downtimeSummary[i].reason.type==='unplanned'){
-                                this.$set(this.downtimeSummary[i], 'filteredOut', !this.isUnplannedSelected);
-                            } else if(this.downtimeSummary[i].reason.type==='planned'){
-                                this.$set(this.downtimeSummary[i], 'filteredOut', !this.isPlannedSelected);
-                            } else if (this.downtimeSummary[i].reason.type==='uncommented'){
-                                this.$set(this.downtimeSummary[i], 'filteredOut', !this.isUncommentedSelected);
-                            }
-                        } else {
-                            this.$set(this.downtimeSummary[i], 'filteredOut', !this.isAllSelected);
-                            // this.$set(this.downtimeSummary[i], 'filteredOut', !this.isUncommentedSelected);
+                    if(this.isUncommentedSelected && !this.downtimeSummary[i].reason) {
+                        this.$set(this.downtimeSummary[i], 'filteredOut', !this.isUncommentedSelected);
+                        continue;
+                    }
+                    if(this.downtimeSummary[i].reason) {
+                        if(this.downtimeSummary[i].reason.type==='unplanned'){
+                            this.$set(this.downtimeSummary[i], 'filteredOut', !this.isUnplannedSelected);
+                        } else if(this.downtimeSummary[i].reason.type==='planned'){
+                            this.$set(this.downtimeSummary[i], 'filteredOut', !this.isPlannedSelected);
                         }
                     }
                 }
@@ -166,12 +186,11 @@
         },
         mounted: function () {
             const vm = this;
+            vm.currentlySelected = 'all';
             DowntimeReasonService.fetchAllGroups(function (resData) {
                 vm.reasonGroups = resData;
             });
             DowntimeReasonService.fetchAll(null,function (resData) {
-                // console.log('all reasons')
-                // console.log(JSON.stringify(resData['downtime_reason_list']))
                 vm.allReasons = resData['downtime_reason_list'];
             });
             DowntimeSummaryService.getDowntimeSummary(
@@ -179,8 +198,6 @@
                 vm.stationId,
                 function (resData) {
                     vm.downtimeSummary = resData;
-                    // console.log('downtime summary')
-                    // console.log(resData)
                     vm.processDowntimeSummaryData();
                 }
             )
