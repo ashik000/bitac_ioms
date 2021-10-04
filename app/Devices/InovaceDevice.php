@@ -825,10 +825,21 @@ class InovaceDevice
         $operatorList = $stationIdToOperatorListMap->get($stationId);
         if(empty($operatorList)) return null;
         $operatorList = collect($operatorList);
+        $selectedOperator = $this->findCurrentOperator($operatorList, $producedAt);
+        return $selectedOperator;
+    }
+
+    public function findCurrentOperator($operatorList, Carbon $currentTime)
+    {
         $selectedOperator = null;
+        $minDiff = INF;
         foreach ($operatorList as $operator) {
-            if($producedAt >= $operator->start_time && (empty($operator->end_time) || (!empty($operator->end_time) && $producedAt <= $operator->end_time))) {
-                $selectedOperator = $operator;
+            if($currentTime >= $operator->start_time && (empty($operator->end_time) || (!empty($operator->end_time) && $currentTime <= $operator->end_time))) {
+                $timeDiff = $currentTime->diffInSeconds($operator->start_time);
+                if($timeDiff < $minDiff) {
+                    $selectedOperator = $operator;
+                    $minDiff = $timeDiff;
+                }
             }
         }
         return $selectedOperator;

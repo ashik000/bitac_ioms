@@ -49,7 +49,7 @@ class StationOperatorController extends Controller
         $data            = $request->all();
         $stationId       = $data['station_id'];
         $operatorId      = $data['operator_id'];
-        $startTime       = $data['start_time'];
+        $startTime       = $data['start_time'] ?? null;
         $stationOperator = StationOperator::where('station_id', '=', $stationId)
             ->where('operator_id', '=', $operatorId)
             ->where('end_time', '=', null)->first();
@@ -60,7 +60,7 @@ class StationOperatorController extends Controller
         }
         $stationOperator->station_id  = $stationId;
         $stationOperator->operator_id = $operatorId;
-        $stationOperator->start_time  = !empty($startTime) ? Carbon::parse($startTime) : Carbon::now();
+        $stationOperator->start_time  = !empty($startTime) ? Carbon::parse($startTime) : now();
         $stationOperator->end_time    = null;
         try {
             $stationOperator->save();

@@ -17,7 +17,7 @@
         </div>
 
         <ul class="card-body p-0 y-scroll list-group">
-            <li v-for="(item, index) in items" :key="item.id" @click="$emit('item-selected', item); toggleActive(index)" :class="[{active: activeItem === index}, 'list-group-item', 'border-0']">
+            <li v-for="(item, index) in items" :key="item.id" @click="$emit('item-selected', item); toggleActive(item.id)" :class="[{active: activeItem === item.id}, 'list-group-item', 'border-0']">
                 <slot :item="item">
                     {{ item }}
                 </slot>

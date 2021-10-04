@@ -54,7 +54,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('report/downtime/by/shift',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationShift']);
     Route::get('report/downtime/by/operator',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationOperator']);
     Route::get('lineviewStationShift','LineViewController@getLineViewStationShifts');
-    Route::get('getOperatorName','LineViewController@getOperatorName');
+    Route::get('getOperatorName','LineViewController@getOperatorOfStation');
     Route::post('storeLineviewDefects','LineViewController@storeLineviewDefects');
     Route::post('assignOperatorToStation','StationOperatorController@assignOperatorToStation');
     Route::post('assignProductToStation','StationProductController@assignProductToStation');
