@@ -585,7 +585,7 @@
                     vm.fetchData();
                 }
             };
-            // this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
+            this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
 
             StationsService.fetchAll({}, (data) => {
                 this.$set(this, 'stations', data);
