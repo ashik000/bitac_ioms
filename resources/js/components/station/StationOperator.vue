@@ -36,7 +36,9 @@
 
         <Modal v-if="showStationOperatorCreateModal === true" @close="closeStationOperatorModal()" >
             <template v-slot:header>
-                <h3>Assign Station Operator</h3>
+                <div style="padding-left: 30px;">
+                    <h5>ASSIGN STATION OPERATOR</h5>
+                </div>
             </template>
             <template v-slot:content>
                 <form>
@@ -44,18 +46,21 @@
                         <label for="operatorSelect">Operator</label>
                         <select required id="operatorSelect" class="form-control"
                                 v-model="selectedOperatorId">
-                            <option disabled value="">--Select--</option>
-                            <option v-for="operator in operators" :value="operator.id">
+                            <option disabled value=""> --Select-- </option>
+                            <option v-for="operator in operators" :value="operator.id" :key="operator.id">
                                 {{ operator.first_name + operator.last_name + " " + operator.code }}
                             </option>
                         </select>
                         <label for="startTimeSelect" class="mt-2">Select start date and time</label>
                         <VueCtkDateTimePicker id="startTimeSelect" v-model="stationOperator.start_time" :inline="true" format="YYYY-MM-DD HH:mm:ss" formatted="YYYY-MM-DD HH:mm:ss" />
                     </div>
-                    <button style="float: right;" class="btn btn-primary" @click.prevent="createStationOperator()">Submit</button>
                 </form>
             </template>
             <template v-slot:footer>
+                <div class="float-end pb-4" style="padding-right: 15px;">
+                    <button class="btn btn-outline-danger" @click.prevent="closeStationOperatorModal()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click.prevent="createStationOperator()">SUBMIT</button>
+                </div>
             </template>
         </Modal>
 
@@ -68,11 +73,13 @@
             <template v-slot:content>
                 <form @submit.prevent="">
                     <p>Are you sure you want to delete the operator named <span style="color: darkred">{{selectedStationOperatorNameToDelete}}</span>?</p>
-                    <br>
-                    <button class="btn btn-danger" @click="deleteStationOperator">Delete</button>
                 </form>
             </template>
             <template v-slot:footer>
+                <div class="float-end pb-4">
+                    <button class="btn btn-outline-danger" @click.prevent="closeStationOperatorModal()">CLOSE</button>
+                    <button class="btn btn-danger ms-3" @click="deleteStationOperator">DELETE</button>
+                </div>
             </template>
         </Modal>
     </div>
@@ -97,7 +104,7 @@
             showStationOperatorDeleteModal: false,
             showStationOperatorCreateModal: false,
             operators: [],
-            selectedOperatorId: null,
+            selectedOperatorId: "",
             selectedStationOperatorIdToDelete: null,
             selectedStationOperatorNameToDelete: null,
             stationOperator: {
