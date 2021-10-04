@@ -211,8 +211,6 @@ class LineViewController extends Controller
 
         $currentOperator = app(InovaceDevice::class)->findCurrentOperator($result, $checkDate);
 
-        \Log::debug($currentOperator);
-
         if(empty($currentOperator)) {
             return [
                 'operatorId'   => null,
