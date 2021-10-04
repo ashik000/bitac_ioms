@@ -665,7 +665,7 @@ class InovaceDevice
                                 'duration'          => $downtimePrevDuration,
                                 'production_log_id' => $topProductionLogId,
                                 'shift_id'          => empty($previousDTimeShift)? null : $previousDTimeShift['id'],
-                                'operator_id'       => empty($prevStationOperator)? null : $prevStationOperator->id,
+                                'operator_id'       => empty($prevStationOperator)? null : $prevStationOperator->operator_id,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
                             ];
@@ -678,7 +678,7 @@ class InovaceDevice
                                 'duration'          => $downtimeNextDuration,
                                 'production_log_id' => $topProductionLogId,
                                 'shift_id'          => empty($nextDTimeShift)? null : $nextDTimeShift['id'],
-                                'operator_id'       => empty($nextStationOperator)? null : $nextStationOperator->id,
+                                'operator_id'       => empty($nextStationOperator)? null : $nextStationOperator->operator_id,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
                             ];
@@ -796,19 +796,11 @@ class InovaceDevice
             $previousProductionLog->produced_at = $logTimeObject->copy();
         }
         try {
-            Log::debug('Saving logs for packet ' . $packet->id);
-            Log::debug($productionLogs);
             ProductionLog::insertOrIgnore($productionLogs);
-            Log::debug('Saved production logs');
-            Log::debug($downTimes);
             Downtime::insertOrIgnore($downTimes);
-            Log::debug('Saved downtimes');
-            Log::debug($slowProductions);
             SlowProduction::insertOrIgnore($slowProductions);
-            Log::debug('Saved slow productions');
             $packet->processing_end = now();
             $packet->save();
-            Log::debug('Packet saving done');
         } catch (Exception $ex) {
             Log::error($ex);
         }
