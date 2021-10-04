@@ -796,14 +796,20 @@ class InovaceDevice
             $previousProductionLog->produced_at = $logTimeObject->copy();
         }
         try {
+            Log::debug('Saving logs for packet ' . $packet->id);
             ProductionLog::insertOrIgnore($productionLogs);
+            Log::debug('Saved production logs');
             Downtime::insertOrIgnore($downTimes);
+            Log::debug('Saved downtimes');
             SlowProduction::insertOrIgnore($slowProductions);
+            Log::debug('Saved slow productions');
             $packet->processing_end = now();
             $packet->save();
+            Log::debug('Packet saving done');
         } catch (Exception $ex) {
             Log::error($ex);
         }
+        Log::debug('');
     }
 
     public function findShiftOfStation($stationIdToShiftListMap, int $stationId, Carbon $producedAt)
