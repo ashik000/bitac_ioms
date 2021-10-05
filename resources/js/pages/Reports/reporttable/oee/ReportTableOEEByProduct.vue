@@ -75,7 +75,7 @@
                 let vm = this;
                 console.log("calling api getOEETableReportByProduct. stationProductId:  " + vm.stationProductId);
                 reportService.getOEETableReportByStationProduct({
-                    'stationProductId': vm.stationProductId ? vm.stationProductId : null,
+                    'stationProductId': vm.stationProductId === '0' ? null : vm.stationProductId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY'),
                     'type': vm.type
@@ -91,7 +91,7 @@
         },
         computed:{
             showTable(){
-              return this.tableData && this.tableData.length > 0;
+                return this.tableData && this.tableData.length > 0;
             }
         }
     }
