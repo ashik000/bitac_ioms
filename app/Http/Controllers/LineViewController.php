@@ -12,6 +12,7 @@ use App\Data\Repositories\ProductRepository;
 use App\Data\Repositories\ScrapRepository;
 use App\Data\Repositories\ShiftRepository;
 use App\Devices\InovaceDevice;
+use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
 use App\Http\Requests\StoreEventFileRequest;
 use App\Http\Resources\LineViewGraphResource;
@@ -226,6 +227,12 @@ class LineViewController extends Controller
 
     public function storeLineviewDefects(Request $request)
     {
+        $defectTime = Carbon::parse($request['date'])->addHours($request['defectTime']);
+        \Log::debug($defectTime);
+        $logCount = app(ProductionLogRepository::class)->fetchProductionLogCountOfHour($request['stationId'], $request['productId'], $defectTime);
+        if($request['defectValue'] > $logCount) throw new BadRequestException('Defect entry cannot be more than logs');
+
+
         $scrap = Scrap::query()
             ->where('scraps.station_id', '=', $request['stationId'])
             ->where('scraps.product_id', '=', $request['productId'])
@@ -248,7 +255,7 @@ class LineViewController extends Controller
         }
         else
         {
-            $scrap->value += $scrap['value'];
+            $scrap->value += $request['defectValue'];
         }
 
         $check = $scrap->save();

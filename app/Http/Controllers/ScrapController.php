@@ -175,7 +175,7 @@ class ScrapController extends Controller
             $reqProductId = $reqScrap->id;
 
             //Todo DB call inside a loop is an inexcusable sin, but sadly we are under a deadline
-            $logCount = app(ProductionLogRepository::class)->fetchProductionLogCountOfHour($reqScrap->id, $date->copy());
+            $logCount = app(ProductionLogRepository::class)->fetchProductionLogCountOfHour($reqScrap->stationId, $reqScrap->id, $date->copy());
             if($reqScrap->scraped > $logCount) throw new BadRequestException('Defect entry cannot be more than logs');
 
             $shift = Shift::where('start_time', '<=', $datetime->toTimeString())

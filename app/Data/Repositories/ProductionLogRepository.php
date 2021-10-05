@@ -152,10 +152,11 @@ class ProductionLogRepository
 
     }
 
-    public function fetchProductionLogCountOfHour($productId, Carbon $time)
+    public function fetchProductionLogCountOfHour($stationId, $productId, Carbon $time)
     {
         $query = ProductionLog::query();
         return $query->where('product_id', $productId)
+                        ->where('station_id', $stationId)
                         ->whereBetween('produced_at', [$time->copy()->startOfHour(), $time->copy()->endOfHour()])
                         ->count();
     }
