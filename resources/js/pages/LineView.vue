@@ -241,7 +241,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-check">
                                         <input class="form-check-input float-end" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
-                                            :value="reason.id" @change="onReasonChange($event)" :checked="isChecked"/>
+                                            :value="reason.id" @change="onReasonChange($event)" :checked="selectedDowntimeReasonId === reason.id"/>
                                     </div>
                                 </div>
                             </div>
@@ -472,6 +472,7 @@
                     DowntimeReasonsService.fetchAll([], reasons => {
                         this.downtimeReasons = reasons['downtime_reason_list'];
                     })
+                    this.selectedDowntimeReasonId = bar.reason? bar.reason.id : null;
                 }
             },
             updateStationShiftId(selectedStationShiftId) {
@@ -593,7 +594,7 @@
             },
             onReasonChange: function (event) {
                 var data = event.target.value;
-                this.selectedOperatorId = data;
+                this.selectedDowntimeReasonId = data;
             },
         },
         computed: {
