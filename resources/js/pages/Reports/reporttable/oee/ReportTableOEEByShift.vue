@@ -73,7 +73,7 @@
                 let vm = this;
                 console.log("calling api getOEETableReportByShift. stationShiftId:  " + vm.stationShiftId);
                 reportService.getOEETableReportByStationShift({
-                    'stationShiftId': vm.stationShiftId ? vm.stationShiftId : null,
+                    'stationShiftId': vm.stationShiftId === '0' ? null : vm.stationShiftId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY'),
                     'type': vm.type
