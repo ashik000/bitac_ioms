@@ -81,13 +81,13 @@
                 </div>
             </template>
             <template v-slot:content>
-                <form @submit.prevent="productId == null ? createProduct():updateProduct()">
+                <form>
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" v-model="productName" class="form-control" placeholder="Enter Name">
                         <label class="mt-2">Group</label>
                         <select class="form-control" v-model="selectedGroupId">
-                            <option v-for="group in groups" :value="group.id">
+                            <option v-for="group in groups" :value="group.id" :key="group.id">
                                 {{ group.name }}
                             </option>
                         </select>
@@ -96,11 +96,14 @@
                         <label class="mt-2">Unit</label>
                         <input type="text" v-model="productUnit" class="form-control" placeholder="Enter Unit">
                     </div>
-                    <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
+                <div class="float-end pb-4" style="padding-right: 15px;">
+                    <button class="btn btn-outline-danger" @click.prevent="closeProductModal()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click="productId == null ? createProduct() : updateProduct()">SUBMIT</button>
+                </div>
             </template>
         </Modal>
 

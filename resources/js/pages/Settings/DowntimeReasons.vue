@@ -89,14 +89,14 @@
                 </div>
             </template>
             <template v-slot:content>
-                <form @submit.prevent="reasonId == null ? createDowntimeReason():updateDowntimeReason()">
+                <form>
                     <div class="form-group">
                         <label class="mt-2">Name</label>
                         <input type="text" v-model="reasonName" class="form-control" placeholder="Enter Name">
                         <label class="mt-2">Group</label>
                         <select class="form-control" v-model="selectedGroupId">
                             <option disabled value="">--Select--</option>
-                            <option v-for="group in groups" :value="group.id">
+                            <option v-for="group in groups" :value="group.id" :key="group.id">
                                 {{ group.name }}
                             </option>
                         </select>
@@ -107,11 +107,14 @@
                             <option value="unplanned">Unplanned</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
+                <div class="float-end pb-4" style="padding-right: 15px;">
+                    <button class="btn btn-outline-danger" @click.prevent="clearDowntimeReason()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click="reasonId == null ? createDowntimeReason():updateDowntimeReason()">SUBMIT</button>
+                </div>
             </template>
         </Modal>
 
