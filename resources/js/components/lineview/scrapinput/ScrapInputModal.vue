@@ -3,14 +3,14 @@
         <template v-slot:header>
             <div class="container" style="width: 960px; ">
                 <div class="row" style="margin-left: 0!important;">
-                    <h5>Scrap</h5>
+                    <h5>DEFECT ENTRY</h5>
                 </div>
             </div>
         </template>
         <template v-slot:content>
             <div class="container" style="width: 960px; ">
                 <div class="row" style="margin-bottom: 15px">
-                    <span style="color: #868e96; padding-left: 15px">Total Scrap : {{ totalScrap }}</span>
+                    <span style="color: #868e96; padding-left: 15px">Total Defect : {{ totalScrap }}</span>
                 </div>
                 <div>
                     <ul class="list-group">
@@ -27,10 +27,10 @@
             <div class="row" style="width: 100%; padding-right: 5%">
                 <div class="col-sm-10"></div>
                 <div class="col-sm-1">
-                    <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
+                    <button class="btn btn-outline-danger" @click.prevent="$emit('close')">CLOSE</button>
                 </div>
                 <div class="col-sm-1">
-                    <button class="btn btn-success ms-3" @click.prevent="save">Submit</button>
+                    <button class="btn btn-success ms-3" @click.prevent="save">SUBMIT</button>
                 </div>
             </div>
         </template>

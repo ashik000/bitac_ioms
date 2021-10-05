@@ -231,12 +231,33 @@
                 <h4 class="text-uppercase px-5">Select Downtime Reason</h4>
             </template>
             <template v-slot:content>
-                <div class="list-group">
+                <div class="container" style="width: 960px; ">
+                    <ul class="list-group">
+                        <li class="list-group-item listitemm border" v-for="reason in downtimeReasons" :key="reason.id" @click.prevent="selectDowntimeReason(reason)">
+                            <div class="row align-items-center cursor-pointer">
+                                <div class="col-sm-8">
+                                    {{ reason.name }}
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input float-end" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                                            :value="reason.id" @change="onReasonChange($event)" :checked="isChecked"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- <div class="list-group">
                     <a href="#" class="list-group-item list-group-item-action"
                         v-for="reason in downtimeReasons" :key="reason.id"
                         @click.prevent="assignDowntimeReason(reason)">{{ reason.name }}</a>
-                </div>
+                </div> -->
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
+            </template>
+            <template v-slot:footer>
+                <button class="btn btn-success ms-3" @click="assignDowntimeReason();" >Assign</button>
             </template>
         </modal>
 
@@ -364,6 +385,8 @@
             showInprogress: false,
             dataUpdateTimer: null,
             clockUpdateTimer: null,
+            isChecked: Boolean,
+            selectedDowntimeReasonId: null,
         }),
         watch: {
             gaugeTotalOee(nv, ov){
@@ -478,17 +501,20 @@
                     ToastrService.showErrorToast('Error! Try again.');
                 });
             },
-            assignDowntimeReason(reason) {
+            assignDowntimeReason() {
                 this.showInprogress = true;
                 DowntimeReasonsService.assignDowntime({
                     downtimeId: this.selectedDowntime.id,
-                    downtimeReasonId: reason.id,
+                    downtimeReasonId: this.selectedDowntimeReasonId,
                 }, data => {
                     this.isDowntimeReasonsModalShown = false;
                     this.showInprogress = false;
                     ToastrService.showSuccessToast('Downtime reason assigned successfully.');
                     this.fetchData();
                 });
+            },
+            selectDowntimeReason(reason) {
+                this.selectedDowntimeReasonId = reason.id;
             },
             fetchData() {
                 LineViewService.fetchLineViewData({
@@ -564,6 +590,10 @@
                 }else {
                     return  {...this.gaugeOptions, ...{arcColors: [color], arcDelimiters: [nv]}};
                 };
+            },
+            onReasonChange: function (event) {
+                var data = event.target.value;
+                this.selectedOperatorId = data;
             },
         },
         computed: {
