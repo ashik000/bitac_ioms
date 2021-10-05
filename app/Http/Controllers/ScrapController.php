@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Data\Models\Scrap;
 use App\Data\Models\Shift;
+use App\Data\Repositories\ProductionLogRepository;
+use App\Exceptions\BadRequestException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
@@ -171,6 +173,10 @@ class ScrapController extends Controller
             $datetime = $date->setHour($reqScrap->hour);
             $reqHour = $reqScrap->hour;
             $reqProductId = $reqScrap->id;
+
+            //Todo DB call inside a loop is an inexcusable sin, but sadly we are under a deadline
+            $logCount = app(ProductionLogRepository::class)->fetchProductionLogCountOfHour($reqScrap->id, $date->copy());
+            if($reqScrap->scraped > $logCount) throw new BadRequestException('Defect entry cannot be more than logs');
 
             $shift = Shift::where('start_time', '<=', $datetime->toTimeString())
                 ->where('end_time', '>=', $datetime->toTimeString())

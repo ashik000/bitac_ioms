@@ -43,6 +43,7 @@
     import ScrapInputListItem from "./ScrapInputListItem";
     import ReportService from "../../../services/Reports";
     import ScrapService from "../../../services/ScrapService";
+    import toastrService from "../../../services/ToastrService";
 
     export default {
         name: "ScrapInputModal",
@@ -80,6 +81,9 @@
                 let req = vm.scrapList.filter((s)=>s.updated);
                 ScrapService.uploadHourlyScrapCount(req, (resData)=>{
                     vm.$emit('close');
+                    toastrService.showSuccessToast('Defect input successful');
+                }, (error) => {
+                    toastrService.showErrorToast('Sorry could not input defect data');
                 });
             }
         }
