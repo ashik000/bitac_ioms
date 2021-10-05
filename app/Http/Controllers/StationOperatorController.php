@@ -67,7 +67,7 @@ class StationOperatorController extends Controller
         }
         catch (Exception $ex)
         {
-            Log::error($ex);
+            // Log::error($ex);
             return response()->json([
                 'title' => 'error'
             ], 500);

@@ -36,7 +36,7 @@
                                     <b-icon icon="gear" class="pb-sm-1" font-scale="1.30"></b-icon> MANAGE COMPONENTS
                                 </button>
                                 <button type="button" class="btn btn-primary btn-sm" @click.prevent="showStationEditModal(row)">
-                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon>  EDIT CONFIGURATION
+                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT CONFIGURATION
                                 </button>
                                 <button type="button" class="btn btn-danger btn-sm" @click.prevent="showStationDeleteModal(row)">
                                     <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
@@ -151,20 +151,20 @@
 
         <Modal v-if="showStationForm" @close="closeStationForm">
             <template v-slot:header>
-                <div class="container" style="padding-left: 30px;">
+                <div class="container">
                     <h5>
                         {{selectedStationId != 0 ? "EDIT STATION" : "ADD STATION"}}
                     </h5>
                 </div>
             </template>
             <template v-slot:content>
-                <form @submit.prevent="stationId == null? createStation():updateStation()">
+                <form>
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" v-model="name" class="form-control" placeholder="Enter Name">
                         <label class="mt-3">Group</label>
                         <select class="form-select" v-model="selectedGroupId">
-                            <option disabled value=""> -- Select -- </option>
+                            <option disabled value="0"> -- Select -- </option>
                             <option v-for="group in groups" :value="group.id" :key="group.id">
                                 {{ group.name }}
                             </option>
@@ -180,7 +180,7 @@
             <template v-slot:footer>
                 <div class="float-end pb-4" style="padding-right: 15px;">
                     <button class="btn btn-outline-danger" @click.prevent="closeStationForm()">CLOSE</button>
-                    <button class="btn btn-success ms-3">SUBMIT</button>
+                    <button class="btn btn-success ms-3" @click="stationId == null ? createStation(): updateStation()">SUBMIT</button>
                 </div>
             </template>
         </Modal>
@@ -224,8 +224,8 @@ export default {
         showStationDeleteForm : false,
         name:"",
         description:"",
-        selectedGroupId: "",
-        oee_threshold:0,
+        selectedGroupId: 0,
+        oee_threshold: 0,
         groups: [],
         stations: [],
         selectedStationId:0,

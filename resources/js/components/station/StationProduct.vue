@@ -54,7 +54,7 @@
         </div>
         <Modal v-if="showStationProductModal == true" @close="closeStationProductModal()">
             <template v-slot:header>
-                <div style="padding-left: 30px;">
+                <div>
                     <h5>{{stationProduct.id == null ? 'ASSIGN STATION PRODUCT' : 'EDIT STATION PRODUCT'}}</h5>
                 </div>
             </template>
@@ -192,6 +192,7 @@
                 stationProductService.createOrUpdateStationProduct(this.stationProduct, r => {
                     this.stationProducts = r;
                     this.closeStationProductModal();
+                    toastrService.success('Success');
                 }, e => {
                     console.log(e);
                     toastrService.showErrorToast('Product cannot be assigned to station');
@@ -225,9 +226,9 @@
             }
         },
         computed:{
-          showStationProductsTable(){
-              return this.stationProducts.length > 0;
-          }
+            showStationProductsTable(){
+                return this.stationProducts.length > 0;
+            }
         },
         mounted() {
             this.fetchStationProducts();
