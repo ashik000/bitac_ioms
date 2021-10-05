@@ -600,6 +600,7 @@ class InovaceDevice
             $pLog->produced_at = $logTimeObject->copy();
 
             $hourDiff = $logTimeObject->copy()->startOfHour()->diffInHours(Carbon::parse($previousProductionLog->produced_at)->startOfHour());
+            Log::debug('Hour diff ' . $hourDiff);
 
             if ($hourDiff >= 2) {
                 $downtimePrevStartTime = Carbon::parse($previousProductionLog->produced_at);
@@ -721,6 +722,28 @@ class InovaceDevice
                                 'production_log_id' => $topProductionLogId,
                                 'start_time'        => $downtimeEnd->copy()->addSeconds($stationProduct->cycle_timeout)->startOfHour(),
                                 'duration'          => $stationProduct->cycle_timeout - $slowProdPrevDuration
+                            ];
+                        }
+                        else { // hour crossing production log, not downtime
+                            $dTimeShift = $this->findShiftOfStation($stationIdToShiftListMap, $deviceStation->station_id, $downtimeStart);
+                            $stationOperator = $this->findOperatorOfStation($stationIdToOperatorListMap, $deviceStation->station_id, $downtimeStart);
+                            $downTimes[] = [
+                                'id'                => ++$topSlowProductionId,
+                                'start_time'        => $downtimeStart,
+                                'duration'          => $downtimeSecond,
+                                'production_log_id' => $topProductionLogId,
+                                'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
+                                'operator_id'       => empty($stationOperator) ? null: $stationOperator->operator_id,
+                                'created_at'        => now(),
+                                'updated_at'        => now()
+                            ];
+                            $slowProductions[] = [
+                                'id'                => ++$topSlowProductionId,
+                                'production_log_id' => $topProductionLogId,
+                                'start_time'        => $downtimeEnd,
+                                'duration'          => $stationProduct->cycle_timeout,
+                                'created_at'        => now(),
+                                'updated_at'        => now()
                             ];
                         }
                     }
