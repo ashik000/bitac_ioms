@@ -14,8 +14,11 @@
                 <div>
                     <div>
                         <div class="report-page">
-                            <div class="chart-wrapper">
+                            <div class="chart-wrapper" v-if="dataset.labels.length > 0">
                                 <oee-chart :title="title" :dataset="dataset"/>
+                            </div>
+                            <div v-else>
+                                <p style="text-align: center; color: red">No Data Found</p>
                             </div>
                         </div>
                         <div>
