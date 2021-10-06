@@ -55,6 +55,11 @@
             toggleActive: function(index) {
                 this.activeItem = index;
             }
+        },
+        watch: {
+            items: function (nw, old) {
+                this.activeItem = nw.length > 0? nw[0].id : 0;
+            }
         }
     }
 </script>
