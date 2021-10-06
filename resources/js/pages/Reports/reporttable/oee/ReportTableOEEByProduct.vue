@@ -2,10 +2,10 @@
     <table class="table reportTable">
         <thead>
         <tr>
-            <th v-if="stationProductId == null || stationProductId == 0">Product</th>
-            <th v-if="stationProductId == null || stationProductId == 0">Product Group</th>
-            <th v-if="stationProductId == null || stationProductId == 0">Station</th>
-            <th v-if="stationProductId == null || stationProductId == 0">Station Group</th>
+            <th v-if="!stationProductId">Product</th>
+            <th v-if="!stationProductId">Product Group</th>
+            <th v-if="!stationProductId">Station</th>
+            <th v-if="!stationProductId">Station Group</th>
             <th v-else>Time Duration</th>
             <th>Availability</th>
             <th>Quality</th>
@@ -15,10 +15,10 @@
         </thead>
         <tbody>
         <tr v-for="row in tableData" v-if="showTable">
-            <td v-if="stationProductId == null || stationProductId == 0">{{ row.product_name }}</td>
-            <td v-if="stationProductId == null || stationProductId == 0">{{ row.product_group_name }}</td>
-            <td v-if="stationProductId == null || stationProductId == 0">{{ row.station_name }}</td>
-            <td v-if="stationProductId == null || stationProductId == 0">{{ row.station_group_name }}</td>
+            <td v-if="!stationProductId">{{ row.product_name }}</td>
+            <td v-if="!stationProductId">{{ row.product_group_name }}</td>
+            <td v-if="!stationProductId">{{ row.station_name }}</td>
+            <td v-if="!stationProductId">{{ row.station_group_name }}</td>
             <td v-else>{{ row.time_duration }}</td>
             <td>{{ (row.availability * 100).toFixed(2) }} %</td>
             <td>{{ (row.quality * 100).toFixed(2) }} %</td>

@@ -2,9 +2,9 @@
     <table class="table reportTable">
         <thead>
         <tr>
-            <th v-if="stationOperatorId == null || stationOperatorId == 0">Operator</th>
-            <th v-if="stationOperatorId == null || stationOperatorId == 0">Station</th>
-            <th v-if="stationOperatorId == null || stationOperatorId == 0">Station Group</th>
+            <th v-if="!stationOperatorId">Operator</th>
+            <th v-if="!stationOperatorId">Station</th>
+            <th v-if="!stationOperatorId">Station Group</th>
             <th v-if="stationOperatorId">Downtime Reason</th>
             <th v-if="stationOperatorId">Downtime Reason Group</th>
             <th v-if="stationOperatorId">Downtime Type</th>
@@ -15,9 +15,9 @@
         </thead>
         <tbody>
         <tr v-for="row in tableData" v-if="showTable">
-            <td v-if="stationOperatorId == null || stationOperatorId == 0">{{ row.operator_name }}</td>
-            <td v-if="stationOperatorId == null || stationOperatorId == 0">{{ row.station_name }}</td>
-            <td v-if="stationOperatorId == null || stationOperatorId == 0">{{ row.station_group_name }}</td>
+            <td v-if="!stationOperatorId">{{ row.operator_name }}</td>
+            <td v-if="!stationOperatorId">{{ row.station_name }}</td>
+            <td v-if="!stationOperatorId">{{ row.station_group_name }}</td>
             <td v-if="stationOperatorId">{{ row.name }}</td>
             <td v-if="stationOperatorId">{{ row.reason_group_name }}</td>
             <td v-if="stationOperatorId">{{ row.type }}</td>
@@ -67,7 +67,7 @@
             fetchData(){
                 let vm = this;
                 reportService.getDowntimeTableReportByStationOperator({
-                    'stationOperatorId': vm.stationOperatorId ? vm.stationOperatorId : null,
+                    'stationOperatorId': vm.stationOperatorId === '0' ? null : vm.stationOperatorId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY')
                 }, function(responseData){

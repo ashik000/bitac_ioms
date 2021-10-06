@@ -54,41 +54,45 @@
 
         <Modal v-if="showShiftForm" @close="closeModal">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     Add Shift
-                </div>
+                </h5>
             </template>
-
             <template v-slot:content>
-                <form @submit.prevent="shiftId == null? createShift():closeModal()">
+                <form>
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" v-model="shiftName" class="form-control" placeholder="Enter Shift Name" />
                     </div>
-                    <div class="form-group mt-2">
+                    <div class="form-group mt-3">
                         <label>Shift Start Time</label>
                         <VueCtkDateTimePicker v-model="shiftStartTime" format="HH:mm" formatted="HH:mm" :only-time="true" :no-label="true" label="Select Start Time" />
                     </div>
-                    <div class="form-group mt-2">
+                    <div class="form-group mt-3">
                         <label>Shift End Time</label>
                         <VueCtkDateTimePicker v-model="shiftEndTime" format="HH:mm" formatted="HH:mm" :only-time="true" :no-label="true" label="Select End Time" />
                     </div>
-                    <button class="btn btn-primary mt-2">Submit</button>
                 </form>
                 <b-overlay :show="showAddInprogress" opacity="0.6" no-wrap></b-overlay>
+            </template>
+            <template v-slot:footer>
+                <div class="float-end pb-3" style="padding-right: 15px;">
+                    <button class="btn btn-outline-danger" @click.prevent="closeModal()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click="shiftId == null ? createShift() : closeModal()">SUBMIT</button>
+                </div>
             </template>
         </Modal>
 
         <Modal v-if="showShiftDeleteForm" @close="closeModal">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     Delete Shift
-                </div>
+                </h5>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="deleteShift">
                     <p>Are you sure you want to delete the shift named <span style="color: darkred">{{shiftName}}</span>?</p>
-                    <button class="btn btn-danger">Submit</button>
+                    <button class="btn btn-danger float-end">SUBMIT</button>
                 </form>
             </template>
             <template v-slot:footer>

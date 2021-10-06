@@ -116,14 +116,14 @@
 
         <Modal v-if="showGroupDeleteForm" @close="closeGroupForm">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     Delete Group
-                </div>
+                </h5>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="deleteGroup">
                     <p>Are you sure you want to delete the group named <span style="color: darkred">{{groupName}}</span>?</p>
-                    <button class="btn btn-danger" >Submit</button>
+                    <button class="btn btn-danger float-end">SUBMIT</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
@@ -133,29 +133,32 @@
 
         <Modal v-if="showGroupForm" @close="closeGroupForm">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     {{ modalTitleText }} Station Group
-                </div>
+                </h5>
             </template>
             <template v-slot:content>
-                <form @submit.prevent="groupId == null ? createGroup():updateGroup()">
+                <form>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" v-model="groupName" class="form-control" id="name" placeholder="Enter Name">
                     </div>
-                    <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
+            </template>
+            <template v-slot:footer>
+                <div class="float-end pb-3" style="padding-right: 15px;">
+                    <button class="btn btn-outline-danger" @click.prevent="closeGroupForm()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click="groupId == null ? createGroup(): updateGroup()">SUBMIT</button>
+                </div>
             </template>
         </Modal>
 
         <Modal v-if="showStationForm" @close="closeStationForm">
             <template v-slot:header>
-                <div class="container">
-                    <h5>
-                        {{selectedStationId != 0 ? "EDIT STATION" : "ADD STATION"}}
-                    </h5>
-                </div>
+                <h5>
+                    {{selectedStationId != 0 ? "EDIT STATION" : "ADD STATION"}}
+                </h5>
             </template>
             <template v-slot:content>
                 <form>
@@ -178,7 +181,7 @@
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
-                <div class="float-end pb-4" style="padding-right: 15px;">
+                <div class="float-end pb-3" style="padding-right: 15px;">
                     <button class="btn btn-outline-danger" @click.prevent="closeStationForm()">CLOSE</button>
                     <button class="btn btn-success ms-3" @click="stationId == null ? createStation(): updateStation()">SUBMIT</button>
                 </div>
@@ -187,14 +190,14 @@
 
         <Modal v-if="showStationDeleteForm" @close="closeStationForm">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     Delete Station
-                </div>
+                </h5>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="deleteStations">
                     <p>Are you sure you want to delete the station named <span style="color: darkred">{{name}}</span>?</p>
-                    <button class="btn btn-danger">Submit</button>
+                    <button class="btn btn-danger float-end">SUBMIT</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>

@@ -14,8 +14,8 @@
         </thead>
         <tbody>
         <tr v-for="row in tableData" v-if="showTable">
-            <td v-if="stationId == null || stationId == 0">{{ row.station_name }}</td>
-            <td v-if="stationId == null || stationId == 0">{{ row.station_group_name }}</td>
+            <td v-if="!stationId">{{ row.station_name }}</td>
+            <td v-if="!stationId">{{ row.station_group_name }}</td>
             <td v-if="stationId">{{ row.name }}</td>
             <td v-if="stationId">{{ row.reason_group_name }}</td>
             <td v-if="stationId">{{ row.type }}</td>
@@ -24,7 +24,7 @@
             <td>{{ (row.stop_percent * 100).toFixed(2) }} %</td>
         </tr>
         <tr v-if="!showTable">
-            <td colspan="5" v-if="stationId == null || stationId == 0" style="text-align: center; color:red;">No Data Found</td>
+            <td colspan="5" v-if="!stationId" style="text-align: center; color:red;">No Data Found</td>
             <td colspan="6" v-else style="text-align: center; color:red">No Data Found</td>
         </tr>
         </tbody>
@@ -65,7 +65,7 @@
             fetchData(){
                 let vm = this;
                 reportService.getDowntimeTableReportByStation({
-                    'stationId': vm.stationId ? vm.stationId : null,
+                    'stationId': vm.stationId === '0' ? null : vm.stationId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY')
                 }, function(responseData){

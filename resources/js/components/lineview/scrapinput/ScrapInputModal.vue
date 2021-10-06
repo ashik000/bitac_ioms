@@ -1,9 +1,9 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <modal @close="$emit('close')">
         <template v-slot:header>
-            <div class="container" style="width: 960px; ">
-                <div class="row" style="margin-left: 0!important;">
-                    <h5>DEFECT ENTRY</h5>
+            <div class="container" style="width: 960px; padding-left: 0px;">
+                <div class="row" style="margin-left: 0!important; padding-left: 0px;">
+                    <h5 style="padding-left: 0px;">DEFECT ENTRY</h5>
                 </div>
             </div>
         </template>
@@ -23,15 +23,11 @@
                 </div>
             </div>
         </template>
+
         <template v-slot:footer>
-            <div class="row" style="width: 100%; padding-right: 5%">
-                <div class="col-sm-10"></div>
-                <div class="col-sm-1">
-                    <button class="btn btn-outline-danger" @click.prevent="$emit('close')">CLOSE</button>
-                </div>
-                <div class="col-sm-1">
-                    <button class="btn btn-success ms-3" @click.prevent="save">SUBMIT</button>
-                </div>
+            <div class="pb-3" style="padding-right: 15px;">
+                <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
+                <button class="btn btn-success ms-3" @click.prevent="save">Assign</button>
             </div>
         </template>
 

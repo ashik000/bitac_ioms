@@ -1,16 +1,16 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <modal @close="$emit('close')">
         <template v-slot:header>
-            <div class="container" style="width: 960px; ">
+            <div class="container" style="width: 960px; padding-left: 0;">
                 <div class="row" style="margin-left: 0!important;">
-                    <h5>Assign Product</h5>
+                    <h5 style="padding-left: 0;">Assign Product</h5>
                 </div>
             </div>
         </template>
         <template v-slot:content>
             <div class="container" style="width: 960px; ">
                 <div class="row" style="margin-left: 0!important; margin-bottom: 10px;">
-                    <span>Current Station: {{ stationName }}</span>
+                    <span style="padding-left: 5px;">Current Station: {{ stationName }}</span>
                 </div>
                 <div>
                     <ul class="list-group">
@@ -30,8 +30,10 @@
         </template>
 
         <template v-slot:footer>
-            <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
-            <button class="btn btn-success ms-3" @click="assignProductToStation();" >Assign</button>
+            <div class="pb-3" style="padding-right: 15px;">
+                <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
+                <button class="btn btn-success ms-3" @click="assignProductToStation();" >Assign</button>
+            </div>
         </template>
     </modal>
 

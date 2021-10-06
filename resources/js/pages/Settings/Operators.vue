@@ -53,47 +53,49 @@
             </b-overlay>
         </div>
 
-         <Modal v-if="showOperatorForm" @close="closeModal">
+        <Modal v-if="showOperatorForm" @close="closeModal">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     Add Operator
-                </div>
+                </h5>
             </template>
-
             <template v-slot:content>
-                <form @submit.prevent="operatorId == null? createOperator():updateOperator()">
+                <form>
                     <div class="form-group">
                         <label>First Name</label>
                         <input type="text" v-model="firstName" class="form-control" placeholder="Enter First Name" />
                     </div>
 
-                    <div class="form-group mt-2">
+                    <div class="form-group mt-3">
                         <label>Last Name</label>
                         <input type="text" v-model="lastName" class="form-control" placeholder="Enter Last Name" />
                     </div>
 
-                    <div class="form-group mt-2">
+                    <div class="form-group mt-3">
                         <label>Operator code</label>
                         <input type="text" v-model="operatorCode" class="form-control" placeholder="Enter Code" />
                     </div>
-
-                    <button class="btn btn-primary mt-2">Submit</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
-
+            <template v-slot:footer>
+                <div class="float-end pb-3" style="padding-right: 15px;">
+                    <button class="btn btn-outline-danger" @click.prevent="closeModal()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click="operatorId == null ? createOperator() : updateOperator()">SUBMIT</button>
+                </div>
+            </template>
         </Modal>
 
         <Modal v-if="showOperatorDeleteForm" @close="closeModal">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     Delete Operator
-                </div>
+                </h5>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="deleteOperator">
                     <p>Are you sure you want to delete the operator named <span style="color: darkred">{{firstName + " " + lastName}}</span>?</p>
-                    <button class="btn btn-danger">Submit</button>
+                    <button class="btn btn-danger float-end">SUBMIT</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>

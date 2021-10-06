@@ -228,12 +228,12 @@
             @close="isDowntimeReasonsModalShown = false"
         >
             <template v-slot:header>
-                <h4 class="text-uppercase px-5">Select Downtime Reason</h4>
+                <h5 class="text-uppercase px-5">Select Downtime Reason</h5>
             </template>
             <template v-slot:content>
-                <div class="container" style="width: 960px; ">
+                <div class="container" >
                     <ul class="list-group">
-                        <li class="list-group-item listitemm border" v-for="reason in downtimeReasons" :key="reason.id" @click.prevent="selectDowntimeReason(reason)">
+                        <li class="list-group-item listitemm border mb-2" v-for="reason in downtimeReasons" :key="reason.id" @click.prevent="selectDowntimeReason(reason)">
                             <div class="row align-items-center cursor-pointer">
                                 <div class="col-sm-8">
                                     {{ reason.name }}
@@ -248,16 +248,10 @@
                         </li>
                     </ul>
                 </div>
-
-                <!-- <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action"
-                        v-for="reason in downtimeReasons" :key="reason.id"
-                        @click.prevent="assignDowntimeReason(reason)">{{ reason.name }}</a>
-                </div> -->
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
-                <button class="btn btn-success ms-3" @click="assignDowntimeReason();" >Assign</button>
+                <button class="btn btn-success ms-3 me-4 mb-2" @click="assignDowntimeReason();" >ASSIGN</button>
             </template>
         </modal>
 
