@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\GenerateReportCommand;
+use App\Console\Commands\GenerateReportWithPreviousDataCommand;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -33,28 +34,28 @@ class Kernel extends ConsoleKernel
          * @var $monthTime CarbonImmutable
          */
         $hourlyTime = now()->toImmutable()->subHour();
-        $schedule->command(GenerateReportCommand::class, [
+        $schedule->command(GenerateReportWithPreviousDataCommand::class, [
             '-T' . 'hourly',
             '-S' . $hourlyTime->startOfHour()->toDateTimeString(),
             '-E' . $hourlyTime->endOfHour()->toDateTimeString(),
         ])->hourlyAt(5);
 
         $dailyTime = now()->toImmutable()->subDay();
-        $schedule->command(GenerateReportCommand::class, [
+        $schedule->command(GenerateReportWithPreviousDataCommand::class, [
             '-T' . 'daily',
             '-S' . $dailyTime->startOfDay()->toDateTimeString(),
             '-E' . $dailyTime->endOfDay()->toDateTimeString(),
         ])->dailyAt('00:10:00');
 
         $weekTime = now()->toImmutable()->subWeek();
-        $schedule->command(GenerateReportCommand::class, [
+        $schedule->command(GenerateReportWithPreviousDataCommand::class, [
             '-T' . 'weekly',
             '-S' . $weekTime->startOfDay()->toDateTimeString(),
             '-E' . $weekTime->addWeek()->endOfDay()->toDateTimeString(),
         ])->fridays()->at('00:15:00');
 
-        $monthTime = now()->toImmutable()->subWeek();
-        $schedule->command(GenerateReportCommand::class, [
+        $monthTime = now()->toImmutable()->subMonth();
+        $schedule->command(GenerateReportWithPreviousDataCommand::class, [
             '-T' . 'monthly',
             '-S' . $monthTime->startOfMonth()->toDateTimeString(),
             '-E' . $monthTime->endOfMonth()->toDateTimeString(),
