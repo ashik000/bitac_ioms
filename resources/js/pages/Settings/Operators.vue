@@ -1,7 +1,7 @@
 <template>
     <span>
         <div class="card-wrapper row">
-            <b-overlay :show="showInprogress" opacity="0.6">
+            <b-overlay :show="showInprogress" opacity="0.6" class="h-100">
                 <div class="col-12 h-100">
                     <OperatorList :items="operators" sectionHeader="Operators" @action-clicked="openOperatorAddModal">
                         <template v-slot:columnHeaders>
