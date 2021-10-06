@@ -2,8 +2,8 @@
     <table class="table reportTable">
         <thead>
         <tr>
-            <th v-if="!stationId">Station</th>
-            <th v-if="!stationId">Station Group</th>
+            <th v-if="stationId == null || stationId == 0">Station</th>
+            <th v-if="stationId == null || stationId == 0">Station Group</th>
             <th v-if="stationId">Downtime Reason</th>
             <th v-if="stationId">Downtime Reason Group</th>
             <th v-if="stationId">Downtime Type</th>
@@ -14,8 +14,8 @@
         </thead>
         <tbody>
         <tr v-for="row in tableData" v-if="showTable">
-            <td v-if="!stationId">{{ row.station_name }}</td>
-            <td v-if="!stationId">{{ row.station_group_name }}</td>
+            <td v-if="stationId == null || stationId == 0">{{ row.station_name }}</td>
+            <td v-if="stationId == null || stationId == 0">{{ row.station_group_name }}</td>
             <td v-if="stationId">{{ row.name }}</td>
             <td v-if="stationId">{{ row.reason_group_name }}</td>
             <td v-if="stationId">{{ row.type }}</td>
@@ -24,7 +24,7 @@
             <td>{{ (row.stop_percent * 100).toFixed(2) }} %</td>
         </tr>
         <tr v-if="!showTable">
-            <td colspan="5" v-if="!stationId" style="text-align: center; color:red;">No Data Found</td>
+            <td colspan="5" v-if="stationId == null || stationId == 0" style="text-align: center; color:red;">No Data Found</td>
             <td colspan="6" v-else style="text-align: center; color:red">No Data Found</td>
         </tr>
         </tbody>

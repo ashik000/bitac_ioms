@@ -16,7 +16,7 @@
                                 <downtime-chart :title="title" :dataset="downtimeDataset"/>
                             </div>
                         </div>
-                        <div>
+                        <div class="table-container y-scroll report_table_container">
                             <div>
                                 <span>{{ reportTableTitle }}</span>
                             </div>

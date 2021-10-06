@@ -2,9 +2,9 @@
     <table class="table reportTable">
         <thead>
         <tr>
-            <th v-if="!stationShiftId">Shift</th>
-            <th v-if="!stationShiftId">Station</th>
-            <th v-if="!stationShiftId">Station Group</th>
+            <th v-if="stationShiftId == null || stationShiftId == 0">Shift</th>
+            <th v-if="stationShiftId == null || stationShiftId == 0">Station</th>
+            <th v-if="stationShiftId == null || stationShiftId == 0">Station Group</th>
             <th v-if="stationShiftId">Downtime Reason</th>
             <th v-if="stationShiftId">Downtime Reason Group</th>
             <th v-if="stationShiftId">Downtime Type</th>
@@ -15,9 +15,9 @@
         </thead>
         <tbody>
             <tr v-for="row in tableData" v-if="showTable">
-                <td v-if="!stationShiftId">{{ row.shift_name }}</td>
-                <td v-if="!stationShiftId">{{ row.station_name }}</td>
-                <td v-if="!stationShiftId">{{ row.station_group_name }}</td>
+                <td v-if="stationShiftId == null || stationShiftId == 0">{{ row.shift_name }}</td>
+                <td v-if="stationShiftId == null || stationShiftId == 0">{{ row.station_name }}</td>
+                <td v-if="stationShiftId == null || stationShiftId == 0">{{ row.station_group_name }}</td>
                 <td v-if="stationShiftId">{{ row.name }}</td>
                 <td v-if="stationShiftId">{{ row.reason_group_name }}</td>
                 <td v-if="stationShiftId">{{ row.type }}</td>

@@ -2,8 +2,8 @@
     <table class="table reportTable">
         <thead>
         <tr>
-            <th v-if="!stationId">Station</th>
-            <th v-if="!stationId">Station Group</th>
+            <th v-if="stationId === null || stationId == 0">Station</th>
+            <th v-if="stationId === null || stationId == 0">Station Group</th>
             <th v-else>Time Duration</th>
             <th>Availability</th>
             <th>Quality</th>
@@ -13,8 +13,8 @@
         </thead>
         <tbody>
         <tr v-for="row in tableData" v-if="showTable">
-            <td v-if="!stationId">{{ row.station_name }}</td>
-            <td v-if="!stationId">{{ row.station_group_name }}</td>
+            <td v-if="stationId == null || stationId == 0">{{ row.station_name }}</td>
+            <td v-if="stationId == null || stationId == 0">{{ row.station_group_name }}</td>
             <td v-else>{{ row.time_duration }}</td>
             <td>{{ (row.availability * 100).toFixed(2) }} %</td>
             <td>{{ (row.quality * 100).toFixed(2) }} %</td>
@@ -22,7 +22,7 @@
             <td>{{ (row.oee * 100).toFixed(2) }} %</td>
         </tr>
         <tr v-if="!showTable">
-            <td colspan="6" v-if="!stationId" style="text-align: center; color:red;">No Data Found</td>
+            <td colspan="6" v-if="stationId === null || stationId == 0" style="text-align: center; color:red;">No Data Found</td>
             <td colspan="5" v-else style="text-align: center; color:red">No Data Found</td>
         </tr>
         </tbody>

@@ -518,6 +518,10 @@ input[type="text"]:focus
     cursor: pointer;
 }
 
+.report_table_container {
+    height: 24.5rem;    // for 1920_1080
+}
+
 @media only screen and (max-width: 1800px) {
     .gaugeL{
         width: 9rem;
@@ -538,6 +542,10 @@ input[type="text"]:focus
 
     .gauge-container{
         margin-top: 2.2rem;
+    }
+
+    .report_table_container {
+        height: 18.5rem;
     }
 }
 
@@ -565,4 +573,22 @@ input[type="text"]:focus
         margin-top: .8rem;
     }
 
+}
+
+@media only screen and (max-width: 1700px) {
+    .report_table_container {
+        height: 16.5rem;
+    }
+}
+
+@media only screen and (max-width: 1520px) {
+    .report_table_container {
+        height: 18.5rem;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .report_table_container {
+        height: 9.5rem;
+    }
 }
