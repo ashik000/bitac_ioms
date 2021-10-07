@@ -94,6 +94,16 @@ class LineViewGraphResource extends JsonResource
             })->sum('duration');
             $unplannedStopTime = $totalStopTime - $plannedStopTime;
 
+            $unplannedStopTimeByProductId = $downtimes->mapWithKeys(function ($downtime) {
+                return [
+                    $downtime->product_id => 0
+                ];
+            });
+            $unplannedStopTimeByProductId = $downtimes->reduce(function ($carry, $downtime) {
+                $carry[$downtime->product_id]+=((empty($downtime->reason) or $downtime->reason->type != 'planned')? $downtime->duration : 0);
+                return $carry;
+            }, $unplannedStopTimeByProductId);
+
 //            $slowTimes = $slowLogs->groupBy('product_id')
 //                                  ->map(function ($items) {
 //                                      return $items->sum('duration');
@@ -126,13 +136,13 @@ class LineViewGraphResource extends JsonResource
                 $productProductionMap[$productId]['produced'] += $production;
             }
 
-            $producedMap = $this->products->map(function (Product $product) use ($nominalTimesByProductId, $unplannedStopTime) {
+            $producedMap = $this->products->map(function (Product $product) use ($nominalTimesByProductId, $unplannedStopTime, $unplannedStopTimeByProductId) {
                 $nominal = $nominalTimesByProductId->get($product->id, 0);
 //                $slow    = $slowTimes->get($product->id, 0);
 
                 $total = $nominal;
-
-                $expected = floor(($total + $unplannedStopTime) / $product->meta->cycle_time);
+                $productUnplannedStopTime = $unplannedStopTimeByProductId->get($product->id, 0);
+                $expected = floor(($total + $productUnplannedStopTime) / $product->meta->cycle_time);
                 return [
                     'product'        => $product,
                     'available_time' => $total,

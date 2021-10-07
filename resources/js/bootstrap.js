@@ -39,7 +39,9 @@ axios.interceptors.request.use(request => {
     if(store.state.auth.token) {
         access_token = store.state.auth.token;
     }else if(window.localStorage.getItem('user_info')){
-        access_token = window.localStorage.getItem('user_info').token;
+        let userInfoString = window.localStorage.getItem('user_info');
+        let userInfoJson = JSON.parse(userInfoString);
+        access_token = userInfoJson.token;
     }
     // const access_token = window.localStorage.getItem('access_token');
     if (access_token) {
