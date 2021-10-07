@@ -64,4 +64,11 @@ class OperatorRepository implements PaginatedResultInterface, RawQueryBuilderOut
                     ->groupBy('station_id');
     }
 
+    public function findAllStationOperatorsGroupByStationId()
+    {
+        $query = StationOperator::query();
+        return $query->get()
+            ->sortBy('start_time')
+            ->groupBy('station_id');
+    }
 }

@@ -7,9 +7,12 @@ use App\Data\Models\Report;
 use App\Data\Models\Shift;
 use App\Data\Models\Station;
 use App\Data\Models\StationOperator;
+use App\Data\Repositories\OperatorRepository;
 use App\Data\Repositories\ProductionLogRepository;
 use App\Data\Repositories\ProductRepository;
 use App\Data\Repositories\ScrapRepository;
+use App\Data\Repositories\ShiftRepository;
+use App\Devices\InovaceDevice;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use DB;
@@ -20,20 +23,33 @@ class HourlyReportGenerator implements ReportGenerator
     protected $productionLogRepository;
     protected $productRepository;
     protected $scrapRepository;
+    protected $shiftRepository;
+    protected $operatorRepository;
+    protected $deviceManager;
 
-    public function __construct(ProductionLogRepository $productionLogRepository, ScrapRepository $scrapRepository, ProductRepository $productRepository)
+    public function __construct(ProductionLogRepository $productionLogRepository,
+                                ScrapRepository $scrapRepository,
+                                ProductRepository $productRepository,
+                                ShiftRepository $shiftRepository,
+                                OperatorRepository $operatorRepository, InovaceDevice $deviceManager)
     {
         $this->productionLogRepository = $productionLogRepository;
         $this->scrapRepository         = $scrapRepository;
         $this->productRepository       = $productRepository;
+        $this->shiftRepository         = $shiftRepository;
+        $this->operatorRepository      = $operatorRepository;
+        $this->deviceManager           = $deviceManager;
     }
 
     public function generate(CarbonImmutable $start, CarbonImmutable $end)
     {
         $stations = Station::with('products')->get();
 
-        $shift = Shift::where('start_time', '<=',$start->toTimeString())
-            ->where('end_time','>=',$end->toTimeString())->first();
+        $stationIdToShiftsMap = $this->shiftRepository->findAllShiftsGroupByStationId();
+        $stationIdToStationOperatorMap = $this->operatorRepository->findAllStationOperatorsGroupByStationId();
+
+//        $shift = Shift::where('start_time', '<=',$start->toTimeString())
+//            ->where('end_time','>=',$end->toTimeString())->first();
 
         $allProductionLogs = $this->productionLogRepository->fetchProductionLogs([
             'between' => [
@@ -61,12 +77,8 @@ class HourlyReportGenerator implements ReportGenerator
         $reports = collect();
         $reportLastId = DB::table('reports')->max('id');
         foreach ($stations as $station) {
-            $stationOperator = StationOperator::where('station_id', '=', $station->id)
-                ->where('start_time', '<=', $start->startOfHour())
-                ->where('end_time', '>=', $start->endOfHour())
-                ->orWhere('end_time', '=', null)
-                ->first();
-            $operator = !empty($stationOperator)? Operator::find($stationOperator->operator_id) : null;
+            $stationOperator = $this->deviceManager->findOperatorOfStation($stationIdToStationOperatorMap, $station->id, Carbon::parse($start));
+            $shift = $this->deviceManager->findShiftOfStation($stationIdToShiftsMap, $station->id, Carbon::parse($start));
             $productIdToStationProductsMap = $this->productRepository->findAllStationProductsOfAStationKeyByProductId($station->id);
             foreach ($station->products as $product) {
                 $stationProduct = $productIdToStationProductsMap->get($product->id);
@@ -98,8 +110,8 @@ class HourlyReportGenerator implements ReportGenerator
                 $report->station_id   = $station->id;
                 $report->product_id   = $product->id;
 
-                $report->shift_id = $shift->id?? 1;
-                $report->operator_id  = $operator->id?? null;
+                $report->shift_id = $shift['id']?? 1;
+                $report->operator_id  = $stationOperator->operator_id?? null;
 
                 $report->available = $totalTime;
 
