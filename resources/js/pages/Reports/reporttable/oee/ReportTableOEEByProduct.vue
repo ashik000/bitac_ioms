@@ -26,7 +26,7 @@
             <td>{{ (row.oee * 100).toFixed(2) }} %</td>
         </tr>
         <tr v-if="!showTable">
-            <td colspan="8" v-if="!stationProductId" style="text-align: center; color:red;">No Data Found</td>
+            <td colspan="8" v-if="stationProductId == null || stationProductId == 0" style="text-align: center; color:red;">No Data Found</td>
             <td colspan="7" v-else style="text-align: center; color:red">No Data Found</td>
         </tr>
         </tbody>
@@ -75,7 +75,7 @@
                 let vm = this;
                 console.log("calling api getOEETableReportByProduct. stationProductId:  " + vm.stationProductId);
                 reportService.getOEETableReportByStationProduct({
-                    'stationProductId': vm.stationProductId ? vm.stationProductId : null,
+                    'stationProductId': vm.stationProductId === '0' ? null : vm.stationProductId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY'),
                     'type': vm.type
@@ -91,7 +91,7 @@
         },
         computed:{
             showTable(){
-              return this.tableData && this.tableData.length > 0;
+                return this.tableData && this.tableData.length > 0;
             }
         }
     }

@@ -600,6 +600,7 @@ class InovaceDevice
             $pLog->produced_at = $logTimeObject->copy();
 
             $hourDiff = $logTimeObject->copy()->startOfHour()->diffInHours(Carbon::parse($previousProductionLog->produced_at)->startOfHour());
+            Log::debug('Hour diff ' . $hourDiff);
 
             if ($hourDiff >= 2) {
                 $downtimePrevStartTime = Carbon::parse($previousProductionLog->produced_at);
@@ -665,7 +666,7 @@ class InovaceDevice
                                 'duration'          => $downtimePrevDuration,
                                 'production_log_id' => $topProductionLogId,
                                 'shift_id'          => empty($previousDTimeShift)? null : $previousDTimeShift['id'],
-                                'operator_id'       => empty($prevStationOperator)? null : $prevStationOperator->id,
+                                'operator_id'       => empty($prevStationOperator)? null : $prevStationOperator->operator_id,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
                             ];
@@ -678,7 +679,7 @@ class InovaceDevice
                                 'duration'          => $downtimeNextDuration,
                                 'production_log_id' => $topProductionLogId,
                                 'shift_id'          => empty($nextDTimeShift)? null : $nextDTimeShift['id'],
-                                'operator_id'       => empty($nextStationOperator)? null : $nextStationOperator->id,
+                                'operator_id'       => empty($nextStationOperator)? null : $nextStationOperator->operator_id,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
                             ];
@@ -721,6 +722,28 @@ class InovaceDevice
                                 'production_log_id' => $topProductionLogId,
                                 'start_time'        => $downtimeEnd->copy()->addSeconds($stationProduct->cycle_timeout)->startOfHour(),
                                 'duration'          => $stationProduct->cycle_timeout - $slowProdPrevDuration
+                            ];
+                        }
+                        else { // hour crossing production log, not downtime
+                            $dTimeShift = $this->findShiftOfStation($stationIdToShiftListMap, $deviceStation->station_id, $downtimeStart);
+                            $stationOperator = $this->findOperatorOfStation($stationIdToOperatorListMap, $deviceStation->station_id, $downtimeStart);
+                            $downTimes[] = [
+                                'id'                => ++$topSlowProductionId,
+                                'start_time'        => $downtimeStart,
+                                'duration'          => $downtimeSecond,
+                                'production_log_id' => $topProductionLogId,
+                                'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
+                                'operator_id'       => empty($stationOperator) ? null: $stationOperator->operator_id,
+                                'created_at'        => now(),
+                                'updated_at'        => now()
+                            ];
+                            $slowProductions[] = [
+                                'id'                => ++$topSlowProductionId,
+                                'production_log_id' => $topProductionLogId,
+                                'start_time'        => $downtimeEnd,
+                                'duration'          => $stationProduct->cycle_timeout,
+                                'created_at'        => now(),
+                                'updated_at'        => now()
                             ];
                         }
                     }
@@ -795,11 +818,16 @@ class InovaceDevice
             }
             $previousProductionLog->produced_at = $logTimeObject->copy();
         }
-        ProductionLog::insertOrIgnore($productionLogs);
-        Downtime::insertOrIgnore($downTimes);
-        SlowProduction::insertOrIgnore($slowProductions);
-        $packet->processing_end = now();
-        $packet->save();
+        try {
+            ProductionLog::insertOrIgnore($productionLogs);
+            Downtime::insertOrIgnore($downTimes);
+            SlowProduction::insertOrIgnore($slowProductions);
+            $packet->processing_end = now();
+            $packet->save();
+        } catch (Exception $ex) {
+            Log::error($ex);
+        }
+        Log::debug('');
     }
 
     public function findShiftOfStation($stationIdToShiftListMap, int $stationId, Carbon $producedAt)
@@ -825,10 +853,21 @@ class InovaceDevice
         $operatorList = $stationIdToOperatorListMap->get($stationId);
         if(empty($operatorList)) return null;
         $operatorList = collect($operatorList);
+        $selectedOperator = $this->findCurrentOperator($operatorList, $producedAt);
+        return $selectedOperator;
+    }
+
+    public function findCurrentOperator($operatorList, Carbon $currentTime)
+    {
         $selectedOperator = null;
+        $minDiff = INF;
         foreach ($operatorList as $operator) {
-            if($producedAt >= $operator->start_time && (empty($operator->end_time) || (!empty($operator->end_time) && $producedAt <= $operator->end_time))) {
-                $selectedOperator = $operator;
+            if($currentTime >= $operator->start_time && (empty($operator->end_time) || (!empty($operator->end_time) && $currentTime <= $operator->end_time))) {
+                $timeDiff = $currentTime->diffInSeconds($operator->start_time);
+                if($timeDiff < $minDiff) {
+                    $selectedOperator = $operator;
+                    $minDiff = $timeDiff;
+                }
             }
         }
         return $selectedOperator;

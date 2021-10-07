@@ -1,12 +1,12 @@
 <template>
     <li class="list-group-item listitemm border">
         <div class="row">
-            <div class="col-sm-5">
-                <span>{{ timeRange }} {{ scrap.name }}</span>
+            <div class="col-sm-4">
+                <span>{{ timeRange }}</span>
             </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-3">
-                <input class="input" type="number" @blur="scrap.updated=true" v-model.number="scrap.scraped"><span> / {{ scrap.produced }}</span>
+            <div class="col-sm-4">{{ scrap.name }}</div>
+            <div class="col-sm-4">
+                <input class="input" type="number" @blur="scrap.updated=true" v-model.number="scrap.scraped" style="width: 130px;"><span> / {{ scrap.produced }}</span>
             </div>
         </div>
     </li>

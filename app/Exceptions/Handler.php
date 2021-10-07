@@ -7,7 +7,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
-use League\OAuth2\Server\Exception\OAuthServerException;
+use App\Exceptions\BadRequestException;
 
 class Handler extends ExceptionHandler
 {
@@ -50,6 +50,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, \Throwable $exception)
     {
+        if($exception instanceof NotFoundException) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], $exception->getCode());
+        }
+
+        if($exception instanceof BadRequestException) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], $exception->getCode());
+        }
+
         if ($exception instanceof \Illuminate\Validation\UnauthorizedException)
         {
             return response()->json([

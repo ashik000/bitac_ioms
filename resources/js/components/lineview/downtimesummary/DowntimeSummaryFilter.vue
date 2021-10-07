@@ -1,6 +1,6 @@
 <template>
     <!--<div class="category-filter" :class="{'category-filter-selected': isSelected}" @click="isSelected = !isSelected">-->
-    <div class="category-filter" :class="{'category-filter-selected': isSelected}" @click="filterSelected">
+    <div class="category-filter" :class="{'category-filter-selected': this.type === this.currentlySelected}" @click="filterSelected">
         <div class="row">
             <div class="col-sm-3">
                 <svg class="bd-placeholder-img rounded-circle" width="50" height="50" focusable="false" >
@@ -28,11 +28,12 @@
         props: {
             type: String,
             count: Number,
-            totalHour: Number
+            totalHour: Number,
+            currentlySelected: String
         },
         methods:{
             filterSelected(){
-                this.isSelected = !this.isSelected;
+                this.isSelected = true;
                 this.$emit("downtimeFilterSelected", {
                     'type': this.type,
                     'isSelected': this.isSelected

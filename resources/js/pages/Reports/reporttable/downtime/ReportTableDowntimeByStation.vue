@@ -2,8 +2,8 @@
     <table class="table reportTable">
         <thead>
         <tr>
-            <th v-if="!stationId">Station</th>
-            <th v-if="!stationId">Station Group</th>
+            <th v-if="stationId == null || stationId == 0">Station</th>
+            <th v-if="stationId == null || stationId == 0">Station Group</th>
             <th v-if="stationId">Downtime Reason</th>
             <th v-if="stationId">Downtime Reason Group</th>
             <th v-if="stationId">Downtime Type</th>
@@ -65,7 +65,7 @@
             fetchData(){
                 let vm = this;
                 reportService.getDowntimeTableReportByStation({
-                    'stationId': vm.stationId ? vm.stationId : null,
+                    'stationId': vm.stationId === '0' ? null : vm.stationId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY')
                 }, function(responseData){

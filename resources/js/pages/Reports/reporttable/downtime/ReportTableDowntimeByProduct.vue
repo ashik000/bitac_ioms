@@ -28,7 +28,7 @@
             <td>{{ (row.stop_percent * 100).toFixed(2) }} %</td>
         </tr>
         <tr v-if="!showTable">
-            <td colspan="7" v-if="!stationId" style="text-align: center; color:red;">No Data Found</td>
+            <td colspan="7" v-if="!stationProductId" style="text-align: center; color:red;">No Data Found</td>
             <td colspan="6" v-else style="text-align: center; color:red">No Data Found</td>
         </tr>
         </tbody>
@@ -75,7 +75,7 @@
                 let vm = this;
                 console.log("calling getDowntimeTableReportByStationProduct api");
                 reportService.getDowntimeTableReportByStationProduct({
-                    'stationProductId': vm.stationProductId ? vm.stationProductId : null,
+                    'stationProductId': vm.stationProductId === '0' ? null : vm.stationProductId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY')
                 }, function(responseData){

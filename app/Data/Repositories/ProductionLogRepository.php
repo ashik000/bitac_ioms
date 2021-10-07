@@ -10,6 +10,7 @@ use App\Data\Models\SlowProduction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 
 class ProductionLogRepository
 {
@@ -149,5 +150,14 @@ class ProductionLogRepository
 
     public function saveNewProductionLog() {
 
+    }
+
+    public function fetchProductionLogCountOfHour($stationId, $productId, Carbon $time)
+    {
+        $query = ProductionLog::query();
+        return $query->where('product_id', $productId)
+                        ->where('station_id', $stationId)
+                        ->whereBetween('produced_at', [$time->copy()->startOfHour(), $time->copy()->endOfHour()])
+                        ->count();
     }
 }

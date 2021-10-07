@@ -3,11 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Data\Models\StationProduct;
+use App\Data\Repositories\ProductionLogRepository;
+use App\Exceptions\NotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\UnauthorizedException;
+use App\Exceptions\BadRequestException;
 
 class StationProductController extends Controller
 {
+
+    protected $productionLogRepository;
+
+    public function __construct(ProductionLogRepository $productionLogRepository)
+    {
+        $this->productionLogRepository = $productionLogRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -60,10 +72,10 @@ class StationProductController extends Controller
         $stationProduct->product_id = $data['product_id'];
         $stationProduct->station_id = $data['station_id'];
         $stationProduct->cycle_time = $data['cycle_time'];
+        if($stationProduct->cycle_time < 1) throw new BadRequestException("Cycle time is invalid");
         $stationProduct->cycle_unit = $data['cycle_unit'];
         $stationProduct->cycle_timeout = $data['cycle_timeout'];
         $stationProduct->units_per_signal = $data['units_per_signal'];
-//        $stationProduct->deleted_at = null;
         $stationProduct->performance_threshold = $data['performance_threshold'];
         $stationProduct->save();
         $stationProducts = StationProduct::where('station_id',$data['station_id'])->get()->load('product');
@@ -113,6 +125,9 @@ class StationProductController extends Controller
     public function destroy($id)
     {
         $stationProduct = StationProduct::find($id);
+        if(empty($stationProduct)) throw new NotFoundException("Station Product not found");
+        $productionLog = $this->productionLogRepository->findLastProductionLogByStationIdAndProductId($stationProduct->station_id, $stationProduct->product_id);
+        if(!empty($productionLog)) throw new UnauthorizedException();
         $stationId = $stationProduct->station_id;
         $stationProduct->delete();
         $stationProducts = StationProduct::where('station_id',$stationId)->get()->load('product');
@@ -122,49 +137,20 @@ class StationProductController extends Controller
     public function assignProductToStation(Request $request)
     {
         $data = $request->all();
-        $stationProduct = StationProduct::where('station_id',$data['station_id'])->where('product_id',$data['product_id'])->first();
+        $stationProduct = StationProduct::where('station_id', $data['station_id'])->where('product_id', $data['product_id'])->first();
 
-        if (!empty($stationProduct)) {
-            // when product found on the db
-            if (!empty($stationProduct['start_time'])) {
-                // no update because already selected
-                return response()->json('success1',200);
-            }
-            else {
-                // assign start_time and set null to others
-                DB::beginTransaction();
-
-                $update_check = DB::table('station_products')
-                    ->where('id', $stationProduct['id'])
-                    ->update(['start_time' => now()]);
-
-                if ($update_check) {
-                    // make other station products null
-                    $other_check = DB::table('station_products')
-                        ->where('station_id', $data['station_id'])
-                        ->where('id',  '<>', $stationProduct['id'])
-                        ->update(['start_time' => null]);
-
-                    if ($other_check) {
-                        DB::commit();
-                        // return success msg
-                        return response()->json('success2',200);
-                    }
-//                    else {
-//                        DB::rollback();
-//                        // return error msg
-//                        return response()->json('error 3',400);
-//                    }
-                } else {
-                    DB::rollback();
-                    // return error msg
-                    return response()->json('error2',400);
-                }
-            }
-        } else {
-            // product not found
-            return response()->json('error1',400);
-        }
+        if (empty($stationProduct)) throw new NotFoundException();
+        DB::transaction(function () use ($stationProduct, $data) {
+            StationProduct::where('id', $stationProduct->id)
+                ->update([
+                    'start_time' => now()
+                ]);
+            StationProduct::where('station_id', $data['station_id'])
+                ->where('id', '<>', $stationProduct->id)
+                ->update([
+                    'start_time' => null
+                ]);
+        });
+        return response()->json('success1', 200);
     }
-
 }

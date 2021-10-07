@@ -1,18 +1,18 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <modal @close="$emit('close')">
         <template v-slot:header>
-            <div class="container" style="width: 960px; ">
+            <div class="container" style="width: 960px; padding-left: 0;">
                 <div class="row" style="margin-left: 0!important;">
-                    <h5>Select Operator</h5>
+                    <h5 style="padding-left: 0;">Select Operator</h5>
                 </div>
             </div>
         </template>
         <template v-slot:content>
             <div class="container" style="width: 960px; ">
                 <div class="row" style="margin-left: 0!important;">
-                    <span>Current Station: {{ stationName }}</span>
+                    <span style="padding-left: 5px;">Current Station: {{ stationName }}</span>
                 </div>
-                <div style="overflow-y: scroll; height: 400px;">
+                <div>
                     <ul class="list-group">
                         <operator-selection-list-item
                             v-for="operator in operators"
@@ -22,6 +22,7 @@
                             :station-name="stationName"
                             :operator-id="operatorId"
                             @update-operator="updateOperator"
+                            :isChecked="selectedOperatorId === operator.id"
                             >
                         </operator-selection-list-item>
                     </ul>
@@ -30,8 +31,10 @@
         </template>
 
         <template v-slot:footer>
-            <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
-            <button class="btn btn-success ms-3" @click="assignOperatorToStation();" >Assign</button>
+            <div class="pb-3" style="padding-right: 15px;">
+                <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
+                <button class="btn btn-success ms-3" @click="assignOperatorToStation();" >Assign</button>
+            </div>
         </template>
     </modal>
 
@@ -49,7 +52,7 @@
         data: function () {
             return {
                 operators: null,
-                selectedOperatorId: null,
+                selectedOperatorId: this.operatorId,
             }
         },
 
@@ -60,14 +63,12 @@
 
         methods: {
             updateOperator(selectedOperatorId) {
-                console.log('when updateOperator emit triggers on modal')
-                console.log(selectedOperatorId);
                 this.selectedOperatorId = selectedOperatorId;
             },
             assignOperatorToStation() {
                 stationOperatorService.assignOperatorToStation({
-                    stationId: this.stationId,
-                    operatorId: this.selectedOperatorId
+                    station_id: this.stationId,
+                    operator_id: this.selectedOperatorId
                 }, data => {
                     ToastrService.showSuccessToast('Operator updated successfully.');
                     this.$emit('close');
@@ -81,9 +82,7 @@
 
             OperatorsService.fetchAll((data) => {
                 vm.operators = data;
-                console.log('fetch operators')
-                console.log(data)
-                // console.log(vm.operators)
+                console.log(JSON.stringify(vm.operators));
             }, (error) => {
                 console.log(error);
             });
@@ -97,7 +96,3 @@
 
     }
 </script>
-
-<style scoped>
-
-</style>

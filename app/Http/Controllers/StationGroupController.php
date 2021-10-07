@@ -14,7 +14,7 @@ class StationGroupController extends Controller
      */
     public function index()
     {
-        return response()->json(StationGroup::all(),200);
+        return response()->json(StationGroup::orderBy('name')->get(),200);
     }
 
     /**

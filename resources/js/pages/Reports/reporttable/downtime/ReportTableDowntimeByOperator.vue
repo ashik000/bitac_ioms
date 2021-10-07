@@ -67,7 +67,7 @@
             fetchData(){
                 let vm = this;
                 reportService.getDowntimeTableReportByStationOperator({
-                    'stationOperatorId': vm.stationOperatorId ? vm.stationOperatorId : null,
+                    'stationOperatorId': vm.stationOperatorId === '0' ? null : vm.stationOperatorId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY')
                 }, function(responseData){

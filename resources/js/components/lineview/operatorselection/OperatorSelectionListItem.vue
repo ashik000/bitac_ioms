@@ -1,6 +1,6 @@
 <template>
-    <li class="list-group-item listitemm border">
-        <div class="row">
+    <li class="list-group-item listitemm border" @click.prevent="selectOperator(operator.id)">
+        <div class="row align-items-center cursor-pointer">
             <div class="col-sm-5">
                 <span>{{ operator.first_name + " " + operator.last_name }}</span>
                 <pre>{{ operator.code }}</pre>
@@ -18,9 +18,8 @@
 
             <div class="col-sm-4">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
-                        :value="operator.id" @change="onOperatorChange($event)" :checked="operator.id == checkedVal"
-                        style="float: right;" />
+                    <input class="form-check-input float-end" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                        :value="operator.id" @change="onOperatorChange($event)" :checked="isChecked"/>
                 </div>
             </div>
         </div>
@@ -29,7 +28,6 @@
 </template>
 
 <script>
-    import stationOperatorService from "../../../services/StationOperatorService"
 
     export default {
         name: "OperatorSelectionListItem",
@@ -38,18 +36,20 @@
             return {
                 assignedStationIds: [],
                 checkedVal: null,
-                selectedOperatorId: null
+                selectedOperatorId: null,
             }
         },
 
         methods: {
             onOperatorChange: function (event) {
                 var data = event.target.value;
-                console.log('on operator change triggered')
                 this.selectedOperatorId = data;
-                console.log(this.selectedOperatorId);
                 this.$emit('update-operator', this.selectedOperatorId);
             },
+            selectOperator(operator_id) {
+                this.checkedVal = operator_id;
+                this.$emit('update-operator', operator_id);
+            }
         },
 
         props: {
@@ -57,11 +57,9 @@
             stationId: Number,
             stationName: String,
             operatorId: Number,
+            isChecked: Boolean,
         },
         mounted() {
-            console.log('test operator mount')
-            console.log(this.operator);
-
             let vm = this;
             vm.checkedVal = vm.operatorId;     // to set the default value of the radio button means set the operatorId
         },

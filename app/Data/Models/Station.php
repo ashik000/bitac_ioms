@@ -52,8 +52,8 @@ class Station extends Model
                         'cycle_timeout',
                         'units_per_signal',
                         'performance_threshold',
-                        'start_time'
-                    ]);
+                        'start_time',
+                    ])->wherePivot('deleted_at', null);
     }
 
     public function productionLogs()

@@ -36,7 +36,7 @@
                                     <b-icon icon="gear" class="pb-sm-1" font-scale="1.30"></b-icon> MANAGE COMPONENTS
                                 </button>
                                 <button type="button" class="btn btn-primary btn-sm" @click.prevent="showStationEditModal(row)">
-                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon>  EDIT CONFIGURATION
+                                    <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT CONFIGURATION
                                 </button>
                                 <button type="button" class="btn btn-danger btn-sm" @click.prevent="showStationDeleteModal(row)">
                                     <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
@@ -85,23 +85,23 @@
 
                                 <div class="tab-content row">
                                     <div class="tab-pane fade show active"
-                                         :id="'products-tab' + row.id"
-                                         role="tabpanel"
-                                         :aria-labelledby="'products-tab' + row.id">
+                                        :id="'products-tab' + row.id"
+                                        role="tabpanel"
+                                        :aria-labelledby="'products-tab' + row.id">
                                         <StationProduct :station-id="selectedStationId"></StationProduct>
                                     </div>
 
                                     <div class="tab-pane fade"
-                                         :id="'shifts-tab' + row.id"
-                                         role="tabpanel"
-                                         :aria-labelledby="'shifts-tab' + row.id">
+                                        :id="'shifts-tab' + row.id"
+                                        role="tabpanel"
+                                        :aria-labelledby="'shifts-tab' + row.id">
                                         <StationShift :station-id="selectedStationId"></StationShift>
                                     </div>
 
                                     <div class="tab-pane fade"
-                                         :id="'operators-tab' + row.id"
-                                         role="tabpanel"
-                                         :aria-labelledby="'operators-tab' + row.id">
+                                        :id="'operators-tab' + row.id"
+                                        role="tabpanel"
+                                        :aria-labelledby="'operators-tab' + row.id">
                                         <StationOperator :station-id="selectedStationId"></StationOperator>
                                     </div>
 
@@ -116,14 +116,14 @@
 
         <Modal v-if="showGroupDeleteForm" @close="closeGroupForm">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     Delete Group
-                </div>
+                </h5>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="deleteGroup">
                     <p>Are you sure you want to delete the group named <span style="color: darkred">{{groupName}}</span>?</p>
-                    <button class="btn btn-danger" >Submit</button>
+                    <button class="btn btn-danger float-end">SUBMIT</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
@@ -133,62 +133,71 @@
 
         <Modal v-if="showGroupForm" @close="closeGroupForm">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     {{ modalTitleText }} Station Group
-                </div>
+                </h5>
             </template>
             <template v-slot:content>
-                <form @submit.prevent="groupId == null ? createGroup():updateGroup()">
+                <form>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" v-model="groupName" class="form-control" id="name" placeholder="Enter Name">
                     </div>
-                    <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
+            </template>
+            <template v-slot:footer>
+                <div class="float-end pb-3" style="padding-right: 15px;">
+                    <button class="btn btn-outline-danger" @click.prevent="closeGroupForm()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click="groupId == null ? createGroup(): updateGroup()">SUBMIT</button>
+                </div>
             </template>
         </Modal>
 
         <Modal v-if="showStationForm" @close="closeStationForm">
             <template v-slot:header>
-                <div class="container">
-                    {{selectedStationId != 0 ? "Edit Station" : "Add Station"}}
-                </div>
+                <h5>
+                    {{selectedStationId != 0 ? "EDIT STATION" : "ADD STATION"}}
+                </h5>
             </template>
             <template v-slot:content>
-                <form @submit.prevent="stationId == null? createStation():updateStation()">
+                <form>
                     <div class="form-group">
-                        <label class="mt-2">Name</label>
+                        <label>Name</label>
                         <input type="text" v-model="name" class="form-control" placeholder="Enter Name">
-                        <label class="mt-2">Group</label>
-                        <select class="form-control" v-model="selectedGroupId">
-                            <option v-for="group in groups" :value="group.id">
+                        <label class="mt-3">Group</label>
+                        <select class="form-select" v-model="selectedGroupId">
+                            <option disabled value="0"> -- Select -- </option>
+                            <option v-for="group in groups" :value="group.id" :key="group.id">
                                 {{ group.name }}
                             </option>
                         </select>
-                        <label class="mt-2">Description</label>
+                        <label class="mt-3">Description</label>
                         <input type="text" v-model="description" class="form-control" placeholder="Enter Description">
-                        <label class="mt-2">Performance Threshold</label>
+                        <label class="mt-3">Performance Threshold</label>
                         <input type="number" v-model="oee_threshold" class="form-control" placeholder="Enter Performance Threshold">
                     </div>
-                    <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
+                <div class="float-end pb-3" style="padding-right: 15px;">
+                    <button class="btn btn-outline-danger" @click.prevent="closeStationForm()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click="stationId == null ? createStation(): updateStation()">SUBMIT</button>
+                </div>
             </template>
         </Modal>
 
         <Modal v-if="showStationDeleteForm" @close="closeStationForm">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     Delete Station
-                </div>
+                </h5>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="deleteStations">
                     <p>Are you sure you want to delete the station named <span style="color: darkred">{{name}}</span>?</p>
-                    <button class="btn btn-danger">Submit</button>
+                    <button class="btn btn-danger float-end">SUBMIT</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
@@ -219,7 +228,7 @@ export default {
         name:"",
         description:"",
         selectedGroupId: 0,
-        oee_threshold:0,
+        oee_threshold: 0,
         groups: [],
         stations: [],
         selectedStationId:0,

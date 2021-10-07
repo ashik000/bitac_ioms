@@ -1,18 +1,18 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <modal @close="$emit('close')">
         <template v-slot:header>
-            <div class="container" style="width: 960px; ">
+            <div class="container" style="width: 960px; padding-left: 0;">
                 <div class="row" style="margin-left: 0!important;">
-                    <h5>Assign Product</h5>
+                    <h5 style="padding-left: 0;">Assign Product</h5>
                 </div>
             </div>
         </template>
         <template v-slot:content>
             <div class="container" style="width: 960px; ">
                 <div class="row" style="margin-left: 0!important; margin-bottom: 10px;">
-                    <span>Current Station: {{ stationName }}</span>
+                    <span style="padding-left: 5px;">Current Station: {{ stationName }}</span>
                 </div>
-                <div style="overflow-y: scroll; height: 400px;">
+                <div>
                     <ul class="list-group">
                         <product-selection-list-item
                             v-for="product in products"
@@ -30,8 +30,10 @@
         </template>
 
         <template v-slot:footer>
-            <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
-            <button class="btn btn-success ms-3" @click="assignProductToStation();" >Assign</button>
+            <div class="pb-3" style="padding-right: 15px;">
+                <button class="btn btn-outline-danger" @click.prevent="$emit('close')">Close</button>
+                <button class="btn btn-success ms-3" @click="assignProductToStation();" >Assign</button>
+            </div>
         </template>
     </modal>
 
@@ -60,27 +62,19 @@ export default {
 
     methods: {
         updateProduct(selectedProductId) {
-            console.log('when updateProduct emit triggers on modal')
-            console.log(selectedProductId);
             this.selectedProductId = selectedProductId;
         },
         assignProductToStation() {
             if (this.selectedProductId === this.productId) {
                 ToastrService.showInfoToast('Product already assigned');
             } else {
-                console.log('prev productId')
-                console.log(this.productId)
-                console.log('prev stationId')
-                console.log(this.stationId)
                 stationProductService.assignProductToStation({
                     product_id: this.selectedProductId,
                     station_id: this.stationId,
                 }, data => {
-                    console.log('success')
                     ToastrService.showSuccessToast('Product assigned to the station successfully.');
                     this.$emit('close');
                 }, error => {
-                    // console.log(error)
                     ToastrService.showErrorToast('Error! Try again.')
                     this.$emit('close');
                 });
@@ -89,13 +83,9 @@ export default {
     },
     mounted: function (){
         const vm = this;
-        console.log('stationID check')
-        console.log(this.stationId)
         ProductsService.fetchAllByStationId({
             stationId: this.stationId
         }, (data) => {
-            console.log('fetchallbystationid')
-            console.log(data)
             vm.products = data;
         }, (error) => {
             console.log(error);
@@ -110,7 +100,3 @@ export default {
 
 }
 </script>
-
-<style scoped>
-
-</style>

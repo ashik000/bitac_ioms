@@ -8,6 +8,7 @@ html, body{
     background-color: #F8FCFF;
 }
 body{overflow-x: hidden;}
+.cursor-pointer{cursor: pointer;}
 nav > .d-1{
     background: linear-gradient(270deg, rgba(0,160,253,1) 0%, rgb(0, 167, 221) 34%, rgba(0,184,151,1) 100%);
 }
@@ -443,17 +444,26 @@ li.active > span:last-child > button:first-child{
     align-items: center;
 }
 
-.gaugeS > span:nth-child(2), .gaugeL > span:nth-child(2){
+.gaugeS > span:nth-child(2){
     font-weight: bolder;
     font-size: 1.3em;
     position: relative;
     bottom: 1rem;
 }
 
-.gaugeS > span:nth-child(3), .gaugeL > span:nth-child(3){
+.gaugeS > span:nth-child(3){
     font-size: .8em;
     position: relative;
     bottom: 1rem;
+}
+
+.gaugeL > span:nth-child(2){
+    font-weight: bolder;
+    font-size: 1.3em;
+}
+
+.gaugeL > span:nth-child(3){
+    font-size: .8em;
 }
 
 .line-view-header-card{
@@ -508,3 +518,77 @@ input[type="text"]:focus
     cursor: pointer;
 }
 
+.report_table_container {
+    height: 24.5rem;    // for 1920_1080
+}
+
+@media only screen and (max-width: 1800px) {
+    .gaugeL{
+        width: 9rem;
+    }
+    .gaugeS{
+        width: 6.5rem;
+    }
+
+    .gaugeL > span:nth-child(2){
+        position: relative;
+        bottom: 1.6rem;
+    }
+
+    .gaugeL > span:nth-child(3){
+        position: relative;
+        bottom: 1.7rem;
+    }
+
+    .gauge-container{
+        margin-top: 2.2rem;
+    }
+
+    .report_table_container {
+        height: 18.5rem;
+    }
+}
+
+@media only screen and (min-width: 1920px) {
+    .gaugeL{
+        width: 12rem;
+        position: relative;
+        bottom: .6rem;
+    }
+    .gaugeS{
+        width: 8rem;
+    }
+
+    .gaugeL > span:nth-child(2){
+        position: relative;
+        bottom: 2.1rem;
+    }
+
+    .gaugeL > span:nth-child(3){
+        position: relative;
+        bottom: 2.1rem;
+    }
+
+    .gauge-container{
+        margin-top: .8rem;
+    }
+
+}
+
+@media only screen and (max-width: 1700px) {
+    .report_table_container {
+        height: 16.5rem;
+    }
+}
+
+@media only screen and (max-width: 1520px) {
+    .report_table_container {
+        height: 18.5rem;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .report_table_container {
+        height: 9.5rem;
+    }
+}

@@ -1,13 +1,13 @@
 <template>
-    <li class="list-group-item listitemm border">
-        <div class="row" @click="selectProduct(product.id)" style="cursor: pointer;">
+    <li class="list-group-item listitemm border" @click.prevent="selectProduct(product.id)">
+        <div class="row cursor-pointer">
 
             <div class="form-check">
                 <label class="form-check-label" for="flexRadioDefault1">
                     {{ product.name }}
                 </label>
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
-                    :value="product.id" :checked="isChecked" style="float: right;" />
+                <input class="form-check-input float-end" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                    :value="product.id" :checked="isChecked" />
             </div>
 
         </div>
@@ -56,23 +56,8 @@
             isChecked: Boolean,
         },
         mounted() {
-            console.log('test product mount')
-            console.log(this.product);
             let vm = this;
-
             vm.checkedVal = vm.productId;
-            console.log('check productId')
-            console.log(vm.productId);
-
-            // if (vm.stationId !== null) {
-            //     stationProductService.fetchAll(vm.stationId, (data) => {
-            //         console.log('station product loaded');
-            //         // console.log(data[0].product_id);
-            //         vm.checkedVal = data[0].product_id;
-            //     }, (error) => {
-            //         console.log(error);
-            //     });
-            // }
         },
         computed:{
 

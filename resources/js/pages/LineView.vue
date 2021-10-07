@@ -2,7 +2,7 @@
     <div class="container-fluid mt-4">
         <header class="row">
             <div class="col mx-2 line-view-header-card">
-                <div class="gauge-container d-flex flex-direction-row flex-nowrap justify-content-start align-items-baseline">
+                <div class="gauge-container d-flex flex-direction-row flex-nowrap justify-content-center align-items-baseline">
                     <div class="gaugeL">
                         <div id="totalOee"></div>
                         <span>{{ `${gaugeTotalOee}%` }}</span>
@@ -35,8 +35,8 @@
 
             <div class="col mx-2 line-view-header-card">
 
-                <div class="row mt-1">
-                    <div class="col-md-2 station-logo">
+                <div class="row" style="margin-top: .66rem;">
+                    <div class="col-md-2 station-logo" style="width: 4.7em;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16" style="height: 4em; width: 4em;">
                             <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
                         </svg>
@@ -62,7 +62,7 @@
                 </div>
 
 
-                <div class="row">
+                <div class="row mt-3">
                     <div class="col-md-6">
                         <production-summary-panel
                             :produced="oeeSummary.summary.produced"
@@ -72,18 +72,18 @@
                         </production-summary-panel>
                     </div>
 
-                    <div class="col-md-6 d-flex justify-content-center align-items-baseline" style="margin-top: 2rem;">
+                    <div class="col-md-6 d-flex justify-content-center align-items-baseline" style="margin-top: 2.8rem;">
 
                         <b-icon class="mx-1" icon="caret-left-fill" aria-hidden="true" @click="changeSelectedDate('PREV')" style="cursor: pointer;"></b-icon>
 
-                        <div class="card" style="width: 12rem;">
+                        <div class="card col-md-10">
                             <div class="card-body p-0"
                             style="background: linear-gradient(90deg, rgba(5,65,119,1) 0%, rgba(244,244,244,1) 0%, rgba(5,65,119,1) 0%, rgba(219,218,218,0) 0%, rgba(233,233,233,0.27494747899159666) 59%, rgba(245,245,245,1) 100%);"
                             >
                                 <v-date-picker :max-date='new Date()'
                                     mode='single' v-model='filter.selectedDate'
                                     :masks="{ input: 'WWW, DD MMMM' }"
-                                    :input-props="{ class: 'date-picker-input text-center border-0 w-100 bg-transparent', style: 'height: 4.5rem; ' }"
+                                    :input-props="{ class: 'date-picker-input text-center border-0 w-100 bg-transparent', style: 'height: 4.5rem; font-size: 1.3em;' }"
                                     @input="changeSelectedDate">
                                 </v-date-picker>
                             </div>
@@ -228,15 +228,30 @@
             @close="isDowntimeReasonsModalShown = false"
         >
             <template v-slot:header>
-                <h4 class="text-uppercase px-5">Select Downtime Reason</h4>
+                <h5 class="text-uppercase px-5">Select Downtime Reason</h5>
             </template>
             <template v-slot:content>
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action"
-                        v-for="reason in downtimeReasons" :key="reason.id"
-                        @click.prevent="assignDowntimeReason(reason)">{{ reason.name }}</a>
+                <div class="container" >
+                    <ul class="list-group">
+                        <li class="list-group-item listitemm border mb-2" v-for="reason in downtimeReasons" :key="reason.id" @click.prevent="selectDowntimeReason(reason)">
+                            <div class="row align-items-center cursor-pointer">
+                                <div class="col-sm-8">
+                                    {{ reason.name }}
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input float-end" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                                            :value="reason.id" @change="onReasonChange($event)" :checked="selectedDowntimeReasonId === reason.id"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
+            </template>
+            <template v-slot:footer>
+                <button class="btn btn-success ms-3 me-4 mb-2" @click="assignDowntimeReason();" >ASSIGN</button>
             </template>
         </modal>
 
@@ -245,7 +260,7 @@
             @close="productSelectionModalClosed()"
             :station-id="filter.stationId"
             :station-name="filter.stationName"
-            :product-id="(this.products.length > 0) ? this.products[0].product_id : 0">
+            :product-id="currentProduct != null? currentProduct.product_id : 0">
         </product-selection-modal>
 
         <operator-selection-modal
@@ -311,6 +326,7 @@
             isProductSelectionModalShown: false,
             isScrapInputModalShown: false,
             selectedDowntime: null,
+            currentProduct: null,
             filter: {
                 stationId: 1,
                 stationShiftId: null,
@@ -363,30 +379,32 @@
             showInprogress: false,
             dataUpdateTimer: null,
             clockUpdateTimer: null,
+            isChecked: Boolean,
+            selectedDowntimeReasonId: null,
         }),
         watch: {
             gaugeTotalOee(nv, ov){
                 let element = document.querySelector('#totalOee');
                 element.innerHTML = "";
-                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 200 : 130, {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
+                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 260 : 185, {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
                         arcDelimiters: [30, 70]}}).updateNeedle(nv);
             },
             gaugeAvailability(nv, ov){
                 let element = document.querySelector('#totalAvailability');
                 element.innerHTML = "";
 
-                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 120 : 100, this.generateGaugeProperties(nv, '#1947A4')).updateNeedle(nv);
+                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 170 : 135, this.generateGaugeProperties(nv, '#1947A4')).updateNeedle(nv);
             },
             gaugePerformance(nv, ov){
                 let element = document.querySelector('#totalPerformance');
                 element.innerHTML = "";
-                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 120 : 100, this.generateGaugeProperties(nv, '#49B92A')).updateNeedle(nv);
+                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 170 : 135, this.generateGaugeProperties(nv, '#49B92A')).updateNeedle(nv);
             },
             gaugeQuality(nv, ov){
                 let element = document.querySelector('#totalQuality');
                 element.innerHTML = "";
 
-                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 120 : 100, this.generateGaugeProperties(nv, '#FFA600')).updateNeedle(nv);
+                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 170 : 135, this.generateGaugeProperties(nv, '#FFA600')).updateNeedle(nv);
             },
         },
         methods: {
@@ -448,6 +466,7 @@
                     DowntimeReasonsService.fetchAll([], reasons => {
                         this.downtimeReasons = reasons['downtime_reason_list'];
                     })
+                    this.selectedDowntimeReasonId = bar.reason? bar.reason.id : null;
                 }
             },
             updateStationShiftId(selectedStationShiftId) {
@@ -477,17 +496,20 @@
                     ToastrService.showErrorToast('Error! Try again.');
                 });
             },
-            assignDowntimeReason(reason) {
+            assignDowntimeReason() {
                 this.showInprogress = true;
                 DowntimeReasonsService.assignDowntime({
                     downtimeId: this.selectedDowntime.id,
-                    downtimeReasonId: reason.id,
+                    downtimeReasonId: this.selectedDowntimeReasonId,
                 }, data => {
                     this.isDowntimeReasonsModalShown = false;
                     this.showInprogress = false;
                     ToastrService.showSuccessToast('Downtime reason assigned successfully.');
                     this.fetchData();
                 });
+            },
+            selectDowntimeReason(reason) {
+                this.selectedDowntimeReasonId = reason.id;
             },
             fetchData() {
                 LineViewService.fetchLineViewData({
@@ -507,6 +529,8 @@
                         this.gaugePerformance = (isNaN(this.oeeSummary.summary.performance.toFixed(2)) || this.oeeSummary.summary.performance === 0) ? 0 : Math.ceil(this.oeeSummary.summary.performance.toFixed(2));
                         this.gaugeQuality = (isNaN(this.oeeSummary.summary.quality.toFixed(2)) || this.oeeSummary.summary.quality === 0) ? 0 : Math.ceil(this.oeeSummary.summary.quality.toFixed(2));
 
+                        var assignedProducts = this.products.filter(prod => prod.start_time !== null);
+                        this.currentProduct = assignedProducts.length > 0? assignedProducts[0] : null;
                         this.isInitialized = true;
                     }
                 );
@@ -547,7 +571,7 @@
                     let element = document.querySelector(elements[i]);
                     element.innerHTML = "";
 
-                    GaugeChart.gaugeChart(document.querySelector(elements[i]), elements[i] === '#totalOee' ? (window.innerWidth >= 1920 ? 200 : 130) : (window.innerWidth >= 1920 ? 120 : 100),
+                    GaugeChart.gaugeChart(document.querySelector(elements[i]), elements[i] === '#totalOee' ? (window.innerWidth >= 1920 ? 260 : 185) : (window.innerWidth >= 1920 ? 170 : 135),
                         elements[i] === '#totalOee' ? {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
                         arcDelimiters: [30, 70]}} : {...this.gaugeOptions, ...{arcColors: ['#EAEAEA']}} );
 
@@ -561,6 +585,10 @@
                 }else {
                     return  {...this.gaugeOptions, ...{arcColors: [color], arcDelimiters: [nv]}};
                 };
+            },
+            onReasonChange: function (event) {
+                var data = event.target.value;
+                this.selectedDowntimeReasonId = data;
             },
         },
         computed: {
@@ -585,16 +613,12 @@
             this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
 
             StationsService.fetchAll({}, (data) => {
-                // console.log('station service fetch all')
-                // console.log(data)
                 this.$set(this, 'stations', data);
                 this.filter.stationId = this.stations[0].id;
                 this.filter.stationName = this.stations[0].name;
             });
 
             DowntimeReasonsService.fetchAll({}, (data) => {
-                // console.log('downtime reasons service fetch all')
-                // console.log(data)
                 this.$set(this, 'downtimeReasons', data);
             });
 

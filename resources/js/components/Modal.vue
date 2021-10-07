@@ -1,8 +1,8 @@
 <template>
     <transition name="modal">
-        <div class="mask">
+        <div class="mask" @click.self="$emit('close')">
             <div class="modal-wrap" :class="{ 'modal-lg' : size == 'lg' }">
-                <header class="modal-title" style="padding-top: 15px;">
+                <header class="modal-title" style="padding: 15px 0px 15px 32px;">
                     <slot name="header"></slot>
                 </header>
                 <div class="content">
@@ -11,7 +11,7 @@
                 <footer class="footer">
                     <slot name="footer"></slot>
                 </footer>
-                <button type="button" class="btn-close" aria-label="Close" @click="$emit('close')" style="right: 0.90rem!important;"></button>
+                <button type="button" class="btn-close btn-lg" aria-label="Close" @click="$emit('close')" style="right: 0.90rem!important;"></button>
             </div>
         </div>
     </transition>
@@ -78,7 +78,7 @@
 
             .header, .content, .footer {
                 padding: 0.75rem 1rem;
-                margin-top: 1rem;
+                // margin-top: 1rem;
             }
 
             .header {
@@ -86,7 +86,7 @@
             }
 
             .content {
-                padding: 1rem 2rem;
+                padding: 0 2rem 2rem 2rem;
             }
 
             .footer {

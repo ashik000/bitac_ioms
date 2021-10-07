@@ -51,33 +51,39 @@
         </div>
         <Modal v-if="showStationShiftDeleteModal" @close="closeStationShiftModals">
             <template v-slot:header>
-                Delete
+                <div class="container">
+                    Delete Station Shift
+                </div>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="">
                     <p>Are you sure you want to delete ?</p>
-                    <button class="btn btn-danger" @click="deleteStationShift">Submit</button>
                 </form>
             </template>
             <template v-slot:footer>
+                <div class="float-end pb-4">
+                    <button class="btn btn-outline-danger" @click.prevent="closeStationShiftModals()">CLOSE</button>
+                    <button class="btn btn-danger ms-3" @click="deleteStationShift">DELETE</button>
+                </div>
             </template>
         </Modal>
         <Modal v-if="showStationShiftForm" @close="closeStationShiftModals">
             <template v-slot:header>
-                <div class="text-center">
-                    <h5>{{!stationShiftEditMode? 'Add Station Shift' : 'Edit Station Shift'}}</h5>
+                <div style="padding-left: 30px;">
+                    <h5>{{!stationShiftEditMode? 'ADD STATION SHIFT' : 'EDIT STATION SHIFT'}}</h5>
                 </div>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="">
                     <div class="form-group">
                         <label>Shift</label>
-                        <select v-bind:disabled="stationShiftEditMode" class="form-control" v-model="stationShift.shift_id">
-                            <option v-for="shift in shifts" :value="shift.id">
+                        <select v-bind:disabled="stationShiftEditMode" class="form-select" v-model="stationShift.shift_id">
+                            <option disabled value=""> -- Select -- </option>
+                            <option v-for="shift in shifts" :value="shift.id" :key="shift.id">
                                 {{ shift.name }}
                             </option>
                         </select>
-                        <label class="mt-2">Days</label>
+                        <label class="mt-3">Days</label>
                         <div class="center-flex">
                             <div @click="toggleSelectedShiftDays(index)" style="cursor: pointer" :class="day === '1'? 'day-circle-active' : 'day-circle-inactive'" v-for="(day, index) in selectedShiftDays">{{dayToNameMap[index].name}}</div>
                         </div>
@@ -85,7 +91,10 @@
                 </form>
             </template>
             <template v-slot:footer>
-                <button class="btn btn-primary" @click="createStationShift">Submit</button>
+                <div class="float-end pb-4" style="padding-right: 15px;">
+                    <button class="btn btn-outline-danger" @click.prevent="closeStationShiftModals()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click="createStationShift">SUBMIT</button>
+                </div>
             </template>
         </Modal>
 
@@ -115,11 +124,11 @@
             stationShifts:[],
             shifts:[],
             stationShiftEditMode: false,
-            selectedShiftId:null,
+            selectedShiftId: null,
             selectedShiftDays: [],
             stationShift:{
-                id:null,
-                shift_id:null,
+                id: null,
+                shift_id: "",
                 scheduleString:"",
                 scheduleDisplayString :"",
             },

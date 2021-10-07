@@ -14,14 +14,14 @@
                 <div>
                     <div>
                         <div class="report-page">
-                            <div class="chart-wrapper">
+                            <div class="chart-wrapper" v-if="dataset.labels.length > 0">
                                 <oee-chart :title="title" :dataset="dataset"/>
                             </div>
+                            <div v-else>
+                                <p style="text-align: center; color: red">No Data Found</p>
+                            </div>
                         </div>
-                        <div>
-<!--                            <div>-->
-<!--                                <span>{{ reportTableTitle }}</span>-->
-<!--                            </div>-->
+                        <div class="table-container y-scroll report_table_container">
                             <report-table-by-station :stationId="reportPageFilters.selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
                             <report-table-by-product :stationProductId="reportPageFilters.selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
                             <report-table-by-shift :stationShiftId="reportPageFilters.selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>

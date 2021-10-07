@@ -67,7 +67,7 @@
             fetchData(){
                 let vm = this;
                 reportService.getDowntimeTableReportByStationShift({
-                    'stationShiftId': vm.stationShiftId ? vm.stationShiftId : null,
+                    'stationShiftId': vm.stationShiftId === '0' ? null : vm.stationShiftId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY')
                 }, function(responseData){
@@ -75,7 +75,6 @@
                     vm.tableData = responseData;
                 });
             },
-            formatDuration
         },
         mounted(){
             const vm = this;

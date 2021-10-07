@@ -41,14 +41,14 @@
         </div>
         <Modal v-if="showGroupDeleteForm" @close="closeGroupForm">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     Delete Group
-                </div>
+                </h5>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="deleteGroup">
                     <p>Are you sure you want to delete the group named <span style="color: darkred">{{groupName}}</span>?</p>
-                    <button class="btn btn-danger">Submit</button>
+                    <button class="btn btn-danger float-end">SUBMIT</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
@@ -58,19 +58,24 @@
 
         <Modal v-if="showGroupForm" @close="closeGroupForm">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     {{ modalTitleText }} Product Group
-                </div>
+                </h5>
             </template>
             <template v-slot:content>
-                <form @submit.prevent="groupId == null? createGroup() : updateGroup()">
+                <form>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" v-model="groupName" class="form-control" id="name" placeholder="Enter Name">
                     </div>
-                    <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
+            </template>
+            <template v-slot:footer>
+                <div class="float-end pb-4" style="padding-right: 15px;">
+                    <button class="btn btn-outline-danger" @click.prevent="closeGroupForm()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click="groupId == null ? createGroup(): updateGroup()">SUBMIT</button>
+                </div>
             </template>
         </Modal>
 
@@ -81,13 +86,13 @@
                 </div>
             </template>
             <template v-slot:content>
-                <form @submit.prevent="productId == null ? createProduct():updateProduct()">
+                <form>
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" v-model="productName" class="form-control" placeholder="Enter Name">
                         <label class="mt-2">Group</label>
                         <select class="form-control" v-model="selectedGroupId">
-                            <option v-for="group in groups" :value="group.id">
+                            <option v-for="group in groups" :value="group.id" :key="group.id">
                                 {{ group.name }}
                             </option>
                         </select>
@@ -96,24 +101,27 @@
                         <label class="mt-2">Unit</label>
                         <input type="text" v-model="productUnit" class="form-control" placeholder="Enter Unit">
                     </div>
-                    <button class="btn btn-primary mt-2" >Submit</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
+                <div class="float-end pb-4" style="padding-right: 15px;">
+                    <button class="btn btn-outline-danger" @click.prevent="closeProductModal()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click="productId == null ? createProduct() : updateProduct()">SUBMIT</button>
+                </div>
             </template>
         </Modal>
 
         <Modal v-if="showProductDeleteForm" @close="closeProductModal">
             <template v-slot:header>
-                <div class="container">
+                <h5>
                     Delete Product
-                </div>
+                </h5>
             </template>
             <template v-slot:content>
                 <form @submit.prevent="deleteProduct">
                     <p>Are you sure you want to delete the product named <span style="color: darkred">{{productName}}</span>?</p>
-                    <button class="btn btn-danger">Submit</button>
+                    <button class="btn btn-danger float-end">SUBMIT</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
