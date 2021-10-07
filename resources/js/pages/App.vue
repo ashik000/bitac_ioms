@@ -32,7 +32,7 @@
                         </ul>
                     </li>
                     <li class="settings padding_y_ten_px" v-on:click="makeActive('settings')">
-                        <router-link v-if="authorized" to="/settings/stations" class="nav-link text-white" active-class="active">
+                        <router-link to="/settings/stations" class="nav-link text-white" active-class="active">
                             <b-icon icon="gear" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
                             Settings
                         </router-link>
