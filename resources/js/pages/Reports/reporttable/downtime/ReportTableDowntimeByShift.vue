@@ -75,6 +75,7 @@
                     vm.tableData = responseData;
                 });
             },
+            formatDuration
         },
         mounted(){
             const vm = this;
