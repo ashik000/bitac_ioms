@@ -53,7 +53,7 @@ class GenerateReportWithPreviousDataCommand extends Command
         $lastReport = Report::where('tag', $tag)
                             ->orderBy('generated_at', 'desc')->first();
 
-        $productionLogCounts = ProductionLog::where('produced_at', '>', empty($lastReport)? $start : $lastReport->generated_at)->count();
+        $productionLogCounts = ProductionLog::where('produced_at', '>', empty($lastReport)? '2001-01-01 00:00:00' : $lastReport->generated_at)->count();
         $this->info($productionLogCounts);
         if($productionLogCounts < 1) {
             $this->info('Report will not be generated since the are no logs');
