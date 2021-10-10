@@ -109,14 +109,13 @@ class LineViewController extends Controller
                 $start,
                 $end
             ])
-            ->groupBy([DB::raw('DATE(downtimes.start_time)'), 'downtime_reasons.type', 'downtimes.reason_id', 'downtime_reasons.name'])
+            ->groupBy(['downtime_reasons.type', 'downtimes.reason_id', 'downtime_reasons.name'])
             ->orderBy(DB::raw('SUM(downtimes.duration)'), 'DESC')
             ->select([
                 'reason_id',
                 DB::raw('downtime_reasons.name as reason_name'),
                 DB::raw('COUNT(*) as count'),
                 DB::raw('SUM(downtimes.duration) as duration'),
-                DB::raw('DATE(downtimes.start_time) as date')
             ]);
 
         $result = $query->take(5)->get();
