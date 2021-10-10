@@ -17,9 +17,9 @@ class GenerateReportCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'reports:generate 
-                                {--T|tag= : Type of report `hourly`, `daily`, `weekly`, `monthly`} 
-                                {--S|start=} 
+    protected $signature = 'reports:generate
+                                {--T|tag= : Type of report `hourly`, `daily`, `weekly`, `monthly`}
+                                {--S|start=}
                                 {--E|end=}';
 
     /**

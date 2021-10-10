@@ -219,7 +219,7 @@ class LineViewController extends Controller
     public function storeLineviewDefects(Request $request)
     {
         $defectTime = Carbon::parse($request['date'])->addHours($request['defectTime']);
-        \Log::debug($defectTime);
+        // \Log::debug($defectTime);
         $logCount = app(ProductionLogRepository::class)->fetchProductionLogCountOfHour($request['stationId'], $request['productId'], $defectTime);
         if ($request['defectValue'] > $logCount)
         {
