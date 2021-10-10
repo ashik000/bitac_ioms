@@ -93,7 +93,7 @@ class ReportController extends Controller
 
             case 'monthly':
                 $title         = 'Monthly Report';
-                $availableBase = 30 * 24 * 7 * 3600;
+                $availableBase = Carbon::parse($end)->endOfMonth()->diffInSeconds(Carbon::parse($start)->startOfMonth());
                 $query->whereBetween('generated_at', [$start->startOfMonth(), $end->endOfMonth()]);
                 break;
         }
