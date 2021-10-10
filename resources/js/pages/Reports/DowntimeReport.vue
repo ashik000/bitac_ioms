@@ -160,7 +160,8 @@
                         x_labels.push(`${key}`);
                     }
 
-                    // console.log(x_labels);
+                    console.log('x labels');
+                    console.log(x_labels);
 
                     let planned = [];
                     let unplanned = [];
@@ -177,13 +178,13 @@
                             // your code
                             // console.log(prop + " = " + obj[prop]);
                             if (prop === 'planned_duration') {
-                              planned.push(obj[prop]);
+                                planned.push(obj[prop]);
                             }
                             if (prop === 'unplanned_duration') {
-                              unplanned.push(obj[prop]);
+                                unplanned.push(obj[prop]);
                             }
                             if (prop === 'reasons') {
-                              reasons.push(obj[prop]);
+                                reasons.push(obj[prop]);
                             }
                         }
                     }

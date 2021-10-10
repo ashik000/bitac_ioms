@@ -24,7 +24,7 @@ class ReportRepository
             case 'hourly':
                 if ($date->hour == 0 || $date->hour == 12)
                 {
-                    return $date->format("Y-m-d H:00");
+                    return $date->format("DD MMM YYYY H:00");
                 }
                 else
                 {
@@ -206,17 +206,17 @@ class ReportRepository
 
         $downtimeResult = $downtimeQuery->get()->reduce(function ($carry, $item)
         {
-            if (empty($carry[date('j M Y', strtotime($item->date))]))
+            if (empty($carry[date('d M Y', strtotime($item->date))]))
             {
-                $carry[date('j M Y', strtotime($item->date))] = [
+                $carry[date('d M Y', strtotime($item->date))] = [
                     'planned_duration'   => 0,
                     'unplanned_duration' => 0,
                     'reasons'            => []
                 ];
             }
-            $carry[date('j M Y', strtotime($item->date))]['planned_duration'] += $item->reason_type == 'planned' ? $item->duration : 0;
-            $carry[date('j M Y', strtotime($item->date))]['unplanned_duration'] += $item->reason_type != 'planned' ? $item->duration : 0;
-            $carry[date('j M Y', strtotime($item->date))]['reasons'][$item->reason_name] = $item->duration;
+            $carry[date('d M Y', strtotime($item->date))]['planned_duration'] += $item->reason_type == 'planned' ? $item->duration : 0;
+            $carry[date('d M Y', strtotime($item->date))]['unplanned_duration'] += $item->reason_type != 'planned' ? $item->duration : 0;
+            $carry[date('d M Y', strtotime($item->date))]['reasons'][$item->reason_name] = $item->duration;
             return $carry;
         }, [
 
