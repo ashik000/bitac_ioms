@@ -103,10 +103,8 @@ class LineViewController extends Controller
         $end   = date('Y-m-d', strtotime($end));
 
         $query = Downtime::query();
-        $query->join('production_logs', 'downtimes.production_log_id', '=', 'production_logs.id')
-            ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
-            ->leftJoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
-            ->leftJoin('downtime_reasons', 'downtimes.reason_id', '=', 'downtime_reasons.id')
+        $query->leftJoin('downtime_reasons', 'downtimes.reason_id', '=', 'downtime_reasons.id')
+            ->whereNotNull('downtimes.reason_id')
             ->whereBetween('downtimes.start_time', [
                 $start,
                 $end
