@@ -24,7 +24,7 @@ class ReportRepository
             case 'hourly':
                 if ($date->hour == 0 || $date->hour == 12)
                 {
-                    return $date->format("DD MMM YYYY H:00");
+                    return $date->format("D M Y H:00");
                 }
                 else
                 {

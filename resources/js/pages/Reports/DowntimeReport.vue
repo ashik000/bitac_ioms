@@ -11,10 +11,13 @@
             <template v-slot:reportContainer>
                 <div>
                     <div>
-                        <div class="report-page">
+                        <div class="report-page" v-if="downtimeDataset.labels.length > 0">
                             <div class="chart-wrapper">
                                 <downtime-chart :title="title" :dataset="downtimeDataset"/>
                             </div>
+                        </div>
+                        <div v-else>
+                            <p style="text-align: center; color: red">No Data Found</p>
                         </div>
                         <div class="table-container y-scroll report_table_container">
                             <div>

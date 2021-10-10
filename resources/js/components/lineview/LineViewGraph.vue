@@ -45,7 +45,7 @@
 
             <select class="form-group rounded border-0 shift_select" name="changeStationShift" id="changeStationShift"
                     v-model="selectedStationShiftId" @change="onSelectChange($event)"
-                    style="padding-right: 2.1rem;">
+                    style="padding-right: 2.1rem; padding-left: 1rem;">
                 <option v-for="stationShift in stationShiftsData" :value="stationShift.shift_id" :key="stationShift.shift_id">{{ stationShift.shift_name }}</option>
             </select>
         </div>
