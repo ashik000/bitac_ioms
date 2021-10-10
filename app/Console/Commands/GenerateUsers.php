@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Data\Repositories\UserRepository;
 use Illuminate\Console\Command;
 
 class GenerateUsers extends Command
@@ -46,6 +47,6 @@ class GenerateUsers extends Command
         $email    = $this->option('email');
         $password = $this->option('password');
 
-        $user = app('App\Repositories\UserRepository')->createUser($name, $email, $password);
+        $user = app(UserRepository::class)->createUser($name, $email, $password);
     }
 }
