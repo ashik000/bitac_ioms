@@ -206,7 +206,6 @@
                 this.showInprogress = true;
                 stationShiftService.fetchAll(this.stationId,r => {
                     this.stationShifts = r;
-                    console.log(r);
                     this.showInprogress = false;
                 },e=>{
                     console.log(e);
