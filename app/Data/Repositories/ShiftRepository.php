@@ -63,6 +63,17 @@ class ShiftRepository implements PaginatedResultInterface, RawQueryBuilderOutput
                 ->groupBy('station_id');
     }
 
+    public function findAllShiftsGroupByStationId()
+    {
+        $query = StationShift::query();
+        return $query
+            ->join('shifts', 'shifts.id', '=', 'station_shifts.shift_id')
+            ->select(['shifts.*', 'station_shifts.station_id', 'station_shifts.schedule'])
+            ->get()
+            ->sortBy('start_time')
+            ->groupBy('station_id');
+    }
+
     public function fetchShiftDetails($stationId, $shiftId)
     {
         $query = StationShift::query();
