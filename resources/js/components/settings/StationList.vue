@@ -25,7 +25,7 @@
         </div>
         <div class="card-body y-scroll">
             <div class="accordion">
-                <div v-for="item in items" :key="item.id" :class="{ selected: item.id == selectedId }" class="accordion-item">
+                <div v-for="item in items" :key="item.id" :class="{ selected: item.id === selectedId }" class="accordion-item">
                     <slot :row="item" name="row">
                         {{ item }}
                     </slot>
@@ -48,6 +48,11 @@
                 required: true
             },
             selectedId: 0
+        },
+        watch: {
+            selectedId(nw, old) {
+                console.log("selected changed " + nw);
+            }
         }
     }
 </script>

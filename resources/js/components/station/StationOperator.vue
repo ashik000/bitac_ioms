@@ -126,7 +126,6 @@
                 this.showInprogress = true;
                 stationOperatorService.fetchAll(this.stationId, r => {
                     this.stationOperators = r;
-                    console.log(r);
                     this.showInprogress = false;
                 }, e => {
                     console.log(e);
@@ -135,7 +134,6 @@
             fetchAllOperators() {
                 operatorService.fetchAll( r => {
                     this.operators = r;
-                    console.log(r);
                 }, e => {
                     console.log(e);
                 });

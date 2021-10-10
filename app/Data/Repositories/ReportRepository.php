@@ -24,7 +24,7 @@ class ReportRepository
             case 'hourly':
                 if ($date->hour == 0 || $date->hour == 12)
                 {
-                    return $date->format("Y-m-d H:00");
+                    return $date->format("d M Y H:00");
                 }
                 else
                 {
@@ -32,17 +32,17 @@ class ReportRepository
                 }
 
             case 'daily':
-                return $date->format("M d");
+                return $date->format("d M");
 
             case 'weekly':
-                $start = $date->startOfWeek(Carbon::SATURDAY)->format("M d");
-                $end   = $date->endOfWeek(Carbon::FRIDAY)->format("M d");
+                $start = $date->startOfWeek(Carbon::SATURDAY)->format("d M");
+                $end   = $date->endOfWeek(Carbon::FRIDAY)->format("d M");
                 return "{$start} - {$end}";
 
             case 'monthly':
                 if ($date->month % 6 == 0)
                 {
-                    return $date->format("Y M");
+                    return $date->format("M Y");
                 }
                 else
                 {
@@ -171,7 +171,7 @@ class ReportRepository
         $downtimeQuery = Downtime::query();
         $downtimeQuery->join('production_logs', 'downtimes.production_log_id', '=', 'production_logs.id')
             ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
-            ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
+            ->leftJoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
             ->leftJoin('downtime_reasons', 'downtimes.reason_id', '=', 'downtime_reasons.id')
             ->when($stationId, function ($q, $sId)
         {
@@ -206,17 +206,17 @@ class ReportRepository
 
         $downtimeResult = $downtimeQuery->get()->reduce(function ($carry, $item)
         {
-            if (empty($carry[date('j M Y', strtotime($item->date))]))
+            if (empty($carry[date('d M Y', strtotime($item->date))]))
             {
-                $carry[date('j M Y', strtotime($item->date))] = [
+                $carry[date('d M Y', strtotime($item->date))] = [
                     'planned_duration'   => 0,
                     'unplanned_duration' => 0,
                     'reasons'            => []
                 ];
             }
-            $carry[date('j M Y', strtotime($item->date))]['planned_duration'] += $item->reason_type == 'planned' ? $item->duration : 0;
-            $carry[date('j M Y', strtotime($item->date))]['unplanned_duration'] += $item->reason_type != 'planned' ? $item->duration : 0;
-            $carry[date('j M Y', strtotime($item->date))]['reasons'][$item->reason_name] = $item->duration;
+            $carry[date('d M Y', strtotime($item->date))]['planned_duration'] += $item->reason_type == 'planned' ? $item->duration : 0;
+            $carry[date('d M Y', strtotime($item->date))]['unplanned_duration'] += $item->reason_type != 'planned' ? $item->duration : 0;
+            $carry[date('d M Y', strtotime($item->date))]['reasons'][$item->reason_name] = $item->duration;
             return $carry;
         }, [
 
@@ -352,20 +352,31 @@ class ReportRepository
                 switch ($type)
                 {
                     case 'hourly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfHour()->toDateTimeString() . " - " . Carbon::parse($row->generated_at)->endOfHour()->toDateTimeString();
+                        $startDateTime        = date('d M Y H:i:s', strtotime(Carbon::parse($row->generated_at)->startOfHour()->toDateTimeString()));
+                        $endDateTime          = date('d M Y H:i:s', strtotime(Carbon::parse($row->generated_at)->endOfHour()->toDateTimeString()));
+                        $row['time_duration'] = $startDateTime . " - " . $endDateTime;
+                        $row['dur']           = 3600;
                         break;
                     case 'daily':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->toDateTimeString();
+                        $dailyDate            = date('d M Y', strtotime(Carbon::parse($row->generated_at)->toDateTimeString()));
+                        $row['time_duration'] = $dailyDate;
+                        $row['dur']           = 3600 * 24;
                         break;
                     case 'weekly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfWeek(Carbon::SATURDAY)->toDateString() . " - " . Carbon::parse($row->generated_at)->endOfWeek(Carbon::FRIDAY)->toDateString();
+                        $weeklyStartDate      = date('d M Y', strtotime(Carbon::parse($row->generated_at)->startOfWeek(Carbon::SATURDAY)->toDateString()));
+                        $weeklyEndDate        = date('d M Y', strtotime(Carbon::parse($row->generated_at)->endOfWeek(Carbon::FRIDAY)->toDateString()));
+                        $row['time_duration'] = $weeklyStartDate . " - " . $weeklyEndDate;
+                        $row['dur']           = 3600 * 24 * 7;
                         break;
                     case 'monthly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfMonth()->toDateString() . " - " . Carbon::parse($row->generated_at)->endOfMonth()->toDateString();
+                        $monthlyStartDate = date('M Y', strtotime(Carbon::parse($row->generated_at)->startOfMonth()->toDateString()));
+                        // $monthlyEndDate       = date('M Y', strtotime(Carbon::parse($row->generated_at)->endOfMonth()->toDateString()));
+                        $row['time_duration'] = $monthlyStartDate;
+                        $row['dur']           = Carbon::parse($row->generated_at)->endOfMonth()->diffInSeconds(Carbon::parse($row->generated_at)->startOfMonth());
                         break;
 
                 }
-                $totalTimeDuration   = $queryStart->diffInSeconds($queryEnd);
+                $totalTimeDuration   = $row['dur'];
                 $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
@@ -457,20 +468,31 @@ class ReportRepository
                 switch ($type)
                 {
                     case 'hourly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfHour()->toDateTimeString() . " - " . Carbon::parse($row->generated_at)->endOfHour()->toDateTimeString();
+                        $startDateTime        = date('d M Y H:i:s', strtotime(Carbon::parse($row->generated_at)->startOfHour()->toDateTimeString()));
+                        $endDateTime          = date('d M Y H:i:s', strtotime(Carbon::parse($row->generated_at)->endOfHour()->toDateTimeString()));
+                        $row['time_duration'] = $startDateTime . " - " . $endDateTime;
+                        $row['dur']           = 3600;
                         break;
                     case 'daily':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->toDateTimeString();
+                        $dailyDate            = date('d M Y', strtotime(Carbon::parse($row->generated_at)->toDateTimeString()));
+                        $row['time_duration'] = $dailyDate;
+                        $row['dur']           = 3600 * 24;
                         break;
                     case 'weekly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfWeek(Carbon::SATURDAY)->toDateString() . " - " . Carbon::parse($row->generated_at)->endOfWeek(Carbon::FRIDAY)->toDateString();
+                        $weeklyStartDate      = date('d M Y', strtotime(Carbon::parse($row->generated_at)->startOfWeek(Carbon::SATURDAY)->toDateString()));
+                        $weeklyEndDate        = date('d M Y', strtotime(Carbon::parse($row->generated_at)->endOfWeek(Carbon::FRIDAY)->toDateString()));
+                        $row['time_duration'] = $weeklyStartDate . " - " . $weeklyEndDate;
+                        $row['dur']           = 3600 * 24 * 7;
                         break;
                     case 'monthly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfMonth()->toDateString() . " - " . Carbon::parse($row->generated_at)->endOfMonth()->toDateString();
+                        $monthlyStartDate = date('M Y', strtotime(Carbon::parse($row->generated_at)->startOfMonth()->toDateString()));
+                        // $monthlyEndDate       = date('M Y', strtotime(Carbon::parse($row->generated_at)->endOfMonth()->toDateString()));
+                        $row['time_duration'] = $monthlyStartDate;
+                        $row['dur']           = Carbon::parse($row->generated_at)->endOfMonth()->diffInSeconds(Carbon::parse($row->generated_at)->startOfMonth());
                         break;
 
                 }
-                $totalTimeDuration   = $queryStart->diffInSeconds($queryEnd);
+                $totalTimeDuration   = $row['dur'];
                 $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
@@ -560,20 +582,31 @@ class ReportRepository
                 switch ($type)
                 {
                     case 'hourly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfHour()->toDateTimeString() . " - " . Carbon::parse($row->generated_at)->endOfHour()->toDateTimeString();
+                        $startDateTime        = date('d M Y H:i:s', strtotime(Carbon::parse($row->generated_at)->startOfHour()->toDateTimeString()));
+                        $endDateTime          = date('d M Y H:i:s', strtotime(Carbon::parse($row->generated_at)->endOfHour()->toDateTimeString()));
+                        $row['time_duration'] = $startDateTime . " - " . $endDateTime;
+                        $row['dur']           = 3600;
                         break;
                     case 'daily':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->toDateTimeString();
+                        $dailyDate            = date('d M Y', strtotime(Carbon::parse($row->generated_at)->toDateTimeString()));
+                        $row['time_duration'] = $dailyDate;
+                        $row['dur']           = 3600 * 24;
                         break;
                     case 'weekly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfWeek(Carbon::SATURDAY)->toDateString() . " - " . Carbon::parse($row->generated_at)->endOfWeek(Carbon::FRIDAY)->toDateString();
+                        $weeklyStartDate      = date('d M Y', strtotime(Carbon::parse($row->generated_at)->startOfWeek(Carbon::SATURDAY)->toDateString()));
+                        $weeklyEndDate        = date('d M Y', strtotime(Carbon::parse($row->generated_at)->endOfWeek(Carbon::FRIDAY)->toDateString()));
+                        $row['time_duration'] = $weeklyStartDate . " - " . $weeklyEndDate;
+                        $row['dur']           = 3600 * 24 * 7;
                         break;
                     case 'monthly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfMonth()->toDateString() . " - " . Carbon::parse($row->generated_at)->endOfMonth()->toDateString();
+                        $monthlyStartDate = date('M Y', strtotime(Carbon::parse($row->generated_at)->startOfMonth()->toDateString()));
+                        // $monthlyEndDate       = date('M Y', strtotime(Carbon::parse($row->generated_at)->endOfMonth()->toDateString()));
+                        $row['time_duration'] = $monthlyStartDate;
+                        $row['dur']           = Carbon::parse($row->generated_at)->endOfMonth()->diffInSeconds(Carbon::parse($row->generated_at)->startOfMonth());
                         break;
 
                 }
-                $totalTimeDuration   = $queryStart->diffInSeconds($queryEnd);
+                $totalTimeDuration   = $row['dur'];
                 $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
@@ -606,6 +639,12 @@ class ReportRepository
                     DB::raw('SUM(available) as available'),
                     DB::raw('SUM(planned_downtime) as planned_downtime')
                 ])->get()->load('station.stationGroup', 'operator');
+
+            $result = $result->filter(function ($row)
+            {
+                return !empty($row->operator);
+            })->values();
+
             foreach ($result as &$row)
             {
                 $station                   = $row->station;
@@ -614,7 +653,7 @@ class ReportRepository
                 $row['station_group_name'] = $station->stationGroup->name;
                 unset($row->station);
                 $operator             = $row->operator;
-                $row['operator_name'] = $operator->first_name . " " . $operator->last_name;
+                $row['operator_name'] = empty($operator) ? '' : $operator->first_name . " " . $operator->last_name;
                 unset($row->operator);
                 $totalTimeDuration   = $start->diffInSeconds($end);
                 $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
@@ -663,20 +702,31 @@ class ReportRepository
                 switch ($type)
                 {
                     case 'hourly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfHour()->toDateTimeString() . " - " . Carbon::parse($row->generated_at)->endOfHour()->toDateTimeString();
+                        $startDateTime        = date('d M Y H:i:s', strtotime(Carbon::parse($row->generated_at)->startOfHour()->toDateTimeString()));
+                        $endDateTime          = date('d M Y H:i:s', strtotime(Carbon::parse($row->generated_at)->endOfHour()->toDateTimeString()));
+                        $row['time_duration'] = $startDateTime . " - " . $endDateTime;
+                        $row['dur']           = 3600;
                         break;
                     case 'daily':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->toDateTimeString();
+                        $dailyDate            = date('d M Y', strtotime(Carbon::parse($row->generated_at)->toDateTimeString()));
+                        $row['time_duration'] = $dailyDate;
+                        $row['dur']           = 3600 * 24;
                         break;
                     case 'weekly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfWeek(Carbon::SATURDAY)->toDateString() . " - " . Carbon::parse($row->generated_at)->endOfWeek(Carbon::FRIDAY)->toDateString();
+                        $weeklyStartDate      = date('d M Y', strtotime(Carbon::parse($row->generated_at)->startOfWeek(Carbon::SATURDAY)->toDateString()));
+                        $weeklyEndDate        = date('d M Y', strtotime(Carbon::parse($row->generated_at)->endOfWeek(Carbon::FRIDAY)->toDateString()));
+                        $row['time_duration'] = $weeklyStartDate . " - " . $weeklyEndDate;
+                        $row['dur']           = 3600 * 24 * 7;
                         break;
                     case 'monthly':
-                        $row['time_duration'] = Carbon::parse($row->generated_at)->startOfMonth()->toDateString() . " - " . Carbon::parse($row->generated_at)->endOfMonth()->toDateString();
+                        $monthlyStartDate = date('M Y', strtotime(Carbon::parse($row->generated_at)->startOfMonth()->toDateString()));
+                        // $monthlyEndDate       = date('M Y', strtotime(Carbon::parse($row->generated_at)->endOfMonth()->toDateString()));
+                        $row['time_duration'] = $monthlyStartDate;
+                        $row['dur']           = Carbon::parse($row->generated_at)->endOfMonth()->diffInSeconds(Carbon::parse($row->generated_at)->startOfMonth());
                         break;
 
                 }
-                $totalTimeDuration   = $queryStart->diffInSeconds($queryEnd);
+                $totalTimeDuration   = $row['dur'];
                 $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;

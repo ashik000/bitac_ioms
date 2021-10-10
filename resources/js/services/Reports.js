@@ -21,11 +21,11 @@ export default {
         axios.get('downtimeReport',{
             params :{
                 'station_id' : data.stationId,
-                'station_product_id' : data.stationProductId,
-                'station_shift_id'   : data.stationShiftId,
-                'station_operator_id'   : data.stationOperatorId,
-                'end' : data.endTime,
-                'start' : data.start
+                'station_product_id': data.stationProductId,
+                'station_shift_id': data.stationShiftId,
+                'station_operator_id': data.stationOperatorId,
+                'end': data.endTime,
+                'start': data.start
             }
         }).then(r => success(r.data))
             .catch(e => console.log(e.response.data))

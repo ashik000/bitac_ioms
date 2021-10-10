@@ -164,7 +164,6 @@
                 this.showInprogress = true;
                 stationProductService.fetchAll(this.stationId, r => {
                     this.stationProducts = r;
-                    console.log(r);
                     this.showInprogress = false;
                 }, e => {
                     console.log(e);

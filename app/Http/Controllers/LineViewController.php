@@ -13,7 +13,6 @@ use App\Data\Repositories\ScrapRepository;
 use App\Data\Repositories\ShiftRepository;
 use App\Devices\InovaceDevice;
 use App\Exceptions\BadRequestException;
-use App\Exceptions\NotFoundException;
 use App\Http\Requests\StoreEventFileRequest;
 use App\Http\Resources\LineViewGraphResource;
 use Carbon\Carbon;
@@ -103,22 +102,19 @@ class LineViewController extends Controller
         $end   = date('Y-m-d', strtotime($end));
 
         $query = Downtime::query();
-        $query->join('production_logs', 'downtimes.production_log_id', '=', 'production_logs.id')
-            ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
-            ->leftJoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
-            ->leftJoin('downtime_reasons', 'downtimes.reason_id', '=', 'downtime_reasons.id')
+        $query->leftJoin('downtime_reasons', 'downtimes.reason_id', '=', 'downtime_reasons.id')
+            ->whereNotNull('downtimes.reason_id')
             ->whereBetween('downtimes.start_time', [
                 $start,
                 $end
             ])
-            ->groupBy([DB::raw('DATE(downtimes.start_time)'), 'downtime_reasons.type', 'downtimes.reason_id', 'downtime_reasons.name'])
+            ->groupBy(['downtime_reasons.type', 'downtimes.reason_id', 'downtime_reasons.name'])
             ->orderBy(DB::raw('SUM(downtimes.duration)'), 'DESC')
             ->select([
                 'reason_id',
                 DB::raw('downtime_reasons.name as reason_name'),
                 DB::raw('COUNT(*) as count'),
                 DB::raw('SUM(downtimes.duration) as duration'),
-                DB::raw('DATE(downtimes.start_time) as date')
             ]);
 
         $result = $query->take(5)->get();
@@ -151,19 +147,12 @@ class LineViewController extends Controller
         //    $end = '2021-09-11';
 
         $result = Downtime::query()
-            ->join('production_logs', 'downtimes.production_log_id', '=', 'production_logs.id')
-            ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
-            ->leftJoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
             ->join('operators', 'operators.id', '=', 'downtimes.operator_id')
             ->whereBetween('downtimes.start_time', [$start, $end])
-            ->groupBy('downtimes.operator_id', 'station_id', 'station_group_id', 'stations.name', 'station_groups.name', 'operators.first_name', 'operators.last_name')
+            ->groupBy('downtimes.operator_id', 'operators.first_name', 'operators.last_name')
             ->orderBy(DB::raw('SUM(downtimes.duration)'), 'DESC')
             ->select([
-                'station_id',
                 'downtimes.operator_id',
-                'station_group_id',
-                DB::raw('stations.name as station_name'),
-                DB::raw('station_groups.name as station_group_name'),
                 DB::raw('operators.first_name as operator_first_name'),
                 DB::raw('operators.last_name as operator_last_name'),
                 DB::raw('COUNT(*) as count'),
@@ -198,10 +187,11 @@ class LineViewController extends Controller
                 ['station_operators.station_id', '=', $stationId],
                 ['station_operators.start_time', '<=', $checkDate]
                 // ['station_operators.end_time', '>=', $checkDate]
-            ])->where(function($q) use($checkDate) {
-                $q->whereNull('station_operators.end_time')
-                    ->orWhere('station_operators.end_time', '>=', $checkDate);
-            })
+            ])->where(function ($q) use ($checkDate)
+        {
+            $q->whereNull('station_operators.end_time')
+                ->orWhere('station_operators.end_time', '>=', $checkDate);
+        })
             ->select([
                 DB::raw('operators.id as operator_id'),
                 DB::raw('operators.first_name as first_name'),
@@ -212,7 +202,8 @@ class LineViewController extends Controller
 
         $currentOperator = app(InovaceDevice::class)->findCurrentOperator($result, $checkDate);
 
-        if(empty($currentOperator)) {
+        if (empty($currentOperator))
+        {
             return [
                 'operatorId'   => null,
                 'operatorName' => 'N/A'
@@ -228,10 +219,12 @@ class LineViewController extends Controller
     public function storeLineviewDefects(Request $request)
     {
         $defectTime = Carbon::parse($request['date'])->addHours($request['defectTime']);
-        \Log::debug($defectTime);
+        // \Log::debug($defectTime);
         $logCount = app(ProductionLogRepository::class)->fetchProductionLogCountOfHour($request['stationId'], $request['productId'], $defectTime);
-        if($request['defectValue'] > $logCount) throw new BadRequestException('Defect entry cannot be more than logs');
-
+        if ($request['defectValue'] > $logCount)
+        {
+            throw new BadRequestException('Defect entry cannot be more than logs');
+        }
 
         $scrap = Scrap::query()
             ->where('scraps.station_id', '=', $request['stationId'])

@@ -45,7 +45,7 @@
                         </h2>
 
                         <div :id="'station-details' + row.id" class="accordion-collapse collapse" >
-                            <div class="accordion-body">
+                            <div v-if="selectedStationId === row.id || selectedStationId == null || selectedStationId === 0" class="accordion-body">
                                 <!-- Tabs navs -->
                                 <ul class="nav nav-tabs nav-justified mb-3" role="tablist">
                                     <li class="nav-item" role="presentation">
