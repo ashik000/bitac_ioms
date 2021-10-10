@@ -606,6 +606,11 @@ class ReportRepository
                     DB::raw('SUM(available) as available'),
                     DB::raw('SUM(planned_downtime) as planned_downtime')
                 ])->get()->load('station.stationGroup', 'operator');
+
+            $result = $result->filter(function ($row) {
+                return !empty($row->operator);
+            })->values();
+
             foreach ($result as &$row)
             {
                 $station                   = $row->station;
@@ -614,7 +619,7 @@ class ReportRepository
                 $row['station_group_name'] = $station->stationGroup->name;
                 unset($row->station);
                 $operator             = $row->operator;
-                $row['operator_name'] = $operator->first_name . " " . $operator->last_name;
+                $row['operator_name'] = empty($operator)? '' : $operator->first_name . " " . $operator->last_name;
                 unset($row->operator);
                 $totalTimeDuration   = $start->diffInSeconds($end);
                 $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
