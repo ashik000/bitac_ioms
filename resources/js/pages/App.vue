@@ -119,7 +119,6 @@ export default {
         },
     },
     created() {
-        // console.log(this.$router.currentRoute.path);
 
         switch (this.$router.currentRoute.path) {
             case '/dashboard':

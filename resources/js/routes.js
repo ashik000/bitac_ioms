@@ -137,7 +137,6 @@ router.beforeEach((to, from, next) => {
                 store.commit('addAuthProperties', JSON.parse(window.localStorage.getItem('user_info')));
                 next()
             }else{
-                console.log("Not logged in");
                 next({
                     path: '/login',
                     query: { redirect: to.fullPath }

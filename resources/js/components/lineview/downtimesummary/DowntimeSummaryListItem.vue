@@ -49,11 +49,9 @@
             }
         },
         computed: {
-            filteredReasons: function () { 
-                // console.log(this.selectedReasonGroupId);
+            filteredReasons: function () {
                 var id = this.selectedReasonGroupId;
                 return this.allReasons.filter(function(i) {
-                    // console.log(i);
                     return id === null || i.downtime_reason_group.id === id;
                 });
             }            
@@ -88,7 +86,6 @@
                     downtime.selectedReasonName = "Please Select";
                 }
 
-                // console.log(downtime);
                 this.$emit("downtimeReasonAssigned", {
                     downtime: downtime,
                     downtimeReason: reason,

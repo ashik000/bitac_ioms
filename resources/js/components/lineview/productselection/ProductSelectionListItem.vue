@@ -32,18 +32,12 @@
         methods: {
             onProductChange(event) {
                 var data = event.target.value;
-                console.log('on product change triggered')
-                console.log(data);
                 this.triggeredProductId = data;
                 // store the new product id & remove the old ones
                 this.$emit('update-product', this.triggeredProductId);
             },
             selectProduct(prod_id) {
-                console.log('selectProduct triggered')
-                console.log(prod_id);
                 this.checkedVal = prod_id;
-                console.log('selectProduct triggered')
-                console.log(this.checkedVal);
                 this.$emit('update-product', prod_id);
             }
         },

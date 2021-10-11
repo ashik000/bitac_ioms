@@ -172,7 +172,6 @@
             },
             increaseDefect() {
                 this.defects.defectValue++;
-                // console.log(this.defects.defectValue);
             },
             decreaseDefect() {
                 if (this.defects.defectValue >= 1) {
@@ -220,12 +219,10 @@
             },
             panRight() {
                 this.pageNo = Math.min(this.pageNo+1, (3600/this.zoomValues[this.zoomIndex])-1);
-                console.log(this.pageNo);
                 this.viewBox.x = Math.min(this.zoomValues[0] - this.zoomValues[this.zoomIndex], this.viewBox.x+this.zoomValues[this.zoomIndex]);
                 this.applyViewBoxAttributes();
             },
             panLeft() {
-                // console.log(this.pageNo);
                 this.pageNo = Math.max(0, this.pageNo-1);
                 this.viewBox.x = Math.max(0, this.viewBox.x-this.zoomValues[this.zoomIndex]);
                 this.applyViewBoxAttributes();
@@ -243,9 +240,6 @@
             // this.$data._clock = () => {
             // };
             this.currentTime = moment().format('HH:mm');
-
-            // console.log('current time')
-            // console.log(this.currentTime)
 
             // setInterval(this.$data._clock, 300000);
         },

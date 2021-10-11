@@ -129,18 +129,15 @@
         },
         methods: {
             onPartitionSelect(eventData) {
-                console.log("parent received partitionSelected event: " + eventData);
                 this.selectedPartition = eventData;
                 this.fetchOEEData();
             },
             onRangeSelect(eventData) {
-                console.log(`parent received rangeselected event: start: ${eventData.start} , end: ${eventData.end}`);
                 this.selectedRange.start = eventData.start;
                 this.selectedRange.end = eventData.end;
                 this.fetchOEEData();
             },
             onReportTypeChange(eventData) {
-                console.log("parent received report type changed event: " + eventData);
                 this.selectedReportType = eventData;
                 this.fetchOEEData();
             },
@@ -154,7 +151,6 @@
                     endTime: moment(this.selectedRange.end).format('YYYY-MM-DD'),
                     type: this.selectedPartition
                 };
-                console.log(`Fetching OEE report data with ${JSON.stringify(data)} params`);
                 reportService.fetchReports(data, response => {
                     this.title = response.title;
                     this.dataset.labels = response.dataset.labels;
@@ -162,7 +158,6 @@
                     this.dataset.availability = response.dataset.availability;
                     this.dataset.quality = response.dataset.quality;
                     this.dataset.oee = response.dataset.oee;
-                    console.log(`Received OEE report data: ${JSON.stringify(response)}`);
                 });
             },
         },
@@ -170,7 +165,6 @@
             reportType: function (newReportType, oldReportType) {
                 this.selectedReportType = newReportType;
                 this.fetchOEEData();
-                // console.log('new report type '+newReportType);
             },
             reportPageFilters: {
                 handler(newFilters, oldFilters) {
