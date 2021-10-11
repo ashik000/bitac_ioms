@@ -191,7 +191,7 @@
                 stationProductService.createOrUpdateStationProduct(this.stationProduct, r => {
                     this.stationProducts = r;
                     this.closeStationProductModal();
-                    toastrService.success('Success');
+                    toastrService.showSuccessToast('Product assigned');
                 }, e => {
                     console.log(e);
                     toastrService.showErrorToast('Product cannot be assigned to station');
