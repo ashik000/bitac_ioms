@@ -93,7 +93,8 @@ class ReportController extends Controller
 
             case 'monthly':
                 $title         = 'Monthly Report';
-                $availableBase = Carbon::parse($end)->endOfMonth()->diffInSeconds(Carbon::parse($start)->startOfMonth());
+                $availableBase = -1;
+//                $availableBase = Carbon::parse($end)->endOfMonth()->diffInSeconds(Carbon::parse($start)->startOfMonth());
                 $query->whereBetween('generated_at', [$start->startOfMonth(), $end->endOfMonth()]);
                 break;
         }
@@ -133,16 +134,22 @@ class ReportController extends Controller
         $reports = $query->get();
 
         $reports = $reports->reduce(function ($carry, $item) use ($availableBase, $type) {
+
+            if ($availableBase == -1)
+            {
+                $availableBase = Carbon::parse($item->generated_at)->endOfMonth()->diffInSeconds(Carbon::parse($item->generated_at)->startOfMonth());
+            }
+
             $performance  = $item->produced ? ($item->produced / $item->expected) : 0;
 //            $quality      = 1; //$item->produced ? ($item->scrapped / $item->produced) : 0;
             $quality      = $item->produced ? (($item->produced-$item->scraped) / $item->produced) : 0;
             $availability = $item->available ? ($item->available / ($availableBase - $item->planned_downtime)) : 0;
 
             $carry['produced'][]         =(int) $item->produced;
-            $carry['scraped'][]          =(int)  $item->scraped;
-            $carry['expected'][]         =(int)  $item->expected;
-            $carry['available'][]        =(int)  $item->available;
-            $carry['planned_downtime'][] =(int)  $item->planned_downtime;
+            $carry['scraped'][]          =(int) $item->scraped;
+            $carry['expected'][]         =(int) $item->expected;
+            $carry['available'][]        =(int) $item->available;
+            $carry['planned_downtime'][] =(int) $item->planned_downtime;
 
 
             $carry['labels'][]       = $this->getLabel($item->generated_at, $type);
