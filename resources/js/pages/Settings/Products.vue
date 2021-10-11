@@ -81,8 +81,10 @@
 
         <Modal v-if="showProductForm" @close="closeProductModal()">
             <template v-slot:header>
-                <div class="container">
-                    {{productId == null ? "Add Product" : "Edit Product"}}
+                <div>
+                    <h5>
+                        {{productId == null ? "Add Product" : "Edit Product"}}
+                    </h5>
                 </div>
             </template>
             <template v-slot:content>
@@ -92,6 +94,7 @@
                         <input type="text" v-model="productName" class="form-control" placeholder="Enter Name">
                         <label class="mt-2">Group</label>
                         <select class="form-control" v-model="selectedGroupId">
+                            <option disabled value="">--Select--</option>
                             <option v-for="group in groups" :value="group.id" :key="group.id">
                                 {{ group.name }}
                             </option>
@@ -147,7 +150,7 @@
             showProductDeleteForm : false,
             productName:"",
             productUnit : "",
-            selectedGroupId :null,
+            selectedGroupId : "",
             productCode : "",
             groups: [],
             products: [],

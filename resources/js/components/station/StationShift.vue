@@ -69,7 +69,7 @@
         </Modal>
         <Modal v-if="showStationShiftForm" @close="closeStationShiftModals">
             <template v-slot:header>
-                <div style="padding-left: 30px;">
+                <div>
                     <h5>{{!stationShiftEditMode? 'ADD STATION SHIFT' : 'EDIT STATION SHIFT'}}</h5>
                 </div>
             </template>

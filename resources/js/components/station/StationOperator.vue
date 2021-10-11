@@ -36,7 +36,7 @@
 
         <Modal v-if="showStationOperatorCreateModal === true" @close="closeStationOperatorModal()" >
             <template v-slot:header>
-                <div style="padding-left: 30px;">
+                <div>
                     <h5>ASSIGN STATION OPERATOR</h5>
                 </div>
             </template>
@@ -51,7 +51,7 @@
                                 {{ operator.first_name + operator.last_name + " " + operator.code }}
                             </option>
                         </select>
-                        <label for="startTimeSelect" class="mt-2">Select start date and time</label>
+                        <label for="startTimeSelect" class="mt-3">Select start date and time</label>
                         <VueCtkDateTimePicker id="startTimeSelect" v-model="stationOperator.start_time" :inline="true" format="YYYY-MM-DD HH:mm:ss" formatted="YYYY-MM-DD HH:mm:ss" />
                     </div>
                 </form>
