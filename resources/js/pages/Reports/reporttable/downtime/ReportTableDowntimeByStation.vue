@@ -69,7 +69,6 @@
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY')
                 }, function(responseData){
-                    console.log("getDowntimeTableReportByStation API response: " + JSON.stringify(responseData));
                     vm.tableData = responseData;
                 });
             },

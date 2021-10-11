@@ -254,7 +254,6 @@ export default {
             }, error => {
                 this.showInprogress = false;
                 toastrService.showErrorToast(error);
-                // console.log(error);
             });
         },
         deleteGroup(){
@@ -272,7 +271,6 @@ export default {
                 }, error =>{
                     this.showInprogress = false;
                     toastrService.showErrorToast(error);
-                    // console.log(e);
                 })
 
             }
@@ -357,7 +355,6 @@ export default {
             this.description = item.description;
         },
         setSelectedStationId(item){
-            // console.log("Selected station id " + item.id);
             this.selectedStationId = item.id;
         },
         loadGroupData(groupId){
@@ -378,7 +375,6 @@ export default {
             this.showInprogress = true;
             this.groups = groups;
             stationService.fetchAllStationsByGroupId(this.groups[0].id, stations => {
-                // console.log(stations);
                 this.stations = stations;
                 this.showInprogress = false;
             });

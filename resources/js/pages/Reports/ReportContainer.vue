@@ -19,7 +19,6 @@
             reportTypeChanged(reportType) {
                 this.selectedType = reportType;
                 this.$emit('reportTypeChanged', reportType);
-                console.log('report container emit ' + reportType);
             }
         }
     }

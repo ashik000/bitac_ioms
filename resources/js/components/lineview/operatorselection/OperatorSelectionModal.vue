@@ -82,7 +82,6 @@
 
             OperatorsService.fetchAll((data) => {
                 vm.operators = data;
-                console.log(JSON.stringify(vm.operators));
             }, (error) => {
                 console.log(error);
             });

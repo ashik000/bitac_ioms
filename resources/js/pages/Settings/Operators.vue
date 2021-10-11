@@ -173,7 +173,6 @@
                     this.showInprogress = false;
                     toastrService.showSuccessToast('Operator updated.');
                 } , (error) => {
-                    // console.log(error);
                     this.showInprogress = false;
                     toastrService.showErrorToast(error);
                 });

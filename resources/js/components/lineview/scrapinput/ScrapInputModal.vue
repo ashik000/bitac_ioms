@@ -63,7 +63,6 @@
                 'stationId': vm.stationId,
                 'date': moment(vm.date).format('DD-MM-YYYY')
             },function (resData) {
-                console.log("scrapList: ", JSON.stringify(resData));
                 vm.scrapList = resData;
             });
         },

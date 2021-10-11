@@ -71,14 +71,12 @@
         methods:{
             fetchData(){
                 let vm = this;
-                console.log("calling api getOEETableReportByOperator. stationOperatorId:  " + vm.stationOperatorId);
                 reportService.getOEETableReportByStationOperator({
                     'stationOperatorId': vm.stationOperatorId === '0' ? null : vm.stationOperatorId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY'),
                     'type': vm.type
                 }, function(responseData){
-                    console.log("getOEETableReportByOperator API response: " + JSON.stringify(responseData));
                     vm.tableData = responseData;
                 });
             }

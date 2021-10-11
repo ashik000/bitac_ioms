@@ -158,9 +158,6 @@
                             tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
                             tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
                             tooltipEl.style.pointerEvents = 'none';
-
-                            console.log("tooltip");
-                            console.log(tooltipEl);
                         }
                     }
                 }

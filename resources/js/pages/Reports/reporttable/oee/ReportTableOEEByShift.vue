@@ -71,14 +71,12 @@
         methods:{
             fetchData(){
                 let vm = this;
-                console.log("calling api getOEETableReportByShift. stationShiftId:  " + vm.stationShiftId);
                 reportService.getOEETableReportByStationShift({
                     'stationShiftId': vm.stationShiftId === '0' ? null : vm.stationShiftId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY'),
                     'type': vm.type
                 }, function(responseData){
-                    console.log("getOEETableReportByShift API response: " + JSON.stringify(responseData));
                     vm.tableData = responseData;
                 });
             }
