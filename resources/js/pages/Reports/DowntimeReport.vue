@@ -133,8 +133,6 @@
                 this.selectedStationOperatorId = 0;
             },
             onRangeSelect(eventData) {
-                console.log('range selected');
-                console.log(eventData);
                 this.selectedRange.start = eventData.start;
                 this.selectedRange.end = eventData.end;
                 this.fetchDowntimeData();
@@ -155,16 +153,11 @@
 
                 reportService.fetchDowntimeData(data, response => {
                     this.title = response.title;
-                    console.log('fetch downtime data');
-                    console.log(response.dataset);
 
                     let x_labels = [];
                     for (const [key, value] of Object.entries(response.dataset)) {
                         x_labels.push(`${key}`);
                     }
-
-                    console.log('x labels');
-                    console.log(x_labels);
 
                     let planned = [];
                     let unplanned = [];
@@ -178,8 +171,7 @@
                             // skip loop if the property is from prototype
                             if (!obj.hasOwnProperty(prop)) continue;
 
-                            // your code
-                            // console.log(prop + " = " + obj[prop]);
+
                             if (prop === 'planned_duration') {
                                 planned.push(obj[prop]);
                             }
@@ -192,10 +184,6 @@
                         }
                     }
 
-                    // console.log(planned)
-                    // console.log(unplanned)
-                    // console.log(reasons)
-
                     this.$set(this.downtimeDataset, 'labels', x_labels);
                     this.$set(this.downtimeDataset, 'planned', planned);
                     this.$set(this.downtimeDataset, 'unplanned', unplanned);
@@ -206,7 +194,6 @@
             reportType: function (newReportType, oldReportType) {
                 this.selectedReportType = newReportType;
                 this.fetchDowntimeData();
-                // console.log(newReportType);
             },
             reportPageFilters: {
                 handler(newFilters, oldFilters) {

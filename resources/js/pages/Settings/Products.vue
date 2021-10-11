@@ -224,7 +224,6 @@
                     this.closeGroupForm();
                 }, error => {
                     this.showInprogress = false;
-                    // console.log(error);
                     toastrService.showErrorToast(error);
                 });
             },
@@ -292,7 +291,6 @@
                 this.groupName = "";
             },
             loadGroupData(groupId){
-                // console.log(groupId);
                 this.showInprogress = true;
                 productService.fetchAllProductsByGroupId(groupId, products => {
                     this.products = products;
@@ -311,7 +309,6 @@
                 this.groups = groups;
                 this.showInprogress = true;
                 productService.fetchAllProductsByGroupId(this.groups[0].id, products => {
-                    // console.log(products);
                     this.products = products;
                     this.showInprogress = false;
                 });

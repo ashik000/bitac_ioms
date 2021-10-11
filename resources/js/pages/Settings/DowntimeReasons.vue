@@ -214,7 +214,6 @@
                 this.reasonName = item.name;
                 this.type = item.type;
                 this.selectedGroupId = item.reason_group_id;
-                // console.log(JSON.stringify(item));
             },
             deleteGroup(){
                 this.showInprogress = true;
@@ -231,7 +230,6 @@
                     }, error =>{
                         this.showInprogress = false;
                         toastrService.showErrorToast(error);
-                        // console.log(error);
                     })
                 }
             },
@@ -286,7 +284,6 @@
                 this.groupName = "";
             },
             loadGroupData(groupId){
-                // console.log(groupId);
                 this.showInprogress = true;
                 downtimeReasonsService.fetchAllDowntimeReasonsByGroupId(groupId, reasons => {
                     this.reasons = reasons['downtime_reason_list'];

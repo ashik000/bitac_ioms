@@ -276,12 +276,10 @@ export default {
             return this.$emit('partitionSelected', p);
         },
         onPartitionSelect(eventData) {
-            console.log("parent received partitionSelected event: " + eventData);
             this.selectedPartition = eventData;
             this.fetchOEEData();
         },
         onRangeSelect(eventData) {
-            console.log(`parent received range selected event: start: ${eventData.start} , end: ${eventData.end}`);
             this.selectedRange.start = eventData.start;
             this.selectedRange.end = eventData.end;
             this.fetchOEEData();
@@ -292,7 +290,6 @@ export default {
             this.fetchOEEData();
         },
         onReportTypeChange(eventData) {
-            console.log("parent received report type changed event: " + eventData);
             this.selectedReportType = eventData;
             this.fetchOEEData();
         },

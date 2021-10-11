@@ -51,7 +51,7 @@
         },
         watch: {
             selectedId(nw, old) {
-                console.log("selected changed " + nw);
+
             }
         }
     }

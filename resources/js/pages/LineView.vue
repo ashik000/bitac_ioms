@@ -496,10 +496,8 @@
                     productId: this.products[0].product_id,
                 }, data => {
                     this.showInprogress = false;
-                    console.log('success')
                     ToastrService.showSuccessToast('Defect added successfully.');
                 }, error => {
-                    console.log(error);
                     this.showInprogress = false;
                     ToastrService.showErrorToast('Error! Try again.');
                 });
@@ -560,7 +558,6 @@
                         this.topDowntimeReasons = data;
                     }
                 );
-                console.log('topDR mounted');
             },
             fetchTopOperatorDowntimes() {
                 LineViewService.fetchTopOperatorDowntimes({
@@ -592,7 +589,7 @@
                     return  {...this.gaugeOptions, ...{arcColors: ['#EAEAEA'], arcDelimiters: []}};
                 }else {
                     return  {...this.gaugeOptions, ...{arcColors: [color], arcDelimiters: [nv]}};
-                };
+                }
             },
             onReasonChange: function (event) {
                 var data = event.target.value;

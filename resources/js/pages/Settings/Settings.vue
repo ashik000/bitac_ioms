@@ -55,7 +55,6 @@ export default {
         }
     },
     created() {
-        // console.log('settings routes')
 
         switch (this.$router.currentRoute.path) {
             case '/settings/stations':

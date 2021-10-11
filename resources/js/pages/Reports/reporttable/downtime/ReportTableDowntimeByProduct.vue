@@ -73,13 +73,11 @@
         methods:{
             fetchData(){
                 let vm = this;
-                console.log("calling getDowntimeTableReportByStationProduct api");
                 reportService.getDowntimeTableReportByStationProduct({
                     'stationProductId': vm.stationProductId === '0' ? null : vm.stationProductId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY')
                 }, function(responseData){
-                    console.log("getDowntimeTableReportByStationProduct API response: " + JSON.stringify(responseData));
                     vm.tableData = responseData;
                 });
             },
