@@ -70,3 +70,6 @@ Route::post('login', ['uses' => 'Auth\LoginController@login']);
 
 Route::post('storeEventFile', 'LineViewController@storeEventFile');
 
+Route::get('getDummyScrap', 'ScrapController@getDummyScrap');
+Route::get('testScrapX', 'ScrapController@testScrap');
+
