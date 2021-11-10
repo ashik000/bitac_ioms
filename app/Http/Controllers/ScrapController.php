@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Data\Models\Scrap;
 use App\Data\Models\Shift;
+use App\Data\Models\Product;
+use App\Data\Models\Station;
+use App\Data\Models\StationProduct;
 use App\Data\Repositories\ProductionLogRepository;
+use App\Data\Repositories\ScrapRepository;
 use App\Exceptions\BadRequestException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
@@ -14,6 +18,16 @@ use Illuminate\Support\Facades\Log;
 
 class ScrapController extends Controller
 {
+    /**
+     * @var ScrapRepository
+     */
+    private $scrapRepository;
+
+    public function __construct(ScrapRepository $scrapRepository)
+    {
+        $this->scrapRepository = $scrapRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
