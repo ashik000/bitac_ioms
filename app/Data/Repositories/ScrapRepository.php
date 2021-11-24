@@ -3,6 +3,7 @@
 namespace App\Data\Repositories;
 
 use App\Data\Models\Product;
+use App\Data\Models\Shift;
 use App\Data\Models\Station;
 use App\Data\Models\StationProduct;
 use App\Data\Models\Scrap;
@@ -38,7 +39,7 @@ class ScrapRepository {
         {
             $productId = $product->id;
             $stationProduct = StationProduct::where('product_id', $productId)->first();
-            
+
             if ($stationProduct)
             {
                 $stationId = $stationProduct->station_id;
@@ -56,11 +57,11 @@ class ScrapRepository {
                     $scrapData = $this->getScrapData($date, $startTime, $endTime, 'outdoor_final', $stationName, $product->name);
 
                     if ($scrapData)
-                    {                
+                    {
                         foreach ($scrapData['data'] as $key1 => $res1)
                         {
                             $hour = $this->mapHour($key1);
-        
+
                             $scrap = new Scrap();
                             $scrap->created_by = 1;
                             $scrap->value = $res1;
@@ -69,7 +70,7 @@ class ScrapRepository {
                             $scrap->product_id = $productId;
                             $scrap->station_id = $stationId;
                             $scrap->shift_id = $shiftId;
-        
+
                             $scrap->save();
                         }
                     }
@@ -158,7 +159,7 @@ class ScrapRepository {
             default:
                 return '0';
                 break;
-        }   
+        }
     }
 
     public function getScrapData($date, $startTime, $endTime, $point, $line, $prod)
@@ -220,7 +221,7 @@ class ScrapRepository {
                     $scrapData = $this->getDummyScrap();
 
                     if ($scrapData)
-                    {                
+                    {
                         foreach ($scrapData['data'] as $key1 => $res1)
                         {
                             $hour = $this->mapHour($key1);
@@ -231,7 +232,7 @@ class ScrapRepository {
                                 ->where('station_id', $stationId)
                                 ->where('shift_id', $shiftId)
                                 ->first();
-                            
+
                             if (!$exists)
                             {
                                 $scrap = new Scrap();
@@ -242,8 +243,8 @@ class ScrapRepository {
                                 $scrap->product_id = $productId;
                                 $scrap->station_id = $stationId;
                                 $scrap->shift_id = $shiftId;
-    
-                                $scrap->save();    
+
+                                $scrap->save();
                             }
                             else
                             {

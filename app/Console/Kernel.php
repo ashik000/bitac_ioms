@@ -4,7 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\GenerateReportCommand;
 use App\Console\Commands\GenerateReportWithPreviousDataCommand;
-use App\Console\Commands\StoreScrapDaata;
+use App\Console\Commands\StoreScrapData;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;

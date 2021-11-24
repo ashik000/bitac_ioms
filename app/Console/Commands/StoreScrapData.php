@@ -46,5 +46,6 @@ class StoreScrapData extends Command
         $endTime = $this->option('endTime');
 
         $scrap = app(ScrapRepository::class)->postScrap($date, $startTime, $endTime);
+        return 0;
     }
 }
