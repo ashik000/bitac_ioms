@@ -164,7 +164,7 @@ class ScrapRepository {
 
     public function getScrapData($date, $startTime, $endTime, $point, $line, $prod)
     {
-        // api call to http://man.api.waltonbd.com/hour_wise_punch/index.php
+        // api call to http://man.api.waltonbd.com/api/hour_wise_punch/index.php
         // type get
 
         // query params
@@ -177,11 +177,11 @@ class ScrapRepository {
 
         // guzzle get request sample
         $client = new Client([
-            'base_uri' => 'http://man.api.waltonbd.com',
+            'base_uri' => 'http://man.api.waltonbd.com/',
             'timeout'  => 2.0,
         ]);
 
-        $response = $client->request('GET', '/hour_wise_punch/index.php', ['query' => ['date' => $date, 'from_time' => $startTime, 'to_time' => $endTime, 'point' => 'outdoor_final', 'line' => $line, 'prod' => $prod]]);
+        $response = $client->request('GET', 'api/hour_wise_punch/index.php', ['query' => ['date' => $date, 'from_time' => $startTime, 'to_time' => $endTime, 'point' => 'indoor_final', 'line' => $line, 'prod' => $prod]]);
 
         return $response->getBody();
     }
