@@ -30,6 +30,9 @@ class ScrapRepository {
 
     public function postScrap($date, $startTime, $endTime)
     {
+        Log::debug('---------------------------------------------------------------------------------------');
+        Log::debug('Started pulling defect data of ' . $date . ' Start ' . $startTime . ' End ' . $endTime);
+
         $date = date('Y-m-d', strtotime($date));
         $startTime = date('H:i:s', strtotime($startTime));
         $endTime = date('H:i:s', strtotime($endTime));
