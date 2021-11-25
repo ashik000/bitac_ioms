@@ -10,6 +10,7 @@ use App\Data\Models\Scrap;
 use Carbon\CarbonImmutable;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Log;
 
 class ScrapRepository {
     public function fetchScrapsOfADate($stationId, CarbonImmutable $date){
@@ -54,7 +55,9 @@ class ScrapRepository {
                         ->first();
                     $shiftId = $shift->id;
 
-                    $scrapData = $this->getScrapData($date, $startTime, $endTime, 'outdoor_final', $stationName, $product->name);
+                    $scrapData = $this->getScrapData($date, $startTime, $endTime, 'indoor_final', $stationName, $product->name);
+                    Log::debug('API response');
+                    Log::debug($scrapData);
 
                     if ($scrapData)
                     {
@@ -62,16 +65,37 @@ class ScrapRepository {
                         {
                             $hour = $this->mapHour($key1);
 
-                            $scrap = new Scrap();
-                            $scrap->created_by = 1;
-                            $scrap->value = $res1;
-                            $scrap->date = $date;
-                            $scrap->hour = $hour;
-                            $scrap->product_id = $productId;
-                            $scrap->station_id = $stationId;
-                            $scrap->shift_id = $shiftId;
+                            $exists = Scrap::where('date', date('Y-m-d'))
+                                ->where('hour', $hour)
+                                ->where('product_id', $productId)
+                                ->where('station_id', $stationId)
+                                ->first();
 
-                            $scrap->save();
+                            if (empty($exists))
+                            {
+                                $scrap = new Scrap();
+                                $scrap->created_by = 1;
+                                $scrap->value = $res1;
+                                $scrap->date = date('Y-m-d');
+                                $scrap->hour = $hour;
+                                $scrap->product_id = $productId;
+                                $scrap->station_id = $stationId;
+                                $scrap->shift_id = $shiftId;
+
+                                $scrap->save();
+
+                                Log::debug('Creating new entry');
+                                Log::debug($scrap);
+                            }
+                            else
+                            {
+                                // update scrap
+                                $exists->value = $exists->value+intval($res1);
+                                $exists->save();
+
+                                Log::debug('Updating value');
+                                Log::debug($exists);
+                            }
                         }
                     }
                 }
@@ -181,7 +205,7 @@ class ScrapRepository {
             'timeout'  => 2.0,
         ]);
 
-        $response = $client->request('GET', 'api/hour_wise_punch/index.php', ['query' => ['date' => $date, 'from_time' => $startTime, 'to_time' => $endTime, 'point' => 'indoor_final', 'line' => $line, 'prod' => $prod]]);
+        $response = $client->request('GET', 'api/hour_wise_punch/index.php', ['query' => ['date' => $date, 'from_time' => $startTime, 'to_time' => $endTime, 'point' => $point, 'line' => $line, 'prod' => $prod]]);
 
         return $response->getBody();
     }
