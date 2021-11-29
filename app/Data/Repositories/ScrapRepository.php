@@ -59,6 +59,7 @@ class ScrapRepository {
                     $shiftId = $shift->id;
 
                     $scrapData = $this->getScrapData($date, $startTime, $endTime, 'indoor_final', $stationName, $product->name);
+                    $scrapData = json_decode($scrapData, true);
                     Log::debug('API response');
                     Log::debug($scrapData);
 
@@ -210,7 +211,7 @@ class ScrapRepository {
 
         $response = $client->request('GET', 'api/hour_wise_punch/index.php', ['query' => ['date' => $date, 'from_time' => $startTime, 'to_time' => $endTime, 'point' => $point, 'line' => $line, 'prod' => $prod]]);
 
-        return $response->getBody();
+        return $response->getBody()->getContents();
     }
 
     public function getDummyScrap()
