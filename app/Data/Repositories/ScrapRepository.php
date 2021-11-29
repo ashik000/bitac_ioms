@@ -205,7 +205,7 @@ class ScrapRepository {
         // guzzle get request sample
         $client = new Client([
             'base_uri' => 'http://man.api.waltonbd.com/',
-            'timeout'  => 2.0,
+            'timeout'  => 30.0,
         ]);
 
         $response = $client->request('GET', 'api/hour_wise_punch/index.php', ['query' => ['date' => $date, 'from_time' => $startTime, 'to_time' => $endTime, 'point' => $point, 'line' => $line, 'prod' => $prod]]);
