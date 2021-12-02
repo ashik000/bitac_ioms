@@ -67,7 +67,7 @@ class Kernel extends ConsoleKernel
             '-D' . date('Y-m-d'),
             '-S' . $hourlyTime->startOfHour()->toDateTimeString(),
             '-E' . $hourlyTime->endOfHour()->toDateTimeString(),
-        ])->everyFiveMinutes();
+        ])->hourly();
     }
 
     /**
