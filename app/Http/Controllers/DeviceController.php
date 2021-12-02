@@ -36,8 +36,14 @@ class DeviceController
         $deviceIdentifier = $this->getDeviceIdentifierFromTopic($topic);
         $device = $this->deviceRepository->findByIdentifier($deviceIdentifier);
         $packet = $this->packetRepository->savePacketFromDevice($device, bin2hex($message));
+        Log::debug('Recevied packet ' . bin2hex($message));
+        error_log('Recevied packet ' . bin2hex($message));
         $this->inovaceDevice->parseLogPacketAndSave($device, $packet);
+        Log::debug('Sending ack');
+        error_log('Sending ack');
         $mqttClient->sendPublishAcknowledgementAfterProcessing();
+        Log::debug('Pub ack done');
+        error_log('Pub ack done');
     }
 
     private function getDeviceIdentifierFromTopic(string $topic)
