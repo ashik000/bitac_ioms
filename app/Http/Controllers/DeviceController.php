@@ -38,7 +38,12 @@ class DeviceController
         $packet = $this->packetRepository->savePacketFromDevice($device, bin2hex($message));
         Log::debug('Recevied packet ' . bin2hex($message));
         error_log('Recevied packet ' . bin2hex($message));
-        $this->inovaceDevice->parseLogPacketAndSave($device, $packet);
+        try {
+            $this->inovaceDevice->parseLogPacketAndSave($device, $packet);
+        } catch (\Exception $ex) {
+            error_log('Exception occurred');
+            Log::error($ex);
+        }
         Log::debug('Sending ack');
         error_log('Sending ack');
         $mqttClient->sendPublishAcknowledgementAfterProcessing();

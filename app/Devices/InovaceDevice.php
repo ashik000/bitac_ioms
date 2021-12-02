@@ -827,7 +827,8 @@ class InovaceDevice
         } catch (Exception $ex) {
             Log::error($ex);
         }
-        Log::debug('');
+        Log::debug('Packet saving done');
+        error_log('Packet saving done');
     }
 
     public function findShiftOfStation($stationIdToShiftListMap, int $stationId, Carbon $producedAt)
