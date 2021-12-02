@@ -530,6 +530,7 @@ class InovaceDevice
 
     public function parseLogPacketAndSave(Device $device, Packet $packet)
     {
+        Log::debug('-----------------------------------------------------------');
         $packetContent = $packet->request;
         $packetContentBin = hex2bin($packetContent);
 //        $deviceTimeStamp  = sprintf("%04u", unpack("Ntimestamp/", substr($packetContentBin, 0, 4))['timestamp']);
@@ -558,6 +559,7 @@ class InovaceDevice
         $topSlowProductionId = empty($topSlowProduction)? 1 : $topSlowProduction->id;
         $topDowntimeId = empty($topDowntime)? 1 : $topDowntime->id;
 
+        Log::debug($numberOfLogs);
 
         for ($i = 0; $i < $numberOfLogs; $i++) {
 
