@@ -56,7 +56,7 @@ class ScrapRepository {
                     $shift = Shift::where('start_time', '<=', $startTime)
                         ->where('end_time', '>=', $endTime)
                         ->first();
-                    $shiftId = $shift->id;
+                    $shiftId = empty($shift)? null : $shift->id;
 
                     $scrapData = $this->getScrapData($date, $startTime, $endTime, 'indoor_final', $stationName, $product->name);
                     $scrapData = json_decode($scrapData, true);
