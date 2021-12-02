@@ -33,6 +33,7 @@ class DeviceController
      */
     public function parseAndSaveLogPackets($topic, $message, $mqttClient)
     {
+        $mqttClient->sendPublishAcknowledgementAfterProcessing();
         $deviceIdentifier = $this->getDeviceIdentifierFromTopic($topic);
         $device = $this->deviceRepository->findByIdentifier($deviceIdentifier);
         $packet = $this->packetRepository->savePacketFromDevice($device, bin2hex($message));
@@ -44,11 +45,6 @@ class DeviceController
             error_log('Exception occurred');
             Log::error($ex);
         }
-        Log::debug('Sending ack');
-        error_log('Sending ack');
-        $mqttClient->sendPublishAcknowledgementAfterProcessing();
-        Log::debug('Pub ack done');
-        error_log('Pub ack done');
     }
 
     private function getDeviceIdentifierFromTopic(string $topic)
