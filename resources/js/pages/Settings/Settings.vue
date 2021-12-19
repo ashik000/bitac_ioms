@@ -20,6 +20,11 @@
                                 Shifts
                             </router-link>
                         </li>
+                        <li class="teams padding_y" v-on:click="makeActive2('teams')">
+                            <router-link to="/settings/teams" active-class="active" class="nav-link text-white">
+                                Teams
+                            </router-link>
+                        </li>
                         <li class="operators padding_y" v-on:click="makeActive2('operators')">
                             <router-link to="/settings/operators" active-class="active" class="nav-link text-white">
                                 Operators
@@ -69,6 +74,10 @@ export default {
                 this.active = 'settings';
                 this.active2 = 'shifts';
                 break;
+            case '/settings/teams':
+                this.active = 'settings';
+                this.active2 = 'teams';
+                break;
             case '/settings/operators':
                 this.active = 'settings';
                 this.active2 = 'operators';
@@ -89,6 +98,7 @@ export default {
     #settings_menu.stations .stations,
     #settings_menu.products .products,
     #settings_menu.shifts .shifts,
+    #settings_menu.teams .teams,
     #settings_menu.operators .operators,
     #settings_menu.downtime_reasons .downtime_reasons{
         background-color: #007eda;

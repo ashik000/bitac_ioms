@@ -11,6 +11,7 @@ import Users from "./pages/Settings/Users";
 import Operators from "./pages/Settings/Operators";
 import OeeReport from "./pages/Reports/OeeReport";
 import DowntimeReport from "./pages/Reports/DowntimeReport";
+import Teams from "./pages/Settings/Teams";
 
 import LoginPage from "./pages/login/Login";
 
@@ -65,6 +66,10 @@ const routes = [
             {
                 path: 'shifts',
                 component: Shifts
+            },
+            {
+                path: 'teams',
+                component: Teams,
             },
             {
                 path: 'operators',
