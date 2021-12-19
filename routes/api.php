@@ -60,6 +60,8 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::post('assignProductToStation','StationProductController@assignProductToStation');
     Route::get('stationProductsByStationId','ProductController@stationProductsByStationId');
     Route::get('team','TeamController@index');
+    Route::get('team/operators','TeamController@getOperatorsOfTeam');
+    Route::post('team','TeamController@store');
 });
 
 Route::middleware(['auth:api'])->group(function () {
