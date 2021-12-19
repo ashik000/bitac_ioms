@@ -13,7 +13,7 @@ class CreateTeamOperatorTableMigration extends Migration
      */
     public function up()
     {
-        Schema::table('team_operator', function (Blueprint $table) {
+        Schema::create('team_operator', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('team_id');
             $table->foreign('team_id')->references('id')->on('teams');

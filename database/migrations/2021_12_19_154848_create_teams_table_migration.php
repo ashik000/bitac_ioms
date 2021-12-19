@@ -13,11 +13,11 @@ class CreateTeamsTableMigration extends Migration
      */
     public function up()
     {
-        Schema::table('teams', function (Blueprint $table) {
+        Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
