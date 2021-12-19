@@ -9,9 +9,9 @@ export default {
             .catch(e => console.log(e.response.data))
     },
     fetchOperatorListByTeamId( filter ,success, error) {
-        axios.get('team/operator', {
+        axios.get('team/operators', {
             params: {
-                teamId: filter.teamId,
+                team_id: filter.teamId,
             }
         })
             .then(r => success(r.data))

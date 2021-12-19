@@ -20,11 +20,11 @@
                 </TeamGroup>
             </div>
             <section class="section col-md-9 col-sm-12 h-100">
-                <TeamList :items="products" sectionHeader="Operators" @action-clicked="openProductAddModal">
+                <TeamList :items="operators" sectionHeader="Operators" @action-clicked="openProductAddModal">
                     <template v-slot:row="{ row }">
 
                         <div class="d-flex justify-content-between align-items-center">
-                            {{ row.name }}
+                            {{ row.first_name + " " + row.last_name }}
                             <span style="float: right;">
                                 <button type="button" class="btn btn-primary btn-sm" @click.prevent="showProductEditModal(row)">
                                     <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
@@ -165,7 +165,7 @@ export default {
     mounted() {
         TeamService.fetchAllTeams(groups => {
             this.groups = groups;
-            // this.showInprogress = true;
+            this.showInprogress = true;
             TeamService.fetchOperatorListByTeamId({teamId: this.groups[0].id}, operators => {
                 this.operators = operators;
                 this.showInprogress = false;
