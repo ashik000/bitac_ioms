@@ -140,6 +140,7 @@ import TeamList from "../../components/settings/TeamList";
 import TeamService from "../../services/TeamService";
 import toastrService from '../../services/ToastrService';
 import groupMixin from '../../mixins/groupMixin';
+import productService from "../../services/Products";
 
 export default {
     name: "Teams",
@@ -151,13 +152,13 @@ export default {
         showInprogress: false,
     }),
     methods: {
-        // loadGroupData(groupId){
-        //     this.showInprogress = true;
-        //     TramService.fetchAllTeams(groupId, teams => {
-        //         this.teams = teams;
-        //         this.showInprogress = false;
-        //     });
-        // },
+        loadGroupData(groupId){
+            this.showInprogress = true;
+            TeamService.fetchOperatorListByTeamId({teamId: groupId}, operators => {
+                this.operators = operators;
+                this.showInprogress = false;
+            });
+        },
 
     },
     computed:{
