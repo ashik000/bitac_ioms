@@ -62,6 +62,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('team','TeamController@index');
     Route::get('team/operators','TeamController@getOperatorsOfTeam');
     Route::post('team','TeamController@store');
+    Route::post('team/operators','TeamController@updateTeamOperators');
 });
 
 Route::middleware(['auth:api'])->group(function () {

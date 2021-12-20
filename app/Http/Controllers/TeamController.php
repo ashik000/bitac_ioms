@@ -26,4 +26,17 @@ class TeamController extends Controller
             'name' => $request['name']
         ]);
     }
+
+    public function updateTeamOperators(Request $request){
+        DB::table('team_operator')->where('team_id', '=', $request['team_id'])->delete();
+        $array = [];
+        foreach ($request['operator_ids'] as $operator_id ){
+            array_push($array,[
+                'team_id' => $request['team_id'],
+                'operator_id' => $operator_id
+                ]);
+        }
+        DB::table('team_operator')->insert($array);
+        return response()-> json("Success",200);
+    }
 }
