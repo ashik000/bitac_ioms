@@ -25,4 +25,12 @@ export default {
                 console.log(e.response.data)
             })
     },
+    addOperatorsToTeam(data, success, error) {
+        axios.post('team/operators', data)
+            .then(r => success(r.data))
+            .catch(e => {
+                error('Validation failed');
+                console.log(e.response.data)
+            })
+    },
 }

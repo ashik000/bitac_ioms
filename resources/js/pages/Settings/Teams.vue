@@ -20,7 +20,7 @@
                 </TeamGroup>
             </div>
             <section class="section col-md-9 col-sm-12 h-100">
-                <TeamList :items="operators" sectionHeader="Operators" @action-clicked="openProductAddModal">
+                <TeamList :items="operators" sectionHeader="Operators" @action-clicked="openOperatorAddModal">
                     <template v-slot:row="{ row }">
 
                         <div class="d-flex justify-content-between align-items-center">
@@ -79,38 +79,40 @@
             </template>
         </Modal>
 
-        <Modal v-if="showProductForm" @close="closeProductModal()">
+        <Modal v-if="showOperatorForm" @close="closeOperatorForm()">
             <template v-slot:header>
                 <div>
                     <h5>
-                        {{productId == null ? "Add Product" : "Edit Product"}}
+                        Add/Remove Operator To Team
                     </h5>
                 </div>
             </template>
             <template v-slot:content>
                 <form>
                     <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" v-model="productName" class="form-control" placeholder="Enter Name">
-                        <label class="mt-2">Group</label>
-                        <select class="form-control" v-model="selectedGroupId">
+                        <label class="mt-2">Select Team</label>
+                        <select class="form-control" v-model="selectedGroupId" @change="loadSelectedOperators(selectedGroupId)">
                             <option disabled value="">--Select--</option>
                             <option v-for="group in groups" :value="group.id" :key="group.id">
                                 {{ group.name }}
                             </option>
                         </select>
-                        <label class="mt-2">Code</label>
-                        <input type="text" v-model="productCode" class="form-control" placeholder="Enter Code">
-                        <label class="mt-2">Unit</label>
-                        <input type="text" v-model="productUnit" class="form-control" placeholder="Enter Unit">
+
+                        <div>
+                            <label class="typo__label">Select Operators</label>
+                            <multiselect v-model="selectedOperators" tag-placeholder="Add Operator" placeholder="Select Operators"
+                                         label="first_name" :custom-label="labelWithFullName" track-by="id" :options="allOperators" :multiple="true" :taggable="true"
+                                         :close-on-select="false"></multiselect>
+                        </div>
+
                     </div>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
             </template>
             <template v-slot:footer>
                 <div class="float-end pb-4" style="padding-right: 15px;">
-                    <button class="btn btn-outline-danger" @click.prevent="closeProductModal()">CLOSE</button>
-                    <button class="btn btn-success ms-3" @click="productId == null ? createProduct() : updateProduct()">SUBMIT</button>
+                    <button class="btn btn-outline-danger" @click.prevent="closeOperatorForm()">CLOSE</button>
+                    <button class="btn btn-success ms-3" @click="addOperatorsToTeam()">SUBMIT</button>
                 </div>
             </template>
         </Modal>
@@ -140,17 +142,68 @@ import TeamList from "../../components/settings/TeamList";
 import TeamService from "../../services/TeamService";
 import toastrService from '../../services/ToastrService';
 import groupMixin from '../../mixins/groupMixin';
+import operatorsService from "../../services/OperatorsService";
+import Multiselect from 'vue-multiselect'
 
 export default {
     name: "Teams",
-    components: {TeamGroup, TeamList},
+    components: {TeamGroup, TeamList, Multiselect},
     mixins:[groupMixin],
     data: () => ({
         groups: [],
         operators: [],
+        showOperatorForm: false,
         showInprogress: false,
+        allOperators: [],
+        selectedOperators: [],
+        selectedGroupId: [],
     }),
     methods: {
+        labelWithFullName({ first_name, last_name }) {
+            return `${first_name} ${last_name}`;
+        },
+
+        openOperatorAddModal() {
+            this.showOperatorForm = true;
+        },
+
+        closeOperatorForm(){
+            this.selectedOperators = [];
+            this.selectedGroupId = [];
+            this.showOperatorForm = false;
+        },
+
+        loadSelectedOperators(groupId){
+            this.showInprogress = true;
+            TeamService.fetchOperatorListByTeamId({teamId: groupId}, operators => {
+                this.selectedOperators = operators;
+                this.showInprogress = false;
+            });
+        },
+
+        addOperatorsToTeam(){
+            let result = this.selectedOperators.map(a => a.id);
+
+            this.showInprogress = true;
+            TeamService.addOperatorsToTeam({team_id: this.selectedGroupId, operator_ids: result}, response => {
+                this.showInprogress = false;
+                toastrService.showSuccessToast('Team added.');
+            }, error => {
+                this.showInprogress = false;
+                toastrService.showErrorToast(error);
+            });
+            this.closeOperatorForm();
+
+            TeamService.fetchAllTeams(groups => {
+                this.groups = groups;
+                this.showInprogress = true;
+                TeamService.fetchOperatorListByTeamId({teamId: this.groups[0].id}, operators => {
+                    this.operators = operators;
+                    this.showInprogress = false;
+                });
+            });
+        },
+
         loadGroupData(groupId){
             this.showInprogress = true;
             TeamService.fetchOperatorListByTeamId({teamId: groupId}, operators => {
@@ -188,6 +241,12 @@ export default {
                 this.operators = operators;
                 this.showInprogress = false;
             });
+        });
+
+        operatorsService.fetchAll((data) => {
+            this.allOperators = data;
+        }, (error) => {
+            console.log(error);
         });
     }
 }
