@@ -17,4 +17,12 @@ export default {
             .then(r => success(r.data))
             .catch(e => console.log(e.response.data))
     },
+    addGroup(data, success, error) {
+        axios.post('team', data)
+            .then(r => success(r.data))
+            .catch(e => {
+                error('Validation failed');
+                console.log(e.response.data)
+            })
+    },
 }

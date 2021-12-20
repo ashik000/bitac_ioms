@@ -59,7 +59,7 @@
         <Modal v-if="showGroupForm" @close="closeGroupForm">
             <template v-slot:header>
                 <h5>
-                    {{ modalTitleText }} Product Group
+                    {{ modalTitleText }} Team
                 </h5>
             </template>
             <template v-slot:content>
@@ -140,7 +140,6 @@ import TeamList from "../../components/settings/TeamList";
 import TeamService from "../../services/TeamService";
 import toastrService from '../../services/ToastrService';
 import groupMixin from '../../mixins/groupMixin';
-import productService from "../../services/Products";
 
 export default {
     name: "Teams",
@@ -158,6 +157,24 @@ export default {
                 this.operators = operators;
                 this.showInprogress = false;
             });
+        },
+
+        createGroup() {
+            this.showInprogress = true;
+            TeamService.addGroup({name: this.groupName}, data => {
+                this.groups.push(data);
+                this.showInprogress = false;
+                toastrService.showSuccessToast('Team added.');
+                this.clearTeamGroup();
+                this.closeGroupForm();
+            }, error => {
+                this.showInprogress = false;
+                toastrService.showErrorToast(error);
+            });
+        },
+
+        clearTeamGroup(){
+            this.groupName = "";
         },
 
     },
