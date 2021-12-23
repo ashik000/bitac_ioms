@@ -25,7 +25,8 @@ class DailyReportGenerator implements ReportGenerator
                 'station_id',
                 'product_id',
                 'shift_id',
-                'operator_id'
+                'operator_id',
+                'team_id'
             ])
             ->select([
                 DB::raw('SUM(expected) as expected'),
@@ -37,7 +38,8 @@ class DailyReportGenerator implements ReportGenerator
                 'station_id',
                 'product_id',
                 'operator_id',
-                'shift_id'
+                'shift_id',
+                'team_id'
             ])
             ->get();
 
