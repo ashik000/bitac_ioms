@@ -9,6 +9,7 @@ use App\Data\Models\Scrap;
 use App\Data\Models\StationOperator;
 use App\Data\Models\StationProduct;
 use App\Data\Models\StationShift;
+use App\Data\Models\StationTeam;
 use App\Data\Models\TeamOperator;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -787,11 +788,11 @@ class ReportRepository
         else
         {
             // Info: one single team is selected. In this case, we will serve hourly/daily/weekly/monthly data to the table.
-        
+
             $teamOperator = TeamOperator::find($teamId);
 
             // add statonTeam
-            
+
             if ($type === 'hourly' || $type === 'daily')
             {
                 $queryStart = $start->startOfDay();
@@ -811,7 +812,7 @@ class ReportRepository
             $result = Report::where('tag', $type)
                 ->whereBetween('generated_at', [$queryStart, $queryEnd])
                 ->where('operator_id', '=', $teamOperator->operator_id)
-                ->where('station_id', '=', $stationOperator->station_id)
+                ->where('station_id', '=', $teamOperator->station_id)
                 ->groupBy('generated_at')
                 ->orderBy('generated_at')
                 ->select([

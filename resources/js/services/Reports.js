@@ -84,6 +84,17 @@ export default {
         }).then(r => success(r.data))
             .catch(e => console.error(e))
     },
+    getOEETableReportByStationTeam(data, success, error) {
+        axios.get('getOEETableReportByStationTeam', {
+            params: {
+                'stationTeamId': data.stationTeamId,
+                'end' : data.end,
+                'start' : data.start,
+                'type' : data.type
+            }
+        }).then(r => success(r.data))
+            .catch(e => console.error(e))
+    },
     getDowntimeTableReportByStation(data, success, error) {
         axios.get('report/downtime/by/station', {
             params: {
@@ -123,5 +134,17 @@ export default {
             }
         }).then(r => success(r.data))
             .catch(e => console.error(e))
+    },
+
+    getDowntimeTableReportByStationTeam(data, success, error) {
+        axios.get('report/downtime/by/team', {
+            params: {
+                'stationTeamId': data.stationTeamId,
+                'end' : data.end,
+                'start' : data.start
+            }
+        }).then(r => success(r.data))
+            .catch(e => console.error(e))
     }
+
 }

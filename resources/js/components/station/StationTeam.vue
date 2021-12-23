@@ -114,7 +114,7 @@
                 team_id: null,
                 start_time : null,
             },
-            showInprogress: false
+            showInprogress: false,
         }),
         watch: {
             stationId: function(newStationId, oldStationId) {
@@ -125,12 +125,10 @@
         methods: {
             fetchStationTeam() {
                 this.showInprogress = true;
-                stationTeamService.fetchAll(this.stationId, r => {
-                    // this.stationTeam = r;
-                    this.stationTeam.name = r.team.name;
-                    this.stationTeam.id = r.team.id;
+                stationTeamService.fetchAll(this.stationId, res => {
+                    this.stationTeams = res;
+                    console.log(this.stationTeams)
                     this.showInprogress = false;
-                    console.log(this.stationTeam)
                 }, e => {
                     console.log(e);
                 });

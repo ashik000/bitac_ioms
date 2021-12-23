@@ -21,6 +21,12 @@
                             Lineview
                         </router-link>
                     </li>
+                    <li class="scada padding_y_ten_px" v-on:click="makeActive('scada')">
+                        <router-link to="/scada" class="nav-link text-white" active-class="active">
+                            <b-icon icon="graph-up" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
+                            SCADA View
+                        </router-link>
+                    </li>
                     <li class="reports padding_y_ten_px" v-on:click="makeActive('reports')">
                         <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <b-icon icon="file-bar-graph" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>

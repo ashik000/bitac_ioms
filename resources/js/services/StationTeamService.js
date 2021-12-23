@@ -7,7 +7,10 @@ export default {
                 station_id : stationId
             }
         })
-            .then(r => success(r.data))
+            .then(r => {
+                console.log(r.data);
+                success(r.data)
+            })
             .catch(e => error(e.response.data.message));
     },
     createOrUpdateStationTeam: function (data, success, error) {
