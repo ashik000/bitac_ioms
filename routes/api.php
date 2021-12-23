@@ -19,6 +19,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('stationProducts/all',['uses'=>'StationProductController@all']);
     Route::get('stationShifts/all',['uses'=>'StationShiftController@all']);
     Route::get('stationOperators/findByStationId', ['uses' => 'StationOperatorController@findStationOperatorByStationId']);
+    Route::get('stationTeams/findByStationId', ['uses' => 'StationTeamController@findStationTeamByStationId']);
     Route::post('assignDowntimeReason', ['uses'=>'DowntimeReasonController@assignDowntimeReason']);
     Route::post('uploadHourlyScrapCount', ['uses'=>'ScrapController@uploadHourlyScrapCount']);
     Route::post('removeDowntimeReason', ['uses'=>'DowntimeReasonController@removeDowntimeReason']);
@@ -35,6 +36,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::resource('stationProducts','StationProductController');
     Route::resource('stationShifts','StationShiftController');
     Route::resource('stationOperators','StationOperatorController');
+    Route::resource('stationTeams','StationTeamController');
     Route::resource('scraps','ScrapController');
     Route::resource('operators','OperatorController');
     Route::get('lineview', ['as' => 'lineview.graphdata', 'uses' => 'LineViewController@lineviewData']);

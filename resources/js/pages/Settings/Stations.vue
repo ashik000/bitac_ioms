@@ -81,6 +81,17 @@
                                             aria-selected="false"
                                         >Operators</a>
                                     </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a
+                                            class="nav-link"
+                                            id="ex3-tab-4"
+                                            data-bs-toggle="tab"
+                                            :href="'#teams-tab' + row.id"
+                                            role="tab"
+                                            :aria-controls="'teams-tab' + row.id"
+                                            aria-selected="false"
+                                        >Teams</a>
+                                    </li>
                                 </ul>
 
                                 <div class="tab-content row">
@@ -103,6 +114,13 @@
                                         role="tabpanel"
                                         :aria-labelledby="'operators-tab' + row.id">
                                         <StationOperator :station-id="selectedStationId"></StationOperator>
+                                    </div>
+
+                                    <div class="tab-pane fade"
+                                         :id="'teams-tab' + row.id"
+                                         role="tabpanel"
+                                         :aria-labelledby="'teams-tab' + row.id">
+                                        <StationTeam :station-id="selectedStationId"></StationTeam>
                                     </div>
 
                                 </div>
@@ -216,11 +234,12 @@ import toastrService from '../../services/ToastrService';
 import groupMixin from '../../mixins/groupMixin';
 import StationProduct from "../../components/station/StationProduct";
 import StationOperator from "../../components/station/StationOperator";
+import StationTeam from "../../components/station/StationTeam";
 import StationShift from "../../components/station/StationShift";
 
 export default {
     name: "Stations",
-    components: {StationOperator, StationShift, StationProduct, StationGroup, StationList},
+    components: {StationOperator, StationShift, StationProduct, StationGroup, StationList, StationTeam},
     mixins:[groupMixin],
     data: () => ({
         showStationForm: false,
