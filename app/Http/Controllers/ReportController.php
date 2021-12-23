@@ -215,4 +215,9 @@ class ReportController extends Controller
     {
         return $this->reportRepository->getOEETableReportByStationOperator($request);
     }
+
+    public function getOEETableReportByTeam(Request $request)
+    {
+        return $this->reportRepository->getOEETableReportByTeam($request);
+    }
 }

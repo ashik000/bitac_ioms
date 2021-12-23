@@ -9,6 +9,7 @@ use App\Data\Models\Scrap;
 use App\Data\Models\StationOperator;
 use App\Data\Models\StationProduct;
 use App\Data\Models\StationShift;
+use App\Data\Models\TeamOperator;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
@@ -686,6 +687,130 @@ class ReportRepository
             $result = Report::where('tag', $type)
                 ->whereBetween('generated_at', [$queryStart, $queryEnd])
                 ->where('operator_id', '=', $stationOperator->operator_id)
+                ->where('station_id', '=', $stationOperator->station_id)
+                ->groupBy('generated_at')
+                ->orderBy('generated_at')
+                ->select([
+                    'generated_at',
+                    DB::raw('SUM(produced) as produced'),
+                    DB::raw('SUM(scraped) as scraped'),
+                    DB::raw('SUM(expected) as expected'),
+                    DB::raw('SUM(available) as available'),
+                    DB::raw('SUM(planned_downtime) as planned_downtime')
+                ])->get();
+            foreach ($result as &$row)
+            {
+                switch ($type)
+                {
+                    case 'hourly':
+                        $startDateTime        = date('d M Y H:i:s', strtotime(Carbon::parse($row->generated_at)->startOfHour()->toDateTimeString()));
+                        $endDateTime          = date('d M Y H:i:s', strtotime(Carbon::parse($row->generated_at)->endOfHour()->toDateTimeString()));
+                        $row['time_duration'] = $startDateTime . " - " . $endDateTime;
+                        $row['dur']           = 3600;
+                        break;
+                    case 'daily':
+                        $dailyDate            = date('d M Y', strtotime(Carbon::parse($row->generated_at)->toDateTimeString()));
+                        $row['time_duration'] = $dailyDate;
+                        $row['dur']           = 3600 * 24;
+                        break;
+                    case 'weekly':
+                        $weeklyStartDate      = date('d M Y', strtotime(Carbon::parse($row->generated_at)->startOfWeek(Carbon::SATURDAY)->toDateString()));
+                        $weeklyEndDate        = date('d M Y', strtotime(Carbon::parse($row->generated_at)->endOfWeek(Carbon::FRIDAY)->toDateString()));
+                        $row['time_duration'] = $weeklyStartDate . " - " . $weeklyEndDate;
+                        $row['dur']           = 3600 * 24 * 7;
+                        break;
+                    case 'monthly':
+                        $monthlyStartDate = date('M Y', strtotime(Carbon::parse($row->generated_at)->startOfMonth()->toDateString()));
+                        // $monthlyEndDate       = date('M Y', strtotime(Carbon::parse($row->generated_at)->endOfMonth()->toDateString()));
+                        $row['time_duration'] = $monthlyStartDate;
+                        $row['dur']           = Carbon::parse($row->generated_at)->endOfMonth()->diffInSeconds(Carbon::parse($row->generated_at)->startOfMonth());
+                        break;
+
+                }
+                $totalTimeDuration   = $row['dur'];
+                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
+                $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
+                $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];
+            }
+            return $result;
+        }
+    }
+
+    public function getOEETableReportByTeam($request)
+    {
+        $teamId            = $request->get('teamId');
+        $start             = CarbonImmutable::parse($request->get('start'))->startOfDay();
+        $end               = CarbonImmutable::parse($request->get('end'))->endOfDay();
+        $type              = $request->get('type');
+        $type              = (is_null($type) || empty($type)) ? 'hourly' : $type;
+
+        if (empty($teamId))
+        {
+            // Info: teamId null means all teamId. In this case, there will be as many rows as teamId and (availability,performance,quality,oee) fields will be from start and end duration only
+            $result = Report::where('tag', 'hourly')
+                ->whereBetween('generated_at', [$start, $end])
+                ->groupBy(['operator_id', 'station_id'])
+                ->select([
+                    'operator_id',
+                    'station_id',
+                    DB::raw('SUM(produced) as produced'),
+                    DB::raw('SUM(scraped) as scraped'),
+                    DB::raw('SUM(expected) as expected'),
+                    DB::raw('SUM(available) as available'),
+                    DB::raw('SUM(planned_downtime) as planned_downtime')
+                ])->get()->load('station.stationGroup', 'operator');
+
+            $result = $result->filter(function ($row)
+            {
+                return !empty($row->operator);
+            })->values();
+
+            foreach ($result as &$row)
+            {
+                $station                   = $row->station;
+                $row['station_name']       = $station->name;
+                $row['station_group_id']   = $station->station_group_id;
+                $row['station_group_name'] = $station->stationGroup->name;
+                unset($row->station);
+                $operator             = $row->operator;
+                $row['operator_name'] = empty($operator) ? '' : $operator->first_name . " " . $operator->last_name;
+                unset($row->operator);
+                $totalTimeDuration   = $start->diffInSeconds($end);
+                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
+                $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
+                $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];
+            }
+            return $result;
+        }
+        else
+        {
+            // Info: one single team is selected. In this case, we will serve hourly/daily/weekly/monthly data to the table.
+        
+            $teamOperator = TeamOperator::find($teamId);
+
+            // add statonTeam
+            
+            if ($type === 'hourly' || $type === 'daily')
+            {
+                $queryStart = $start->startOfDay();
+                $queryEnd   = $end->endOfDay();
+            }
+            elseif ($type == 'weekly')
+            {
+                $queryStart = $start->startOfWeek(Carbon::SATURDAY);
+                $queryEnd   = $end->endOfWeek(Carbon::FRIDAY);
+            }
+            else
+            {
+                $queryStart = $start->startOfMonth();
+                $queryEnd   = $end->endOfMonth();
+            }
+
+            $result = Report::where('tag', $type)
+                ->whereBetween('generated_at', [$queryStart, $queryEnd])
+                ->where('operator_id', '=', $teamOperator->operator_id)
                 ->where('station_id', '=', $stationOperator->station_id)
                 ->groupBy('generated_at')
                 ->orderBy('generated_at')
