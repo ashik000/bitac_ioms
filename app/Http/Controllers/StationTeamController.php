@@ -18,7 +18,7 @@ class StationTeamController extends Controller
     public function index()
     {
         $stationTeams = StationTeam::active()->get();
-        $stationTeams->map(function ($stationTeams)
+        $stationTeams->map(function ($stationTeam)
         {
             $stationTeam->name               = $stationTeam->team->name;
             $stationTeam->station_name       = $stationTeam->station->name;
@@ -50,14 +50,10 @@ class StationTeamController extends Controller
         $stationId       = $data['station_id'];
         $teamId      = $data['team_id'];
         $startTime       = $data['start_time'] ?? null;
-        $stationTeam = StationTeam::where('station_id', '=', $stationId)
-            ->where('team_id', '=', $teamId)
-            ->where('end_time', '=', null)->first();
+        StationTeam::where('station_id', '=', $stationId)
+                    ->delete();
 
-        if (empty($stationTeam))
-        {
-            $stationTeam = new StationTeam();
-        }
+        $stationTeam = new StationTeam();
         $stationTeam->station_id  = $stationId;
         $stationTeam->team_id = $teamId;
         $stationTeam->start_time  = !empty($startTime) ? Carbon::parse($startTime) : now();

@@ -56,6 +56,16 @@ class Station extends Model
                     ])->wherePivot('deleted_at', null);
     }
 
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'station_teams')
+            ->as('meta')
+            ->withPivot([
+                'start_time'
+            ])->wherePivot('deleted_at', null)
+                ->wherePivot('start_time' , '<=', now()->toDateTimeString());
+    }
+
     public function productionLogs()
     {
         return $this->hasMany(ProductionLog::class);
