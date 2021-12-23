@@ -27,6 +27,21 @@ class TeamController extends Controller
         ]);
     }
 
+    public function update(Request $request)
+    {
+        $team = Team::find($request['id']);
+        $team->name = $request['name'];
+        $team->save();
+        return response()->json(Team::all(),200);
+    }
+
+    public function destroy(Request $request)
+    {
+        $team = Team::find($request['id']);
+        $team->delete();
+        return response()->json(Team::all(),200);
+    }
+
     public function updateTeamOperators(Request $request){
         DB::table('team_operator')->where('team_id', '=', $request['team_id'])->delete();
         $array = [];
@@ -37,6 +52,14 @@ class TeamController extends Controller
                 ]);
         }
         DB::table('team_operator')->insert($array);
+        return response()-> json("Success",200);
+    }
+
+    public function destroyTeamOperators(Request $request)
+    {
+        DB::table('team_operator')
+                ->where('team_id', '=', $request['team_id'])
+                ->where('operator_id', '=', $request['operator_id'])->delete();
         return response()-> json("Success",200);
     }
 }

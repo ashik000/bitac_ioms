@@ -62,7 +62,10 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('team','TeamController@index');
     Route::get('team/operators','TeamController@getOperatorsOfTeam');
     Route::post('team','TeamController@store');
+    Route::post('teamUpdate/{id}','TeamController@update');
+    Route::post('teamDelete/{id}','TeamController@destroy');
     Route::post('team/operators','TeamController@updateTeamOperators');
+    Route::post('team/operators/delete','TeamController@destroyTeamOperators');
 });
 
 Route::middleware(['auth:api'])->group(function () {

@@ -26,10 +26,10 @@
                         <div class="d-flex justify-content-between align-items-center">
                             {{ row.first_name + " " + row.last_name }}
                             <span style="float: right;">
-                                <button type="button" class="btn btn-primary btn-sm" @click.prevent="showProductEditModal(row)">
+                                <!-- <button type="button" class="btn btn-primary btn-sm" @click.prevent="showProductEditModal(row)">
                                     <b-icon icon="pencil-square" class="pb-sm-1" font-scale="1.30"></b-icon> EDIT
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" @click.prevent="showProductDeleteModal(row)">
+                                </button> -->
+                                <button type="button" class="btn btn-danger btn-sm" @click.prevent="showOperatorDeleteModal(row)">
                                     <b-icon icon="trash" class="pb-sm-1" font-scale="1.30"></b-icon> DELETE
                                 </button>
                             </span>
@@ -39,6 +39,7 @@
                 </TeamList>
             </section>
         </div>
+
         <Modal v-if="showGroupDeleteForm" @close="closeGroupForm">
             <template v-slot:header>
                 <h5>
@@ -117,15 +118,15 @@
             </template>
         </Modal>
 
-        <Modal v-if="showProductDeleteForm" @close="closeProductModal">
+        <Modal v-if="showOperatortDeleteForm" @close="closeDeleteOperatortModal">
             <template v-slot:header>
                 <h5>
-                    Delete Product
+                    Delete Operator
                 </h5>
             </template>
             <template v-slot:content>
-                <form @submit.prevent="deleteProduct">
-                    <p>Are you sure you want to delete the product named <span style="color: darkred">{{productName}}</span>?</p>
+                <form @submit.prevent="deleteOperator">
+                    <p>Are you sure you want to delete the operator named <span style="color: darkred">{{operatorName}}</span> from this team?</p>
                     <button class="btn btn-danger float-end">SUBMIT</button>
                 </form>
                 <b-overlay :show="showInprogress" opacity="0.6" no-wrap></b-overlay>
@@ -157,6 +158,10 @@ export default {
         allOperators: [],
         selectedOperators: [],
         selectedGroupId: [],
+        operatorName: '',
+        showOperatortDeleteForm : false,
+        operatorId: null,
+        selectedGroupIdX: null,
     }),
     methods: {
         labelWithFullName({ first_name, last_name }) {
@@ -212,6 +217,18 @@ export default {
             });
         },
 
+        getAllGroupData() {
+            TeamService.fetchAllTeams(groups => {
+                this.groups = groups;
+                this.showInprogress = true;
+                this.selectedGroupIdX = this.groups[0].id;
+                TeamService.fetchOperatorListByTeamId({teamId: this.groups[0].id}, operators => {
+                    this.operators = operators;
+                    this.showInprogress = false;
+                });
+            });
+        },
+
         createGroup() {
             this.showInprogress = true;
             TeamService.addGroup({name: this.groupName}, data => {
@@ -226,22 +243,76 @@ export default {
             });
         },
 
+        updateGroup() {
+            this.showInprogress = true;
+            TeamService.updateGroup(this.groupId,{name: this.groupName}, res => {
+                this.groups = res;
+                this.showInprogress = false;
+                toastrService.showSuccessToast('Team updated.');
+                this.closeGroupForm();
+                this.getAllGroupData();
+            }, error => {
+                this.showInprogress = false;
+                toastrService.showErrorToast(error);
+            });
+        },
+
+        deleteGroup(){
+            this.showInprogress = true;
+            if (this.operators.length > 0) {
+                this.closeGroupForm();
+                this.showInprogress = false;
+                toastrService.showErrorToast("You can't delete this because the group has operators.");
+            } else {
+                TeamService.deleteGroup(this.groupId, res =>{
+                    this.groups = res;
+                    this.showInprogress = false;
+                    toastrService.showSuccessToast('Team deleted.');
+                    this.closeGroupForm();
+                    this.getAllGroupData();
+                }, error =>{
+                    this.showInprogress = true;
+                    toastrService.showErrorToast(error);
+                })
+            }
+        },
+
         clearTeamGroup(){
             this.groupName = "";
+        },
+
+        showOperatorDeleteModal(operator) {
+            this.showOperatortDeleteForm = true;
+            this.operatorName = operator.first_name + ' ' + operator.last_name;
+            this.operatorId = operator.id;
+        },
+
+        deleteOperator(){
+            this.showInprogress = true;
+            let payload = {
+                operator_id: this.operatorId,
+                team_id: this.selectedGroupIdX
+            };
+            TeamService.deleteOperatorFromTeam(payload, res => {
+                this.showInprogress = false;
+                this.showOperatortDeleteForm = false;
+                toastrService.showSuccessToast('Operator deleted from team.');
+                this.getAllGroupData();
+            }, error => {
+                this.showInprogress = false;
+                toastrService.showErrorToast(error);
+            });
+        },
+
+        closeDeleteOperatortModal(){
+            this.showOperatortDeleteForm = false;
         },
 
     },
     computed:{
     },
     mounted() {
-        TeamService.fetchAllTeams(groups => {
-            this.groups = groups;
-            this.showInprogress = true;
-            TeamService.fetchOperatorListByTeamId({teamId: this.groups[0].id}, operators => {
-                this.operators = operators;
-                this.showInprogress = false;
-            });
-        });
+        this.getAllGroupData();
 
         operatorsService.fetchAll((data) => {
             this.allOperators = data;

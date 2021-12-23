@@ -25,6 +25,22 @@ export default {
                 console.log(e.response.data)
             })
     },
+    updateGroup(id, data, success, error) {
+        axios.post(`teamUpdate/${id}`, data)
+            .then(r => success(r.data))
+            .catch(e => {
+                error('Try again');
+                console.log(e.response.data)
+            })
+    },
+    deleteGroup(id,success, error) {
+        axios.post(`teamDelete/${id}`)
+            .then(r => success(r.data))
+            .catch(e => {
+                error('Try again');
+                console.log(e.response.data)
+            })
+    },
     addOperatorsToTeam(data, success, error) {
         axios.post('team/operators', data)
             .then(r => success(r.data))
@@ -33,4 +49,12 @@ export default {
                 console.log(e.response.data)
             })
     },
+    deleteOperatorFromTeam(payload, success, error) {
+        axios.post('team/operators/delete', payload)
+            .then(r => success(r.data))
+            .catch(e => {
+                error('Try again');
+                console.log(e.response.data)
+            })
+    }
 }
