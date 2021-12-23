@@ -21,7 +21,7 @@ class LogSubscriber
         while(!$connected) {
             sleep(5);
             try {
-                $mqttClient = MqttConnection::connect('IOMS Subscribe Logs', false);
+                $mqttClient = MqttConnection::connect('IOMS Subscribe Logs New', false);
                 \Log::debug('Subscribed to ' . self::LOG_SUBSCRIPTION_TOPIC);
                 error_log('Subscribed to ' . self::LOG_SUBSCRIPTION_TOPIC);
                 $mqttClient->subscribe(self::LOG_SUBSCRIPTION_TOPIC, function ($topic, $message) use($mqttClient) {

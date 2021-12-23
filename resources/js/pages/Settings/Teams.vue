@@ -220,7 +220,7 @@ export default {
         getAllGroupData() {
             TeamService.fetchAllTeams(groups => {
                 this.groups = groups;
-                this.showInprogress = true;
+                this.showInprogress = false;
                 this.selectedGroupIdX = this.groups[0].id;
                 TeamService.fetchOperatorListByTeamId({teamId: this.groups[0].id}, operators => {
                     this.operators = operators;

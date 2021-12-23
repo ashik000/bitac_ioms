@@ -61,7 +61,8 @@ class Station extends Model
         return $this->belongsToMany(Team::class, 'station_teams')
             ->as('meta')
             ->withPivot([
-                'start_time'
+                'start_time',
+                'team_id'
             ])->wherePivot('deleted_at', null)
                 ->wherePivot('start_time' , '<=', now()->toDateTimeString());
     }
