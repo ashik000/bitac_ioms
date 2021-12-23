@@ -109,6 +109,7 @@
             selectedStationTeamNameToDelete: null,
             stationTeam: {
                 id: null,
+                name: null,
                 station_id: null,
                 team_id: null,
                 start_time : null,
@@ -124,10 +125,10 @@
         methods: {
             fetchStationTeam() {
                 this.showInprogress = true;
-                stationTeamService.fetchAll(this.stationId, r => {
-                    this.stationTeam = r;
+                stationTeamService.fetchAll(this.stationId, res => {
+                    this.stationTeams = res;
+                    console.log(this.stationTeams)
                     this.showInprogress = false;
-                    console.log(this.stationTeam)
                 }, e => {
                     console.log(e);
                 });

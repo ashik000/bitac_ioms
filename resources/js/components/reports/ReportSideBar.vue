@@ -25,6 +25,11 @@
                     Operator Wise Report
                 </a>
             </li>
+            <li class="list-group-item background-light-blue" @click.prevent="reportTypeChanged('team')" :class="{ active: reportType === 'team' }">
+                <a href="#" class="nav-link text-white">
+                    Team Wise Report
+                </a>
+            </li>
         </ul>
 
     </div>

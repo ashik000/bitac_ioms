@@ -23,6 +23,7 @@
     import ReportTableOEEByProduct from "./reporttable/oee/ReportTableOEEByProduct";
     import ReportTableOEEByShift from "./reporttable/oee/ReportTableOEEByShift";
     import ReportTableOEEByOperator from "./reporttable/oee/ReportTableOEEByOperator";
+    import ReportTableOEEByTeam from "./reporttable/oee/ReportTableOEEByTeam";
 
     export default {
         name: "ReportBase",
@@ -35,6 +36,7 @@
             'report-table-by-product': ReportTableOEEByProduct,
             'report-table-by-shift': ReportTableOEEByShift,
             'report-table-by-operator': ReportTableOEEByOperator,
+            'report-table-by-team': ReportTableOEEByTeam,
         },
         data: () => ({
             reportType: 'station',

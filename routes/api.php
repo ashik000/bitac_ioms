@@ -51,6 +51,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('getOEETableReportByStationProduct',['uses'=>'ReportController@getOEETableReportByStationProduct']);
     Route::get('getOEETableReportByStationShift',['uses'=>'ReportController@getOEETableReportByStationShift']);
     Route::get('getOEETableReportByStationOperator',['uses'=>'ReportController@getOEETableReportByStationOperator']);
+    Route::get('getOEETableReportByStationTeam',['uses'=>'ReportController@getOEETableReportByStationTeam']);
     Route::get('report/downtime/by/station',['uses'=>'DowntimeReportController@getDowntimeTableReportByStation']);
     Route::get('report/downtime/by/product',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationProduct']);
     Route::get('report/downtime/by/shift',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationShift']);
