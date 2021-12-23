@@ -108,8 +108,8 @@ class HourlyReportGenerator implements ReportGenerator
                 $report->generated_at = $start->endOfHour();
                 $report->tag          = 'hourly';
                 $report->station_id   = $station->id;
+                $report->team_id      = $station->team_id;
                 $report->product_id   = $product->id;
-
                 $report->shift_id = $shift['id']?? 1;
                 $report->operator_id  = $stationOperator->operator_id?? null;
 
