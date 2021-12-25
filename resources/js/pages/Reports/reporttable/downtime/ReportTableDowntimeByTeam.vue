@@ -15,7 +15,7 @@
         </thead>
         <tbody>
         <tr v-for="row in tableData" v-if="showTable">
-            <td v-if="!stationTeamId">{{ row.name }}</td>
+            <td v-if="!stationTeamId">{{ row.team_name }}</td>
             <td v-if="!stationTeamId">{{ row.station_name }}</td>
             <td v-if="!stationTeamId">{{ row.station_group_name }}</td>
             <td v-if="stationTeamId">{{ row.name }}</td>
@@ -42,7 +42,7 @@
             tableData: []
         }),
         props:{
-            stationOperatorId: {
+            stationTeamId: {
                 default: 0
             },
             start: {
@@ -66,7 +66,7 @@
         methods:{
             fetchData(){
                 let vm = this;
-                reportService.getDowntimeTableReportByStatioTeam({
+                reportService.getDowntimeTableReportByStationTeam({
                     'stationTeamId': vm.stationTeamId === '0' ? null : vm.stationTeamId,
                     'start' : moment(vm.start).format('DD-MM-YYYY'),
                     'end': moment(vm.end).format('DD-MM-YYYY')

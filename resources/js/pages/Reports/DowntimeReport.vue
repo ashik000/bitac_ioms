@@ -27,6 +27,7 @@
                             <report-table-by-product :stationProductId="reportPageFilters.selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='product'"></report-table-by-product>
                             <report-table-by-shift :stationShiftId="reportPageFilters.selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='shift'"></report-table-by-shift>
                             <report-table-by-operator :stationOperatorId="reportPageFilters.selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='operator'"></report-table-by-operator>
+                            <report-table-by-team :stationTeamId="reportPageFilters.selectedStationTeamId" :start="selectedRange.start" :end="selectedRange.end" v-if="selectedReportType==='team'"></report-table-by-team>
                         </div>
                     </div>
                 </div>
@@ -46,6 +47,7 @@
     import ReportTableDowntimeByProduct from './reporttable/downtime/ReportTableDowntimeByProduct';
     import ReportTableDowntimeByShift from './reporttable/downtime/ReportTableDowntimeByShift';
     import ReportTableDowntimeByOperator from './reporttable/downtime/ReportTableDowntimeByOperator';
+    import ReportTableDowntimeByTeam from './reporttable/downtime/ReportTableDowntimeByTeam';
     import {mapState} from "vuex";
 
     export default {
@@ -59,6 +61,7 @@
             'report-table-by-product': ReportTableDowntimeByProduct,
             'report-table-by-shift': ReportTableDowntimeByShift,
             'report-table-by-operator': ReportTableDowntimeByOperator,
+            'report-table-by-team': ReportTableDowntimeByTeam,
         },
         props: {
             reportType: {
@@ -80,6 +83,7 @@
             selectedStationProduct: null,
             selectedStationShift: null,
             selectedStationOperator: null,
+            selectedStationTeam: null,
             title: '',
             downtimeDataset: {
                 labels: [],
@@ -131,6 +135,7 @@
                 this.selectedStationProductId = 0;
                 this.selectedStationShiftId = 0;
                 this.selectedStationOperatorId = 0;
+                this.selectedStationTeamId = 0;
             },
             onRangeSelect(eventData) {
                 this.selectedRange.start = eventData.start;
@@ -147,6 +152,7 @@
                     stationProductId: this.reportPageFilters.selectedStationProductId === 0 ? null : this.reportPageFilters.selectedStationProductId,
                     stationShiftId : this.reportPageFilters.selectedStationShiftId === 0 ? null : this.reportPageFilters.selectedStationShiftId,
                     stationOperatorId : this.reportPageFilters.selectedStationOperatorId === 0 ? null : this.reportPageFilters.selectedStationOperatorId,
+                    stationTeamId : this.reportPageFilters.selectedStationTeamId === 0 ? null : this.reportPageFilters.selectedStationTeamId,
                     start: moment(this.selectedRange.start).format('YYYY-MM-DD'),
                     endTime: moment(this.selectedRange.end).format('YYYY-MM-DD'),
                 };

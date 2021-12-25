@@ -44,4 +44,9 @@ class DowntimeReportController extends Controller
         return $this->downtimeReportRepository->getDowntimeTableReportByStationOperator($request);
     }
 
+    public function getDowntimeTableReportByStationTeam(Request $request)
+    {
+        return $this->downtimeReportRepository->getDowntimeTableReportByStationTeam($request);
+    }
+
 }

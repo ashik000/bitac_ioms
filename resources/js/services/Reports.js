@@ -16,7 +16,7 @@ export default {
         .catch(e => console.log(e.response.data))
     },
     fetchDowntimeData(data,success, error) {
-        console.log("Fetching with params");
+        // console.log("Fetching with params");
         console.log(JSON.stringify(data));
         axios.get('downtimeReport',{
             params :{
@@ -28,7 +28,6 @@ export default {
                 'start': data.start
             }
         }).then(r => success(r.data))
-            .catch(e => console.log(e.response.data))
             .catch(e => console.log(e.response.data))
     },
     getHourlyProducedAndScrapedCountOfADay(data, success, error) {
