@@ -10,7 +10,6 @@ use App\Data\Models\StationOperator;
 use App\Data\Models\StationProduct;
 use App\Data\Models\StationShift;
 use App\Data\Models\StationTeam;
-use App\Data\Models\TeamOperator;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
@@ -738,33 +737,33 @@ class ReportRepository
         }
     }
 
-    public function getOEETableReportByTeam($request)
+    public function getOEETableReportByStationTeam($request)
     {
-        $teamId            = $request->get('teamId');
+        $stationTeamId     = $request->get('stationTeamId');
         $start             = CarbonImmutable::parse($request->get('start'))->startOfDay();
         $end               = CarbonImmutable::parse($request->get('end'))->endOfDay();
         $type              = $request->get('type');
         $type              = (is_null($type) || empty($type)) ? 'hourly' : $type;
 
-        if (empty($teamId))
+        if (empty($stationTeamId))
         {
             // Info: teamId null means all teamId. In this case, there will be as many rows as teamId and (availability,performance,quality,oee) fields will be from start and end duration only
             $result = Report::where('tag', 'hourly')
                 ->whereBetween('generated_at', [$start, $end])
-                ->groupBy(['operator_id', 'station_id'])
+                ->groupBy(['team_id', 'station_id'])
                 ->select([
-                    'operator_id',
+                    'team_id',
                     'station_id',
                     DB::raw('SUM(produced) as produced'),
                     DB::raw('SUM(scraped) as scraped'),
                     DB::raw('SUM(expected) as expected'),
                     DB::raw('SUM(available) as available'),
                     DB::raw('SUM(planned_downtime) as planned_downtime')
-                ])->get()->load('station.stationGroup', 'operator');
+                ])->get()->load('station.stationGroup', 'team');
 
             $result = $result->filter(function ($row)
             {
-                return !empty($row->operator);
+                return !empty($row->team);
             })->values();
 
             foreach ($result as &$row)
@@ -774,9 +773,9 @@ class ReportRepository
                 $row['station_group_id']   = $station->station_group_id;
                 $row['station_group_name'] = $station->stationGroup->name;
                 unset($row->station);
-                $operator             = $row->operator;
-                $row['operator_name'] = empty($operator) ? '' : $operator->first_name . " " . $operator->last_name;
-                unset($row->operator);
+                $team             = $row->team;
+                $row['name'] = empty($team) ? '' : $team->name;
+                unset($row->$team);
                 $totalTimeDuration   = $start->diffInSeconds($end);
                 $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
@@ -788,10 +787,7 @@ class ReportRepository
         else
         {
             // Info: one single team is selected. In this case, we will serve hourly/daily/weekly/monthly data to the table.
-
-            $teamOperator = TeamOperator::find($teamId);
-
-            // add statonTeam
+            $stationTeam = StationTeam::find($stationTeamId);
 
             if ($type === 'hourly' || $type === 'daily')
             {
@@ -811,8 +807,8 @@ class ReportRepository
 
             $result = Report::where('tag', $type)
                 ->whereBetween('generated_at', [$queryStart, $queryEnd])
-                ->where('operator_id', '=', $teamOperator->operator_id)
-                ->where('station_id', '=', $teamOperator->station_id)
+                ->where('team_id', '=', $stationTeam->team_id)
+                ->where('station_id', '=', $stationTeam->station_id)
                 ->groupBy('generated_at')
                 ->orderBy('generated_at')
                 ->select([

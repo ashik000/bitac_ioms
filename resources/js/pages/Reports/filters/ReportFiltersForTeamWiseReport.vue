@@ -113,8 +113,6 @@
             });
             StationTeamService.allStationTeamsForReportDropdown(response => {
                 this.allStationTeams = response;
-                console.log('all station teams');
-                console.log(this.allStationTeams);
             });
 
         }

@@ -26,6 +26,7 @@
                             <report-table-by-product :stationProductId="reportPageFilters.selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
                             <report-table-by-shift :stationShiftId="reportPageFilters.selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>
                             <report-table-by-operator :stationOperatorId="reportPageFilters.selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='operator'"></report-table-by-operator>
+                            <report-table-by-team :stationTeamId="reportPageFilters.selectedStationTeamId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='team'"></report-table-by-team>
                         </div>
                     </div>
                 </div>
@@ -45,6 +46,7 @@
     import ReportTableOEEByProduct from './reporttable/oee/ReportTableOEEByProduct';
     import ReportTableOEEByShift from './reporttable/oee/ReportTableOEEByShift';
     import ReportTableOEEByOperator from './reporttable/oee/ReportTableOEEByOperator';
+    import ReportTableOEEByTeam from './reporttable/oee/ReportTableOEEByTeam';
     import { mapState } from 'vuex';
 
     export default {
@@ -67,6 +69,7 @@
             'report-table-by-product': ReportTableOEEByProduct,
             'report-table-by-shift': ReportTableOEEByShift,
             'report-table-by-operator': ReportTableOEEByOperator,
+            'report-table-by-team': ReportTableOEEByTeam,
             'reports-common-header': ReportsCommonHeader
         },
         data: () => ({
@@ -80,6 +83,7 @@
             selectedStationProduct: null,
             selectedStationShift: null,
             selectedStationOperator: null,
+            selectedStationTeam: null,
             title: '',
             dataset: {
                 labels: [],
@@ -147,6 +151,7 @@
                     stationProductId: this.reportPageFilters.selectedStationProductId,
                     stationShiftId: this.reportPageFilters.selectedStationShiftId,
                     stationOperatorId: this.reportPageFilters.selectedStationOperatorId,
+                    stationTeamId: this.reportPageFilters.selectedStationTeamId,
                     start: moment(this.selectedRange.start).format('YYYY-MM-DD'),
                     endTime: moment(this.selectedRange.end).format('YYYY-MM-DD'),
                     type: this.selectedPartition
