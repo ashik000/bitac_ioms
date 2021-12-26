@@ -1,36 +1,40 @@
 <template>
+  <div>
+    <button class="btn btn-primary mb-4" @click="downloadExcel()">Download Excel</button>
     <table class="table reportTable">
-        <thead>
-        <tr>
-            <th v-if="!stationProductId">Product</th>
-            <th v-if="!stationProductId">Product Group</th>
-            <th v-if="!stationProductId">Station</th>
-            <th v-if="!stationProductId">Station Group</th>
-            <th v-else>Time Duration</th>
-            <th>Availability</th>
-            <th>Quality</th>
-            <th>Performance</th>
-            <th>OEE</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="row in tableData" v-if="showTable">
-            <td v-if="!stationProductId">{{ row.product_name }}</td>
-            <td v-if="!stationProductId">{{ row.product_group_name }}</td>
-            <td v-if="!stationProductId">{{ row.station_name }}</td>
-            <td v-if="!stationProductId">{{ row.station_group_name }}</td>
-            <td v-else>{{ row.time_duration }}</td>
-            <td>{{ (row.availability * 100).toFixed(2) }} %</td>
-            <td>{{ (row.quality * 100).toFixed(2) }} %</td>
-            <td>{{ (row.performance * 100).toFixed(2) }} %</td>
-            <td>{{ (row.oee * 100).toFixed(2) }} %</td>
-        </tr>
-        <tr v-if="!showTable">
-            <td colspan="8" v-if="stationProductId == null || stationProductId == 0" style="text-align: center; color:red;">No Data Found</td>
-            <td colspan="7" v-else style="text-align: center; color:red">No Data Found</td>
-        </tr>
-        </tbody>
+      <thead>
+      <tr>
+        <th v-if="!stationProductId">Product</th>
+        <th v-if="!stationProductId">Product Group</th>
+        <th v-if="!stationProductId">Station</th>
+        <th v-if="!stationProductId">Station Group</th>
+        <th v-else>Time Duration</th>
+        <th>Availability</th>
+        <th>Quality</th>
+        <th>Performance</th>
+        <th>OEE</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="row in tableData" v-if="showTable">
+        <td v-if="!stationProductId">{{ row.product_name }}</td>
+        <td v-if="!stationProductId">{{ row.product_group_name }}</td>
+        <td v-if="!stationProductId">{{ row.station_name }}</td>
+        <td v-if="!stationProductId">{{ row.station_group_name }}</td>
+        <td v-else>{{ row.time_duration }}</td>
+        <td>{{ (row.availability * 100).toFixed(2) }} %</td>
+        <td>{{ (row.quality * 100).toFixed(2) }} %</td>
+        <td>{{ (row.performance * 100).toFixed(2) }} %</td>
+        <td>{{ (row.oee * 100).toFixed(2) }} %</td>
+      </tr>
+      <tr v-if="!showTable">
+        <td colspan="8" v-if="stationProductId == null || stationProductId == 0" style="text-align: center; color:red;">No Data Found</td>
+        <td colspan="7" v-else style="text-align: center; color:red">No Data Found</td>
+      </tr>
+      </tbody>
     </table>
+  </div>
+
 </template>
 
 <script>
@@ -70,19 +74,25 @@
                 this.fetchData();
             },
         },
-        methods:{
-            fetchData(){
-                let vm = this;
-                reportService.getOEETableReportByStationProduct({
-                    'stationProductId': vm.stationProductId === '0' ? null : vm.stationProductId,
-                    'start' : moment(vm.start).format('DD-MM-YYYY'),
-                    'end': moment(vm.end).format('DD-MM-YYYY'),
-                    'type': vm.type
-                }, function(responseData){
-                    vm.tableData = responseData;
-                });
-            }
+      methods: {
+        fetchData() {
+          let vm = this;
+          reportService.getOEETableReportByStationProduct(this.getRequestParams(), function (responseData) {
+            vm.tableData = responseData;
+          });
         },
+        getRequestParams() {
+          return {
+            'stationProductId': this.stationProductId === '0' ? null : this.stationProductId,
+            'start': moment(this.start).format('DD-MM-YYYY'),
+            'end': moment(this.end).format('DD-MM-YYYY'),
+            'type': this.type
+          }
+        },
+        downloadExcel(){
+          reportService.getOEETableReportByStationProductExcel(this.getRequestParams());
+        }
+      },
         mounted(){
             const vm = this;
             vm.fetchData();
