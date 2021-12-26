@@ -39,4 +39,16 @@ class Downtime extends Model
     {
         return $this->belongsTo(DowntimeReason::class, 'reason_id');
     }
+
+    protected $fillable = [
+        'id',
+        'start_time',
+        'duration',
+        'production_log_id',
+        'shift_id',
+        'operator_id',
+        'team_id',
+        'created_at',
+        'updated_at'
+    ];
 }
