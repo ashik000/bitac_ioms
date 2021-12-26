@@ -94,6 +94,30 @@ export default {
         }).then(r => success(r.data))
             .catch(e => console.error(e))
     },
+    getOEETableReportByStationTeamExcel(data, success, error) {
+        axios.get('getOEETableReportByStationTeamExcel', {
+            responseType: "blob",
+            params: {
+                'stationTeamId': data.stationTeamId,
+                'end' : data.end,
+                'start' : data.start,
+                'type' : data.type
+            }
+        }).then(function (response) {
+            let fileName = "Team Report Excel.xlsx";
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                // IE variant
+                window.navigator.msSaveOrOpenBlob(new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }), fileName);
+            } else {
+                const url = window.URL.createObjectURL(new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", fileName);
+                document.body.appendChild(link);
+                link.click();
+            }
+        });
+    },
     getDowntimeTableReportByStation(data, success, error) {
         axios.get('report/downtime/by/station', {
             params: {

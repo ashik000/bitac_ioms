@@ -10,13 +10,14 @@ use App\Data\Models\StationOperator;
 use App\Data\Models\StationProduct;
 use App\Data\Models\StationShift;
 use App\Data\Repositories\ReportRepository;
+use App\Exports\ExcelDataExport;
 use App\Http\Requests\HourlyProductionFetchRequest;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use DB;
 use Illuminate\Http\Request;
 use Log;
-
+use Excel;
 class ReportController extends Controller
 {
     /**
@@ -219,5 +220,56 @@ class ReportController extends Controller
     public function getOEETableReportByStationTeam(Request $request)
     {
         return $this->reportRepository->getOEETableReportByStationTeam($request);
+    }
+
+    public function getOEETableReportByStationTeamExcel(Request $request)
+    {
+        $data = $this->reportRepository->getOEETableReportByStationTeam($request);
+        $excel_data = $this->getFormattedDataForExcel($data, $request);
+        $headers = [];
+        if($request->get('stationTeamId')){
+            $headers = ['Time Duration',
+                "Availability",
+                "Quality",
+                "Performance",
+                "OEE"];
+        }else{
+            $headers = ['Team Name',
+                'Station Name',
+                'Station Group Name',
+                "Availability",
+                "Quality",
+                "Performance",
+                "OEE"];
+        }
+        return Excel::download(new ExcelDataExport($excel_data, $headers), 'Team Report.xlsx');
+    }
+
+    public function getFormattedDataForExcel($data,Request $request){
+        $excel_data = [];
+        if($request->get('stationTeamId')){
+            foreach ($data as $datum){
+                $excel_data[]=[
+                  "time_duration" => $datum['time_duration'],
+                  "availability" => number_format($datum['availability'] * 100,2)."%",
+                  "quality" => number_format($datum['quality'] * 100,2)."%",
+                  "performance" => number_format($datum['performance'] * 100,2)."%",
+                  "oee" => number_format($datum['oee'] * 100,2)."%",
+                ];
+            }
+        }else{
+            foreach ($data as $datum){
+                $excel_data[]=[
+                    "team_name" => $datum['name'],
+                    "station_name" => $datum['station_name'],
+                    "station_group_name" => $datum['station_group_name'],
+                    "availability" => number_format($datum['availability'] * 100,2)."%",
+                    "quality" => number_format($datum['quality'] * 100,2)."%",
+                    "performance" => number_format($datum['performance'] * 100,2)."%",
+                    "oee" => number_format($datum['oee'] * 100,2)."%",
+                ];
+            }
+        }
+        return $excel_data;
     }
 }
