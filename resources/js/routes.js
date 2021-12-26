@@ -11,6 +11,8 @@ import Users from "./pages/Settings/Users";
 import Operators from "./pages/Settings/Operators";
 import OeeReport from "./pages/Reports/OeeReport";
 import DowntimeReport from "./pages/Reports/DowntimeReport";
+import Teams from "./pages/Settings/Teams";
+import ScadaView from "./pages/Scada/ScadaView";
 
 import LoginPage from "./pages/login/Login";
 
@@ -34,6 +36,14 @@ const routes = [
         meta: {
             requiresAuth: false
         },
+    },
+    {
+        name: 'scadaView',
+        path: '/scada',
+        component: ScadaView,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/lineview',
@@ -65,6 +75,10 @@ const routes = [
             {
                 path: 'shifts',
                 component: Shifts
+            },
+            {
+                path: 'teams',
+                component: Teams,
             },
             {
                 path: 'operators',

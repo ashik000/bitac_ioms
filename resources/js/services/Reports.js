@@ -1,5 +1,19 @@
 import axios from 'axios';
 
+function getFileFromRequest(response, fileName){
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        // IE variant
+        window.navigator.msSaveOrOpenBlob(new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }), fileName);
+    } else {
+        const url = window.URL.createObjectURL(new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
+    }
+}
+
 export default {
     fetchReports(data, success, error) {
         axios.get('report', {
@@ -16,7 +30,7 @@ export default {
         .catch(e => console.log(e.response.data))
     },
     fetchDowntimeData(data,success, error) {
-        console.log("Fetching with params");
+        // console.log("Fetching with params");
         console.log(JSON.stringify(data));
         axios.get('downtimeReport',{
             params :{
@@ -28,7 +42,6 @@ export default {
                 'start': data.start
             }
         }).then(r => success(r.data))
-            .catch(e => console.log(e.response.data))
             .catch(e => console.log(e.response.data))
     },
     getHourlyProducedAndScrapedCountOfADay(data, success, error) {
@@ -51,6 +64,18 @@ export default {
         }).then(r => success(r.data))
             .catch(e => console.error(e))
     },
+    getOEETableReportByStationExcel(data) {
+        axios.get('getOEETableReportByStationExcel', {
+            responseType: 'blob',
+            params: {
+                'stationId': data.stationId,
+                'end' : data.end,
+                'start' : data.start,
+                'type' : data.type
+            }
+        }).then(r => getFileFromRequest(r, "Station Report"))
+            .catch(e => console.error(e))
+    },
     getOEETableReportByStationProduct(data, success, error) {
         axios.get('getOEETableReportByStationProduct', {
             params: {
@@ -60,6 +85,18 @@ export default {
                 'type' : data.type
             }
         }).then(r => success(r.data))
+            .catch(e => console.error(e))
+    },
+    getOEETableReportByStationProductExcel(data, success, error) {
+        axios.get('getOEETableReportByStationProductExcel', {
+            responseType : 'blob',
+            params: {
+                'stationProductId': data.stationProductId,
+                'end' : data.end,
+                'start' : data.start,
+                'type' : data.type
+            }
+        }).then(r => getFileFromRequest(r, 'Product Report'))
             .catch(e => console.error(e))
     },
     getOEETableReportByStationShift(data, success, error) {
@@ -73,6 +110,19 @@ export default {
         }).then(r => success(r.data))
             .catch(e => console.error(e))
     },
+
+    getOEETableReportByStationShiftExcel(data, success, error) {
+        axios.get('getOEETableReportByStationShiftExcel', {
+            responseType: "blob",
+            params: {
+                'stationShiftId': data.stationShiftId,
+                'end' : data.end,
+                'start' : data.start,
+                'type' : data.type
+            }
+        }).then(r => getFileFromRequest(r, "Shift Report"))
+            .catch(e => console.error(e))
+    },
     getOEETableReportByStationOperator(data, success, error) {
         axios.get('getOEETableReportByStationOperator', {
             params: {
@@ -83,6 +133,43 @@ export default {
             }
         }).then(r => success(r.data))
             .catch(e => console.error(e))
+    },
+    getOEETableReportByStationOperatorExcel(data) {
+        axios.get('getOEETableReportByStationExcel', {
+            responseType: "blob",
+            params: {
+                'stationOperatorId': data.stationOperatorId,
+                'end' : data.end,
+                'start' : data.start,
+                'type' : data.type
+            }
+        }).then(function (response) {
+            getFileFromRequest(response, "Station Report")
+        });
+    },
+    getOEETableReportByStationTeam(data, success, error) {
+        axios.get('getOEETableReportByStationTeam', {
+            params: {
+                'stationTeamId': data.stationTeamId,
+                'end' : data.end,
+                'start' : data.start,
+                'type' : data.type
+            }
+        }).then(r => success(r.data))
+            .catch(e => console.error(e))
+    },
+    getOEETableReportByStationTeamExcel(data, success, error) {
+        axios.get('getOEETableReportByStationTeamExcel', {
+            responseType: "blob",
+            params: {
+                'stationTeamId': data.stationTeamId,
+                'end' : data.end,
+                'start' : data.start,
+                'type' : data.type
+            }
+        }).then(function (response) {
+            getFileFromRequest(response, "Team Report");
+        });
     },
     getDowntimeTableReportByStation(data, success, error) {
         axios.get('report/downtime/by/station', {
@@ -123,5 +210,19 @@ export default {
             }
         }).then(r => success(r.data))
             .catch(e => console.error(e))
-    }
+    },
+
+    getDowntimeTableReportByStationTeam(data, success, error) {
+        axios.get('report/downtime/by/team', {
+            params: {
+                'stationTeamId': data.stationTeamId,
+                'end' : data.end,
+                'start' : data.start
+            }
+        }).then(r => success(r.data))
+            .catch(e => console.error(e))
+    },
+
+
+
 }

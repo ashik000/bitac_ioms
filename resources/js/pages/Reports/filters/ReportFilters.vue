@@ -4,6 +4,7 @@
         <report-filters-for-product-wise-report v-if="reportType==='product'" v-on="$listeners"></report-filters-for-product-wise-report>
         <report-filters-for-shift-wise-report v-if="reportType==='shift'" v-on="$listeners"></report-filters-for-shift-wise-report>
         <report-filters-for-operator-wise-report v-if="reportType==='operator'" v-on="$listeners"></report-filters-for-operator-wise-report>
+        <report-filters-for-team-wise-report v-if="reportType==='team'" v-on="$listeners"></report-filters-for-team-wise-report>
     </div>
 </template>
 
@@ -12,6 +13,7 @@
     import ReportFiltersForProductWiseReport from './ReportFiltersForProductWiseReport';
     import ReportFiltersForOperatorWiseReport from './ReportFiltersForOperatorWiseReport';
     import ReportFiltersForShiftWiseReport from './ReportFiltersForShiftWiseReport';
+    import ReportFiltersForTeamWiseReport from './ReportFiltersForTeamWiseReport';
 
     export default {
         name: "ReportFilters",
@@ -25,7 +27,8 @@
             ReportFiltersForStationWiseReport,
             ReportFiltersForProductWiseReport,
             ReportFiltersForOperatorWiseReport,
-            ReportFiltersForShiftWiseReport
+            ReportFiltersForShiftWiseReport,
+            ReportFiltersForTeamWiseReport
         }
     }
 </script>

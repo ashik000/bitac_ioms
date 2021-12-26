@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $tag
  * @property int $station_id
+ * @property int $team_id
  * @property int $product_id
  * @property int|null $operator_id
  * @property int $shift_id
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Data\Models\Product $product
  * @property-read \App\Data\Models\Shift $shift
  * @property-read \App\Data\Models\Station $station
+ * @property-read \App\Data\Models\Team $team
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Data\Models\Report newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Data\Models\Report newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Data\Models\Report query()
@@ -52,6 +54,11 @@ class Report extends Model
     public function station() {
         return $this->belongsTo(Station::Class);
     }
+
+    public function team() {
+        return $this->belongsTo(Team::Class);
+    }
+
 
     public function product() {
         return $this->belongsTo(Product::Class);

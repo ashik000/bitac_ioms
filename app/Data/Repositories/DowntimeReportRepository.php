@@ -6,6 +6,7 @@ use App\Data\Models\Downtime;
 use App\Data\Models\StationOperator;
 use App\Data\Models\StationProduct;
 use App\Data\Models\StationShift;
+use App\Data\Models\StationTeam;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
@@ -240,6 +241,72 @@ class DowntimeReportRepository
                 ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
                 ->where('station_id', '=', $stationOperator->station_id)
                 ->where('downtimes.operator_id', '=', $stationOperator->operator_id)
+                ->groupBy(['downtimes.reason_id','downtime_reasons.name','downtime_reasons.reason_group_id','downtime_reasons.type','downtime_reason_groups.name'])
+                ->select([
+                    'reason_id',
+                    DB::raw('downtime_reasons.name as name'),
+                    'reason_group_id',
+                    'type',
+                    DB::raw('downtime_reason_groups.name as reason_group_name'),
+                    DB::raw('COUNT(*) as count'),
+                    DB::raw('SUM(duration) as duration'),
+                ])->get();
+            $totalSum = $result->sum('duration');
+            foreach ($result as &$row) {
+                if(is_null($row['reason_id'])){
+                    $row['name'] = 'Uncommented';
+                    $row['reason_group_name'] = ' - ';
+                    $row['type'] = ' - ';
+                }
+                unset($row->downtimeReasonGroup);
+                $row['stop_percent'] = $row['duration'] / $totalSum;
+            }
+            return $result;
+        }
+    }
+
+    public function getDowntimeTableReportByStationTeam($request)
+    {
+        $stationTeamId = $request->get('stationTeamId');
+        $start = CarbonImmutable::parse($request->get('start'));
+        $end = CarbonImmutable::parse($request->get('end'));
+
+        if (empty($stationTeamId)) {
+            $result = Downtime::query()
+                ->join('production_logs', 'downtimes.production_log_id', '=', 'production_logs.id')
+                ->leftJoin('stations', 'stations.id', '=', 'production_logs.station_id')
+                ->leftjoin('station_groups', 'station_groups.id', '=', 'stations.station_group_id')
+                ->join('teams', 'teams.id', '=', 'downtimes.team_id')
+                ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
+                ->groupBy('downtimes.team_id','station_id','station_group_id','stations.name','station_groups.name','teams.name')
+                ->select([
+                    'station_id',
+                    'downtimes.team_id',
+                    'station_group_id',
+                    DB::raw('stations.name as station_name'),
+                    DB::raw('station_groups.name as station_group_name'),
+                    'teams.name AS team_name',
+                    DB::raw('COUNT(*) as count'),
+                    DB::raw('SUM(duration) as duration')
+                ])->get();
+            $totalSum = $result->sum('duration');
+            foreach ($result as &$row) {
+                $row['stop_percent'] = $row['duration'] / $totalSum;
+            }
+            return $result;
+        } else {
+            // Info: one single station is selected. In this case, we will serve hourly/daily/weekly/monthly data to the table.
+            $stationTeam = StationTeam::find($stationTeamId);
+
+            if(is_null($stationTeam)) return [];
+
+            $result = Downtime::query()
+                ->join('production_logs', 'downtimes.production_log_id', '=', 'production_logs.id')
+                ->leftJoin('downtime_reasons', 'downtimes.reason_id', '=', 'downtime_reasons.id')
+                ->leftJoin('downtime_reason_groups', 'downtime_reasons.reason_group_id', '=', 'downtime_reason_groups.id')
+                ->whereBetween('downtimes.start_time', [$start->startOfDay(), $end->endOfDay()])
+//                ->where('station_id', '=', $stationTeam->station_id)
+                ->where('downtimes.team_id', '=', $stationTeam->team_id)
                 ->groupBy(['downtimes.reason_id','downtime_reasons.name','downtime_reasons.reason_group_id','downtime_reasons.type','downtime_reason_groups.name'])
                 ->select([
                     'reason_id',

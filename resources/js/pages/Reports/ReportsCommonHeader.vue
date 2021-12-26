@@ -93,6 +93,7 @@ import ReportTableOEEByStation from './reporttable/oee/ReportTableOEEByStation';
 import ReportTableOEEByProduct from './reporttable/oee/ReportTableOEEByProduct';
 import ReportTableOEEByShift from './reporttable/oee/ReportTableOEEByShift';
 import ReportTableOEEByOperator from './reporttable/oee/ReportTableOEEByOperator';
+import ReportTableOEEByTeam from './reporttable/oee/ReportTableOEEByTeam';
 
 export default {
     name: "ReportsCommonHeader",
@@ -105,6 +106,7 @@ export default {
         'report-table-by-product': ReportTableOEEByProduct,
         'report-table-by-shift': ReportTableOEEByShift,
         'report-table-by-operator': ReportTableOEEByOperator,
+        'report-table-by-team': ReportTableOEEByTeam,
     },
     props: {
         reportName: {
@@ -144,6 +146,8 @@ export default {
         selectedStationShift: null,
         selectedStationOperatorId: 0,
         selectedStationOperator: null,
+        selectedStationTeamId: 0,
+        selectedStationTeam: null,
         title: '',
         dataset: {
             labels: [],
@@ -222,6 +226,13 @@ export default {
                     return '';
                 } else {
                     return 'All Operators';
+                }
+            }  else if(this.selectedReportType === 'team'){
+                if(this.selectedStationTeamId){
+                    if(this.selectedStationTeam) return `Station: ${this.selectedStationTeam.station_name} > Team: ${this.selectedStationTeam.name}`;
+                    return '';
+                } else {
+                    return 'All Team';
                 }
             }
         }

@@ -19,6 +19,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('stationProducts/all',['uses'=>'StationProductController@all']);
     Route::get('stationShifts/all',['uses'=>'StationShiftController@all']);
     Route::get('stationOperators/findByStationId', ['uses' => 'StationOperatorController@findStationOperatorByStationId']);
+    Route::get('stationTeams/findByStationId', ['uses' => 'StationTeamController@findStationTeamByStationId']);
     Route::post('assignDowntimeReason', ['uses'=>'DowntimeReasonController@assignDowntimeReason']);
     Route::post('uploadHourlyScrapCount', ['uses'=>'ScrapController@uploadHourlyScrapCount']);
     Route::post('removeDowntimeReason', ['uses'=>'DowntimeReasonController@removeDowntimeReason']);
@@ -35,6 +36,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::resource('stationProducts','StationProductController');
     Route::resource('stationShifts','StationShiftController');
     Route::resource('stationOperators','StationOperatorController');
+    Route::resource('stationTeams','StationTeamController');
     Route::resource('scraps','ScrapController');
     Route::resource('operators','OperatorController');
     Route::get('lineview', ['as' => 'lineview.graphdata', 'uses' => 'LineViewController@lineviewData']);
@@ -49,16 +51,30 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('getOEETableReportByStationProduct',['uses'=>'ReportController@getOEETableReportByStationProduct']);
     Route::get('getOEETableReportByStationShift',['uses'=>'ReportController@getOEETableReportByStationShift']);
     Route::get('getOEETableReportByStationOperator',['uses'=>'ReportController@getOEETableReportByStationOperator']);
+    Route::get('getOEETableReportByStationTeam',['uses'=>'ReportController@getOEETableReportByStationTeam']);
+    Route::get('getOEETableReportByStationExcel',['uses'=>'ReportController@getOEETableReportByStationExcel']);
+    Route::get('getOEETableReportByStationProductExcel',['uses'=>'ReportController@getOEETableReportByStationProductExcel']);
+    Route::get('getOEETableReportByStationShiftExcel',['uses'=>'ReportController@getOEETableReportByStationShiftExcel']);
+    Route::get('getOEETableReportByStationOperatorExcel',['uses'=>'ReportController@getOEETableReportByStationOperatorExcel']);
+    Route::get('getOEETableReportByStationTeamExcel',['uses'=>'ReportController@getOEETableReportByStationTeamExcel']);
     Route::get('report/downtime/by/station',['uses'=>'DowntimeReportController@getDowntimeTableReportByStation']);
     Route::get('report/downtime/by/product',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationProduct']);
     Route::get('report/downtime/by/shift',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationShift']);
     Route::get('report/downtime/by/operator',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationOperator']);
+    Route::get('report/downtime/by/team',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationTeam']);
     Route::get('lineviewStationShift','LineViewController@getLineViewStationShifts');
     Route::get('getOperatorName','LineViewController@getOperatorOfStation');
     Route::post('storeLineviewDefects','LineViewController@storeLineviewDefects');
     Route::post('assignOperatorToStation','StationOperatorController@assignOperatorToStation');
     Route::post('assignProductToStation','StationProductController@assignProductToStation');
     Route::get('stationProductsByStationId','ProductController@stationProductsByStationId');
+    Route::get('team','TeamController@index');
+    Route::get('team/operators','TeamController@getOperatorsOfTeam');
+    Route::post('team','TeamController@store');
+    Route::post('teamUpdate/{id}','TeamController@update');
+    Route::post('teamDelete/{id}','TeamController@destroy');
+    Route::post('team/operators','TeamController@updateTeamOperators');
+    Route::post('team/operators/delete','TeamController@destroyTeamOperators');
 });
 
 Route::middleware(['auth:api'])->group(function () {

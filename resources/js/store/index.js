@@ -16,6 +16,7 @@ export const store = new Vuex.Store({
             selectedStationProductId: null,
             selectedStationShiftId: null,
             selectedStationOperatorId: null,
+            selectedStationTeamId: null,
         }
     },
     getters: {
@@ -52,6 +53,9 @@ export const store = new Vuex.Store({
         },
         UPDATE_STATION_OPERATOR_ID(state, stationOperatorId) {
             state.reportPageFilters.selectedStationOperatorId = stationOperatorId;
+        },
+        UPDATE_STATION_TEAM_ID(state, stationTeamId) {
+            state.reportPageFilters.selectedStationTeamId = stationTeamId;
         }
     },
     actions: {
@@ -73,6 +77,10 @@ export const store = new Vuex.Store({
         selectedStationOperatorId({ commit }, stationOperatorId) {
             stationOperatorId = stationOperatorId === '0' ? null : stationOperatorId;
             commit('UPDATE_STATION_OPERATOR_ID', stationOperatorId);
+        },
+        selectedStationTeamId({ commit }, stationTeamId) {
+            stationTeamId = stationTeamId === '0' ? null : stationTeamId;
+            commit('UPDATE_STATION_TEAM_ID', stationTeamId);
         }
     }
 });

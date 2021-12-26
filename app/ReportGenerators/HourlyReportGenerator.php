@@ -43,7 +43,9 @@ class HourlyReportGenerator implements ReportGenerator
 
     public function generate(CarbonImmutable $start, CarbonImmutable $end)
     {
-        $stations = Station::with('products')->get();
+        $stations = Station::with(['products', 'teams'])->get();
+
+        Log::debug($stations);
 
         $stationIdToShiftsMap = $this->shiftRepository->findAllShiftsGroupByStationId();
         $stationIdToStationOperatorMap = $this->operatorRepository->findAllStationOperatorsGroupByStationId();
@@ -108,8 +110,8 @@ class HourlyReportGenerator implements ReportGenerator
                 $report->generated_at = $start->endOfHour();
                 $report->tag          = 'hourly';
                 $report->station_id   = $station->id;
+                $report->team_id      = empty($station->teams)? null : $station->teams[0]->id ?? null;
                 $report->product_id   = $product->id;
-
                 $report->shift_id = $shift['id']?? 1;
                 $report->operator_id  = $stationOperator->operator_id?? null;
 

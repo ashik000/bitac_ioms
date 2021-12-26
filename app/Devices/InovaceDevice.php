@@ -18,6 +18,7 @@ use App\Data\Repositories\OperatorRepository;
 use App\Data\Repositories\ProductionLogRepository;
 use App\Data\Repositories\ProductRepository;
 use App\Data\Repositories\ShiftRepository;
+use App\Data\Repositories\StationTeamRepository;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Exception;
@@ -33,18 +34,21 @@ class InovaceDevice
     protected $productionLogRepository;
     protected $shiftRepository;
     protected $operatorRepository;
+    protected $stationTeamRepository;
 
     public function __construct(DeviceRepository $deviceRepository,
                                 ProductRepository $productRepository,
                                 ProductionLogRepository $productionLogRepository,
                                 ShiftRepository $shiftRepository,
-                                OperatorRepository $operatorRepository)
+                                OperatorRepository $operatorRepository,
+                                StationTeamRepository $stationTeamRepository)
     {
         $this->deviceRepository = $deviceRepository;
         $this->productRepository = $productRepository;
         $this->productionLogRepository = $productionLogRepository;
         $this->shiftRepository = $shiftRepository;
         $this->operatorRepository = $operatorRepository;
+        $this->stationTeamRepository = $stationTeamRepository;
     }
 
 
@@ -530,7 +534,6 @@ class InovaceDevice
 
     public function parseLogPacketAndSave(Device $device, Packet $packet)
     {
-        Log::debug('-----------------------------------------------------------');
         $packetContent = $packet->request;
         $packetContentBin = hex2bin($packetContent);
 //        $deviceTimeStamp  = sprintf("%04u", unpack("Ntimestamp/", substr($packetContentBin, 0, 4))['timestamp']);
@@ -559,7 +562,7 @@ class InovaceDevice
         $topSlowProductionId = empty($topSlowProduction)? 1 : $topSlowProduction->id;
         $topDowntimeId = empty($topDowntime)? 1 : $topDowntime->id;
 
-        Log::debug($numberOfLogs);
+        $stationIdToTeamMap = $this->stationTeamRepository->getStationIdToTeamMap();
 
         for ($i = 0; $i < $numberOfLogs; $i++) {
 
@@ -618,6 +621,7 @@ class InovaceDevice
                     'production_log_id' => $topProductionLogId,
                     'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
                     'operator_id'       => empty($stationOperator)? null : $stationOperator->operator_id,
+                    'team_id'           => $stationIdToTeamMap->get($stationProduct->station_id)->id?? null,
                     'created_at'        => now(),
                     'updated_at'        => now()
                 ];
@@ -637,6 +641,7 @@ class InovaceDevice
                         'production_log_id' => $topProductionLogId,
                         'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
                         'operator_id'       => empty($stationOperator)? null : $stationOperator->operator_id,
+                        'team_id'           => $stationIdToTeamMap->get($stationProduct->station_id)->id?? null,
                         'created_at'        => now(),
                         'updated_at'        => now()
                     ];
@@ -669,6 +674,7 @@ class InovaceDevice
                                 'production_log_id' => $topProductionLogId,
                                 'shift_id'          => empty($previousDTimeShift)? null : $previousDTimeShift['id'],
                                 'operator_id'       => empty($prevStationOperator)? null : $prevStationOperator->operator_id,
+                                'team_id'           => $stationIdToTeamMap->get($stationProduct->station_id)->id?? null,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
                             ];
@@ -682,6 +688,7 @@ class InovaceDevice
                                 'production_log_id' => $topProductionLogId,
                                 'shift_id'          => empty($nextDTimeShift)? null : $nextDTimeShift['id'],
                                 'operator_id'       => empty($nextStationOperator)? null : $nextStationOperator->operator_id,
+                                'team_id'           => $stationIdToTeamMap->get($stationProduct->station_id)->id?? null,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
                             ];
@@ -706,6 +713,7 @@ class InovaceDevice
                                 'production_log_id' => $topProductionLogId,
                                 'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
                                 'operator_id'       => empty($stationOperator) ? null: $stationOperator->operator_id,
+                                'team_id'           => $stationIdToTeamMap->get($stationProduct->station_id)->id?? null,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
                             ];
@@ -736,6 +744,7 @@ class InovaceDevice
                                 'production_log_id' => $topProductionLogId,
                                 'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
                                 'operator_id'       => empty($stationOperator) ? null: $stationOperator->operator_id,
+                                'team_id'           => $stationIdToTeamMap->get($stationProduct->station_id)->id?? null,
                                 'created_at'        => now(),
                                 'updated_at'        => now()
                             ];
@@ -762,6 +771,7 @@ class InovaceDevice
                             'production_log_id' => $topProductionLogId,
                             'shift_id'          => empty($dTimeShift)? null : $dTimeShift['id'],
                             'operator_id'       => empty($stationOperator)? null : $stationOperator->operator_id,
+                            'team_id'           => $stationIdToTeamMap->get($stationProduct->station_id)->id?? null,
                             'created_at'        => now(),
                             'updated_at'        => now()
                         ];
@@ -829,7 +839,6 @@ class InovaceDevice
         } catch (Exception $ex) {
             Log::error($ex);
         }
-        Log::debug('Packet saving done');
         error_log('Packet saving done');
     }
 
