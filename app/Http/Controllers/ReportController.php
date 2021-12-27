@@ -263,7 +263,7 @@ class ReportController extends Controller
         $data = $this->reportRepository->getOEETableReportByStationOperator($request);
         $excel_data = $this->getFormattedDataForExcel($data, $request, 'stationOperatorId',['operator_name']);
         $headers = $this->getHeaders($request, 'stationOperatorId', ['Operator']);
-        return Excel::download(new ExcelDataExport($excel_data, $headers), 'Station Report.xlsx');
+        return Excel::download(new ExcelDataExport($excel_data, $headers), 'Operator Report.xlsx');
     }
 
 
@@ -288,7 +288,8 @@ class ReportController extends Controller
         return $headers;
     }
 
-    public function getFormattedDataForExcel($data,Request $request, $keyToCheckFor, $keysToSelect){
+    public function getFormattedDataForExcel($data,Request $request, $keyToCheckFor, $keysToSelect): array
+    {
         $excel_data = [];
         Log::debug($request->get($keyToCheckFor));
         if($request->get($keyToCheckFor)){

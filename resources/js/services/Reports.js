@@ -181,6 +181,17 @@ export default {
         }).then(r => success(r.data))
             .catch(e => console.error(e))
     },
+    getDowntimeTableReportByStationExcel(data) {
+        axios.get('report/downtime/by/station/excel', {
+            responseType: 'blob',
+            params: {
+                'stationId': data.stationId,
+                'end' : data.end,
+                'start' : data.start
+            }
+        }).then(r => getFileFromRequest(r, "Station Report"))
+            .catch(e => console.error(e))
+    },
     getDowntimeTableReportByStationProduct(data, success, error) {
         axios.get('report/downtime/by/product', {
             params: {
@@ -189,6 +200,17 @@ export default {
                 'start' : data.start
             }
         }).then(r => success(r.data))
+            .catch(e => console.error(e))
+    },
+    getDowntimeTableReportByStationProductExcel(data, success, error) {
+        axios.get('report/downtime/by/product/excel', {
+            responseType : 'blob',
+            params: {
+                'stationProductId': data.stationProductId,
+                'end' : data.end,
+                'start' : data.start
+            }
+        }).then(r => getFileFromRequest(r, 'Product Report'))
             .catch(e => console.error(e))
     },
     getDowntimeTableReportByStationShift(data, success, error) {
@@ -201,6 +223,17 @@ export default {
         }).then(r => success(r.data))
             .catch(e => console.error(e))
     },
+    getDowntimeTableReportByStationShiftExcel(data, success, error) {
+        axios.get('report/downtime/by/shift/excel', {
+            responseType: "blob",
+            params: {
+                'stationShiftId': data.stationShiftId,
+                'end' : data.end,
+                'start' : data.start
+            }
+        }).then(r => getFileFromRequest(r, "Shift Report"))
+            .catch(e => console.error(e))
+    },
     getDowntimeTableReportByStationOperator(data, success, error) {
         axios.get('report/downtime/by/operator', {
             params: {
@@ -211,7 +244,18 @@ export default {
         }).then(r => success(r.data))
             .catch(e => console.error(e))
     },
-
+    getDowntimeTableReportByStationOperatorExcel(data) {
+        axios.get('report/downtime/by/operator/excel', {
+            responseType: "blob",
+            params: {
+                'stationOperatorId': data.stationOperatorId,
+                'end' : data.end,
+                'start' : data.start,
+            }
+        }).then(function (response) {
+            getFileFromRequest(response, "Operator Report")
+        });
+    },
     getDowntimeTableReportByStationTeam(data, success, error) {
         axios.get('report/downtime/by/team', {
             params: {
@@ -222,7 +266,16 @@ export default {
         }).then(r => success(r.data))
             .catch(e => console.error(e))
     },
-
-
-
+    getDowntimeTableReportByStationTeamExcel(data, success, error) {
+        axios.get('report/downtime/by/team/excel', {
+            responseType: "blob",
+            params: {
+                'stationTeamId': data.stationTeamId,
+                'end' : data.end,
+                'start' : data.start
+            }
+        }).then(function (response) {
+            getFileFromRequest(response, "Team Report");
+        });
+    },
 }
