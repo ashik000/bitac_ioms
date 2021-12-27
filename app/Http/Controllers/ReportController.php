@@ -6,6 +6,7 @@ use App\Data\Models\ProductionLog;
 use App\Data\Models\Report;
 use App\Data\Models\Downtime;
 use App\Data\Models\Scrap;
+use App\Data\Models\Station;
 use App\Data\Models\StationOperator;
 use App\Data\Models\StationProduct;
 use App\Data\Models\StationShift;
@@ -263,7 +264,7 @@ class ReportController extends Controller
         $data = $this->reportRepository->getOEETableReportByStationOperator($request);
         $excel_data = $this->getFormattedDataForExcel($data, $request, 'stationOperatorId',['operator_name']);
         $headers = $this->getHeaders($request, 'stationOperatorId', ['Operator']);
-        return Excel::download(new ExcelDataExport($excel_data, $headers), 'Station Report.xlsx');
+        return Excel::download(new ExcelDataExport($excel_data, $headers), 'Operator Report.xlsx');
     }
 
 
@@ -288,7 +289,8 @@ class ReportController extends Controller
         return $headers;
     }
 
-    public function getFormattedDataForExcel($data,Request $request, $keyToCheckFor, $keysToSelect){
+    public function getFormattedDataForExcel($data,Request $request, $keyToCheckFor, $keysToSelect): array
+    {
         $excel_data = [];
         Log::debug($request->get($keyToCheckFor));
         if($request->get($keyToCheckFor)){
@@ -317,5 +319,48 @@ class ReportController extends Controller
             }
         }
         return $excel_data;
+    }
+
+    public function scada(Request $request)
+    {
+        $start_of_day = now()->startOfDay();
+        $end_of_day = now()->endOfDay();
+        info($start_of_day->toDateTimeString());
+        info($end_of_day->toDateTimeString());
+        $station_ids = Station::all()->pluck('id');
+        info($station_ids);
+        $reports = Report::whereIn('station_id', $station_ids)
+            ->whereBetween('generated_at', [$start_of_day, $end_of_day])
+            ->groupBy('station_id')
+            ->select([
+                'station_id',
+                DB::raw('SUM(produced) as produced'),
+                DB::raw('SUM(scraped) as scraped'),
+                DB::raw('SUM(expected) as expected'),
+                DB::raw('SUM(available) as available'),
+                DB::raw('SUM(planned_downtime) as planned_downtime'),
+            ])->get()->keyBy('station_id');
+        info($reports);
+//        $available_base = now()->diffInSeconds(now()->startOf('day'));
+        $available_base = 24*3600;
+        $reports = $station_ids->reduce(function ($carry, $stationId) use ($available_base, $reports) {
+            $row = [];
+            $item = $reports->get($stationId);
+            info($item);
+            $row['performance'] = $item['produced'] ? ($item['produced'] / $item['expected']) : 0;
+            $row['quality'] = $item['produced'] ? (($item['produced'] - $item['scraped']) / $item['produced']) : 0;
+            $row['availability'] = $item['available'] ? ($item['available'] / ($available_base - $item['planned_downtime'])) : 0;
+            $row['oee'] = $row['performance'] * $row['quality'] * $row['availability'] * 100;
+            $row['performance'] = number_format($row['performance'] * 100, 2);
+            $row['availability'] = number_format($row['availability'] * 100, 2);
+            $row['quality'] = number_format($row['quality'] * 100, 2);
+            $row['oee'] = number_format($row['oee'], 2);
+            $carry[$stationId] = $row;
+            return $carry;
+        }, []);
+        $reports = collect($reports)->sortBy(function ($value, $key) {
+            return $key;
+        });
+        return $reports;
     }
 }

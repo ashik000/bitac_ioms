@@ -16,19 +16,132 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body  y-scroll">
-                        <div class="belt">
+                    <div class="card-body">
+                        <div class="scada-container">
+                            <div class="belt"></div>
                             <div class="connect-line"></div>
-                            <div class="oee-bubble" style="border-radius: 30px; display: inline-block;">
-                                <div style="background-color: gray;">
-                                    OEE-80%
+                            <div class="connect-line" style="left: 50%;left: 33.6%;border-left: 0;border-right: 5px solid;"></div>
+
+<!--                            <div class="straight-connect-line" style="left: 14%"></div>-->
+
+                            <div class="connect-line" style="left: 58.6%; border-left: 0px; border-right: 5px solid;"></div>
+
+                            <div class="connect-line" style="left: 83.6%; border-left: 0px; border-right: 5px solid;"></div>
+
+                            <div class="bubble" style="left: 4%;">
+                                <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                    OEE-{{ scadaData[5] ? scadaData[5].oee : 0}}%
                                 </div>
-                                <div style="background-color: blue;">
-                                    PER-90/100
+                                <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                    PER-{{ scadaData[5] ? scadaData[5].performance : 0}}/100
                                 </div>
                             </div>
-                            <div class="prod-line inovace-sensor"></div>
-                            <div class="product ac-boxed"></div>
+                            <div class="prod-line inovace-sensor" style="left: 4%;"></div>
+                            <div class="product ac-boxed" style="left: 8%;"></div>
+<!--                            <div class="bubble" style="left: 12%;">-->
+<!--                                <div style="background-color: gray;">-->
+<!--                                    OEE-80%-->
+<!--                                </div>-->
+<!--                                <div style="background-color: red;">-->
+<!--                                    PER-90/100-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div class="product computer" style="left: 13%; bottom: 14%; white-space: nowrap;">
+                                <div class="packaging-bubble bottom-arrow">Packaging</div>
+                            </div>
+
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 19%;width: 86px;">
+                                <div class="outdoor-bubbles">
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Quality 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Reject 0</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Pass 0</div>
+
+                                    <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
+                                    <div>Outdoor <br> Leek Test-2</div>
+                                </div>
+                            </div>
+
+                            <div class="ac-naked" style="height: 40px; width: 40px;background-size: 100%; background-repeat: no-repeat;    position: absolute;bottom: 1.5rem;left: 27%;"></div>
+
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 31%;width: 86px;">
+                                <div class="outdoor-bubbles">
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">OEE 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Per 0/100</div>
+
+                                    <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
+                                    <div>Outdoor <br> Aging Test</div>
+                                </div>
+                            </div>
+
+                            <div class="ac-naked" style="height: 40px; width: 40px;background-size: 100%; background-repeat: no-repeat; position: absolute;bottom: 1.5rem;left: 38%;"></div>
+
+                            <div class="prod-line inovace-sensor" style="left: 41.6%;"></div>
+
+                            <div class="bubble" style="left: 37%">
+                                <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                    OEE-{{scadaData[4] ? scadaData[4].oee : 0}}%
+                                </div>
+                                <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                    PER-{{ scadaData[4] ? scadaData[4].performance : 0}}/100
+                                </div>
+                            </div>
+
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 47.4%;width: 86px;">
+                                <div class="outdoor-bubbles">
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Quality 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Reject 0</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Pass 0</div>
+
+                                    <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
+                                    <div>Outdoor <br> Leek Test-1</div>
+                                </div>
+                            </div>
+
+                            <div class="station-1" style="position: absolute;bottom: 1.5em;left: 55%;"></div>
+
+                            <div class="station-2" style="position: absolute;bottom: 1.5em;left: 60%; white-space: nowrap;">
+                                <div class="packaging-bubble bottom-arrow" style="right: -25px;">Gas Charge</div>
+                            </div>
+
+                            <div class="bubble" style="left: 62%;"><div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                OEE-{{ scadaData[3] ? scadaData[3].oee : 0}}%
+                            </div> <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                PER-{{ scadaData[3] ? scadaData[3].performance : 0}}/100
+                            </div></div>
+
+                            <div class="station-3" style="position: absolute;bottom: 1.5em;left: 65%;"></div>
+
+                            <div class="prod-line inovace-sensor" style="left: 66.6%;"></div>
+
+                            <div class="ac-introlly" style="height: 40px; width: 40px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 70.4%;"></div>
+
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 75.4%;width: 86px;">
+                                <div class="outdoor-bubbles">
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Quality 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Reject 0</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Pass 0</div>
+
+                                    <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
+                                    <div>Outdoor <br> Hellium Leak Test</div>
+                                </div>
+                            </div>
+
+                            <div class="station-4" style="position: absolute;bottom: 1.5em;left: 84%;"></div>
+
+                            <div class="introlly" style="height: 40px; width: 40px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 89%;"></div>
+
+                            <div class="trolly" style="height: 40px; width: 40px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 94%;"></div>
+
+                            <div class="prod-line inovace-sensor" style="left: 91.6%;"></div>
+                            <div class="bubble rounded-2" style="left: 86.6%;">
+                                <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                    OEE-{{ scadaData[1] ? scadaData[1].oee : 0}}%
+                                </div>
+                                <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                    PER-{{ scadaData[1] ? scadaData[1].performance : 0}}/100
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -38,6 +151,8 @@
 </template>
 
 <script>
+    import ScadaService from "../../services/ScadaService";
+
     export default {
         name: "ScadaView",
         props: {
@@ -45,29 +160,54 @@
         components: {
         },
         data: () => ({
-
+            scadaData: [],
         }),
         computed:{
         },
         methods: {
         },
-        watch: {
-        },
         mounted(){
+            ScadaService.getScada( success => {
+               this.scadaData = success;
+            });
         }
     }
 </script>
 
 <style scoped>
+    .outdoor{
+        border: 2px solid #76CCFF;
+        text-align: center;
+        padding: 2px;
+    }
+    .bottom-arrow:after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -22px;
+        width: 0;
+        height: 0;
+        border-top: solid 18px #4896FC;
+        border-left: solid 10px transparent;
+        border-right: solid 10px transparent;
+    }
+
+    .scada-container{
+        height: 74%;
+        width: 100%;
+        position: relative;
+    }
+
     .belt{
         background-image: url("../../../assets/images/scada/belt.png");
         background-repeat: no-repeat;
-        height: 100%;
+        height: 1.5rem;
         width: 100%;
         background-size: 100%;
         background-position: bottom;
-        background-color: purple;
-        position: relative;
+        position: absolute;
+        bottom: 0;
     }
 
     .prod-line{
@@ -81,33 +221,79 @@
         background-image: url("../../../assets/images/scada/sensor.png");
         position: absolute;
         bottom: 30%;
-        left: 3%;
+        left: 5%;
     }
 
-    .product{
+    .station-1{
+        background-image: url("../../../assets/images/scada/station1.png");
         height: 30px;
         width: 30px;
         background-repeat: no-repeat;
         background-size: 100% 100%;
-        background-color: #0a53be;
+    }
+
+    .station-2{
+        background-image: url("../../../assets/images/scada/station2.png");
+        height: 30px;
+        width: 30px;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .station-3{
+        background-image: url("../../../assets/images/scada/station3.png");
+        height: 30px;
+        width: 30px;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .station-4{
+        background-image: url("../../../assets/images/scada/station4.png");
+        height: 30px;
+        width: 30px;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .product{
+        height: 40px;
+        width: 40px;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
         position: absolute;
 
-        bottom: 5%;
-        left: 10%;
+        bottom: 1.5rem;
     }
 
     .ac-boxed{
         background-image: url("../../../assets/images/scada/ac1.png");
     }
+
+    .computer{
+        background-image: url("../../../assets/images/scada/computer.png");
+    }
     .ac-naked{
         background-image: url("../../../assets/images/scada/ac2.png");
     }
 
+    .ac-introlly{
+        background-image: url("../../../assets/images/scada/ac3.png");
+    }
+
+    .introlly{
+        background-image: url("../../../assets/images/scada/ac4.png");
+    }
+
+    .trolly{
+        background-image: url("../../../assets/images/scada/ac5.png");
+    }
+
     .connect-line{
         position: absolute;
-        bottom: 40%;
-        left: 30%;
-        height: 40px;
+        bottom: 33%;
+        left: -6.6%;
+        height: 96px;
 
         border-left: 5px solid;
         border-top: 5px solid;
@@ -115,7 +301,30 @@
 
         margin: 0 10%;
         width: 15px;
+    }
 
+    .straight-connect-line{
+        position: absolute;
+        bottom: 20%;
+        height: 143px;
+        border-left: 5px solid;
+    }
 
+    .bubble{
+        position: absolute;
+        display: inline-block;
+        left: 5%;
+        bottom: 50%;
+        text-align: center;
+        color: white;
+    }
+
+    .packaging-bubble{
+        background-color: #4896FC;
+        position: absolute;
+        bottom: 46px;
+        color: white;
+        border-radius: 3px;
+        padding: 3px;
     }
 </style>
