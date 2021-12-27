@@ -6,6 +6,7 @@ use App\Data\Models\ProductionLog;
 use App\Data\Models\Report;
 use App\Data\Models\Downtime;
 use App\Data\Models\Scrap;
+use App\Data\Models\Station;
 use App\Data\Models\StationOperator;
 use App\Data\Models\StationProduct;
 use App\Data\Models\StationShift;
@@ -318,5 +319,34 @@ class ReportController extends Controller
             }
         }
         return $excel_data;
+    }
+
+    public function scada(Request $request)
+    {
+        $start_of_day = Carbon::now()->startOf('day');
+        $end_of_day = Carbon::now()->endOf('day');
+        $station_ids = Station::all()->pluck('id');
+        $reports = Report::whereIn('station_id', $station_ids)
+            ->whereBetween('generated_at', [$start_of_day, $end_of_day])
+            ->groupBy('station_id')
+            ->select([
+                'generated_at',
+                DB::raw('SUM(produced) as produced'),
+                DB::raw('SUM(scraped) as scraped'),
+                DB::raw('SUM(expected) as expected'),
+                DB::raw('SUM(available) as available'),
+                DB::raw('SUM(planned_downtime) as planned_downtime'),
+            ])->get();
+        $available_base = now()->diffInSeconds(now()->startOf('day'));
+        $reports = $reports->reduce(function ($carry, $item) use ($available_base) {
+            $row = [];
+            $row['performance'] = $item->produced ? ($item->produced / $item->expected) : 0;
+            $row['quality'] = $item->produced ? (($item->produced - $item->scraped) / $item->produced) : 0;
+            $row['availability'] = $item->available ? ($item->available / ($available_base - $item->planned_downtime)) : 0;
+            $row['oee'] = $row['performance'] * $row['quality'] * $row['availability'] * 100;
+            $carry[$item->station_id] = $row;
+            return $carry;
+        }, []);
+        return $reports;
     }
 }
