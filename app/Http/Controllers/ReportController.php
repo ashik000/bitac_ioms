@@ -329,7 +329,6 @@ class ReportController extends Controller
             ->whereBetween('generated_at', [$start_of_day, $end_of_day])
             ->groupBy('station_id')
             ->select([
-                'generated_at',
                 DB::raw('SUM(produced) as produced'),
                 DB::raw('SUM(scraped) as scraped'),
                 DB::raw('SUM(expected) as expected'),
