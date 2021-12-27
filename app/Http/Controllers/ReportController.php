@@ -323,27 +323,34 @@ class ReportController extends Controller
 
     public function scada(Request $request)
     {
-        $start_of_day = Carbon::now()->startOf('day');
-        $end_of_day = Carbon::now()->endOf('day');
+        $start_of_day = now()->startOfDay();
+        $end_of_day = now()->endOfDay();
+        info($start_of_day->toDateTimeString());
+        info($end_of_day->toDateTimeString());
         $station_ids = Station::all()->pluck('id');
+        info($station_ids);
         $reports = Report::whereIn('station_id', $station_ids)
             ->whereBetween('generated_at', [$start_of_day, $end_of_day])
             ->groupBy('station_id')
             ->select([
+                'station_id',
                 DB::raw('SUM(produced) as produced'),
                 DB::raw('SUM(scraped) as scraped'),
                 DB::raw('SUM(expected) as expected'),
                 DB::raw('SUM(available) as available'),
                 DB::raw('SUM(planned_downtime) as planned_downtime'),
-            ])->get();
+            ])->get()->keyBy('station_id');
+        info($reports);
         $available_base = now()->diffInSeconds(now()->startOf('day'));
-        $reports = $reports->reduce(function ($carry, $item) use ($available_base) {
+        $reports = $station_ids->reduce(function ($carry, $stationId) use ($available_base, $reports) {
             $row = [];
-            $row['performance'] = $item->produced ? ($item->produced / $item->expected) : 0;
-            $row['quality'] = $item->produced ? (($item->produced - $item->scraped) / $item->produced) : 0;
-            $row['availability'] = $item->available ? ($item->available / ($available_base - $item->planned_downtime)) : 0;
-            $row['oee'] = $row['performance'] * $row['quality'] * $row['availability'] * 100;
-            $carry[$item->station_id] = $row;
+            $item = $reports->get($stationId);
+            info($item);
+            $row['performance'] = $item['produced'] ? ($item['produced'] / $item['expected']) : 0;
+            $row['quality'] = $item['produced'] ? (($item['produced'] - $item['scraped']) / $item['produced']) : 0;
+            $row['availability'] = $item['available'] ? ($item['available'] / ($available_base - $item['planned_downtime'])) : 0;
+            $row['oee'] = $row['performance'] * $row['quality'] * $row['availability'];
+            $carry[$stationId] = $row;
             return $carry;
         }, []);
         return $reports;
