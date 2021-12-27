@@ -24,6 +24,10 @@
 
                             <div class="straight-connect-line" style="left: 14%"></div>
 
+                            <div class="connect-line" style="left: 58.6%; border-left: 0px; border-right: 5px solid;"></div>
+
+                            <div class="connect-line" style="left: 80.6%; border-left: 0px; border-right: 5px solid;"></div>
+
                             <div class="bubble" style="left: 4%;">
                                 <div style="background-color: gray;">
                                     OEE-80%
@@ -36,10 +40,10 @@
                             <div class="product ac-boxed" style="left: 8%;"></div>
                             <div class="bubble" style="left: 12%;">
                                 <div style="background-color: gray;">
-                                    OEE-80%
+                                    OEE-{{scadaData[1].oee}}%
                                 </div>
                                 <div style="background-color: red;">
-                                    PER-90/100
+                                    PER-{{scadaData[1].performance}}/100
                                 </div>
                             </div>
                             <div class="product computer" style="left: 13%; bottom: 14%; white-space: nowrap;">
@@ -75,10 +79,10 @@
 
                             <div class="bubble" style="left: 38%">
                                 <div style="background-color: gray;">
-                                    OEE-80%
+                                    OEE-{{scadaData[2].oee}}%
                                 </div>
                                 <div style="background-color: blue;">
-                                    PER-90/100
+                                    PER-{{scadaData[2].performance}}/100
                                 </div>
                             </div>
 
@@ -98,6 +102,12 @@
                             <div class="station-2" style="position: absolute;bottom: 1.5em;left: 60%; white-space: nowrap;">
                                 <div class="packaging-bubble bottom-arrow" style="right: -25px;">Gas Charge</div>
                             </div>
+
+                            <div class="bubble" style="left: 63%;"><div style="background-color: gray;">
+                                OEE-{{scadaData[3].oee}}%
+                            </div> <div style="background-color: blue;">
+                                PER-{{scadaData[3].performance}}/100
+                            </div></div>
 
                             <div class="station-3" style="position: absolute;bottom: 1.5em;left: 65%;"></div>
 
@@ -122,6 +132,16 @@
 
                             <div class="trolly" style="height: 30px; width: 30px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 94%;"></div>
 
+                            <div class="prod-line inovace-sensor" style="left: 88.6%;"></div>
+                            <div class="bubble" style="left: 85%;">
+                                <div style="background-color: gray;">
+                                    OEE-{{scadaData[5].oee}}%
+                                </div>
+                                <div style="background-color: blue;">
+                                    PER-{{scadaData[5].performance}}/100
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -145,12 +165,11 @@
         computed:{
         },
         methods: {
-            getScadaData(){
-                this.scadaData = ScadaService.getScada();
-            }
         },
         mounted(){
-            this.getScadaData();
+            ScadaService.getScada( success => {
+               this.scadaData = success;
+            });
         }
     }
 </script>
