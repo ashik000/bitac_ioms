@@ -63,7 +63,7 @@
             },
             filteredStationTeams() {
                 let stationTeams = this.allStationTeams.map(function(st){
-                    st.name = `${st.name} (Station: ${st.station_name} )`;
+                    // st.name = `${st.name} (Station: ${st.station_name} )`;
                     return st;
                 });
 
