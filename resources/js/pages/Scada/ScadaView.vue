@@ -131,6 +131,8 @@
 </template>
 
 <script>
+    import ScadaService from "../../services/ScadaService";
+
     export default {
         name: "ScadaView",
         props: {
@@ -138,15 +140,17 @@
         components: {
         },
         data: () => ({
-
+            scadaData: [],
         }),
         computed:{
         },
         methods: {
-        },
-        watch: {
+            getScadaData(){
+                this.scadaData = ScadaService.getScada();
+            }
         },
         mounted(){
+            this.getScadaData();
         }
     }
 </script>
