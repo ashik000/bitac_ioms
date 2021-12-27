@@ -22,75 +22,75 @@
                             <div class="connect-line"></div>
                             <div class="connect-line" style="left: 50%;left: 33.6%;border-left: 0;border-right: 5px solid;"></div>
 
-                            <div class="straight-connect-line" style="left: 14%"></div>
+<!--                            <div class="straight-connect-line" style="left: 14%"></div>-->
 
                             <div class="connect-line" style="left: 58.6%; border-left: 0px; border-right: 5px solid;"></div>
 
-                            <div class="connect-line" style="left: 80.6%; border-left: 0px; border-right: 5px solid;"></div>
+                            <div class="connect-line" style="left: 83.6%; border-left: 0px; border-right: 5px solid;"></div>
 
                             <div class="bubble" style="left: 4%;">
-                                <div style="background-color: gray;">
-                                    OEE-80%
+                                <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                    OEE-{{ scadaData[5] ? scadaData[5].oee : 0}}%
                                 </div>
-                                <div style="background-color: blue;">
-                                    PER-90/100
+                                <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                    PER-{{ scadaData[5] ? scadaData[5].performance : 0}}/100
                                 </div>
                             </div>
                             <div class="prod-line inovace-sensor" style="left: 4%;"></div>
                             <div class="product ac-boxed" style="left: 8%;"></div>
-                            <div class="bubble" style="left: 12%;">
-                                <div style="background-color: gray;">
-                                    OEE-{{scadaData[1].oee}}%
-                                </div>
-                                <div style="background-color: red;">
-                                    PER-{{scadaData[1].performance}}/100
-                                </div>
-                            </div>
+<!--                            <div class="bubble" style="left: 12%;">-->
+<!--                                <div style="background-color: gray;">-->
+<!--                                    OEE-80%-->
+<!--                                </div>-->
+<!--                                <div style="background-color: red;">-->
+<!--                                    PER-90/100-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <div class="product computer" style="left: 13%; bottom: 14%; white-space: nowrap;">
                                 <div class="packaging-bubble bottom-arrow">Packaging</div>
                             </div>
 
                             <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 19%;width: 86px;">
                                 <div class="outdoor-bubbles">
-                                    <div>Quality 80%</div>
-                                    <div>Reject 03</div>
-                                    <div>Pass 50</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Quality 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Reject 0</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Pass 0</div>
 
                                     <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
                                     <div>Outdoor <br> Leek Test-2</div>
                                 </div>
                             </div>
 
-                            <div class="ac-naked" style="height: 30px; width: 30px;background-size: 100%; background-repeat: no-repeat;    position: absolute;bottom: 1.5rem;left: 27%;"></div>
+                            <div class="ac-naked" style="height: 40px; width: 40px;background-size: 100%; background-repeat: no-repeat;    position: absolute;bottom: 1.5rem;left: 27%;"></div>
 
                             <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 31%;width: 86px;">
                                 <div class="outdoor-bubbles">
-                                    <div>OEE 50%</div>
-                                    <div>Per 50/100</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">OEE 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Per 0/100</div>
 
                                     <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
                                     <div>Outdoor <br> Aging Test</div>
                                 </div>
                             </div>
 
-                            <div class="ac-naked" style="height: 30px; width: 30px;background-size: 100%; background-repeat: no-repeat; position: absolute;bottom: 1.5rem;left: 38%;"></div>
+                            <div class="ac-naked" style="height: 40px; width: 40px;background-size: 100%; background-repeat: no-repeat; position: absolute;bottom: 1.5rem;left: 38%;"></div>
 
                             <div class="prod-line inovace-sensor" style="left: 41.6%;"></div>
 
-                            <div class="bubble" style="left: 38%">
-                                <div style="background-color: gray;">
-                                    OEE-{{scadaData[2].oee}}%
+                            <div class="bubble" style="left: 37%">
+                                <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                    OEE-{{scadaData[4] ? scadaData[4].oee : 0}}%
                                 </div>
-                                <div style="background-color: blue;">
-                                    PER-{{scadaData[2].performance}}/100
+                                <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                    PER-{{ scadaData[4] ? scadaData[4].performance : 0}}/100
                                 </div>
                             </div>
 
                             <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 47.4%;width: 86px;">
                                 <div class="outdoor-bubbles">
-                                    <div>Quality 80%</div>
-                                    <div>Reject 03</div>
-                                    <div>Pass 50</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Quality 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Reject 0</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Pass 0</div>
 
                                     <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
                                     <div>Outdoor <br> Leek Test-1</div>
@@ -103,23 +103,23 @@
                                 <div class="packaging-bubble bottom-arrow" style="right: -25px;">Gas Charge</div>
                             </div>
 
-                            <div class="bubble" style="left: 63%;"><div style="background-color: gray;">
-                                OEE-{{scadaData[3].oee}}%
-                            </div> <div style="background-color: blue;">
-                                PER-{{scadaData[3].performance}}/100
+                            <div class="bubble" style="left: 62%;"><div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                OEE-{{ scadaData[3] ? scadaData[3].oee : 0}}%
+                            </div> <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                PER-{{ scadaData[3] ? scadaData[3].performance : 0}}/100
                             </div></div>
 
                             <div class="station-3" style="position: absolute;bottom: 1.5em;left: 65%;"></div>
 
                             <div class="prod-line inovace-sensor" style="left: 66.6%;"></div>
 
-                            <div class="ac-introlly" style="height: 30px; width: 30px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 70.4%;"></div>
+                            <div class="ac-introlly" style="height: 40px; width: 40px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 70.4%;"></div>
 
                             <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 75.4%;width: 86px;">
                                 <div class="outdoor-bubbles">
-                                    <div>Quality 80%</div>
-                                    <div>Reject 03</div>
-                                    <div>Pass 50</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Quality 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Reject 0</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Pass 0</div>
 
                                     <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
                                     <div>Outdoor <br> Hellium Leak Test</div>
@@ -128,17 +128,17 @@
 
                             <div class="station-4" style="position: absolute;bottom: 1.5em;left: 84%;"></div>
 
-                            <div class="introlly" style="height: 30px; width: 30px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 89%;"></div>
+                            <div class="introlly" style="height: 40px; width: 40px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 89%;"></div>
 
-                            <div class="trolly" style="height: 30px; width: 30px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 94%;"></div>
+                            <div class="trolly" style="height: 40px; width: 40px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 94%;"></div>
 
-                            <div class="prod-line inovace-sensor" style="left: 88.6%;"></div>
-                            <div class="bubble" style="left: 85%;">
-                                <div style="background-color: gray;">
-                                    OEE-{{scadaData[5].oee}}%
+                            <div class="prod-line inovace-sensor" style="left: 91.6%;"></div>
+                            <div class="bubble rounded-2" style="left: 86.6%;">
+                                <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                    OEE-{{ scadaData[1] ? scadaData[1].oee : 0}}%
                                 </div>
-                                <div style="background-color: blue;">
-                                    PER-{{scadaData[5].performance}}/100
+                                <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                    PER-{{ scadaData[1] ? scadaData[1].performance : 0}}/100
                                 </div>
                             </div>
 
@@ -175,6 +175,11 @@
 </script>
 
 <style scoped>
+    .outdoor{
+        border: 2px solid #76CCFF;
+        text-align: center;
+        padding: 2px;
+    }
     .bottom-arrow:after {
         content: '';
         position: absolute;
@@ -183,13 +188,13 @@
         margin-left: -22px;
         width: 0;
         height: 0;
-        border-top: solid 18px blue;
+        border-top: solid 18px #4896FC;
         border-left: solid 10px transparent;
         border-right: solid 10px transparent;
     }
 
     .scada-container{
-        height: 100%;
+        height: 74%;
         width: 100%;
         position: relative;
     }
@@ -252,8 +257,8 @@
     }
 
     .product{
-        height: 30px;
-        width: 30px;
+        height: 40px;
+        width: 40px;
         background-repeat: no-repeat;
         background-size: 100% 100%;
         position: absolute;
@@ -310,11 +315,16 @@
         display: inline-block;
         left: 5%;
         bottom: 50%;
+        text-align: center;
+        color: white;
     }
 
     .packaging-bubble{
-        background-color: blue;
+        background-color: #4896FC;
         position: absolute;
         bottom: 46px;
+        color: white;
+        border-radius: 3px;
+        padding: 3px;
     }
 </style>
