@@ -341,7 +341,8 @@ class ReportController extends Controller
                 DB::raw('SUM(planned_downtime) as planned_downtime'),
             ])->get()->keyBy('station_id');
         info($reports);
-        $available_base = now()->diffInSeconds(now()->startOf('day'));
+//        $available_base = now()->diffInSeconds(now()->startOf('day'));
+        $available_base = 24*3600;
         $reports = $station_ids->reduce(function ($carry, $stationId) use ($available_base, $reports) {
             $row = [];
             $item = $reports->get($stationId);
@@ -349,10 +350,17 @@ class ReportController extends Controller
             $row['performance'] = $item['produced'] ? ($item['produced'] / $item['expected']) : 0;
             $row['quality'] = $item['produced'] ? (($item['produced'] - $item['scraped']) / $item['produced']) : 0;
             $row['availability'] = $item['available'] ? ($item['available'] / ($available_base - $item['planned_downtime'])) : 0;
-            $row['oee'] = $row['performance'] * $row['quality'] * $row['availability'];
+            $row['oee'] = $row['performance'] * $row['quality'] * $row['availability'] * 100;
+            $row['performance'] = number_format($row['performance'] * 100, 2);
+            $row['availability'] = number_format($row['availability'] * 100, 2);
+            $row['quality'] = number_format($row['quality'] * 100, 2);
+            $row['oee'] = number_format($row['oee'], 2);
             $carry[$stationId] = $row;
             return $carry;
         }, []);
+        $reports = collect($reports)->sortBy(function ($value, $key) {
+            return $key;
+        });
         return $reports;
     }
 }
