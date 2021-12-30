@@ -20,13 +20,13 @@
                         <div class="scada-container">
                             <div class="belt"></div>
                             <div class="connect-line"></div>
-                            <div class="connect-line" style="left: 50%;left: 33.6%;border-left: 0;border-right: 5px solid;"></div>
+                            <div class="connect-line lc3" style="left: 50%;left: 33.6%;border-left: 0;border-right: 5px solid;"></div>
 
 <!--                            <div class="straight-connect-line" style="left: 14%"></div>-->
 
-                            <div class="connect-line" style="left: 58.6%; border-left: 0px; border-right: 5px solid;"></div>
+                            <div class="connect-line lc2" style="left: 58.6%; border-left: 0px; border-right: 5px solid;"></div>
 
-                            <div class="connect-line" style="left: 83.6%; border-left: 0px; border-right: 5px solid;"></div>
+                            <div class="connect-line lc" style="left: 83.6%; border-left: 0px; border-right: 5px solid;"></div>
 
                             <div class="bubble" style="left: 4%;">
                                 <div style="background-color: #6D6D6D;" class="rounded-top p-1">
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
 
-                            <div class="ac-naked" style="height: 40px; width: 40px;background-size: 100%; background-repeat: no-repeat;    position: absolute;bottom: 1.5rem;left: 27%;"></div>
+                            <div class="ac-naked" style="height: 60px; width: 60px;background-size: 100%; background-repeat: no-repeat;    position: absolute;bottom: -0.1rem;left: 26%;"></div>
 
                             <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 31%;width: 86px;">
                                 <div class="outdoor-bubbles">
@@ -73,11 +73,11 @@
                                 </div>
                             </div>
 
-                            <div class="ac-naked" style="height: 40px; width: 40px;background-size: 100%; background-repeat: no-repeat; position: absolute;bottom: 1.5rem;left: 38%;"></div>
+                            <div class="ac-naked" style="height: 60px; width: 60px;background-size: 100%; background-repeat: no-repeat; position: absolute;bottom: -0.1rem;left: 38%;"></div>
 
                             <div class="prod-line inovace-sensor" style="left: 41.6%;"></div>
 
-                            <div class="bubble" style="left: 37%">
+                            <div class="bubble lb3" style="left: 37%">
                                 <div style="background-color: #6D6D6D;" class="rounded-top p-1">
                                     OEE-{{scadaData[4] ? scadaData[4].oee : 0}}%
                                 </div>
@@ -103,7 +103,7 @@
                                 <div class="packaging-bubble bottom-arrow" style="right: -25px;">Gas Charge</div>
                             </div>
 
-                            <div class="bubble" style="left: 62%;"><div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                            <div class="bubble lb2" style="left: 62%;"><div style="background-color: #6D6D6D;" class="rounded-top p-1">
                                 OEE-{{ scadaData[3] ? scadaData[3].oee : 0}}%
                             </div> <div style="background-color: #00C853;" class="rounded-bottom p-1">
                                 PER-{{ scadaData[3] ? scadaData[3].performance : 0}}/100
@@ -113,7 +113,7 @@
 
                             <div class="prod-line inovace-sensor" style="left: 66.6%;"></div>
 
-                            <div class="ac-introlly" style="height: 40px; width: 40px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 70.4%;"></div>
+                            <div class="ac-introlly" style="height: 60px; width: 60px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -0.1rem; left: 70.4%;"></div>
 
                             <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 75.4%;width: 86px;">
                                 <div class="outdoor-bubbles">
@@ -128,12 +128,12 @@
 
                             <div class="station-4" style="position: absolute;bottom: 1.5em;left: 84%;"></div>
 
-                            <div class="introlly" style="height: 40px; width: 40px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 89%;"></div>
+                            <div class="introlly" style="height: 60px; width: 60px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -0.1rem; left: 87%;"></div>
 
-                            <div class="trolly" style="height: 40px; width: 40px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: 1.5rem; left: 94%;"></div>
+                            <div class="trolly" style="height: 60px; width: 60px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -0.1rem; left: 94%;"></div>
 
                             <div class="prod-line inovace-sensor" style="left: 91.6%;"></div>
-                            <div class="bubble rounded-2" style="left: 86.6%;">
+                            <div class="bubble rounded-2 lb" style="left: 86.6%;">
                                 <div style="background-color: #6D6D6D;" class="rounded-top p-1">
                                     OEE-{{ scadaData[1] ? scadaData[1].oee : 0}}%
                                 </div>
@@ -272,6 +272,7 @@
 
     .computer{
         background-image: url("../../../assets/images/scada/computer.png");
+        display: inline-block;
     }
     .ac-naked{
         background-image: url("../../../assets/images/scada/ac2.png");
@@ -326,5 +327,15 @@
         color: white;
         border-radius: 3px;
         padding: 3px;
+    }
+
+    @media(min-height:900px)
+    {
+        .lc{left: 83% !important;}
+        .lc2{left: 58% !important;}
+        .lb{left: 87.6% !important;}
+        .lb2{left: 62.5% !important;}
+        .lb3{left: 38.7% !important;}
+        .lc3{left: 33% !important;}
     }
 </style>

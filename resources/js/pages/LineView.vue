@@ -57,7 +57,8 @@
                                 </li>
                             </ul>
                         </div>
-                        Operator: {{ filter.stationOperatorName }}
+                        <span v-if="checkTeamName">Team: {{ filter.stationTeamName }}</span>
+                        <span v-else>Operator: {{ filter.stationOperatorName }}</span>
                     </div>
                 </div>
 
@@ -341,8 +342,11 @@
                 stationName: '',
                 stationOperatorId: null,
                 stationOperatorName: 'N/A',
+                stationTeamId: null,
+                stationTeamName: 'N/A',
                 selectedDate: new Date(),
             },
+            checkTeamName: false,
             downtimeReasons: [],
             stations: [],
             products: [],
@@ -467,6 +471,19 @@
                     }
                 );
             },
+            fetchTeamName() {
+                LineViewService.fetchTeamName({
+                        stationId: this.filter.stationId,
+                        date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
+                    },
+                    (data) => {
+                        (data.status === false) ? this.checkTeamName = false : this.checkTeamName = true;
+
+                        this.filter.stationTeamName = data.teamName;
+                        this.filter.stationTeamId = data.teamId;
+                    }
+                );
+            },
             openDowntimeReasonsSelectionModal(bar) {
                 if (bar.type === 'downtime') {
                     this.isDowntimeReasonsModalShown = true;
@@ -542,6 +559,7 @@
                 );
 
                 this.fetchOperatorName();
+                this.fetchTeamName();
             },
             fetchStationShift() {
                 LineViewService.fetchStationShift({},
