@@ -272,6 +272,7 @@
 
     .computer{
         background-image: url("../../../assets/images/scada/computer.png");
+        display: inline-block;
     }
     .ac-naked{
         background-image: url("../../../assets/images/scada/ac2.png");
