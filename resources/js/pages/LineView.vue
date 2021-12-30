@@ -628,12 +628,12 @@
         mounted() {
             const vm = this;
             this.fetchData();
-            // this.$data._updateData = () => {
-            //     if (moment().diff(vm.filter.selectedDate, 'day') === 0) {
-            //         vm.fetchData();
-            //     }
-            // };
-            // this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
+            this.$data._updateData = () => {
+                if (moment().diff(vm.filter.selectedDate, 'day') === 0) {
+                    vm.fetchData();
+                }
+            };
+            this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
 
             StationsService.fetchAll({}, (data) => {
                 this.$set(this, 'stations', data);
@@ -653,7 +653,7 @@
             this.fetchTopOperatorDowntimes();
         },
         destroyed() {
-            // clearInterval(this.dataUpdateTimer);
+            clearInterval(this.dataUpdateTimer);
         }
     }
 </script>
