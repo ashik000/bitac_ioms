@@ -626,6 +626,8 @@
             },
         },
         mounted() {
+           (this.$route.query.stn_id) ? (this.filter.stationId = this.$route.query.stn_id) : this.filter.stationId = this.filter.stationId;
+
             const vm = this;
             this.fetchData();
             this.$data._updateData = () => {

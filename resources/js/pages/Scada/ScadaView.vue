@@ -32,9 +32,13 @@
                                 <div style="background-color: #6D6D6D;" class="rounded-top p-1">
                                     OEE-{{ scadaData[5] ? scadaData[5].oee : 0}}%
                                 </div>
-                                <div style="background-color: #00C853;" class="rounded-bottom p-1">
+
+                                <router-link :to="generateStationId(scadaData[5] ? scadaData[5].station_id : 0)" style="text-decoration: none; color: white;">
+                                  <div style="background-color: #00C853;" class="rounded-bottom p-1">
                                     PER-{{ scadaData[5] ? scadaData[5].performance : 0}}/100
-                                </div>
+                                  </div>
+                                </router-link>
+
                             </div>
                             <div class="prod-line inovace-sensor" style="left: 4%;"></div>
                             <div class="product ac-boxed" style="left: 8%;"></div>
@@ -81,9 +85,11 @@
                                 <div style="background-color: #6D6D6D;" class="rounded-top p-1">
                                     OEE-{{scadaData[4] ? scadaData[4].oee : 0}}%
                                 </div>
-                                <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                <router-link :to="generateStationId(scadaData[4] ? scadaData[4].station_id : 0)" style="text-decoration: none; color: white;">
+                                  <div style="background-color: #00C853;" class="rounded-bottom p-1">
                                     PER-{{ scadaData[4] ? scadaData[4].performance : 0}}/100
-                                </div>
+                                  </div>
+                                </router-link>
                             </div>
 
                             <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 47.4%;width: 86px;">
@@ -103,11 +109,16 @@
                                 <div class="packaging-bubble bottom-arrow" style="right: -25px;">Gas Charge</div>
                             </div>
 
-                            <div class="bubble lb2" style="left: 62%;"><div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                            <div class="bubble lb2" style="left: 62%;">
+                              <div style="background-color: #6D6D6D;" class="rounded-top p-1">
                                 OEE-{{ scadaData[3] ? scadaData[3].oee : 0}}%
-                            </div> <div style="background-color: #00C853;" class="rounded-bottom p-1">
-                                PER-{{ scadaData[3] ? scadaData[3].performance : 0}}/100
-                            </div></div>
+                              </div>
+                              <router-link :to="generateStationId(scadaData[3] ? scadaData[3].station_id : 0)" style="text-decoration: none; color: white;">
+                                <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                  PER-{{ scadaData[3] ? scadaData[3].performance : 0}}/100
+                                </div>
+                              </router-link>
+                            </div>
 
                             <div class="station-3" style="position: absolute;bottom: 1.5em;left: 65%;"></div>
 
@@ -122,7 +133,7 @@
                                     <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Pass 0</div>
 
                                     <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
-                                    <div>Outdoor <br> Hellium Leak Test</div>
+                                    <div>Outdoor <br> Helium Leak Test</div>
                                 </div>
                             </div>
 
@@ -137,9 +148,11 @@
                                 <div style="background-color: #6D6D6D;" class="rounded-top p-1">
                                     OEE-{{ scadaData[1] ? scadaData[1].oee : 0}}%
                                 </div>
+                              <router-link :to="generateStationId(scadaData[1] ? scadaData[1].station_id: 0)" style="text-decoration: none; color: white;">
                                 <div style="background-color: #00C853;" class="rounded-bottom p-1">
-                                    PER-{{ scadaData[1] ? scadaData[1].performance : 0}}/100
+                                  PER-{{ scadaData[1] ? scadaData[1].performance : 0}}/100
                                 </div>
+                              </router-link>
                             </div>
 
                         </div>
@@ -165,10 +178,14 @@
         computed:{
         },
         methods: {
+          generateStationId(stationId) {
+            return "/lineview?stn_id=" + stationId;
+          },
         },
         mounted(){
-            ScadaService.getScada( success => {
-               this.scadaData = success;
+            ScadaService.getScada( res => {
+               this.scadaData = res;
+               console.log(this.scadaData);
             });
         }
     }
