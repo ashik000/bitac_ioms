@@ -77,6 +77,7 @@ class StationProductController extends Controller
         $stationProduct->cycle_timeout = $data['cycle_timeout'];
         $stationProduct->units_per_signal = $data['units_per_signal'];
         $stationProduct->performance_threshold = $data['performance_threshold'];
+        $stationProduct->start_time = now();
         $stationProduct->save();
         $stationProducts = StationProduct::where('station_id',$data['station_id'])->get()->load('product');
         return response()->json($stationProducts,200);
