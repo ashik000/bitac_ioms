@@ -87,8 +87,15 @@
                                 <v-date-picker :max-date='new Date()'
                                     mode='single' v-model='filter.selectedDate'
                                     :masks="{ input: 'WWW, DD MMMM' }"
-                                    :input-props="{ class: 'date-picker-input text-center border-0 w-100 bg-transparent', style: 'height: 4.5rem; font-size: 1.3em;' }"
                                     @input="changeSelectedDate">
+                                  <template v-slot="{ inputValue, inputEvents }">
+                                    <input
+                                        style="height: 4.5rem; font-size: 1.3em;"
+                                        class="date-picker-input text-center border-0 w-100 bg-transparent"
+                                        :value="inputValue"
+                                        v-on="inputEvents"
+                                    />
+                                  </template>
                                 </v-date-picker>
                             </div>
                         </div>
