@@ -19,16 +19,16 @@
                     <div class="card-body">
                         <div class="scada-container">
                             <div class="belt"></div>
-                            <div class="connect-line"></div>
-                            <div class="connect-line lc3" style="left: 50%;left: 33.6%;border-left: 0;border-right: 5px solid;"></div>
+                            <div class="connect-line" style="left: -9.6%;"></div>
+                            <div class="connect-line lc3" style="left: 50%;left: 32.6%;border-left: 0;border-right: 3px solid #E8B900;"></div>
 
 <!--                            <div class="straight-connect-line" style="left: 14%"></div>-->
 
-                            <div class="connect-line lc2" style="left: 58.6%; border-left: 0px; border-right: 5px solid;"></div>
+                            <div class="connect-line lc2" style="left: 55.6%; border-left: 0px; border-right: 3px solid #E8B900;"></div>
 
-                            <div class="connect-line lc" style="left: 83.6%; border-left: 0px; border-right: 5px solid;"></div>
+                            <div class="connect-line lc" style="left: 83.6%; border-left: 0px; border-right: 3px solid #E8B900;"></div>
 
-                            <div class="bubble" style="left: 4%;">
+                            <div class="bubble" style="left: 1%;">
                                 <div style="background-color: #6D6D6D;" class="rounded-top p-1">
                                     OEE-{{ scadaData[5] ? scadaData[5].oee : 0}}%
                                 </div>
@@ -40,8 +40,8 @@
                                 </router-link>
 
                             </div>
-                            <div class="prod-line inovace-sensor" style="left: 4%;"></div>
-                            <div class="product ac-boxed" style="left: 8%;"></div>
+                            <div class="prod-line inovace-sensor pro-1" style="left: 1%;"></div>
+                            <div class="product ac-boxed" style="left: 4%; height: 80px; width: 80px;"></div>
 <!--                            <div class="bubble" style="left: 12%;">-->
 <!--                                <div style="background-color: gray;">-->
 <!--                                    OEE-80%-->
@@ -50,11 +50,11 @@
 <!--                                    PER-90/100-->
 <!--                                </div>-->
 <!--                            </div>-->
-                            <div class="product computer" style="left: 13%; bottom: 14%; white-space: nowrap;">
-                                <div class="packaging-bubble bottom-arrow">Packaging</div>
-                            </div>
+<!--                            <div class="product computer" style="left: 10%; bottom: 46%; white-space: nowrap;">-->
+<!--                                <div class="packaging-bubble bottom-arrow">Packaging</div>-->
+<!--                            </div>-->
 
-                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 19%;width: 86px;">
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 11%;width: 100px;">
                                 <div class="outdoor-bubbles">
                                     <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Quality 0%</div>
                                     <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Reject 0</div>
@@ -65,9 +65,9 @@
                                 </div>
                             </div>
 
-                            <div class="ac-naked" style="height: 60px; width: 60px;background-size: 100%; background-repeat: no-repeat;    position: absolute;bottom: -0.1rem;left: 26%;"></div>
+                            <div class="ac-naked" style="height: 106px; width: 106px;background-size: 100%; background-repeat: no-repeat;    position: absolute;bottom: -1rem;left: 19.5%;"></div>
 
-                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 31%;width: 86px;">
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 28.5%;width: 100px;">
                                 <div class="outdoor-bubbles">
                                     <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">OEE 0%</div>
                                     <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Per 0/100</div>
@@ -77,9 +77,9 @@
                                 </div>
                             </div>
 
-                            <div class="ac-naked" style="height: 60px; width: 60px;background-size: 100%; background-repeat: no-repeat; position: absolute;bottom: -0.1rem;left: 38%;"></div>
+                            <div class="ac-naked" style="height: 106px; width: 106px;background-size: 100%; background-repeat: no-repeat; position: absolute;bottom: -1rem;left: 37%;"></div>
 
-                            <div class="prod-line inovace-sensor" style="left: 41.6%;"></div>
+                            <div class="prod-line inovace-sensor pro-2" style="left: 40.6%;"></div>
 
                             <div class="bubble lb3" style="left: 37%">
                                 <div style="background-color: #6D6D6D;" class="rounded-top p-1">
@@ -92,7 +92,7 @@
                                 </router-link>
                             </div>
 
-                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 47.4%;width: 86px;">
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 46%;width: 100px;">
                                 <div class="outdoor-bubbles">
                                     <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Quality 0%</div>
                                     <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Reject 0</div>
@@ -105,11 +105,11 @@
 
                             <div class="station-1" style="position: absolute;bottom: 1.5em;left: 55%;"></div>
 
-                            <div class="station-2" style="position: absolute;bottom: 1.5em;left: 60%; white-space: nowrap;">
+                            <div class="station-2" style="position: absolute;bottom: 1.5em;left: 58%; white-space: nowrap;">
                                 <div class="packaging-bubble bottom-arrow" style="right: -25px;">Gas Charge</div>
                             </div>
 
-                            <div class="bubble lb2" style="left: 62%;">
+                            <div class="bubble lb2" style="left: 60%;">
                               <div style="background-color: #6D6D6D;" class="rounded-top p-1">
                                 OEE-{{ scadaData[3] ? scadaData[3].oee : 0}}%
                               </div>
@@ -120,13 +120,13 @@
                               </router-link>
                             </div>
 
-                            <div class="station-3" style="position: absolute;bottom: 1.5em;left: 65%;"></div>
+                            <div class="station-3" style="position: absolute;bottom: 1.5em;left: 61%;"></div>
 
-                            <div class="prod-line inovace-sensor" style="left: 66.6%;"></div>
+                            <div class="prod-line inovace-sensor pro-3" style="left: 63.6%;"></div>
 
-                            <div class="ac-introlly" style="height: 60px; width: 60px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -0.1rem; left: 70.4%;"></div>
+                            <div class="ac-introlly" style="height: 106px; width: 106px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -1.4rem; left: 65.4%;"></div>
 
-                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 75.4%;width: 86px;">
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 73%;width: 100px;">
                                 <div class="outdoor-bubbles">
                                     <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Quality 0%</div>
                                     <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Reject 0</div>
@@ -137,14 +137,14 @@
                                 </div>
                             </div>
 
-                            <div class="station-4" style="position: absolute;bottom: 1.5em;left: 84%;"></div>
+                            <div class="station-4" style="position: absolute;bottom: 1.5em;left: 80.4%;"></div>
 
-                            <div class="introlly" style="height: 60px; width: 60px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -0.1rem; left: 87%;"></div>
+                            <div class="introlly" style="height: 106px; width: 106px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -1.4rem; left: 83%;"></div>
 
-                            <div class="trolly" style="height: 60px; width: 60px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -0.1rem; left: 94%;"></div>
+                            <div class="trolly" style="height: 106px; width: 106px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -1.4rem; left: 93%;"></div>
 
-                            <div class="prod-line inovace-sensor" style="left: 91.6%;"></div>
-                            <div class="bubble rounded-2 lb" style="left: 86.6%;">
+                            <div class="prod-line inovace-sensor pro-4" style="left: 91.6%;"></div>
+                            <div class="bubble rounded-2 lb" style="left: 88%;">
                                 <div style="background-color: #6D6D6D;" class="rounded-top p-1">
                                     OEE-{{ scadaData[1] ? scadaData[1].oee : 0}}%
                                 </div>
@@ -197,6 +197,10 @@
         text-align: center;
         padding: 2px;
     }
+
+    .outdoor-bubbles div:last-child{
+        color: #4695FC;
+    }
     .bottom-arrow:after {
         content: '';
         position: absolute;
@@ -237,7 +241,7 @@
     .inovace-sensor{
         background-image: url("../../../assets/images/scada/sensor.png");
         position: absolute;
-        bottom: 30%;
+        bottom: 47%;
         left: 5%;
     }
 
@@ -309,13 +313,13 @@
 
     .connect-line{
         position: absolute;
-        bottom: 33%;
+        bottom: 51%;
         left: -6.6%;
         height: 96px;
 
-        border-left: 5px solid;
-        border-top: 5px solid;
-        border-bottom: 5px solid;
+        border-left: 3px solid #E8B900;
+        border-top: 3px solid #E8B900;
+        border-bottom: 3px solid #E8B900;
 
         margin: 0 10%;
         width: 15px;
@@ -325,14 +329,14 @@
         position: absolute;
         bottom: 20%;
         height: 143px;
-        border-left: 5px solid;
+        border-left: 3px solid #E8B900;
     }
 
     .bubble{
         position: absolute;
         display: inline-block;
         left: 5%;
-        bottom: 50%;
+        bottom: 67%;
         text-align: center;
         color: white;
     }
@@ -348,11 +352,17 @@
 
     @media(min-height:900px)
     {
-        .lc{left: 83% !important;}
-        .lc2{left: 58% !important;}
+        .lc{left: 82% !important;}
+        .lc2{left: 57% !important;}
         .lb{left: 87.6% !important;}
         .lb2{left: 62.5% !important;}
         .lb3{left: 38.7% !important;}
         .lc3{left: 33% !important;}
+        .bubble{bottom: 46% !important;}
+        .connect-line{bottom: 34% !important;}
+        .inovace-sensor{bottom: 31% !important;}
+        .pro-2{left: 41.6% !important;}
+        .pro-3{left: 65.6% !important;}
+        .pro-4{left: 90.6% !important;}
     }
 </style>
