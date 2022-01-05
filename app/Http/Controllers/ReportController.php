@@ -346,7 +346,9 @@ class ReportController extends Controller
         $reports = $station_ids->reduce(function ($carry, $stationId) use ($available_base, $reports) {
             $row = [];
             $item = $reports->get($stationId);
+            if (empty($item)) return $carry;
             info($item);
+            error_log(print_r($item, true));
             $row['performance'] = $item['produced'] ? ($item['produced'] / $item['expected']) : 0;
             $row['quality'] = $item['produced'] ? (($item['produced'] - $item['scraped']) / $item['produced']) : 0;
             $row['availability'] = $item['available'] ? ($item['available'] / ($available_base - $item['planned_downtime'])) : 0;
@@ -355,6 +357,7 @@ class ReportController extends Controller
             $row['availability'] = number_format($row['availability'] * 100, 2);
             $row['quality'] = number_format($row['quality'] * 100, 2);
             $row['oee'] = number_format($row['oee'], 2);
+            $row['station_id'] = $stationId;
             $carry[$stationId] = $row;
             return $carry;
         }, []);
