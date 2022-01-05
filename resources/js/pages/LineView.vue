@@ -559,6 +559,10 @@
                         this.gaugePerformance = (isNaN(this.oeeSummary.summary.performance.toFixed(2)) || this.oeeSummary.summary.performance === 0) ? 0 : Math.ceil(this.oeeSummary.summary.performance.toFixed(2));
                         this.gaugeQuality = (isNaN(this.oeeSummary.summary.quality.toFixed(2)) || this.oeeSummary.summary.quality === 0) ? 0 : Math.ceil(this.oeeSummary.summary.quality.toFixed(2));
 
+                        this.gaugeTotalOee = this.getDisplayableValueForGauge(this.gaugeTotalOee);
+                        this.gaugeAvailability = this.getDisplayableValueForGauge(this.gaugeAvailability);
+                        this.gaugeQuality = this.getDisplayableValueForGauge(this.gaugeQuality);
+                        this.gaugePerformance = this.gaugePerformance < 0 ? 0: this.gaugePerformance;
                         var assignedProducts = this.products.filter(prod => prod.start_time !== null);
                         this.currentProduct = assignedProducts.length > 0? assignedProducts[0] : null;
                         this.isInitialized = true;
@@ -567,6 +571,11 @@
 
                 this.fetchOperatorName();
                 this.fetchTeamName();
+            },
+            getDisplayableValueForGauge(value){
+              value = Math.min(100,this.gaugeTotalOee);
+              value = Math.max(this.gaugeTotalOee,0);
+              return value;
             },
             fetchStationShift() {
                 LineViewService.fetchStationShift({},
