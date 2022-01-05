@@ -29,9 +29,11 @@
                             <div class="connect-line lc" style="left: 83.6%; border-left: 0px; border-right: 3px solid #E8B900;"></div>
 
                             <div class="bubble" style="left: 1%;">
-                                <div style="background-color: #6D6D6D;" class="rounded-top p-1">
-                                    OEE-{{ scadaData[5] ? scadaData[5].oee : 0}}%
-                                </div>
+                                <router-link :to="generateStationId(scadaData[5] ? scadaData[5].station_id : 0)" style="text-decoration: none; color: white;">
+                                    <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                        OEE-{{ scadaData[5] ? scadaData[5].oee : 0}}%
+                                    </div>
+                                </router-link>
 
                                 <router-link :to="generateStationId(scadaData[5] ? scadaData[5].station_id : 0)" style="text-decoration: none; color: white;">
                                   <div style="background-color: #00C853;" class="rounded-bottom p-1">
@@ -82,9 +84,11 @@
                             <div class="prod-line inovace-sensor pro-2" style="left: 40.6%;"></div>
 
                             <div class="bubble lb3" style="left: 37%">
-                                <div style="background-color: #6D6D6D;" class="rounded-top p-1">
-                                    OEE-{{scadaData[4] ? scadaData[4].oee : 0}}%
-                                </div>
+                                <router-link :to="generateStationId(scadaData[4] ? scadaData[4].station_id : 0)" style="text-decoration: none; color: white;">
+                                    <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                        OEE-{{scadaData[4] ? scadaData[4].oee : 0}}%
+                                    </div>
+                                </router-link>
                                 <router-link :to="generateStationId(scadaData[4] ? scadaData[4].station_id : 0)" style="text-decoration: none; color: white;">
                                   <div style="background-color: #00C853;" class="rounded-bottom p-1">
                                     PER-{{ scadaData[4] ? scadaData[4].performance : 0}}/100
@@ -110,9 +114,11 @@
                             </div>
 
                             <div class="bubble lb2" style="left: 60%;">
-                              <div style="background-color: #6D6D6D;" class="rounded-top p-1">
-                                OEE-{{ scadaData[3] ? scadaData[3].oee : 0}}%
-                              </div>
+                              <router-link :to="generateStationId(scadaData[3] ? scadaData[3].station_id : 0)" style="text-decoration: none; color: white;">
+                                  <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                      OEE-{{ scadaData[3] ? scadaData[3].oee : 0}}%
+                                  </div>
+                              </router-link>
                               <router-link :to="generateStationId(scadaData[3] ? scadaData[3].station_id : 0)" style="text-decoration: none; color: white;">
                                 <div style="background-color: #00C853;" class="rounded-bottom p-1">
                                   PER-{{ scadaData[3] ? scadaData[3].performance : 0}}/100
@@ -145,9 +151,11 @@
 
                             <div class="prod-line inovace-sensor pro-4" style="left: 91.6%;"></div>
                             <div class="bubble rounded-2 lb" style="left: 88%;">
+                              <router-link :to="generateStationId(scadaData[1] ? scadaData[1].station_id: 0)" style="text-decoration: none; color: white;">
                                 <div style="background-color: #6D6D6D;" class="rounded-top p-1">
                                     OEE-{{ scadaData[1] ? scadaData[1].oee : 0}}%
                                 </div>
+                              </router-link>
                               <router-link :to="generateStationId(scadaData[1] ? scadaData[1].station_id: 0)" style="text-decoration: none; color: white;">
                                 <div style="background-color: #00C853;" class="rounded-bottom p-1">
                                   PER-{{ scadaData[1] ? scadaData[1].performance : 0}}/100
