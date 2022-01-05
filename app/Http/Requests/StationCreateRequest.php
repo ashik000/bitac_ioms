@@ -30,7 +30,7 @@ class StationCreateRequest extends FormRequest
             'description' =>'required|min:1' ,
             'station_group_id' => 'required|exists:station_groups,id',
             'oee_threshold' => 'required',
-            'station_type' => 'required|in:'.implode(',', $stationTypeList),
+            'station_type' => 'in:'.implode(',', $stationTypeList),
         ];
     }
 }
