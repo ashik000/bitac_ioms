@@ -361,9 +361,11 @@ class ReportController extends Controller
             $carry[$stationId] = $row;
             return $carry;
         }, []);
+        info($reports);
         $reports = collect($reports)->sortBy(function ($value, $key) {
             return $key;
         });
+        info($reports);
         return $reports;
     }
 }
