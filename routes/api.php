@@ -95,3 +95,5 @@ Route::post('storeEventFile', 'LineViewController@storeEventFile');
 Route::get('getDummyScrap', 'ScrapController@getDummyScrap');
 Route::get('testScrapX', 'ScrapController@testScrap');
 
+Route::post('storeMachineData', 'StoreMachineDataController@store');
+
