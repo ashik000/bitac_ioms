@@ -6,10 +6,10 @@ use App\Data\Models\MachineStatus;
 
 class MachineStatusRepository
 {
-    public function storeData($request): bool
+    public function storeData($request)
     {
         $machineStatus = new MachineStatus();
-        $machineStatus['$station_id'] = $request['$station_id'];
+        $machineStatus['station_id'] = $request['station_id'];
         $machineStatus['spindle_speed'] = $request['spindle_speed'];
         $machineStatus['feed_rate'] = $request['feed_rate'];
         $machineStatus['machine_uptime'] = $request['machine_uptime'];
@@ -22,10 +22,10 @@ class MachineStatusRepository
         $machineStatus['power_status'] = $request['power_status'];
         $machineStatus['program_name'] = $request['program_name'];
         $machineStatus['produced_at'] = $request['produced_at'];
+        $machineStatus['synced_at'] = now();
         $check = $machineStatus->save();
 
-        if($check)
-        {
+        if ($check) {
             return true;
         }
 
