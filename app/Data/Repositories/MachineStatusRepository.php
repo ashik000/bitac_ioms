@@ -3,10 +3,11 @@
 namespace App\Data\Repositories;
 
 use App\Data\Models\MachineStatus;
+use Illuminate\Database\Eloquent\Builder;
 
 class MachineStatusRepository
 {
-    public function storeData($request)
+    public function storeMachineStatus($request): bool
     {
         $machineStatus = new MachineStatus();
         $machineStatus['station_id'] = $request['station_id'];
@@ -30,6 +31,15 @@ class MachineStatusRepository
         }
 
         return false;
+    }
+
+    public function findLatestMachineStatusByStationId($stationId): Builder
+    {
+        $query = MachineStatus::query();
+        return $query
+            ->where('station_id', '=', (int)$stationId)
+            ->orderBy('produced_at', 'DESC')
+            ->first();
     }
 
 }
