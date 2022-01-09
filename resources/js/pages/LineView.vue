@@ -641,8 +641,8 @@
             },
         },
         mounted() {
-           (this.$route.query.stn_id) ? (this.filter.stationId = this.$route.query.stn_id) : this.filter.stationId = this.filter.stationId;
 
+            this.filter.stationId = (this.$route.query.stn_id) ?  this.$route.query.stn_id : this.filter.stationId;
             const vm = this;
             this.fetchData();
             this.$data._updateData = () => {
@@ -653,6 +653,14 @@
             this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
 
             StationsService.fetchAll({}, (data) => {
+                //If a user comes to this page by clicking on a station from the SCADA page, the station will be selected by default
+                //So we are taking that station to the front of the array
+                var selectedStation = null;
+                data = data.filter(function (item) {
+                    if((item['id'] + '') === (vm.filter.stationId + '')) selectedStation = item;
+                    return (item['id'] + '') !== (vm.filter.stationId + '');
+                });
+                data.unshift(selectedStation);
                 this.$set(this, 'stations', data);
                 this.filter.stationId = this.stations[0].id;
                 this.filter.stationName = this.stations[0].name;
