@@ -573,8 +573,8 @@
                 this.fetchTeamName();
             },
             getDisplayableValueForGauge(value){
-              value = Math.min(100,this.gaugeTotalOee);
-              value = Math.max(this.gaugeTotalOee,0);
+              value = Math.min(100,value);
+              value = Math.max(value,0);
               return value;
             },
             fetchStationShift() {
