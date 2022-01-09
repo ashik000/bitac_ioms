@@ -549,7 +549,6 @@
                     },
                     (data) => {
                         const {products, logs, hourlyMetric, summaryMetric} = LineViewDataTransformer(data);
-                        console.log(summaryMetric);
                         this.$set(this, 'products', products);
                         this.$set(this.linedata, 'logs', logs);
                         this.$set(this.oeeSummary, 'hourly', hourlyMetric);
