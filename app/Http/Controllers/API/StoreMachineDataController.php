@@ -7,6 +7,7 @@ use App\Data\Repositories\MachineStatusRepository;
 use App\Data\Repositories\PacketRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class StoreMachineDataController extends Controller
 {
@@ -27,7 +28,7 @@ class StoreMachineDataController extends Controller
     public function store(Request $request)
     {
         $machineData = $request->all();
-
+        Log::debug($machineData);
         if (empty($machineData)) {
             return response()->json(['error' => true, 'message' => 'Empty body'], 500);
         }

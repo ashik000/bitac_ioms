@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f43ea896ed37b91b24fb3f818a126b3f",
+    "content-hash": "bf0df97a1da83544191f3131ee9a1c72",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4163,16 +4163,16 @@
         },
         {
             "name": "rap2hpoutre/laravel-log-viewer",
-            "version": "v1.7.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rap2hpoutre/laravel-log-viewer.git",
-                "reference": "27392d29234b6ff38a456454558f4bcc40cc837a"
+                "reference": "4fa9b45738095fc5febeed6e44f1516e93a8de8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rap2hpoutre/laravel-log-viewer/zipball/27392d29234b6ff38a456454558f4bcc40cc837a",
-                "reference": "27392d29234b6ff38a456454558f4bcc40cc837a",
+                "url": "https://api.github.com/repos/rap2hpoutre/laravel-log-viewer/zipball/4fa9b45738095fc5febeed6e44f1516e93a8de8c",
+                "reference": "4fa9b45738095fc5febeed6e44f1516e93a8de8c",
                 "shasum": ""
             },
             "require": {
@@ -4220,9 +4220,9 @@
             ],
             "support": {
                 "issues": "https://github.com/rap2hpoutre/laravel-log-viewer/issues",
-                "source": "https://github.com/rap2hpoutre/laravel-log-viewer/tree/master"
+                "source": "https://github.com/rap2hpoutre/laravel-log-viewer/tree/v2.0.0"
             },
-            "time": "2020-09-08T12:21:27+00:00"
+            "time": "2021-11-04T12:40:05+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -9985,5 +9985,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.2.0"
 }
