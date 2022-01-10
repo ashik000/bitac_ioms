@@ -72,7 +72,7 @@ class StoreMachineDataController extends Controller
             ];
 
             error_log($payload['produced_at']);
-            $result = $this->machineStatusRepository->findCurrentMachineStatus($payload);
+            $result = $this->machineStatusRepository->storeMachineStatus($payload);
 
             if (!$result) {
                 response()->json(['error' => true, 'message' => 'Could not store data'], 500);

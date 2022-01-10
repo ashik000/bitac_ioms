@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class MachineStatusRepository
 {
-    public function storeMachineStatus($request): bool
+    public function storeMachineStatus($request)
     {
         $machineStatus = new MachineStatus();
         $machineStatus['station_id'] = $request['station_id'];
