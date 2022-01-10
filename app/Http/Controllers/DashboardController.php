@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Data\Repositories\MachineStatusRepository;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Database\Eloquent\Builder;
+use App\Data\Models\MachineStatus;
 
 class DashboardController extends Controller
 {
@@ -17,8 +18,11 @@ class DashboardController extends Controller
         $this->machineStatusRepository = $machineStatusRepository;
     }
 
-    public function Index(Request $stationId): Builder
+
+    public function GetMachineStatus(Request $request)
     {
-        return $this->machineStatusRepository->findLatestMachineStatusByStationId($stationId);
+        $machineStatus = $this->machineStatusRepository->findLatestMachineStatusByStationId(2);
+        //dd($machineStatus);
+        return $machineStatus;
     }
 }

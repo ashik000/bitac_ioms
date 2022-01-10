@@ -33,7 +33,7 @@ class MachineStatusRepository
         return false;
     }
 
-    public function findLatestMachineStatusByStationId($stationId): Builder
+    public function findLatestMachineStatusByStationId($stationId)
     {
         $query = MachineStatus::query();
         return $query

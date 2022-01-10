@@ -13,6 +13,7 @@ import OeeReport from "./pages/Reports/OeeReport";
 import DowntimeReport from "./pages/Reports/DowntimeReport";
 import Teams from "./pages/Settings/Teams";
 import ScadaView from "./pages/Scada/ScadaView";
+import Dashboard from "./pages/Dashboard";
 
 import LoginPage from "./pages/login/Login";
 
@@ -49,6 +50,14 @@ const routes = [
         path: '/lineview',
         name: 'lineview',
         component: LineView,
+        meta: {
+            requiresAuth: true
+        },
+    },
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard,
         meta: {
             requiresAuth: true
         },

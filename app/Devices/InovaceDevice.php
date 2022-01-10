@@ -572,7 +572,7 @@ class InovaceDevice
             //we are omitting the length of packets, channel length bytes because for logs, the length of packets will always be 1
             $port = unpack('cport/', substr($packetContentBin, $startingIndex+6, 1))['port'];
 
-            $deviceStation = $devicePortToDeviceStationMap->get($port+1);
+            $deviceStation = $devicePortToDeviceStationMap->get($port);
             if(empty($deviceStation)) continue;
             $stationProduct = $stationIdToStationProductMap->get($deviceStation->station_id);
             if(empty($stationProduct)) continue;

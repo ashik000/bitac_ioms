@@ -47,10 +47,10 @@ class StoreMachineDataController extends Controller
             $devicePortToDeviceStationMap = $this->deviceRepository->findAllDeviceStationsOfADevice($device->id)->mapWithKeys(function (
                 $deviceStation
             ) {
-                return [$deviceStation['port'] + 1 => $deviceStation]; // 1 is added to port coz key=0 not possible
+                return [$deviceStation['port'] => $deviceStation]; // 1 is added to port coz key=0 not possible
             });
 
-            $station = $devicePortToDeviceStationMap->get($machine_id + 1);
+            $station = $devicePortToDeviceStationMap->get($machine_id);
 
             if (empty($station)) {
                 return response()->json(['error' => true, 'message' => 'Machine not found'], 404);
