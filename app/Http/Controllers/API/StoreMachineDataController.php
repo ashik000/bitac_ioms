@@ -24,7 +24,7 @@ class StoreMachineDataController extends Controller
         $this->packetRepository = $packetRepository;
     }
 
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request)
     {
         $machineData = $request->all();
 
