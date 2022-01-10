@@ -1,6 +1,6 @@
 <template>
     <div>
-        {{machineStatus.station_id}}
+        {{machineStatus.machine_uptime}}
     </div>
 
 </template>
