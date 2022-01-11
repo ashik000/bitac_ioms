@@ -1,6 +1,6 @@
 <template>
     <div class="dashboard-bg">
-        <div class="gap-5"></div>
+        <div class="mt-3"></div>
         <!--Dashboard body starts-->
         <div class="row main-body">
             <div class="col-md-12">
@@ -42,7 +42,7 @@
                                     class="text-uppercase mb-2 d-flex justify-content-center align-items-center gap-3"
                                 >
                                     <span>Machine Status:</span>
-                                    <div class="round"></div>
+                                    <div v-bind:class="{roundGreen: greenActive, roundRed: redActive}"></div>
                                     <span class="fw-bolder">{{machineStatus.power_status}}</span>
                                 </h6>
                             </div>
@@ -52,7 +52,49 @@
 
                     <!--Middle column starts-->
                     <div class="col-md-4 middle-column">
-                        <div class="card card-1 shadow-sm height-420">
+                        <div class="card shadow-sm font-12  height-300">
+                            <div class="card-header card-header-bg text-center fw-bold">
+                                Time and Counter
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-borderless table-responsive">
+                                    <tbody class="text-start">
+                                    <tr>
+                                        <td>This Cycle</td>
+                                        <td>:</td>
+                                        <td>--</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last Cycle</td>
+                                        <td>:</td>
+                                        <td>--</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Remaining</td>
+                                        <td>:</td>
+                                        <td>--</td>
+                                    </tr>
+                                    <tr>
+                                        <td>M30 Counter #1</td>
+                                        <td>:</td>
+                                        <td>--</td>
+                                    </tr>
+                                    <tr>
+                                        <td>M30 Counter #2</td>
+                                        <td>:</td>
+                                        <td>{{machineStatus.counter_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Loops Remaining</td>
+                                        <td>:</td>
+                                        <td>--</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card card-1 shadow-sm mt-4 height-420">
                             <div
                                 class="card-header d-flex justify-content-between align-items-center"
                             >
@@ -60,7 +102,7 @@
                                 <div class="d-flex gap-4 align-items-center">
                                     <img src="../assets/Artboard11.png" alt="" />
 
-                                    <span class="mt-1">{{machineStatus.machine_uptime}}</span>
+                                    <span class="mt-1 text-dark">{{machineStatus.machine_uptime}}</span>
                                 </div>
                             </div>
                             <div
@@ -74,7 +116,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-responsive">
                                     <tbody class="text-start">
                                     <tr>
                                         <td>N5830X11, 707Y-20,8</td>
@@ -99,48 +141,6 @@
                                     </tr>
                                     <tr>
                                         <td>N5830X11, 707Y-20,8</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="card shadow-sm font-12 mt-4 height-300">
-                            <div class="card-header card-header-bg text-center fw-bold">
-                                Time and Counter
-                            </div>
-                            <div class="card-body">
-                                <table class="table borderless-table">
-                                    <tbody class="text-start">
-                                    <tr>
-                                        <td>This Cycle</td>
-                                        <td>:</td>
-                                        <td>0:18:07</td>
-                                    </tr>
-                                    <tr>
-                                        <td>This Cycle</td>
-                                        <td>:</td>
-                                        <td>0:18:07</td>
-                                    </tr>
-                                    <tr>
-                                        <td>This Cycle</td>
-                                        <td>:</td>
-                                        <td>0:18:07</td>
-                                    </tr>
-                                    <tr>
-                                        <td>This Cycle</td>
-                                        <td>:</td>
-                                        <td>0:18:07</td>
-                                    </tr>
-                                    <tr>
-                                        <td>This Cycle</td>
-                                        <td>:</td>
-                                        <td>0:18:07</td>
-                                    </tr>
-                                    <tr>
-                                        <td>This Cycle</td>
-                                        <td>:</td>
-                                        <td>0:18:07</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -151,7 +151,94 @@
 
                     <!--Right column starts-->
                     <div class="col-md-4 right-column">
-                        <div class="card shadow-sm font-12 card-3 height-420">
+
+                        <div class="card shadow-sm card-4 font-12 height-300">
+                            <div class="card-header card-header-bg text-center fw-bold">
+                                Main Spindle
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img src="../assets/Artboard10.png" alt="" />
+                                        <div><span class="font-14 fw-bold">Overrides</span></div>
+                                        <table class="table table-borderless table-responsive">
+                                            <tbody class="text-start">
+                                            <tr>
+                                                <td>Spindle</td>
+                                                <td>:</td>
+                                                <td>--</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Feed</td>
+                                                <td>:</td>
+                                                <td>--</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Rapid</td>
+                                                <td>:</td>
+                                                <td>--</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <table class="table table-borderless table-responsive">
+                                            <tbody class="text-start">
+                                            <tr>
+                                                <td>Spindle Speed</td>
+                                                <td>:</td>
+                                                <td>{{machineStatus.spindle_speed}}</td>
+                                                <td>RPM</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Spindle Power</td>
+                                                <td>:</td>
+                                                <td>--</td>
+                                                <td>KW</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Surface Speed</td>
+                                                <td>:</td>
+                                                <td>--</td>
+                                                <td>Mpm</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Chip Load</td>
+                                                <td>:</td>
+                                                <td>--</td>
+                                                <td>MMPT</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Feed Rate</td>
+                                                <td>:</td>
+                                                <td>{{machineStatus.feed_rate}}</td>
+                                                <td>MMPH</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Active Feed</td>
+                                                <td>:</td>
+                                                <td>--</td>
+                                                <td>MMPH</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="d-flex gap-5 align-items-center slide-range">
+                                    <span>Spindle Load(%)</span>
+                                    <input
+                                        type="range"
+                                        min="1"
+                                        max="100"
+                                        value=""
+                                        style="width: 70%; height: 15px"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm font-12 mt-4 card-3 height-420">
                             <div
                                 class="card-header card-header-bg text-center fw-bold d-flex"
                             >
@@ -168,9 +255,9 @@
                                         <div class="d-flex gap-5 align-items-center width-100">
                                             <h5 class="mt-1">X</h5>
                                             <div class="d-flex gap-4 align-items-center slide-range width-90">
-                                                <span>-12.742</span>
+                                                <span>--</span>
                                                 <input class="width-65" type="range" min="1" max="100" value="" />
-                                                <span>6%</span>
+                                                <span>-%</span>
                                             </div>
                                         </div>
                                     </div>
@@ -180,9 +267,9 @@
                                         <div class="d-flex gap-5 align-items-center width-100">
                                             <h5 class="mt-1">Y</h5>
                                             <div class="d-flex gap-4 align-items-center slide-range width-90">
-                                                <span>-12.742</span>
+                                                <span>--</span>
                                                 <input class="width-65" type="range" min="1" max="100" value="" />
-                                                <span>6%</span>
+                                                <span>-%</span>
                                             </div>
                                         </div>
                                     </div>
@@ -192,97 +279,12 @@
                                         <div class="d-flex gap-5 align-items-center width-100">
                                             <h5 class="mt-1">Z</h5>
                                             <div class="d-flex gap-4 align-items-center slide-range width-90">
-                                                <span>-12.742</span>
+                                                <span>--</span>
                                                 <input class="width-65" type="range" min="1" max="100" value="" />
-                                                <span>6%</span>
+                                                <span>-%</span>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card shadow-sm card-4 mt-4 font-12 height-300">
-                            <div class="card-header card-header-bg text-center fw-bold">
-                                Main Spindle
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <img src="../assets/Artboard10.png" alt="" />
-                                        <div><span class="font-14 fw-bold">Overrides</span></div>
-                                        <table class="table borderless-table">
-                                            <tbody class="text-start">
-                                            <tr>
-                                                <td>This Cycle</td>
-                                                <td>:</td>
-                                                <td>0:18:07</td>
-                                            </tr>
-                                            <tr>
-                                                <td>This Cycle</td>
-                                                <td>:</td>
-                                                <td>0:18:07</td>
-                                            </tr>
-                                            <tr>
-                                                <td>This Cycle</td>
-                                                <td>:</td>
-                                                <td>0:18:07</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <table class="table borderless-table">
-                                            <tbody class="text-start">
-                                            <tr>
-                                                <td>Spindle Speed</td>
-                                                <td>:</td>
-                                                <td>{{machineStatus.spindle_speed}}</td>
-                                                <td>RPM</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Spindle Power</td>
-                                                <td>:</td>
-                                                <td>0.4</td>
-                                                <td>KW</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Surface Speed</td>
-                                                <td>:</td>
-                                                <td>113</td>
-                                                <td>Mpm</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Chip Load</td>
-                                                <td>:</td>
-                                                <td>0,053</td>
-                                                <td>MMPT</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Feed Rate</td>
-                                                <td>:</td>
-                                                <td>{{machineStatus.feed_rate}}</td>
-                                                <td>MMPH</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Active Feed</td>
-                                                <td>:</td>
-                                                <td>960.0000</td>
-                                                <td>MMPH</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="d-flex gap-5 align-items-center slide-range width-100">
-                                    <span>Spindle Load(%)</span>
-                                    <input
-                                        type="range"
-                                        min="1"
-                                        max="100"
-                                        value=""
-                                        style="width: 70%; height: 15px"
-                                    />
                                 </div>
                             </div>
                         </div>
@@ -304,6 +306,8 @@ export default {
     data(){
         return{
             machineStatus: [],
+            roundGreen: '',
+            roundRed: ''
             // station_id: '',
             // spindle_speed: '',
             // feed_rate: '',
@@ -326,6 +330,11 @@ export default {
                 .then((response)=>{
                     console.log(response)
                     this.machineStatus = response.data
+                    if(this.machineStatus.power_status === 'POWER OFF'){
+                        this.roundRed = true
+                    }else {
+                        this.roundGreen = true
+                    }
                 })
         }
     },
@@ -377,13 +386,21 @@ export default {
     margin-top: 10px;
     margin-bottom: 15px;
 }
-.round {
+.roundRed {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    background: #FF0000;
+    border-radius: 50%;
+}
+.roundGreen {
     display: inline-block;
     height: 20px;
     width: 20px;
     background: #00dd20;
     border-radius: 50%;
 }
+
 .middle-column .card {
     border: none;
 }
