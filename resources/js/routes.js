@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import LineView from "./pages/LineView";
+import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings/Settings";
 import DowntimeReasons from "./pages/Settings/DowntimeReasons";
 import Products from "./pages/Settings/Products";
@@ -41,6 +42,14 @@ const routes = [
         name: 'scadaView',
         path: '/scada',
         component: ScadaView,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        name: 'dashboard',
+        path: '/dashboard',
+        component: Dashboard,
         meta: {
             requiresAuth: true
         }

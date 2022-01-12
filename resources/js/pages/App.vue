@@ -15,7 +15,13 @@
 <!--                            Dashboard-->
 <!--                        </router-link>-->
 <!--                    </li>-->
-                    <li class="lineview padding_y_ten_px ms-5" v-on:click="makeActive('lineview')">
+                    <li class="dashboard padding_y_ten_px ms-5" v-on:click="makeActive('dashboard')">
+                        <router-link to="/dashboard" class="nav-link text-white" active-class="active">
+                            <b-icon icon="graph-up" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
+                            Dashboard
+                        </router-link>
+                    </li>
+                    <li class="lineview padding_y_ten_px" v-on:click="makeActive('lineview')">
                         <router-link to="/lineview" class="nav-link text-white" active-class="active">
                             <b-icon icon="graph-up" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
                             Lineview
