@@ -368,4 +368,12 @@ class ReportController extends Controller
         info($reports);
         return $reports;
     }
+
+    public function getDashboardSummary(Request $request)
+    {
+        $startTime = now()->startOfHour();
+        $endTime = now()->endOfHour();
+
+
+    }
 }

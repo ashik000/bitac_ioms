@@ -3,15 +3,6 @@
         <div class="row">
             <div class="col-md-12 d-flex justify-content-start flex-wrap">
                 <chart-card></chart-card>
-                <chart-card></chart-card>
-                <chart-card></chart-card>
-                <chart-card></chart-card>
-                <chart-card></chart-card>
-                <chart-card></chart-card>
-                <chart-card></chart-card>
-                <chart-card></chart-card>
-                <chart-card></chart-card>
-                <chart-card></chart-card>
             </div>
         </div>
     </div>
@@ -26,5 +17,13 @@ export default {
     },
     data: () => ({
     }),
+    methods: {
+        fetchAllSummaryOeeData() {
+
+        }
+    },
+    mounted() {
+
+    }
 }
 </script>
