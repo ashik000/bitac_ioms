@@ -7,12 +7,20 @@
                         <div>SCADA View</div>
                         <div class="d-flex">
                             <div class="input-group remove-width">
-                                <input type="text" class="form-control" placeholder="Search" aria-label="Stations search" aria-describedby="Stations search">
-                                <button class="btn transparent-search-button" type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-search" viewBox="0 0 16 16">
-                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-                                    </svg>
-                                </button>
+                                <select class="form-select" aria-label="Filter Select" v-model="filter" @change="getScadaData">
+                                    <option value="" selected disabled>Select Filter</option>
+                                    <option value="last_hour">Last hour</option>
+                                    <option value="current_shift">Current shift</option>
+                                    <option value="last_shift">Last shift</option>
+                                    <option value="last_month">Last month</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+<!--                                <input type="text" class="form-control" placeholder="Search" aria-label="Stations search" aria-describedby="Stations search">-->
+<!--                                <button class="btn transparent-search-button" type="button">-->
+<!--                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-search" viewBox="0 0 16 16">-->
+<!--                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>-->
+<!--                                    </svg>-->
+<!--                                </button>-->
                             </div>
                         </div>
                     </div>
@@ -263,6 +271,7 @@
         },
         data: () => ({
             scadaData: [],
+            filter: "last_hour",
         }),
         computed:{
         },
@@ -270,12 +279,16 @@
           generateStationId(stationId) {
             return "/lineview?stn_id=" + stationId;
           },
+
+          getScadaData(){
+              ScadaService.getScada(  {filter: this.filter},res => {
+                  this.scadaData = res;
+                  console.log(this.scadaData);
+              });
+          },
         },
         mounted(){
-            ScadaService.getScada( res => {
-               this.scadaData = res;
-               console.log(this.scadaData);
-            });
+            this.getScadaData();
         }
     }
 </script>
