@@ -42,7 +42,7 @@
                                     class="text-uppercase mb-2 d-flex justify-content-center align-items-center gap-3"
                                 >
                                     <span>Machine Status:</span>
-                                    <div v-bind:class="{roundGreen: greenActive, roundRed: redActive}"></div>
+                                    <div class="round"></div>
                                     <span class="fw-bolder">{{machineStatus.power_status}}</span>
                                 </h6>
                             </div>
@@ -57,7 +57,7 @@
                                 Time and Counter
                             </div>
                             <div class="card-body">
-                                <table class="table table-borderless table-responsive">
+                                <table class="table borderless-table table-responsive">
                                     <tbody class="text-start">
                                     <tr>
                                         <td>This Cycle</td>
@@ -116,7 +116,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered table-responsive">
+                                <table class="table borderless-table table-responsive">
                                     <tbody class="text-start">
                                     <tr>
                                         <td>N5830X11, 707Y-20,8</td>
@@ -182,7 +182,7 @@
                                         </table>
                                     </div>
                                     <div class="col-md-8">
-                                        <table class="table table-borderless table-responsive">
+                                        <table class="table borderless-table table-responsive">
                                             <tbody class="text-start">
                                             <tr>
                                                 <td>Spindle Speed</td>
@@ -386,20 +386,20 @@ export default {
     margin-top: 10px;
     margin-bottom: 15px;
 }
-.roundRed {
-    display: inline-block;
-    height: 20px;
-    width: 20px;
-    background: #FF0000;
-    border-radius: 50%;
-}
-.roundGreen {
+.round {
     display: inline-block;
     height: 20px;
     width: 20px;
     background: #00dd20;
     border-radius: 50%;
 }
+/*.roundGreen {*/
+/*    display: inline-block;*/
+/*    height: 20px;*/
+/*    width: 20px;*/
+/*    background: #00dd20;*/
+/*    border-radius: 50%;*/
+/*}*/
 
 .middle-column .card {
     border: none;
