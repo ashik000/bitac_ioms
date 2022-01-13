@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid wrapper">
+    <div class="container-fluid wrapper" style="top: 4em;">
         <div class="card-wrapper row">
             <div class="col-12 h-100">
                 <div class="card shadow h-100">
@@ -16,8 +16,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="scada-container">
+                    <div class="card-body y-scroll">
+                        <div class="scada-container mb-4">
+                            <div class="d-block text-center"><h3 class="text-center btn btn-primary">Indoor Assembly Line</h3></div>
+
                             <div class="belt"></div>
                             <div class="connect-line" style="left: -9.6%;"></div>
                             <div class="connect-line lc3" style="left: 50%;left: 32.6%;border-left: 0;border-right: 3px solid #E8B900;"></div>
@@ -161,6 +163,85 @@
                                   PER-{{ scadaData[1] ? scadaData[1].performance : 0}}/100
                                 </div>
                               </router-link>
+                            </div>
+
+                        </div>
+
+
+                        <div class="scada-container">
+                            <div class="d-block text-center"><h3 class="text-center btn btn-primary">Outdoor Assembly Line</h3></div>
+
+                            <div class="belt"></div>
+                            <div class="connect-line" style="left: -9.6%;"></div>
+
+                            <div class="connect-line lc" style="left: 83.6%; border-left: 0px; border-right: 3px solid #E8B900;"></div>
+
+                            <div class="bubble" style="left: 1%;">
+                                <router-link :to="generateStationId(scadaData[5] ? scadaData[5].station_id : 0)" style="text-decoration: none; color: white;">
+                                    <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                        OEE-{{ scadaData[7] ? scadaData[7].oee : 0}}%
+                                    </div>
+                                </router-link>
+
+                                <router-link :to="generateStationId(scadaData[5] ? scadaData[5].station_id : 0)" style="text-decoration: none; color: white;">
+                                    <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                        PER-{{ scadaData[7] ? scadaData[7].performance : 0}}/100
+                                    </div>
+                                </router-link>
+
+                            </div>
+                            <div class="prod-line inovace-sensor pro-1" style="left: 1%;"></div>
+                            <div class="product ac-boxed" style="left: 4%; height: 80px; width: 80px;"></div>
+
+
+
+                            <div class="ac-naked" style="height: 106px; width: 106px;background-size: 100%; background-repeat: no-repeat;    position: absolute;bottom: -1rem;left: 19.5%;"></div>
+
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 28.5%;width: 100px;">
+                                <div class="outdoor-bubbles">
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">OEE 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Per 0/100</div>
+
+                                    <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
+                                    <div>Outdoor <br> Aging Test</div>
+                                </div>
+                            </div>
+
+                            <div class="ac-naked" style="height: 106px; width: 106px;background-size: 100%; background-repeat: no-repeat; position: absolute;bottom: -1rem;left: 37%;"></div>
+
+
+
+
+                            <div class="ac-introlly" style="height: 106px; width: 106px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -1.4rem; left: 54.4%;"></div>
+
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 65%;width: 100px;">
+                                <div class="outdoor-bubbles">
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Quality 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Reject 0</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Pass 0</div>
+
+                                    <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
+                                    <div>Outdoor <br> Helium Leak Test</div>
+                                </div>
+                            </div>
+
+
+                            <div class="introlly" style="height: 106px; width: 106px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -1.4rem; left: 83%;"></div>
+
+                            <div class="trolly" style="height: 106px; width: 106px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -1.4rem; left: 93%;"></div>
+
+                            <div class="prod-line inovace-sensor pro-4" style="left: 91.6%;"></div>
+                            <div class="bubble rounded-2 lb" style="left: 88%;">
+                                <router-link :to="generateStationId(scadaData[1] ? scadaData[1].station_id: 0)" style="text-decoration: none; color: white;">
+                                    <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                        OEE-{{ scadaData[6] ? scadaData[6].oee : 0}}%
+                                    </div>
+                                </router-link>
+                                <router-link :to="generateStationId(scadaData[1] ? scadaData[1].station_id: 0)" style="text-decoration: none; color: white;">
+                                    <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                        PER-{{ scadaData[6] ? scadaData[6].performance : 0}}/100
+                                    </div>
+                                </router-link>
                             </div>
 
                         </div>
@@ -372,5 +453,6 @@
         .pro-2{left: 41.6% !important;}
         .pro-3{left: 65.6% !important;}
         .pro-4{left: 90.6% !important;}
+        .scada-container{height: 48%;}
     }
 </style>
