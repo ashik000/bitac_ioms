@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid wrapper">
+    <div class="container-fluid wrapper" style="top: 4em;">
         <div class="card-wrapper row">
             <div class="col-12 h-100">
                 <div class="card shadow h-100">
@@ -7,17 +7,27 @@
                         <div>SCADA View</div>
                         <div class="d-flex">
                             <div class="input-group remove-width">
-                                <input type="text" class="form-control" placeholder="Search" aria-label="Stations search" aria-describedby="Stations search">
-                                <button class="btn transparent-search-button" type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-search" viewBox="0 0 16 16">
-                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-                                    </svg>
-                                </button>
+                                <select class="form-select" aria-label="Filter Select" v-model="filter" @change="getScadaData">
+                                    <option value="" selected disabled>Select Filter</option>
+                                    <option value="last_hour">Last hour</option>
+                                    <option value="current_shift">Current shift</option>
+                                    <option value="last_shift">Last shift</option>
+                                    <option value="last_month">Last month</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+<!--                                <input type="text" class="form-control" placeholder="Search" aria-label="Stations search" aria-describedby="Stations search">-->
+<!--                                <button class="btn transparent-search-button" type="button">-->
+<!--                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-search" viewBox="0 0 16 16">-->
+<!--                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>-->
+<!--                                    </svg>-->
+<!--                                </button>-->
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="scada-container">
+                    <div class="card-body y-scroll">
+                        <div class="scada-container mb-4">
+                            <div class="d-block text-center"><h3 class="text-center btn btn-primary">Indoor Assembly Line</h3></div>
+
                             <div class="belt"></div>
                             <div class="connect-line" style="left: -9.6%;"></div>
                             <div class="connect-line lc3" style="left: 50%;left: 32.6%;border-left: 0;border-right: 3px solid #E8B900;"></div>
@@ -164,6 +174,85 @@
                             </div>
 
                         </div>
+
+
+                        <div class="scada-container">
+                            <div class="d-block text-center"><h3 class="text-center btn btn-primary">Outdoor Assembly Line</h3></div>
+
+                            <div class="belt"></div>
+                            <div class="connect-line" style="left: -9.6%;"></div>
+
+                            <div class="connect-line lc" style="left: 83.6%; border-left: 0px; border-right: 3px solid #E8B900;"></div>
+
+                            <div class="bubble" style="left: 1%;">
+                                <router-link :to="generateStationId(scadaData[5] ? scadaData[5].station_id : 0)" style="text-decoration: none; color: white;">
+                                    <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                        OEE-{{ scadaData[7] ? scadaData[7].oee : 0}}%
+                                    </div>
+                                </router-link>
+
+                                <router-link :to="generateStationId(scadaData[5] ? scadaData[5].station_id : 0)" style="text-decoration: none; color: white;">
+                                    <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                        PER-{{ scadaData[7] ? scadaData[7].performance : 0}}/100
+                                    </div>
+                                </router-link>
+
+                            </div>
+                            <div class="prod-line inovace-sensor pro-1" style="left: 1%;"></div>
+                            <div class="product ac-boxed" style="left: 4%; height: 80px; width: 80px;"></div>
+
+
+
+                            <div class="ac-naked" style="height: 106px; width: 106px;background-size: 100%; background-repeat: no-repeat;    position: absolute;bottom: -1rem;left: 19.5%;"></div>
+
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 28.5%;width: 100px;">
+                                <div class="outdoor-bubbles">
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">OEE 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Per 0/100</div>
+
+                                    <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
+                                    <div>Outdoor <br> Aging Test</div>
+                                </div>
+                            </div>
+
+                            <div class="ac-naked" style="height: 106px; width: 106px;background-size: 100%; background-repeat: no-repeat; position: absolute;bottom: -1rem;left: 37%;"></div>
+
+
+
+
+                            <div class="ac-introlly" style="height: 106px; width: 106px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -1.4rem; left: 54.4%;"></div>
+
+                            <div class="outdoor" style="background-color: rgba(229, 243, 255, 1); display: inline-block;position: absolute;bottom: 1.5rem;height: 279px;left: 65%;width: 100px;">
+                                <div class="outdoor-bubbles">
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Quality 0%</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Reject 0</div>
+                                    <div class="rounded-2" style="border: 2px solid #EEBE00;margin-bottom: 3px;">Pass 0</div>
+
+                                    <div class="computer" style="height: 30px;width: 30px;background-repeat: no-repeat;background-size: 100% 100%;"></div>
+                                    <div>Outdoor <br> Helium Leak Test</div>
+                                </div>
+                            </div>
+
+
+                            <div class="introlly" style="height: 106px; width: 106px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -1.4rem; left: 83%;"></div>
+
+                            <div class="trolly" style="height: 106px; width: 106px; background-size: 100%; background-repeat: no-repeat; position: absolute; bottom: -1.4rem; left: 93%;"></div>
+
+                            <div class="prod-line inovace-sensor pro-4" style="left: 91.6%;"></div>
+                            <div class="bubble rounded-2 lb" style="left: 88%;">
+                                <router-link :to="generateStationId(scadaData[1] ? scadaData[1].station_id: 0)" style="text-decoration: none; color: white;">
+                                    <div style="background-color: #6D6D6D;" class="rounded-top p-1">
+                                        OEE-{{ scadaData[6] ? scadaData[6].oee : 0}}%
+                                    </div>
+                                </router-link>
+                                <router-link :to="generateStationId(scadaData[1] ? scadaData[1].station_id: 0)" style="text-decoration: none; color: white;">
+                                    <div style="background-color: #00C853;" class="rounded-bottom p-1">
+                                        PER-{{ scadaData[6] ? scadaData[6].performance : 0}}/100
+                                    </div>
+                                </router-link>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -182,6 +271,7 @@
         },
         data: () => ({
             scadaData: [],
+            filter: "last_hour",
         }),
         computed:{
         },
@@ -189,12 +279,16 @@
           generateStationId(stationId) {
             return "/lineview?stn_id=" + stationId;
           },
+
+          getScadaData(){
+              ScadaService.getScada(  {filter: this.filter},res => {
+                  this.scadaData = res;
+                  console.log(this.scadaData);
+              });
+          },
         },
         mounted(){
-            ScadaService.getScada( res => {
-               this.scadaData = res;
-               console.log(this.scadaData);
-            });
+            this.getScadaData();
         }
     }
 </script>
@@ -372,5 +466,6 @@
         .pro-2{left: 41.6% !important;}
         .pro-3{left: 65.6% !important;}
         .pro-4{left: 90.6% !important;}
+        .scada-container{height: 48%;}
     }
 </style>
