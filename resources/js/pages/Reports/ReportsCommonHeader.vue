@@ -52,8 +52,8 @@
                                 cursor: pointer;
                             `
                         }"
-                        mode='range'
-                        :value='range'
+                        is-range
+                        v-model="range"
                         @input="onDateRangeChanged">
                     </v-date-picker>
 
@@ -308,4 +308,13 @@ export default {
 }
 </script>
 
+<style scoped>
+.date-range-picker.vc-container.vc-blue{
+    cursor: pointer;
+    position: absolute;
+    right: 7em;
+    top: .5em;
+    z-index: 9999;
+}
+</style>
 
