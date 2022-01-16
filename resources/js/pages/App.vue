@@ -140,6 +140,9 @@ export default {
             case '/lineview':
                 this.active = 'lineview';
                 break;
+            case '/scada':
+                this.active = 'scada';
+                break;
             case '/reports/oee-report':
                 this.active = 'reports';
                 break;
