@@ -6,7 +6,6 @@
     </div>
 </template>
 
-
 <script>
 import Chart from 'chart.js';
 import {clone} from "../../utils";

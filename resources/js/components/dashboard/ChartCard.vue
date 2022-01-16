@@ -37,6 +37,9 @@
 </template>
 
 <script>
+
+import speedChart from "./SpeedChart";
+
 export default {
     name: "ChartCard",
     props: {
@@ -50,6 +53,7 @@ export default {
         },
     },
     components: {
+        'speed-chart' : speedChart
     },
     data: () => ({
       title: "Speed Chart",
@@ -57,7 +61,7 @@ export default {
     methods: {
 
     },
-    computed: {
+    computed : {
         getBackGroundColor() {
             switch (this.summaryData.color ) {
                 case 'red':
@@ -73,3 +77,30 @@ export default {
     }
 }
 </script>
+<style scoped>
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .progress-bar-wrapper {
+        padding: 4px;
+        width: 500px;
+    }
+
+    .progress-bar {
+        width: 95%;
+        background-color: #696363;
+        padding: 1px;
+        border-radius: 3px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+    }
+
+    .progress-bar-fill {
+        display: block;
+        height: 5px;
+        background-color: #f7f7f8;
+        border-radius: 3px;
+        transition: width 500ms ease-in-out;
+    }
+</style>

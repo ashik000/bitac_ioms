@@ -11,7 +11,7 @@
 
 <script>
 import ChartCard from "../components/dashboard/ChartCard";
-// import dashboardService from "../services/dashboardService";
+import dashboardService from "../services/dashboardService";
 export default {
     name: "Dashboard",
     components: {
@@ -22,17 +22,17 @@ export default {
         stationCount: 0
     }),
     methods: {
-        // fetchAllSummaryData: function() {
-        //     var vm = this;
-        //     dashboardService.fetchAllSummaryData(function (data) {
-        //         vm.summaryData = data;
-        //         vm.stationCount = Object.keys(data).length;
-        //         vm.stationCount = parseInt(vm.stationCount);
-        //         console.log(vm.stationCount);
-        //     }, function (error) {
-        //         console.error(error);
-        //     })
-        // }
+        fetchAllSummaryData: function() {
+            var vm = this;
+            dashboardService.fetchAllSummaryData(function (data) {
+                vm.summaryData = data;
+                vm.stationCount = Object.keys(data).length;
+                vm.stationCount = parseInt(vm.stationCount);
+                console.log(vm.stationCount);
+            }, function (error) {
+                console.error(error);
+            })
+        }
     },
     mounted() {
         this.fetchAllSummaryData();
