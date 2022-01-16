@@ -22,11 +22,11 @@
                             </div>
                         </div>
                         <div class="table-container y-scroll report_table_container">
-                            <report-table-by-station :stationId="reportPageFilters.selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
-                            <report-table-by-product :stationProductId="reportPageFilters.selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
-                            <report-table-by-shift :stationShiftId="reportPageFilters.selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>
-                            <report-table-by-operator :stationOperatorId="reportPageFilters.selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='operator'"></report-table-by-operator>
-                            <report-table-by-team :stationTeamId="reportPageFilters.selectedStationTeamId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='team'"></report-table-by-team>
+                            <report-table-by-station :reportType="reportTypeX" :stationId="reportPageFilters.selectedStationId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='station'"></report-table-by-station>
+                            <report-table-by-product :reportType="reportTypeX" :stationProductId="reportPageFilters.selectedStationProductId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='product'"></report-table-by-product>
+                            <report-table-by-shift :reportType="reportTypeX" :stationShiftId="reportPageFilters.selectedStationShiftId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='shift'"></report-table-by-shift>
+                            <report-table-by-operator :reportType="reportTypeX" :stationOperatorId="reportPageFilters.selectedStationOperatorId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='operator'"></report-table-by-operator>
+                            <report-table-by-team :reportType="reportTypeX" :stationTeamId="reportPageFilters.selectedStationTeamId" :start="selectedRange.start" :end="selectedRange.end" :type="selectedPartition" v-if="selectedReportType==='team'"></report-table-by-team>
                         </div>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
             },
             tableData: [],
             reportNameX: 'OEE Report',
-            reportType: 'oee'
+            reportTypeX: 'oee'
         }),
         computed:{
             reportTableTitle(){
@@ -156,7 +156,7 @@
                     start: moment(this.selectedRange.start).format('YYYY-MM-DD'),
                     endTime: moment(this.selectedRange.end).format('YYYY-MM-DD'),
                     type: this.selectedPartition,
-                    reportType: this.reportType
+                    reportType: this.reportTypeX
                 };
                 reportService.fetchReports(data, response => {
                     this.title = response.title;

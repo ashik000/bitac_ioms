@@ -56,6 +56,10 @@ export default {
         type: {
             type: String,
             default: 'totals'
+        },
+        reportType: {
+            type: String,
+            default: 'oee'
         }
     },
     watch:{
@@ -81,12 +85,13 @@ export default {
             });
         },
         getRequestParams(){
-          return {
-            'stationTeamId': this.stationTeamId === '0' ? null : this.stationTeamId,
-            'start': moment(this.start).format('DD-MM-YYYY'),
-            'end': moment(this.end).format('DD-MM-YYYY'),
-            'type': this.type
-          }
+            return {
+                'stationTeamId': this.stationTeamId === '0' ? null : this.stationTeamId,
+                'start': moment(this.start).format('DD-MM-YYYY'),
+                'end': moment(this.end).format('DD-MM-YYYY'),
+                'type': this.type,
+                'reportType': this.reportType
+            }
         },
         downloadReport(){
             let requestParams = this.getRequestParams();
