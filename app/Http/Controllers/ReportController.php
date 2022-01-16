@@ -388,7 +388,7 @@ class ReportController extends Controller
             $row = [];
             $item = $reports->get($stationId);
             if (empty($item)) return $carry;
-            error_log(print_r($item, true));
+//            error_log(print_r($item, true));
             $row['performance'] = $item['produced'] ? ($item['produced'] / $item['expected']) : 0;
             $row['quality'] = $item['produced'] ? (($item['produced'] - $item['scraped']) / $item['produced']) : 0;
             $row['availability'] = $item['available'] ? ($item['available'] / ($available_base - $item['planned_downtime'])) : 0;
