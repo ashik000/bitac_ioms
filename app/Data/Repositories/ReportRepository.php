@@ -287,6 +287,8 @@ class ReportRepository
         $type      = $request->get('type');
         $type      = (is_null($type) || empty($type)) ? 'hourly' : $type;
 
+        $reportType = $request->get('reportType');
+
         if (empty($stationId))
         {
             // Info: stationId null means all stations. In this case, there will be as many rows as stations and (availability,performance,quality,oee) fields will be from start and end duration only
@@ -309,7 +311,16 @@ class ReportRepository
                 $row['station_group_name'] = $row->station->stationGroup->name;
                 unset($row->station);
                 $totalTimeDuration   = $end->diffInSeconds($start);
-                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+
+                if ($reportType == 'oee')
+                {
+                    $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                }
+                else
+                {
+                    $row['availability'] = $row->available / $totalTimeDuration;
+                }
+
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
                 $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];
@@ -378,7 +389,16 @@ class ReportRepository
 
                 }
                 $totalTimeDuration   = $row['dur'];
-                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+
+                if ($reportType == 'oee')
+                {
+                    $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                }
+                else
+                {
+                    $row['availability'] = $row->available / $totalTimeDuration;
+                }
+
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
                 $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];
@@ -394,6 +414,8 @@ class ReportRepository
         $end              = CarbonImmutable::parse($request->get('end'))->endOfDay();
         $type             = $request->get('type');
         $type             = (is_null($type) || empty($type)) ? 'hourly' : $type;
+
+        $reportType = $request->get('reportType');
 
         if (empty($stationProductId))
         {
@@ -423,7 +445,16 @@ class ReportRepository
                 $row['product_group_name'] = $product->productGroup->name;
                 unset($row->product);
                 $totalTimeDuration   = $start->diffInSeconds($end);
-                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+
+                if ($reportType == 'oee')
+                {
+                    $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                }
+                else
+                {
+                    $row['availability'] = $row->available / $totalTimeDuration;
+                }
+
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
                 $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];
@@ -494,7 +525,16 @@ class ReportRepository
 
                 }
                 $totalTimeDuration   = $row['dur'];
-                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+
+                if ($reportType == 'oee')
+                {
+                    $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                }
+                else
+                {
+                    $row['availability'] = $row->available / $totalTimeDuration;
+                }
+
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
                 $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];
@@ -510,6 +550,8 @@ class ReportRepository
         $end            = CarbonImmutable::parse($request->get('end'))->endOfDay();
         $type           = $request->get('type');
         $type           = (is_null($type) || empty($type)) ? 'hourly' : $type;
+
+        $reportType = $request->get('reportType');
 
         if (empty($stationShiftId))
         {
@@ -537,7 +579,16 @@ class ReportRepository
                 $row['shift_name'] = $shift->name;
                 unset($row->shift);
                 $totalTimeDuration   = $start->diffInSeconds($end);
-                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+
+                if ($reportType == 'oee')
+                {
+                    $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                }
+                else
+                {
+                    $row['availability'] = $row->available / $totalTimeDuration;
+                }
+
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
                 $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];
@@ -608,7 +659,16 @@ class ReportRepository
 
                 }
                 $totalTimeDuration   = $row['dur'];
-                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+
+                if ($reportType == 'oee')
+                {
+                    $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                }
+                else
+                {
+                    $row['availability'] = $row->available / $totalTimeDuration;
+                }
+
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
                 $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];
@@ -624,6 +684,8 @@ class ReportRepository
         $end               = CarbonImmutable::parse($request->get('end'))->endOfDay();
         $type              = $request->get('type');
         $type              = (is_null($type) || empty($type)) ? 'hourly' : $type;
+
+        $reportType = $request->get('reportType');
 
         if (empty($stationOperatorId))
         {
@@ -657,7 +719,16 @@ class ReportRepository
                 $row['operator_name'] = empty($operator) ? '' : $operator->first_name . " " . $operator->last_name;
                 unset($row->operator);
                 $totalTimeDuration   = $start->diffInSeconds($end);
-                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+
+                if ($reportType == 'oee')
+                {
+                    $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                }
+                else
+                {
+                    $row['availability'] = $row->available / $totalTimeDuration;
+                }
+
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
                 $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];
@@ -728,7 +799,16 @@ class ReportRepository
 
                 }
                 $totalTimeDuration   = $row['dur'];
-                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+
+                if ($reportType == 'oee')
+                {
+                    $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                }
+                else
+                {
+                    $row['availability'] = $row->available / $totalTimeDuration;
+                }
+
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
                 $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];
@@ -744,6 +824,8 @@ class ReportRepository
         $end               = CarbonImmutable::parse($request->get('end'))->endOfDay();
         $type              = $request->get('type');
         $type              = (is_null($type) || empty($type)) ? 'hourly' : $type;
+
+        $reportType = $request->get('reportType');
 
         if (empty($stationTeamId))
         {
@@ -777,7 +859,16 @@ class ReportRepository
                 $row['name'] = empty($team) ? '' : $team->name;
                 unset($row->$team);
                 $totalTimeDuration   = $start->diffInSeconds($end);
-                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+
+                if ($reportType == 'oee')
+                {
+                    $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                }
+                else
+                {
+                    $row['availability'] = $row->available / $totalTimeDuration;
+                }
+
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
                 $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];
@@ -849,7 +940,16 @@ class ReportRepository
 
                 }
                 $totalTimeDuration   = $row['dur'];
-                $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+
+                if ($reportType == 'oee')
+                {
+                    $row['availability'] = ($totalTimeDuration - $row->planned_downtime) <= 0 ? 0 : $row->available / ($totalTimeDuration - $row->planned_downtime);
+                }
+                else
+                {
+                    $row['availability'] = $row->available / $totalTimeDuration;
+                }
+
                 $row['performance']  = $row->expected == 0 ? 0 : $row->produced / $row->expected;
                 $row['quality']      = ($row->produced <= 0 || $row->produced < $row->scraped) ? 0 : ($row->produced - $row->scraped) / $row->produced;
                 $row['oee']          = $row['availability'] * $row['performance'] * $row['quality'];

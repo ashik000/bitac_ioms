@@ -56,6 +56,10 @@
             type: {
                 type: String,
                 default: 'totals'
+            },
+            reportType: {
+                type: String,
+                default: 'oee'
             }
         },
         watch:{
@@ -81,12 +85,13 @@
                 });
             },
             getRequestParams(){
-              return {
-                  'stationOperatorId': this.stationOperatorId === '0' ? null : this.stationOperatorId,
-                  'start' : moment(this.start).format('DD-MM-YYYY'),
-                  'end': moment(this.end).format('DD-MM-YYYY'),
-                  'type': this.type
-              }
+                return {
+                    'stationOperatorId': this.stationOperatorId === '0' ? null : this.stationOperatorId,
+                    'start' : moment(this.start).format('DD-MM-YYYY'),
+                    'end': moment(this.end).format('DD-MM-YYYY'),
+                    'type': this.type,
+                    'reportType': this.reportType
+                }
             },
             downloadExcel(){
               let requestParams = this.getRequestParams();
