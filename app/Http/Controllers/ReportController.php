@@ -382,8 +382,8 @@ class ReportController extends Controller
 
     public function getDashboardSummary(Request $request)
     {
-        $startTime = now()->startOfHour();
-        $endTime = now()->endOfHour();
+        $startTime = now()->startOfHour()->subHour();
+        $endTime = now()->endOfHour()->subHour();
 
         $allStations = Station::all();
         $allStationIds = $allStations->pluck('id');
@@ -465,7 +465,7 @@ class ReportController extends Controller
                 'availability' => number_format($availability * 100, 2),
                 'quality'      => number_format($quality * 100, 2),
                 'oee'          => number_format($oeeNumber, 0),
-                'color'        => $oeeNumber < $station->oee_threshold? 'red' : 'green'
+                'color'        => empty($productionLogs)? 'black' : ($oeeNumber < $station->oee_threshold? 'red' : 'green')
             ];
 
             return $carry;

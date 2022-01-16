@@ -9,7 +9,7 @@
                 <div class="flex-container">
                     <div class="progress-bar-wrapper">
                         <div class="progress-bar">
-                            <span class="progress-bar-fill" style="width: 70%;"></span>
+                            <span class="progress-bar-fill" :style="getProgressBarWidth"></span>
                         </div>
                     </div>
                     <h6 class="" style="color: white">{{this.summaryData.performance}}%</h6>
@@ -69,7 +69,10 @@ export default {
                 case 'green':
                     return 'bg-success';
             }
-            return 'bg-dark';
+            return 'inactive-card';
+        },
+        getProgressBarWidth() {
+            return "width:" +  this.summaryData.performance + "%";
         }
     },
     mounted() {
@@ -102,5 +105,9 @@ export default {
         background-color: #f7f7f8;
         border-radius: 3px;
         transition: width 500ms ease-in-out;
+    }
+
+    .inactive-card {
+        background-color: #34403A;
     }
 </style>

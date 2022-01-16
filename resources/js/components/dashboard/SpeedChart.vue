@@ -38,6 +38,9 @@ export default {
   },
   mounted() {
     let context = this.$refs.chartElement;
+    var maxSpeed = this.dataset.speed.reduce(function (prevVal, currentVal) {
+        return prevVal > currentVal? prevVal : currentVal;
+    }, 0);
 
     const chart = new Chart(context, {
       type: 'line',
@@ -64,13 +67,13 @@ export default {
             },
             ticks: {
               fontColor: '#fff',
-              max: 100,
+              max: maxSpeed,
               min: 0,
               beginAtZero: true,
-              stepSize: 25,
+              stepSize: 1,
               grace: '10%',
               callback: function(value, index, values) {
-                return value + '%';
+                return value;
               }
             }
           }],
