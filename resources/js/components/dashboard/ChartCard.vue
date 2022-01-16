@@ -23,12 +23,18 @@
                     <div class="col-md-6">
                         <div class="row" style="font-size: 1.2rem">
                             <span>
-                                Stations: <span style="font-size: 1.6rem; font-weight: 600;">{{this.stationC ? this.stationC : 'N/A'}}</span>
+                                Stations: <br> <span style="font-size: 1.8rem; font-weight: 600;">{{this.stationC ? this.stationC : '0'}}</span>
+                            </span>
+                            <span>
+                                Operating: {{ this.activeStationCount ? this.activeStationCount : '0' }}
+                            </span>
+                            <span>
+                                Stopped: {{ this.inactiveStationCount ? this.inactiveStationCount : '0' }}
                             </span>
                         </div>
                     </div>
                     <div class="col-md-6 text-center">
-                        <img src="storage/images/walton-logo.png" alt="walton-logo" style="height: 40px;">
+                        <img src="storage/images/walton-logo-dashboard.jpg" alt="walton-logo" style="height: 64px;">
                     </div>
                 </div>
             </div>
@@ -48,6 +54,14 @@ export default {
             required: false
         },
         stationC: {
+            type: Number,
+            required: false
+        },
+        activeStationCount: {
+            type: Number,
+            required: false
+        },
+        inactiveStationCount: {
             type: Number,
             required: false
         },
