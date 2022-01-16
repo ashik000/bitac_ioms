@@ -450,6 +450,7 @@ class ReportController extends Controller
                 'stationName'  => $station->name,
                 'stationId'    => $stationId,
                 'speed'        => $speed,
+                'labels'       => range(0, 59),
                 'performance'  => number_format($performance * 100, 0),
                 'availability' => number_format($availability * 100, 2),
                 'quality'      => number_format($quality * 100, 2),
