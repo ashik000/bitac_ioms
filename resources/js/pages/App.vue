@@ -40,6 +40,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><router-link class="dropdown-item" to="/reports/oee-report">OEE</router-link></li>
+                            <li><router-link class="dropdown-item" to="/reports/ope-report">OPE</router-link></li>
                             <li><router-link class="dropdown-item" to="/reports/downtime-report">Downtime</router-link></li>
                         </ul>
                     </li>
@@ -140,6 +141,9 @@ export default {
                 this.active = 'lineview';
                 break;
             case '/reports/oee-report':
+                this.active = 'reports';
+                break;
+            case '/reports/ope-report':
                 this.active = 'reports';
                 break;
             case '/reports/downtime-report':

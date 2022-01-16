@@ -61,6 +61,8 @@ class ReportController extends Controller
         $stationOperatorId = @$request->get('station_operator_id');
         $stationShiftId = @$request->get('station_shift_id');
 
+        $reportType = @$request->get('report_type');
+
         if (!empty($stationProductId)) {
             $stationProduct = StationProduct::find($stationProductId);
             $stationId = $stationProduct->station_id;
@@ -148,7 +150,7 @@ class ReportController extends Controller
 
         $reports = $query->get();
 
-        $reports = $reports->reduce(function ($carry, $item) use ($availableBase, $type) {
+        $reports = $reports->reduce(function ($carry, $item) use ($availableBase, $type, $reportType) {
 
             if ($availableBase == -1)
             {
@@ -158,7 +160,15 @@ class ReportController extends Controller
             $performance  = $item->produced ? ($item->produced / $item->expected) : 0;
 //            $quality      = 1; //$item->produced ? ($item->scrapped / $item->produced) : 0;
             $quality      = $item->produced ? (($item->produced-$item->scraped) / $item->produced) : 0;
-            $availability = $item->available ? ($item->available / ($availableBase - $item->planned_downtime)) : 0;
+
+            if ($reportType == 'oee')
+            {
+                $availability = $item->available ? ($item->available / ($availableBase - $item->planned_downtime)) : 0;
+            }
+            else
+            {
+                $availability = $item->available ? ($item->available / ($availableBase)) : 0;
+            }
 
             $carry['produced'][]         =(int) $item->produced;
             $carry['scraped'][]          =(int) $item->scraped;
@@ -399,8 +409,8 @@ class ReportController extends Controller
 
     public function getDashboardSummary(Request $request)
     {
-        $startTime = now()->startOfHour();
-        $endTime = now()->endOfHour();
+        $startTime = now()->startOfHour()->subHour();
+        $endTime = now()->endOfHour()->subHour();
 
         $allStations = Station::all();
         $allStationIds = $allStations->pluck('id');
@@ -482,7 +492,7 @@ class ReportController extends Controller
                 'availability' => number_format($availability * 100, 2),
                 'quality'      => number_format($quality * 100, 2),
                 'oee'          => number_format($oeeNumber, 0),
-                'color'        => $oeeNumber < $station->oee_threshold? 'red' : 'green'
+                'color'        => empty($productionLogs)? 'black' : ($oeeNumber < $station->oee_threshold? 'red' : 'green')
             ];
 
             return $carry;
