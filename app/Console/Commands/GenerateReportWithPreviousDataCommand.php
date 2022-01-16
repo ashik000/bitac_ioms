@@ -55,10 +55,10 @@ class GenerateReportWithPreviousDataCommand extends Command
 
         $productionLogCounts = ProductionLog::where('produced_at', '>', empty($lastReport)? '2001-01-01 00:00:00' : $lastReport->generated_at)->count();
         $this->info($productionLogCounts);
-        if($productionLogCounts < 1) {
-            $this->info('Report will not be generated since the are no logs');
-            return 0;
-        }
+//        if($productionLogCounts < 1) {
+//            $this->info('Report will not be generated since the are no logs');
+//            return 0;
+//        }
         $this->call(RegenerateReportsCommand::class, [
             '-T' => $tag,
             '-S' => !empty($lastReport)? $lastReport->generated_at : $start->toDateTimeString(),
