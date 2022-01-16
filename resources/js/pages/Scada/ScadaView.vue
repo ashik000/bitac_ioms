@@ -6,8 +6,11 @@
                     <div class="card-header">
                         <div>SCADA View</div>
                         <div class="d-flex">
+                            <v-date-picker class="date-range-picker" @input="dateSelected" v-show="calendarIsVisible" is-range v-model="date_range" />
+
                             <div class="input-group remove-width">
-                                <select class="form-select" aria-label="Filter Select" v-model="filter" @change="getScadaData">
+                                <select class="form-select" aria-label="Filter Select" v-model="filter"
+                                        @change="getScadaData" @click="toggleCalendarVisibilityIfCustom">
                                     <option value="" selected disabled>Select Filter</option>
                                     <option value="last_hour">Last hour</option>
                                     <option value="current_shift">Current shift</option>
@@ -272,6 +275,8 @@
         data: () => ({
             scadaData: [],
             filter: "last_hour",
+            date_range: {},
+            calendarIsVisible: false,
         }),
         computed:{
         },
@@ -280,11 +285,29 @@
             return "/lineview?stn_id=" + stationId;
           },
 
-          getScadaData(){
-              ScadaService.getScada(  {filter: this.filter},res => {
-                  this.scadaData = res;
-                  console.log(this.scadaData);
+          dateSelected(){
+              ScadaService.getScada(  {filter: this.filter, date_range: this.date_range},res => {
+                this.scadaData = res;
               });
+              this.calendarIsVisible = false;
+          },
+
+          toggleCalendarVisibilityIfCustom(){
+              if (this.filter === "custom"){
+                  this.calendarIsVisible = true;
+              }
+          },
+
+          getScadaData(){
+              if(this.filter !== "custom"){
+                  ScadaService.getScada(  {filter: this.filter},res => {
+                      this.scadaData = res;
+                  });
+                  this.calendarIsVisible = false;
+              }else{
+                  this.calendarIsVisible = true;
+              }
+
           },
         },
         mounted(){
@@ -450,6 +473,13 @@
         color: white;
         border-radius: 3px;
         padding: 3px;
+    }
+
+    .date-range-picker.vc-container.vc-blue{
+        cursor: pointer;
+        position: absolute;
+        right: 10em;
+        z-index: 9999;
     }
 
     @media(min-height:900px)

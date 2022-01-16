@@ -331,8 +331,35 @@ class ReportController extends Controller
 
     public function scada(Request $request)
     {
-        $start_of_day = now()->startOfDay();
-        $end_of_day = now()->endOfDay();
+        $filter = $request->filter ?? "last_hour";
+
+        switch ($filter) {
+            case "last_hour":
+                $start_of_day = now()->modify('-1 hour');
+                $end_of_day = now();
+                break;
+            case "current_shift":
+                $start_of_day = now()->startOfDay();
+                $end_of_day = now()->endOfDay();
+                break;
+            case "last_shift":
+                echo "Your favorite color is green!";
+                break;
+            case "last_month":
+                $start_of_day = now()->modify('-1 day')->startOfDay();
+                $end_of_day = now()->modify('-31 day')->endOfDay();
+                break;
+            case "custom":
+                $data = $request->all();
+                $date_range = json_decode($data['date_range'], true);
+                $start_of_day = $date_range['start'];
+                $end_of_day = $date_range['end'];
+                break;
+            default:
+                $start_of_day = now()->startOfDay();
+                $end_of_day = now()->endOfDay();
+        }
+
         $station_ids = Station::all()->pluck('id');
         $reports = Report::whereIn('station_id', $station_ids)
             ->whereBetween('generated_at', [$start_of_day, $end_of_day])
