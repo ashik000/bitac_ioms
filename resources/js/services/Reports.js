@@ -24,7 +24,8 @@ export default {
                 'station_shift_id' : data.stationShiftId,
                 'station_operator_id' : data.stationOperatorId,
                 'end': data.endTime,
-                'start': data.start
+                'start': data.start,
+                'report_type': data.reportType,
             }
         }).then(r => success(r.data))
         .catch(e => console.log(e.response.data))

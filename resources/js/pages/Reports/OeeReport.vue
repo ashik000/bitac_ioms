@@ -93,7 +93,8 @@
                 oee: [],
             },
             tableData: [],
-            reportNameX: 'OEE Report'
+            reportNameX: 'OEE Report',
+            reportType: 'oee'
         }),
         computed:{
             reportTableTitle(){
@@ -154,7 +155,8 @@
                     stationTeamId: this.reportPageFilters.selectedStationTeamId,
                     start: moment(this.selectedRange.start).format('YYYY-MM-DD'),
                     endTime: moment(this.selectedRange.end).format('YYYY-MM-DD'),
-                    type: this.selectedPartition
+                    type: this.selectedPartition,
+                    reportType: this.reportType
                 };
                 reportService.fetchReports(data, response => {
                     this.title = response.title;
