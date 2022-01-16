@@ -42,7 +42,7 @@
                                     class="text-uppercase mb-2 d-flex justify-content-center align-items-center gap-3"
                                 >
                                     <span>Machine Status:</span>
-                                    <div class="round"></div>
+                                    <div class="round" v-bind:class="{roundGreen, roundRed}"></div>
                                     <span class="fw-bolder">{{machineStatus.power_status}}</span>
                                 </h6>
                             </div>
@@ -62,7 +62,7 @@
                                     <tr>
                                         <td>This Cycle</td>
                                         <td>:</td>
-                                        <td>--</td>
+                                        <td>{{ machineStatus.cycle_time }}</td>
                                     </tr>
                                     <tr>
                                         <td>Last Cycle</td>
@@ -308,18 +308,6 @@ export default {
             machineStatus: [],
             roundGreen: '',
             roundRed: ''
-            // station_id: '',
-            // spindle_speed: '',
-            // feed_rate: '',
-            // machine_uptime: '',
-            // alarm_code: '',
-            // alarm_info: '',
-            // program_number: '',
-            // program_name: '',
-            // cycle_time: '',
-            // counter_number: '',
-            // power_status: '',
-            // produced_at: '',
         }
     },
 
@@ -330,7 +318,7 @@ export default {
                 .then((response)=>{
                     console.log(response)
                     this.machineStatus = response.data
-                    if(this.machineStatus.power_status === 'POWER OFF'){
+                    if(this.machineStatus.power_status === 'STOPPED'){
                         this.roundRed = true
                     }else {
                         this.roundGreen = true
@@ -390,16 +378,15 @@ export default {
     display: inline-block;
     height: 20px;
     width: 20px;
-    background: #00dd20;
     border-radius: 50%;
 }
-/*.roundGreen {*/
-/*    display: inline-block;*/
-/*    height: 20px;*/
-/*    width: 20px;*/
-/*    background: #00dd20;*/
-/*    border-radius: 50%;*/
-/*}*/
+.roundGreen {
+    background: #00dd20;
+}
+
+.roundRed {
+    background: #FF0D0D;
+}
 
 .middle-column .card {
     border: none;

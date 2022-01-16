@@ -72,7 +72,6 @@ class StoreMachineDataController extends Controller
                 'produced_at' => $dataRow['produced_at'] ?? null
             ];
 
-            error_log($payload['produced_at']);
             $result = $this->machineStatusRepository->storeMachineStatus($payload);
 
             if (!$result) {
