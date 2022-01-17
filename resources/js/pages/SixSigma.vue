@@ -63,6 +63,22 @@
                   <div class="six-sigma progress-bar">
                     <span style="position: absolute; margin: 0 0 0 12px; color: #fff;font-size: 18px;font-weight: 600;z-index: 2;">{{ data.quality }}%</span>
                     <span class="progress-bar-fill" :style="getWidthPercentageForSixSigma(data)"></span>
+                    <div class="d-flex" style="
+                    position: absolute;
+                    top:0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    height: 50px;
+                    text-align: left;
+                    ">
+                    <span style="width: 16.67%;border-right: 2px dashed white"></span>
+                    <span style="width: 16.67%;border-right: 2px dashed white"></span>
+                    <span style="width: 16.67%;border-right: 2px dashed white"></span>
+                    <span style="width: 16.67%;border-right: 2px dashed white"></span>
+                    <span style="width: 16.67%;border-right: 2px dashed white"></span>
+                    <span style="width: 16.67%;border-right: 2px dashed white"></span>
+                    </div>
                   </div>
                 </div>
 
@@ -114,7 +130,7 @@ export default {
     getWidthPercentageForSixSigma: function (data) {
       var sigmaValues = [0, 31, 69, 93.3, 99.38, 99.977, 99.99966];
       var quality = data.quality;
-      quality = 69;
+      // quality = 69;
       var lowerIndex = 0;
       if(quality <= 0) return "width:0%";
       for(var i = 0; i < sigmaValues.length; i++) {
@@ -204,6 +220,7 @@ export default {
 }
 
 .progress-bar {
+  position: relative;
   width: 100%;
   background-color: #a80202 !important;
   padding: 1px;
@@ -221,13 +238,13 @@ export default {
 
 .six-sigma {
   min-height: 67%;
-  background:
-      linear-gradient(black 0 0) calc(1*100%/6),
-      linear-gradient(black 0 0) calc(2*100%/6),
-      linear-gradient(black 0 0) calc(3*100%/6),
-      linear-gradient(black 0 0) calc(4*100%/6),
-      linear-gradient(black 0 0) calc(5*100%/6),
-      linear-gradient(black 0 0) calc(6*100%/6);
+  /*background:*/
+  /*    linear-gradient(black 0 0) calc(1*100%/6),*/
+  /*    linear-gradient(black 0 0) calc(2*100%/6),*/
+  /*    linear-gradient(black 0 0) calc(3*100%/6),*/
+  /*    linear-gradient(black 0 0) calc(4*100%/6),*/
+  /*    linear-gradient(black 0 0) calc(5*100%/6),*/
+  /*    linear-gradient(black 0 0) calc(6*100%/6);*/
   background-size:5px 100%; /* Control the width here*/
   background-repeat:no-repeat;
   float: right;
