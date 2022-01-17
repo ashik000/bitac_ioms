@@ -15,6 +15,7 @@ import OpeReport from "./pages/Reports/OpeReport";
 import DowntimeReport from "./pages/Reports/DowntimeReport";
 import Teams from "./pages/Settings/Teams";
 import ScadaView from "./pages/Scada/ScadaView";
+import SixSigma from "./pages/SixSigma";
 
 import LoginPage from "./pages/login/Login";
 
@@ -40,9 +41,17 @@ const routes = [
         },
     },
     {
-        name: 'scadaView',
+        name: 'scada',
         path: '/scada',
         component: ScadaView,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        name: 'six_sigma',
+        path: '/six_sigma',
+        component: SixSigma,
         meta: {
             requiresAuth: true
         }

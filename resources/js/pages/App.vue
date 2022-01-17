@@ -33,6 +33,12 @@
                             SCADA View
                         </router-link>
                     </li>
+                    <li class="scada padding_y_ten_px" v-on:click="makeActive('six_sigma')">
+                        <router-link to="/six_sigma" class="nav-link text-white" active-class="active">
+                            <b-icon icon="graph-up" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
+                            Six Sigma
+                        </router-link>
+                    </li>
                     <li class="reports padding_y_ten_px" v-on:click="makeActive('reports')">
                         <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <b-icon icon="file-bar-graph" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
@@ -142,6 +148,9 @@ export default {
                 break;
             case '/scada':
                 this.active = 'scada';
+                break;
+            case '/six_sigma':
+                this.active = 'six_sigma';
                 break;
             case '/reports/oee-report':
                 this.active = 'reports';
