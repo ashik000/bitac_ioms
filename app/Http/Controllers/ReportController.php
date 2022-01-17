@@ -441,12 +441,6 @@ class ReportController extends Controller
             $productionLogs = $allProductionLogs->get($stationId);
             $station = $stationsById->get($stationId);
 
-//            if(empty($productionLogs)) {
-//                $carry[$stationId] = [
-//                    'nominal' => 0
-//                ];
-//                return $carry;
-//            }
             $downtimes = $allDowntimes->get($stationId);
 
             $nominalTime = empty($productionLogs)? 0 : $productionLogs->sum(function ($log) {
@@ -493,6 +487,56 @@ class ReportController extends Controller
                 'quality'      => number_format($quality * 100, 2),
                 'oee'          => number_format($oeeNumber, 0),
                 'color'        => empty($productionLogs)? 'black' : ($oeeNumber < $station->oee_threshold? 'red' : 'green')
+            ];
+
+            return $carry;
+        }, []);
+
+        return response()->json($reports, 200);
+    }
+
+    public function getSixSigmaQuality(Request $request)
+    {
+        $data = $request->all();
+        $startTime = Carbon::parse($data['start_time']);
+        $endTime = Carbon::parse($data['end_time']);
+
+        $allStations = Station::all();
+        $allStationIds = $allStations->pluck('id');
+        $stationsById = $allStations->keyBy('id');
+
+
+        $allProductionLogs = $this->productionLogRepository->fetchProductionLogs([
+            'between'    => [
+                'start' => $startTime,
+                'end'   => $endTime,
+            ],
+        ])->groupBy(function ($log) {
+            return $log->station_id;
+        });
+
+
+        $allScraps = $this->scrapRepository->fetchScrapsBetweenADateRangeOfAllStations($startTime->toImmutable(), $endTime->toImmutable())->groupBy('station_id');
+
+        $reports = $allStationIds->reduce(function ($carry, $stationId) use($allProductionLogs, $allScraps, $stationsById) {
+            $productionLogs = $allProductionLogs->get($stationId);
+            $station = $stationsById->get($stationId);
+
+
+
+            $produced = empty($productionLogs)? 0 : $productionLogs->sum('units_per_signal');
+
+            $scraps   = $allScraps->get($stationId, collect());
+
+            $scraped = $scraps->sum('value');
+
+            $quality      = $produced ? (($produced - $scraped) / $produced) : 0;
+
+
+            $carry[$stationId] = [
+                'stationName'  => $station->name,
+                'stationId'    => $stationId,
+                'quality'      => $quality * 100,
             ];
 
             return $carry;

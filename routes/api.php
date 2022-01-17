@@ -83,6 +83,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::post('team/operators/delete','TeamController@destroyTeamOperators');
     Route::get('scada-api', 'ReportController@scada');
     Route::get('dashboard-summary', 'ReportController@getDashboardSummary');
+    Route::get('six-sigma-report', 'ReportController@getSixSigmaQuality');
 });
 
 Route::middleware(['auth:api'])->group(function () {
