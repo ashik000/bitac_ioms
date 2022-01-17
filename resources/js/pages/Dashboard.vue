@@ -21,7 +21,7 @@
                                 <img src="../assets/Artboard9.png" alt=""/>
                                 <h6 class="text-uppercase mb-2">
                                     <span>Operator</span>:
-                                    <span class="fw-bolder">Md. Hamid Ullah</span>
+                                    <span class="fw-bolder">{{ operatorName }}</span>
                                 </h6>
                             </div>
                         </div>
@@ -309,16 +309,16 @@ export default {
     data() {
         return {
             machineStatus: [],
+            operatorName: '',
             roundGreen: '',
             roundRed: ''
         }
     },
 
     methods: {
-        getData() {
-            axios.get('/getMachineStatus')
+        getMachineData() {
+            axios.get('getMachineStatus')
                 .then((response) => {
-                    console.log(response)
                     this.machineStatus = response.data
                     if (this.machineStatus.power_status === 'STOPPED') {
                         this.roundRed = true
@@ -326,14 +326,30 @@ export default {
                         this.roundGreen = true
                     }
                 })
+        },
+
+        getOperator() {
+            axios.get('getOperatorName', {
+                params: {
+                    stationId: 7,
+                    date: null
+                }
+            })
+
+                .then((response) => {
+                    this.operatorName = response.data.operatorName
+                })
         }
     },
 
     created: function () {
-        this.getData()
+        this.getOperator()
+        this.getMachineData()
+
         setInterval(() => {
-            this.getData()
-        }, 5000)
+            this.getOperator()
+            this.getMachineData()
+        }, 10000)
     },
 }
 </script>

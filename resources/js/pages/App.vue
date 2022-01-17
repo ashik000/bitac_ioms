@@ -112,8 +112,8 @@ export default {
         setInterval(this.$data._clock, 1000);
 
         switch (this.$router.currentRoute.name) {
-            case '/lineview':
-                this.active = 'lineview';
+            case '/dashboard':
+                this.active = 'dashboard';
             break;
         }
     },
