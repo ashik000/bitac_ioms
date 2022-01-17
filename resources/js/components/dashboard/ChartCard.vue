@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 text-center">
-                        <img src="storage/images/walton-logo-dashboard.jpg" alt="walton-logo" style="height: 64px;">
+                        <img src="storage/images/walton-logo-dashboard.jpg" alt="walton-logo" style="height: 125px; width: 125px; border-radius: 50%">
                     </div>
                 </div>
             </div>
