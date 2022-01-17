@@ -421,8 +421,8 @@ class ReportController extends Controller
 
     public function getDashboardSummary(Request $request)
     {
-        $startTime = now()->startOfHour()->subHour();
-        $endTime = now()->endOfHour()->subHour();
+        $startTime = now()->startOfHour();
+        $endTime = now()->endOfHour();
 
         $allStations = Station::all();
         $allStationIds = $allStations->pluck('id');
