@@ -81,7 +81,24 @@
                     </div>
                   </div>
                 </div>
+              </div>
 
+            </div>
+            <div class="row">
+              <div class="progress-bar-wrapper">
+                <div class="d-flex">
+                  <div style="width: 30%;"></div>
+                  <div class="six-sigma">
+                    <div class="d-flex">
+                      <span style="text-align:right;width: 16.67%;">1σ</span>
+                      <span style="text-align:right;width: 16.67%;">2σ</span>
+                      <span style="text-align:right;width: 16.67%;">3σ</span>
+                      <span style="text-align:right;width: 16.67%;">4σ</span>
+                      <span style="text-align:right;width: 16.67%;">5σ</span>
+                      <span style="text-align:right;width: 16.67%;">6σ</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
