@@ -28,6 +28,15 @@ class ScrapRepository {
             ->get();
     }
 
+    public function fetchScrapsBetweenADateTimeRangeOfAllStations(CarbonImmutable $startDate, CarbonImmutable $endDate) {
+        return Scrap::whereBetween('date', [$startDate->toDateString(), $endDate->toDateString()])
+            ->where('hour', '>=', $startDate->hour)
+            ->where('hour', '<=', $startDate->hour)
+            ->orderBy('date', 'asc')
+            ->orderBy('hour', 'asc')
+            ->get();
+    }
+
     public function postScrap($date, $startTime, $endTime)
     {
         Log::debug('---------------------------------------------------------------------------------------');

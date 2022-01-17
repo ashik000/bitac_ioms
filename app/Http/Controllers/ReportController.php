@@ -447,7 +447,7 @@ class ReportController extends Controller
         });
 
 
-        $allScraps = $this->scrapRepository->fetchScrapsBetweenADateRangeOfAllStations($startTime->toImmutable(), $endTime->toImmutable())->groupBy('station_id');
+        $allScraps = $this->scrapRepository->fetchScrapsBetweenADateTimeRangeOfAllStations($startTime->toImmutable(), $endTime->toImmutable())->groupBy('station_id');
 
         $reports = $allStationIds->reduce(function ($carry, $stationId) use($allProductionLogs, $allDowntimes, $allScraps, $stationsById) {
             $productionLogs = $allProductionLogs->get($stationId);
@@ -482,6 +482,9 @@ class ReportController extends Controller
             $scraps   = $allScraps->get($stationId, collect());
 
             $scraped = $scraps->sum('value');
+
+            Log::debug($produced);
+            Log::debug($scraped);
 
             $performance  = $produced ? ($produced / $expected) : 0;
             $quality      = $produced ? (($produced - $scraped) / $produced) : 0;
