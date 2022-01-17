@@ -421,10 +421,10 @@ class ReportController extends Controller
 
     public function getDashboardSummary(Request $request)
     {
-        $startTime = now()->startOfHour()->subHour();
-        $endTime = now()->endOfHour()->subHour();
+        $startTime = now()->startOfHour();
+        $endTime = now()->endOfHour();
 
-        $allStations = Station::all();
+        $allStations = Station::with('products')->get();
         $allStationIds = $allStations->pluck('id');
         $stationsById = $allStations->keyBy('id');
 
@@ -488,9 +488,11 @@ class ReportController extends Controller
             $availability = $nominalTime ? ($nominalTime / (3600 - $plannedStopTime)) : 0;
             $oeeNumber = $performance * $quality * $availability * 100;
 
+            $currentProduct = $station->products->sortByDesc('start_time')->first();
 
             $carry[$stationId] = [
                 'stationName'  => $station->name,
+                'productName'  => empty($currentProduct)? '' : $currentProduct->name,
                 'stationId'    => $stationId,
                 'speed'        => $speed,
                 'labels'       => range(0, 59),
