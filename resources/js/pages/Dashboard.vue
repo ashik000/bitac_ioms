@@ -9,16 +9,16 @@
                     <div class="col-md-4">
                         <div class="card card-style">
                             <div class="card-body text-center">
-                                <img src="../assets/Artboard7.png" alt="" />
+                                <img src="../assets/Artboard7.png" alt=""/>
                                 <h5 class="text-uppercase mb-2">
                                     <span>Machine</span>:
-                                    <span class="fw-bolder">CM-1</span>
+                                    <span class="fw-bolder" style="color: #00dd20">CM-1</span>
                                 </h5>
                             </div>
                         </div>
                         <div class="card card-style mt-4">
                             <div class="card-body text-center">
-                                <img src="../assets/Artboard9.png" alt="" />
+                                <img src="../assets/Artboard9.png" alt=""/>
                                 <h6 class="text-uppercase mb-2">
                                     <span>Operator</span>:
                                     <span class="fw-bolder">Md. Hamid Ullah</span>
@@ -27,10 +27,10 @@
                         </div>
                         <div class="card card-style mt-4">
                             <div class="card-body text-center">
-                                <img src="../assets/Artboard8.png" alt="" />
+                                <img src="../assets/Artboard8.png" alt=""/>
                                 <h6 class="text-uppercase mb-2">
                                     <span>Total Production: </span>:
-                                    <span class="fw-bolder">{{machineStatus.counter_number}} PCS</span>
+                                    <span><span class="fw-bolder">{{ machineStatus.counter_number }}</span> pcs</span>
                                 </h6>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                                 >
                                     <span>Machine Status:</span>
                                     <div class="round" v-bind:class="{roundGreen, roundRed}"></div>
-                                    <span class="fw-bolder">{{machineStatus.power_status}}</span>
+                                    <span class="fw-bolder">{{ machineStatus.power_status }}</span>
                                 </h6>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
 
                     <!--Middle column starts-->
                     <div class="col-md-4 middle-column">
-                        <div class="card shadow-sm font-12  height-300">
+                        <div class="card card-style font-12  height-300">
                             <div class="card-header card-header-bg text-center fw-bold">
                                 Time and Counter
                             </div>
@@ -82,7 +82,7 @@
                                     <tr>
                                         <td>M30 Counter #2</td>
                                         <td>:</td>
-                                        <td>{{machineStatus.counter_number}}</td>
+                                        <td>{{ machineStatus.counter_number }}</td>
                                     </tr>
                                     <tr>
                                         <td>Loops Remaining</td>
@@ -94,15 +94,15 @@
                             </div>
                         </div>
 
-                        <div class="card card-1 shadow-sm mt-4 height-420">
+                        <div class="card card-style card-1 mt-4 height-420">
                             <div
                                 class="card-header d-flex justify-content-between align-items-center"
                             >
                                 <div><span class="heading-color">Operation MEM</span></div>
                                 <div class="d-flex gap-4 align-items-center">
-                                    <img src="../assets/Artboard11.png" alt="" />
+                                    <img src="../assets/Artboard11.png" alt=""/>
 
-                                    <span class="mt-1 text-dark">{{machineStatus.machine_uptime}}</span>
+                                    <span class="mt-1 text-dark">{{ machineStatus.machine_uptime }}</span>
                                 </div>
                             </div>
                             <div
@@ -152,16 +152,18 @@
                     <!--Right column starts-->
                     <div class="col-md-4 right-column">
 
-                        <div class="card shadow-sm card-4 font-12 height-300">
+                        <div class="card card-style card-4 font-12 height-300">
                             <div class="card-header card-header-bg text-center fw-bold">
                                 Main Spindle
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <img src="../assets/Artboard10.png" alt="" />
-                                        <div><span class="font-14 fw-bold">Overrides</span></div>
-                                        <table class="table table-borderless table-responsive">
+                                        <div style="text-align: center">
+                                            <img src="../assets/Artboard10.png" alt=""/>
+                                            <div><span class="font-14 fw-bold">Overrides</span></div>
+                                        </div>
+                                        <table class="table borderless-table table-responsive">
                                             <tbody class="text-start">
                                             <tr>
                                                 <td>Spindle</td>
@@ -181,13 +183,14 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8" style="border-left:1px dotted #606f7b">
                                         <table class="table borderless-table table-responsive">
+                                            <thead></thead>
                                             <tbody class="text-start">
                                             <tr>
                                                 <td>Spindle Speed</td>
                                                 <td>:</td>
-                                                <td>{{machineStatus.spindle_speed}}</td>
+                                                <td>{{ machineStatus.spindle_speed }}</td>
                                                 <td>RPM</td>
                                             </tr>
                                             <tr>
@@ -211,7 +214,7 @@
                                             <tr>
                                                 <td>Feed Rate</td>
                                                 <td>:</td>
-                                                <td>{{machineStatus.feed_rate}}</td>
+                                                <td>{{ machineStatus.feed_rate }}</td>
                                                 <td>MMPH</td>
                                             </tr>
                                             <tr>
@@ -224,8 +227,8 @@
                                         </table>
                                     </div>
                                 </div>
-                                <hr />
-                                <div class="d-flex gap-5 align-items-center slide-range">
+
+                                <div class="d-flex gap-5 align-items-center slide-range mt-3">
                                     <span>Spindle Load(%)</span>
                                     <input
                                         type="range"
@@ -238,12 +241,12 @@
                             </div>
                         </div>
 
-                        <div class="card shadow-sm font-12 mt-4 card-3 height-420">
+                        <div class="card card-style font-12 mt-4 card-3 height-420">
                             <div
                                 class="card-header card-header-bg text-center fw-bold d-flex"
                             >
                                 <span>Positions</span>
-                                <span class="ml-120">{{machineStatus.program_name}}</span>
+                                <span class="ml-120">{{ machineStatus.program_name }}</span>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between fw-bold">
@@ -256,7 +259,7 @@
                                             <h5 class="mt-1">X</h5>
                                             <div class="d-flex gap-4 align-items-center slide-range width-90">
                                                 <span>--</span>
-                                                <input class="width-65" type="range" min="1" max="100" value="" />
+                                                <input class="width-65" type="range" min="1" max="100" value=""/>
                                                 <span>-%</span>
                                             </div>
                                         </div>
@@ -268,7 +271,7 @@
                                             <h5 class="mt-1">Y</h5>
                                             <div class="d-flex gap-4 align-items-center slide-range width-90">
                                                 <span>--</span>
-                                                <input class="width-65" type="range" min="1" max="100" value="" />
+                                                <input class="width-65" type="range" min="1" max="100" value=""/>
                                                 <span>-%</span>
                                             </div>
                                         </div>
@@ -280,7 +283,7 @@
                                             <h5 class="mt-1">Z</h5>
                                             <div class="d-flex gap-4 align-items-center slide-range width-90">
                                                 <span>--</span>
-                                                <input class="width-65" type="range" min="1" max="100" value="" />
+                                                <input class="width-65" type="range" min="1" max="100" value=""/>
                                                 <span>-%</span>
                                             </div>
                                         </div>
@@ -303,33 +306,34 @@
 export default {
     name: "Dashboard",
 
-    data(){
-        return{
+    data() {
+        return {
             machineStatus: [],
             roundGreen: '',
             roundRed: ''
         }
     },
 
-    methods:{
-        getData()
-        {
+    methods: {
+        getData() {
             axios.get('/getMachineStatus')
-                .then((response)=>{
+                .then((response) => {
                     console.log(response)
                     this.machineStatus = response.data
-                    if(this.machineStatus.power_status === 'STOPPED'){
+                    if (this.machineStatus.power_status === 'STOPPED') {
                         this.roundRed = true
-                    }else {
+                    } else {
                         this.roundGreen = true
                     }
                 })
         }
     },
 
-    created: function (){
+    created: function () {
         this.getData()
-        setInterval(() => {this.getData()}, 5000)
+        setInterval(() => {
+            this.getData()
+        }, 5000)
     },
 }
 </script>
@@ -339,6 +343,7 @@ export default {
     height: 34px;
     width: 105px;
 }
+
 .nav-bar {
     height: 55px;
     width: 100%;
@@ -346,40 +351,54 @@ export default {
     padding: 12px 30px;
     color: white;
 }
+
 .main-nav {
     margin-left: 150px;
 }
+
 .main-nav a {
     text-decoration: none;
     font-size: 12px;
     color: white;
 }
+
 .time {
     font-size: 22px;
 }
+
 .main-body {
     margin: 25px;
 }
+
 .card-margin-top {
     margin-top: 25px;
 }
+
 .card-style {
     border: 1px solid #bbe7ff;
     border-radius: 0px;
     min-height: 181px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19);
 }
+
+.shadow-cus {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19);
+}
+
 .main-body .card-body img {
     height: 50px;
     width: 48px;
     margin-top: 10px;
     margin-bottom: 15px;
 }
+
 .round {
     display: inline-block;
     height: 20px;
     width: 20px;
     border-radius: 50%;
 }
+
 .roundGreen {
     background: #00dd20;
 }
@@ -391,23 +410,29 @@ export default {
 .middle-column .card {
     border: none;
 }
+
 .right-column .card-3,
 .right-column .card-4 {
     border: none;
 }
+
 .card-1 .card-header {
     background: white;
 }
+
 .card-1 .card-body {
     padding: 10px 25px 10px 25px;
     font-size: 14px;
 }
+
 .card-3.card-body {
     padding: 10px 25px 25px 25px;
 }
+
 .heading-color {
     color: #00c594;
 }
+
 .secondary-header {
     height: 40px;
     width: 100%;
@@ -416,49 +441,64 @@ export default {
     font-size: 15px;
     padding: 0px 30px;
 }
+
 .card-header-bg {
     background: #10306c;
     color: white;
 }
+
 .font-12 {
     font-size: 12px;
 }
+
 .font-14 {
     font-size: 14px;
 }
+
 .borderless-table tr td {
-    border-style: none;
+    border-style: hidden !important;
 }
+
 .ml-120 {
     margin-left: 120px;
 }
+
 .mm {
     margin-left: 85px;
 }
+
 .load {
     margin-right: 68px;
 }
+
 .height-85 {
     height: 85px;
 }
+
 .height-420 {
     height: 420px;
 }
+
 .height-300 {
     height: 350px;
 }
-.dashboard-bg{
+
+.dashboard-bg {
     background: #f4faff;
-    height: 100vh;
+    /*height: 100vh;*/
+    margin: 12px;
 }
-.width-100{
+
+.width-100 {
     width: 100%;
 }
-.width-90{
-    width: 90%!important;
+
+.width-90 {
+    width: 90% !important;
 }
-.width-65{
-    width: 65%!important;
+
+.width-65 {
+    width: 65% !important;
 }
 
 /* slider style starts */
@@ -467,9 +507,11 @@ export default {
     margin: 10px 0;
     /* width: 300px; */
 }
+
 .slide-range input[type='range']:focus {
     outline: none;
 }
+
 .slide-range input[type='range']::-webkit-slider-runnable-track {
     width: 250px;
     height: 20px;
@@ -493,5 +535,11 @@ export default {
     -webkit-appearance: none;
     margin-top: -5px;
 }
+
+table {
+    font-size: 13px;
+    font-family: "Cascadia Code";
+}
+
 /* slider style ends */
 </style>

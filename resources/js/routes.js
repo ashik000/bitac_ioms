@@ -27,7 +27,7 @@ const routes = [
     {
         path: '/',
         redirect: {
-            path: '/lineview'
+            path: '/dashboard'
         }
     },
     {
