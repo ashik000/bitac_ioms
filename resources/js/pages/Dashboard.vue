@@ -190,7 +190,7 @@
                                             <tr>
                                                 <td>Spindle Speed</td>
                                                 <td>:</td>
-                                                <td>{{ machineStatus.spindle_speed }}</td>
+                                                <td>{{ parseFloat(machineStatus.spindle_speed).toFixed(2) }}</td>
                                                 <td>RPM</td>
                                             </tr>
                                             <tr>
