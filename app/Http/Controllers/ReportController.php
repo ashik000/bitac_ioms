@@ -346,20 +346,20 @@ class ReportController extends Controller
 
         switch ($filter) {
             case "last_hour":
-                $start_of_day = now()->modify('-1 hour');
-                $end_of_day = now();
+                $startTime = now()->subHour()->startOfHour();
+                $endTime = now()->subHour()->endOfHour();
                 break;
             case "current_shift":
                 $time = now();
                 $shifts = Shift::all();
-                $start_of_day = null;
-                $end_of_day = null;
+                $startTime = null;
+                $endTime = null;
                 foreach ($shifts as $shift){
                     $shift_start_time = Carbon::parse($shift->start_time);
                     $shift_end_time   = Carbon::parse($shift->end_time);
                     if ($time->between($shift_start_time, $shift_end_time)) {
-                        $start_of_day = $shift_start_time;
-                        $end_of_day   = $shift_end_time;
+                        $startTime = $shift_start_time;
+                        $endTime   = $shift_end_time;
                         break;
                     }
                 }
@@ -368,23 +368,23 @@ class ReportController extends Controller
                 echo "Your favorite color is green!";
                 break;
             case "last_month":
-                $start_of_day = now()->modify('-1 day')->startOfDay();
-                $end_of_day = now()->modify('-31 day')->endOfDay();
+                $startTime = now()->modify('-1 day')->startOfDay();
+                $endTime = now()->modify('-31 day')->endOfDay();
                 break;
             case "custom":
                 $data = $request->all();
                 $date_range = json_decode($data['date_range'], true);
-                $start_of_day = $date_range['start'];
-                $end_of_day = $date_range['end'];
+                $startTime = $date_range['start'];
+                $endTime = $date_range['end'];
                 break;
             default:
-                $start_of_day = now()->startOfDay();
-                $end_of_day = now()->endOfDay();
+                $startTime = now()->startOfDay();
+                $endTime = now()->endOfDay();
         }
 
         $station_ids = Station::all()->pluck('id');
         $reports = Report::whereIn('station_id', $station_ids)
-            ->whereBetween('generated_at', [$start_of_day, $end_of_day])
+            ->whereBetween('generated_at', [$startTime, $endTime])
             ->groupBy('station_id')
             ->select([
                 'station_id',
