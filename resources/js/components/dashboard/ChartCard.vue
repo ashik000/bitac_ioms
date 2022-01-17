@@ -4,7 +4,10 @@
             <div v-if="summaryData" :class="getBackGroundColor" class="card-body">
                 <div class="flex-container">
                     <h6 class="" style="color: white">{{this.summaryData.stationName}}</h6>
-                    <h6 class="" style="color: white">{{this.summaryData.oee}}%</h6>
+                    <h6 class="" style="color: white">OEE: {{this.summaryData.oee}}%</h6>
+                </div>
+                <div class="flex-container">
+                    <h6 class="" style="color: white">{{this.summaryData.productName}}</h6>
                 </div>
                 <div class="flex-container">
                     <div class="progress-bar-wrapper">
@@ -101,7 +104,7 @@ export default {
     }
 
     .progress-bar-wrapper {
-        padding: 4px;
+        margin-top: 6px;
         width: 500px;
     }
 

@@ -272,4 +272,11 @@ export default {
   width: 100%;
   z-index: 100!important;
 }
+
+.date-range-picker.vc-container.vc-blue{
+    cursor: pointer;
+    position: absolute;
+    right: 10em;
+    z-index: 9999;
+}
 </style>

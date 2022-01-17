@@ -50,9 +50,8 @@ export default {
           {
             label: "Speed Chart",
             data: clone(this.dataset.speed),
-            backgroundColor: "rgba(255,255,255,.9)",
             borderColor: "#36495d",
-            borderWidth: 3,
+            borderWidth: 1,
           },
         ],
       },
