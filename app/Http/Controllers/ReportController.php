@@ -6,6 +6,7 @@ use App\Data\Models\ProductionLog;
 use App\Data\Models\Report;
 use App\Data\Models\Downtime;
 use App\Data\Models\Scrap;
+use App\Data\Models\Shift;
 use App\Data\Models\Station;
 use App\Data\Models\StationOperator;
 use App\Data\Models\StationProduct;
@@ -349,8 +350,19 @@ class ReportController extends Controller
                 $end_of_day = now();
                 break;
             case "current_shift":
-                $start_of_day = now()->startOfDay();
-                $end_of_day = now()->endOfDay();
+                $time = now();
+                $shifts = Shift::all();
+                $start_of_day = null;
+                $end_of_day = null;
+                foreach ($shifts as $shift){
+                    $shift_start_time = Carbon::parse($shift->start_time);
+                    $shift_end_time   = Carbon::parse($shift->end_time);
+                    if ($time->between($shift_start_time, $shift_end_time)) {
+                        $start_of_day = $shift_start_time;
+                        $end_of_day   = $shift_end_time;
+                        break;
+                    }
+                }
                 break;
             case "last_shift":
                 echo "Your favorite color is green!";

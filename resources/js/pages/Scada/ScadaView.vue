@@ -14,7 +14,7 @@
                                     <option value="" selected disabled>Select Filter</option>
                                     <option value="last_hour">Last hour</option>
                                     <option value="current_shift">Current shift</option>
-                                    <option value="last_shift">Last shift</option>
+<!--                                    <option value="last_shift">Last shift</option>-->
                                     <option value="last_month">Last month</option>
                                     <option value="custom">Custom</option>
                                 </select>
