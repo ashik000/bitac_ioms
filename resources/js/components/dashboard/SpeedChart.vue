@@ -30,7 +30,7 @@ export default {
         }
 
         chart.data.labels = n.labels;
-
+        chart.data.datasets.data = clone(n.speed);
         chart.update();
       },
       deep: true
