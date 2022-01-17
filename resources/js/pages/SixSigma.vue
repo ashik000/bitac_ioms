@@ -61,7 +61,7 @@
                     <span style="font-size: 18px; font-weight: 600;">{{ data.stationName }}</span>
                   </div>
                   <div class="six-sigma progress-bar">
-                    <span style="position: absolute; margin: 0 0 0 12px; color: #fff;font-size: 18px;font-weight: 600;z-index: 2;">{{ data.quality }}%</span>
+                    <span style="position: absolute; margin: 0 0 0 12px; color: #fff;font-size: 18px;font-weight: 600;z-index: 2;">{{ modifyQualityData(data.quality) }}%</span>
                     <span class="progress-bar-fill" :style="getWidthPercentageForSixSigma(data)"></span>
                     <div class="d-flex" style="
                     position: absolute;
@@ -135,8 +135,8 @@ export default {
     fetchSixSigmaReport: function() {
       var vm = this;
       let data = {
-        startTime: moment(this.selectedRangeX.start).format('YYYY-MM-DD'),
-        endTime: moment(this.selectedRangeX.end).format('YYYY-MM-DD'),
+        startTime: moment(this.range.start).format('YYYY-MM-DD'),
+        endTime: moment(this.range.end).format('YYYY-MM-DD'),
       };
       sixSigmaService.getSixSigmaReport(data, response => {
         vm.sixSigmaData = response;
@@ -144,12 +144,16 @@ export default {
         console.error(error);
       });
     },
+      modifyQualityData: function(quality) {
+        if(quality <= 0 || quality >= 100) return quality;
+        return quality.toFixed(6);
+      },
     getWidthPercentageForSixSigma: function (data) {
       var sigmaValues = [0, 31, 69, 93.3, 99.38, 99.977, 99.99966];
       var quality = data.quality;
-      // quality = 69;
+      if(quality <= sigmaValues[0]) return "width:0%";
+      if(quality >= sigmaValues[6]) return "width:100%";
       var lowerIndex = 0;
-      if(quality <= 0) return "width:0%";
       for(var i = 0; i < sigmaValues.length; i++) {
         if(quality <= sigmaValues[i]) {
           lowerIndex = i - 1;

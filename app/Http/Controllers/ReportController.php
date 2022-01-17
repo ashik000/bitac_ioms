@@ -512,8 +512,8 @@ class ReportController extends Controller
     public function getSixSigmaQuality(Request $request)
     {
         $data = $request->all();
-        $startTime = Carbon::parse($data['start_time']);
-        $endTime = Carbon::parse($data['end_time']);
+        $startTime = Carbon::parse($data['start_time'])->startOfDay();
+        $endTime = Carbon::parse($data['end_time'])->endOfDay();
 
         $allStations = Station::all();
         $allStationIds = $allStations->pluck('id');
