@@ -329,15 +329,20 @@ export default {
         },
 
         getOperator() {
+            var currentDate = new Date();
+            console.log(currentDate);
+            var formatted_date = new Date().toJSON();
+            console.log(formatted_date);
             axios.get('getOperatorName', {
                 params: {
                     stationId: 7,
-                    date: null
+                    date: formatted_date
                 }
             })
 
                 .then((response) => {
                     this.operatorName = response.data.operatorName
+                    console.log(response.data)
                 })
         }
     },
