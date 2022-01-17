@@ -536,7 +536,7 @@ class InovaceDevice
     {
         $packetContent = $packet->request;
         $packetContentBin = hex2bin($packetContent);
-        Log::debug($packetContentBin);
+
 //        $deviceTimeStamp  = sprintf("%04u", unpack("Ntimestamp/", substr($packetContentBin, 0, 4))['timestamp']);
 //        $deviceTimeObject = Carbon::createFromTimestamp($deviceTimeStamp);
         $numberOfLogs = unpack('cnumOfLogs/', substr($packetContentBin, 4, 1))['numOfLogs'];
@@ -546,7 +546,7 @@ class InovaceDevice
         $slowProductions = [];
 
         $devicePortToDeviceStationMap = $this->deviceRepository->findAllDeviceStationsOfADevice($device->id)->mapWithKeys(function ($deviceStation) {
-            return [$deviceStation['port'] + 1 => $deviceStation]; // 1 is added to port
+            return [$deviceStation['port'] => $deviceStation]; // 1 is added to port
         });
 
         $stationIdToStationProductMap = $this->productRepository->findAllStationProductsKeyByStationId();
@@ -572,6 +572,7 @@ class InovaceDevice
             $logTimeObject = Carbon::createFromTimestamp($logTimeStamp);
             //we are omitting the length of packets, channel length bytes because for logs, the length of packets will always be 1
             $port = unpack('cport/', substr($packetContentBin, $startingIndex+6, 1))['port'];
+            Log::debug($port);
 
             $deviceStation = $devicePortToDeviceStationMap->get($port);
             if(empty($deviceStation)) continue;
@@ -840,7 +841,7 @@ class InovaceDevice
         } catch (Exception $ex) {
             Log::error($ex);
         }
-        error_log('Packet saving done');
+        Log::debug('Packet saving done');
     }
 
     public function findShiftOfStation($stationIdToShiftListMap, int $stationId, Carbon $producedAt)

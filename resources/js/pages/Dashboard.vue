@@ -102,7 +102,7 @@
                                 <div class="d-flex gap-4 align-items-center">
                                     <img src="../assets/Artboard11.png" alt=""/>
 
-                                    <span class="mt-1 text-dark">{{ machineStatus.machine_uptime }}</span>
+                                    <span class="mt-1 text-dark" style="font-family: 'Cascadia Code'">{{ machineStatus.machine_uptime }}</span>
                                 </div>
                             </div>
                             <div
