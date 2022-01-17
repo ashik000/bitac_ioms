@@ -483,9 +483,6 @@ class ReportController extends Controller
 
             $scraped = $scraps->sum('value');
 
-            Log::debug($produced);
-            Log::debug($scraped);
-
             $performance  = $produced ? ($produced / $expected) : 0;
             $quality      = $produced ? (($produced - $scraped) / $produced) : 0;
             $availability = $nominalTime ? ($nominalTime / (3600 - $plannedStopTime)) : 0;
