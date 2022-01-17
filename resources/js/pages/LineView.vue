@@ -57,7 +57,8 @@
                                 </li>
                             </ul>
                         </div>
-                        Operator: {{ filter.stationOperatorName }}
+                        <span v-if="checkTeamName">Team: {{ filter.stationTeamName }}</span>
+                        <span v-else>Operator: {{ filter.stationOperatorName }}</span>
                     </div>
                 </div>
 
@@ -82,13 +83,20 @@
 
                         <div class="card col-md-10">
                             <div class="card-body p-0"
-                            style="background: linear-gradient(90deg, rgba(5,65,119,1) 0%, rgba(244,244,244,1) 0%, rgba(5,65,119,1) 0%, rgba(219,218,218,0) 0%, rgba(233,233,233,0.27494747899159666) 59%, rgba(245,245,245,1) 100%);"
+                                 style="background: linear-gradient(90deg, rgba(5,65,119,1) 0%, rgba(244,244,244,1) 0%, rgba(5,65,119,1) 0%, rgba(219,218,218,0) 0%, rgba(233,233,233,0.27494747899159666) 59%, rgba(245,245,245,1) 100%);"
                             >
                                 <v-date-picker :max-date='new Date()'
-                                    mode='single' v-model='filter.selectedDate'
-                                    :masks="{ input: 'WWW, DD MMMM' }"
-                                    :input-props="{ class: 'date-picker-input text-center border-0 w-100 bg-transparent', style: 'height: 4.5rem; font-size: 1.3em;' }"
-                                    @input="changeSelectedDate">
+                                               mode='single' v-model='filter.selectedDate'
+                                               :masks="{ input: 'WWW, DD MMMM' }"
+                                               @input="changeSelectedDate">
+                                    <template v-slot="{ inputValue, inputEvents }">
+                                        <input
+                                            style="height: 4.5rem; font-size: 1.3em;"
+                                            class="date-picker-input text-center border-0 w-100 bg-transparent"
+                                            :value="inputValue"
+                                            v-on="inputEvents"
+                                        />
+                                    </template>
                                 </v-date-picker>
                             </div>
                         </div>
@@ -110,20 +118,20 @@
                 <div class="table-responsive">
                     <table class="table" style="border: 2px solid #C5E9FF;">
                         <thead class="top_downtime_table_header">
-                            <tr>
-                                <th colspan="2">
-                                    Top Downtime Reasons (last 7 days)
-                                </th>
-                            </tr>
+                        <tr>
+                            <th colspan="2">
+                                Top Downtime Reasons (last 7 days)
+                            </th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr v-if="!showTableTopDowntimeReasons">
-                                <td class="text-center">No data found</td>
-                            </tr>
-                            <tr v-else v-for="topDowntimeReason in topDowntimeReasons">
-                                <td>{{ topDowntimeReason.reason_name }}</td>
-                                <td>{{ topDowntimeReason.duration }}</td>
-                            </tr>
+                        <tr v-if="!showTableTopDowntimeReasons">
+                            <td class="text-center">No data found</td>
+                        </tr>
+                        <tr v-else v-for="topDowntimeReason in topDowntimeReasons">
+                            <td>{{ topDowntimeReason.reason_name }}</td>
+                            <td>{{ topDowntimeReason.duration }}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -136,13 +144,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr v-if="!showTableTopOperartorDowntimeReasons">
-                                <td class="text-center">No data found</td>
-                            </tr>
-                            <tr v-else v-for="topOperatorDowntime in topOperatorDowntimes">
-                                <td>{{ topOperatorDowntime.operator_name }}</td>
-                                <td>{{ topOperatorDowntime.duration }}</td>
-                            </tr>
+                        <tr v-if="!showTableTopOperartorDowntimeReasons">
+                            <td class="text-center">No data found</td>
+                        </tr>
+                        <tr v-else v-for="topOperatorDowntime in topOperatorDowntimes">
+                            <td>{{ topOperatorDowntime.operator_name }}</td>
+                            <td>{{ topOperatorDowntime.duration }}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -182,7 +190,7 @@
                     <div class="card-body" style="text-align: center;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
                             <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                            <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
                         </svg>&nbsp;ASSIGN OPERATOR
                     </div>
                 </div>
@@ -208,8 +216,8 @@
         </footer>
 
         <modal v-if="isStationSelectionFormShown"
-            class="station-selector-modal"
-            @close="isStationSelectionFormShown = false">
+               class="station-selector-modal"
+               @close="isStationSelectionFormShown = false">
             <template v-slot:header>
                 <h4 class="text-uppercase">Select Station</h4>
             </template>
@@ -232,8 +240,8 @@
         </modal>
 
         <modal v-if="isDowntimeReasonsModalShown"
-            class="reason-selector-modal"
-            @close="isDowntimeReasonsModalShown = false"
+               class="reason-selector-modal"
+               @close="isDowntimeReasonsModalShown = false"
         >
             <template v-slot:header>
                 <h5 class="text-uppercase px-5">Select Downtime Reason</h5>
@@ -249,7 +257,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-check">
                                         <input class="form-check-input float-end" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
-                                            :value="reason.id" @change="onReasonChange($event)" :checked="selectedDowntimeReasonId === reason.id"/>
+                                               :value="reason.id" @change="onReasonChange($event)" :checked="selectedDowntimeReasonId === reason.id"/>
                                     </div>
                                 </div>
                             </div>
@@ -296,348 +304,383 @@
 </template>
 
 <script>
-    import * as GaugeChart from "gauge-chart"
-    import LineViewService from "../services/LineViewService";
-    import StationsService from "../services/StationsService";
-    import DowntimeReasonsService from '../services/DowntimeReasons'
-    import {LineViewDataTransformer} from "../transformers/LineViewDataTransformer";
+import * as GaugeChart from "gauge-chart"
+import LineViewService from "../services/LineViewService";
+import StationsService from "../services/StationsService";
+import DowntimeReasonsService from '../services/DowntimeReasons'
+import {LineViewDataTransformer} from "../transformers/LineViewDataTransformer";
 
-    import OEESummaryPanel from "../components/lineview/OEESummaryPanel";
-    import ProductionSummaryPanel from "../components/lineview/ProductionSummaryPanel";
-    import LineViewGraph from "../components/lineview/LineViewGraph";
-    import Modal from "../components/Modal";
-    import DowntimeSummaryModal from "../components/lineview/downtimesummary/DowntimeSummaryModal";
-    import ScrapInputModel from "../components/lineview/scrapinput/ScrapInputModal";
-    import OperatorSelectionModal from "../components/lineview/operatorselection/OperatorSelectionModal";
-    import ProductSelectionModal from "../components/lineview/productselection/ProductSelectionModal";
-    import moment from "moment";
-    import ToastrService from '../services/ToastrService';
+import OEESummaryPanel from "../components/lineview/OEESummaryPanel";
+import ProductionSummaryPanel from "../components/lineview/ProductionSummaryPanel";
+import LineViewGraph from "../components/lineview/LineViewGraph";
+import Modal from "../components/Modal";
+import DowntimeSummaryModal from "../components/lineview/downtimesummary/DowntimeSummaryModal";
+import ScrapInputModel from "../components/lineview/scrapinput/ScrapInputModal";
+import OperatorSelectionModal from "../components/lineview/operatorselection/OperatorSelectionModal";
+import ProductSelectionModal from "../components/lineview/productselection/ProductSelectionModal";
+import moment from "moment";
+import ToastrService from '../services/ToastrService';
 
-    export default {
-        name: "LineView",
-        components: {
-            OperatorSelectionModal,
-            ProductSelectionModal,
-            Modal,
-            DowntimeSummaryModal,
-            LineViewGraph,
-            ProductionSummaryPanel,
-            'oee-summary-panel': OEESummaryPanel,
-            ScrapInputModel,
+export default {
+    name: "LineView",
+    components: {
+        OperatorSelectionModal,
+        ProductSelectionModal,
+        Modal,
+        DowntimeSummaryModal,
+        LineViewGraph,
+        ProductionSummaryPanel,
+        'oee-summary-panel': OEESummaryPanel,
+        ScrapInputModel,
+    },
+    data: () => ({
+        isInitialized: false,
+        isStationSelectionFormShown: false,
+        isDowntimeReasonsModalShown: false,
+        isDowntimeSummaryModalShown: false,
+        isOperatorSelectionModalShown: false,
+        isProductSelectionModalShown: false,
+        isScrapInputModalShown: false,
+        selectedDowntime: null,
+        currentProduct: null,
+        filter: {
+            stationId: 1,
+            stationShiftId: null,
+            stationName: '',
+            stationOperatorId: null,
+            stationOperatorName: 'N/A',
+            stationTeamId: null,
+            stationTeamName: 'N/A',
+            selectedDate: new Date(),
         },
-        data: () => ({
-            isInitialized: false,
-            isStationSelectionFormShown: false,
-            isDowntimeReasonsModalShown: false,
-            isDowntimeSummaryModalShown: false,
-            isOperatorSelectionModalShown: false,
-            isProductSelectionModalShown: false,
-            isScrapInputModalShown: false,
-            selectedDowntime: null,
-            currentProduct: null,
-            filter: {
-                stationId: 1,
-                stationShiftId: null,
-                stationName: '',
-                stationOperatorId: null,
-                stationOperatorName: 'N/A',
-                selectedDate: new Date(),
+        checkTeamName: false,
+        downtimeReasons: [],
+        stations: [],
+        products: [],
+        oeeSummary: {
+            hourly: {
+                labels: [],
+                performance: [],
+                availability: [],
+                quality: [],
+                oee: [],
             },
-            downtimeReasons: [],
-            stations: [],
-            products: [],
-            oeeSummary: {
-                hourly: {
-                    labels: [],
-                    performance: [],
-                    availability: [],
-                    quality: [],
-                    oee: [],
+            summary: {
+                produced: 0,
+                expected: 0,
+                performance: 0,
+                availability: 0,
+                quality: 0,
+            }
+        },
+        linedata: {
+            logs: [],
+        },
+        gaugeTotalOee: 0,
+        gaugeAvailability: 0,
+        gaugePerformance: 0,
+        gaugeQuality: 0,
+        gaugeOptions: {
+            hasNeedle: true,
+            needleColor: 'black',
+            arcColors: ['#EAEAEA'],
+            arcDelimiters: [],
+        },
+        range: {
+            start: moment().startOf('week').subtract(6, "days").toDate(),
+            end: moment().endOf('day').toDate()
+        },
+        topDowntimeReasons: null,
+        topOperatorDowntimes: null,
+        stationShifts: {
+            data: []
+        },
+        showInprogress: false,
+        dataUpdateTimer: null,
+        clockUpdateTimer: null,
+        isChecked: Boolean,
+        selectedDowntimeReasonId: null,
+    }),
+    watch: {
+        gaugeTotalOee(nv, ov){
+            let element = document.querySelector('#totalOee');
+            element.innerHTML = "";
+            GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 260 : 185, {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
+                    arcDelimiters: [30, 70]}}).updateNeedle(nv);
+        },
+        gaugeAvailability(nv, ov){
+            let element = document.querySelector('#totalAvailability');
+            element.innerHTML = "";
+
+            GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 170 : 135, this.generateGaugeProperties(nv, '#1947A4')).updateNeedle(nv);
+        },
+        gaugePerformance(nv, ov){
+            let element = document.querySelector('#totalPerformance');
+            element.innerHTML = "";
+            GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 170 : 135, this.generateGaugeProperties(nv, '#49B92A')).updateNeedle(nv);
+        },
+        gaugeQuality(nv, ov){
+            let element = document.querySelector('#totalQuality');
+            element.innerHTML = "";
+
+            GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 170 : 135, this.generateGaugeProperties(nv, '#FFA600')).updateNeedle(nv);
+        },
+    },
+    methods: {
+        showStationSelectionForm(show = false) {
+            this.isStationSelectionFormShown = show;
+        },
+        operatorSelectionModalClosed(){
+            this.isOperatorSelectionModalShown = false;
+        },
+        productSelectionModalClosed(){
+            this.isProductSelectionModalShown = false;
+        },
+        downtimeSummaryModalClosed() {
+            this.isDowntimeSummaryModalShown = false;
+            this.fetchData();
+        },
+        scrapInputModalClosed() {
+            this.isScrapInputModalShown = false;
+        },
+        changeSelectedDate(type) {
+            switch (type) {
+                case 'PREV':
+                    this.filter.selectedDate = moment(this.filter.selectedDate).subtract({days: 1}).toDate();
+                    break;
+                case 'NEXT':
+                    this.filter.selectedDate = moment(this.filter.selectedDate).add({days: 1}).toDate();
+                    break;
+                default:
+                    this.filter.selectedDate = moment(type).toDate();
+                    break;
+            }
+
+            this.fetchData();
+
+            this.isStationSelectionFormShown = false;
+        },
+        changeSelectedStation(station) {
+            this.filter.stationId = station.id;
+            this.filter.stationName = station.name;
+            this.isStationSelectionFormShown = false;
+
+            this.fetchData();
+        },
+        fetchOperatorName() {
+            LineViewService.fetchOperatorName({
+                    stationId: this.filter.stationId,
+                    date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
                 },
-                summary: {
-                    produced: 0,
-                    expected: 0,
-                    performance: 0,
-                    availability: 0,
-                    quality: 0,
+                (data) => {
+                    this.filter.stationOperatorName = data.operatorName;
+                    this.filter.stationOperatorId = data.operatorId;
                 }
-            },
-            linedata: {
-                logs: [],
-            },
-            gaugeTotalOee: 0,
-            gaugeAvailability: 0,
-            gaugePerformance: 0,
-            gaugeQuality: 0,
-            gaugeOptions: {
-                hasNeedle: true,
-                needleColor: 'black',
-                arcColors: ['#EAEAEA'],
-                arcDelimiters: [],
-            },
-            range: {
-                start: moment().startOf('week').subtract(6, "days").toDate(),
-                end: moment().endOf('day').toDate()
-            },
-            topDowntimeReasons: null,
-            topOperatorDowntimes: null,
-            stationShifts: {
-                data: []
-            },
-            showInprogress: false,
-            dataUpdateTimer: null,
-            clockUpdateTimer: null,
-            isChecked: Boolean,
-            selectedDowntimeReasonId: null,
-        }),
-        watch: {
-            gaugeTotalOee(nv, ov){
-                let element = document.querySelector('#totalOee');
-                element.innerHTML = "";
-                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 260 : 185, {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
-                        arcDelimiters: [30, 70]}}).updateNeedle(nv);
-            },
-            gaugeAvailability(nv, ov){
-                let element = document.querySelector('#totalAvailability');
-                element.innerHTML = "";
-
-                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 170 : 135, this.generateGaugeProperties(nv, '#1947A4')).updateNeedle(nv);
-            },
-            gaugePerformance(nv, ov){
-                let element = document.querySelector('#totalPerformance');
-                element.innerHTML = "";
-                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 170 : 135, this.generateGaugeProperties(nv, '#49B92A')).updateNeedle(nv);
-            },
-            gaugeQuality(nv, ov){
-                let element = document.querySelector('#totalQuality');
-                element.innerHTML = "";
-
-                GaugeChart.gaugeChart(element, window.innerWidth >= 1920 ? 170 : 135, this.generateGaugeProperties(nv, '#FFA600')).updateNeedle(nv);
-            },
+            );
         },
-        methods: {
-            showStationSelectionForm(show = false) {
-                this.isStationSelectionFormShown = show;
-            },
-            operatorSelectionModalClosed(){
-                this.isOperatorSelectionModalShown = false;
-            },
-            productSelectionModalClosed(){
-                this.isProductSelectionModalShown = false;
-            },
-            downtimeSummaryModalClosed() {
-                this.isDowntimeSummaryModalShown = false;
-                this.fetchData();
-            },
-            scrapInputModalClosed() {
-                this.isScrapInputModalShown = false;
-            },
-            changeSelectedDate(type) {
-                switch (type) {
-                    case 'PREV':
-                        this.filter.selectedDate = moment(this.filter.selectedDate).subtract({days: 1}).toDate();
-                        break;
-                    case 'NEXT':
-                        this.filter.selectedDate = moment(this.filter.selectedDate).add({days: 1}).toDate();
-                        break;
-                    default:
-                        this.filter.selectedDate = moment(type).toDate();
-                        break;
+        fetchTeamName() {
+            LineViewService.fetchTeamName({
+                    stationId: this.filter.stationId,
+                    date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
+                },
+                (data) => {
+                    (data.status === false) ? this.checkTeamName = false : this.checkTeamName = true;
+
+                    this.filter.stationTeamName = data.teamName;
+                    this.filter.stationTeamId = data.teamId;
                 }
+            );
+        },
+        openDowntimeReasonsSelectionModal(bar) {
+            if (bar.type === 'downtime') {
+                this.isDowntimeReasonsModalShown = true;
+                this.selectedDowntime = bar;
+                DowntimeReasonsService.fetchAll([], reasons => {
+                    this.downtimeReasons = reasons['downtime_reason_list'];
+                })
+                this.selectedDowntimeReasonId = bar.reason? bar.reason.id : null;
+            }
+        },
+        updateStationShiftId(selectedStationShiftId) {
+            this.filter.stationShiftId = selectedStationShiftId;
+            this.fetchData();
+        },
+        submitReportDefects(defectsData) {
+            let hour = defectsData.defectTime;
+            hour = hour.substring(0, hour.length - 3);
 
+            // submit the defect
+            this.showInprogress = true;
+            LineViewService.storeDefects({
+                defectValue: defectsData.defectValue,
+                date: moment(this.filter.selectedDate).format('YYYY-MM-DD'),
+                defectTime: hour,
+                stationId: this.filter.stationId,
+                stationShiftId: this.filter.stationShiftId,
+                productId: this.products[0].product_id,
+            }, data => {
+                this.showInprogress = false;
+                ToastrService.showSuccessToast('Defect added successfully.');
+            }, error => {
+                this.showInprogress = false;
+                ToastrService.showErrorToast('Error! Try again.');
+            });
+        },
+        assignDowntimeReason() {
+            this.showInprogress = true;
+            DowntimeReasonsService.assignDowntime({
+                downtimeId: this.selectedDowntime.id,
+                downtimeReasonId: this.selectedDowntimeReasonId,
+            }, data => {
+                this.isDowntimeReasonsModalShown = false;
+                this.showInprogress = false;
+                ToastrService.showSuccessToast('Downtime reason assigned successfully.');
                 this.fetchData();
-
-                this.isStationSelectionFormShown = false;
-            },
-            changeSelectedStation(station) {
-                this.filter.stationId = station.id;
-                this.filter.stationName = station.name;
-                this.isStationSelectionFormShown = false;
-
-                this.fetchData();
-            },
-            fetchOperatorName() {
-                LineViewService.fetchOperatorName({
-                        stationId: this.filter.stationId,
-                        date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
-                    },
-                    (data) => {
-                        this.filter.stationOperatorName = data.operatorName;
-                        this.filter.stationOperatorId = data.operatorId;
-                    }
-                );
-            },
-            openDowntimeReasonsSelectionModal(bar) {
-                if (bar.type === 'downtime') {
-                    this.isDowntimeReasonsModalShown = true;
-                    this.selectedDowntime = bar;
-                    DowntimeReasonsService.fetchAll([], reasons => {
-                        this.downtimeReasons = reasons['downtime_reason_list'];
-                    })
-                    this.selectedDowntimeReasonId = bar.reason? bar.reason.id : null;
-                }
-            },
-            updateStationShiftId(selectedStationShiftId) {
-                this.filter.stationShiftId = selectedStationShiftId;
-                this.fetchData();
-            },
-            submitReportDefects(defectsData) {
-                let hour = defectsData.defectTime;
-                hour = hour.substring(0, hour.length - 3);
-
-                // submit the defect
-                this.showInprogress = true;
-                LineViewService.storeDefects({
-                    defectValue: defectsData.defectValue,
-                    date: moment(this.filter.selectedDate).format('YYYY-MM-DD'),
-                    defectTime: hour,
+            });
+        },
+        selectDowntimeReason(reason) {
+            this.selectedDowntimeReasonId = reason.id;
+        },
+        fetchData() {
+            LineViewService.fetchLineViewData({
                     stationId: this.filter.stationId,
                     stationShiftId: this.filter.stationShiftId,
-                    productId: this.products[0].product_id,
-                }, data => {
-                    this.showInprogress = false;
-                    ToastrService.showSuccessToast('Defect added successfully.');
-                }, error => {
-                    this.showInprogress = false;
-                    ToastrService.showErrorToast('Error! Try again.');
-                });
-            },
-            assignDowntimeReason() {
-                this.showInprogress = true;
-                DowntimeReasonsService.assignDowntime({
-                    downtimeId: this.selectedDowntime.id,
-                    downtimeReasonId: this.selectedDowntimeReasonId,
-                }, data => {
-                    this.isDowntimeReasonsModalShown = false;
-                    this.showInprogress = false;
-                    ToastrService.showSuccessToast('Downtime reason assigned successfully.');
-                    this.fetchData();
-                });
-            },
-            selectDowntimeReason(reason) {
-                this.selectedDowntimeReasonId = reason.id;
-            },
-            fetchData() {
-                LineViewService.fetchLineViewData({
-                        stationId: this.filter.stationId,
-                        stationShiftId: this.filter.stationShiftId,
-                        date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
-                    },
-                    (data) => {
-                        const {products, logs, hourlyMetric, summaryMetric} = LineViewDataTransformer(data);
+                    date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
+                },
+                (data) => {
+                    const {products, logs, hourlyMetric, summaryMetric} = LineViewDataTransformer(data);
+                    this.$set(this, 'products', products);
+                    this.$set(this.linedata, 'logs', logs);
+                    this.$set(this.oeeSummary, 'hourly', hourlyMetric);
+                    this.$set(this.oeeSummary, 'summary', summaryMetric);
+                    this.gaugeTotalOee = (isNaN((this.oeeSummary.summary.oee * 100).toFixed(2)) || this.oeeSummary.summary.oee === 0) ? 0 : Math.ceil((this.oeeSummary.summary.oee * 100).toFixed(2));
+                    this.gaugeAvailability = (isNaN(this.oeeSummary.summary.availability.toFixed(2)) || this.oeeSummary.summary.availability === 0) ? 0 : Math.ceil(this.oeeSummary.summary.availability.toFixed(2));
+                    this.gaugePerformance = (isNaN(this.oeeSummary.summary.performance.toFixed(2)) || this.oeeSummary.summary.performance === 0) ? 0 : Math.ceil(this.oeeSummary.summary.performance.toFixed(2));
+                    this.gaugeQuality = (isNaN(this.oeeSummary.summary.quality.toFixed(2)) || this.oeeSummary.summary.quality === 0) ? 0 : Math.ceil(this.oeeSummary.summary.quality.toFixed(2));
 
-                        this.$set(this, 'products', products);
-                        this.$set(this.linedata, 'logs', logs);
-                        this.$set(this.oeeSummary, 'hourly', hourlyMetric);
-                        this.$set(this.oeeSummary, 'summary', summaryMetric);
-                        this.gaugeTotalOee = (isNaN((this.oeeSummary.summary.oee * 100).toFixed(2)) || this.oeeSummary.summary.oee === 0) ? 0 : Math.ceil((this.oeeSummary.summary.oee * 100).toFixed(2));
-                        this.gaugeAvailability = (isNaN(this.oeeSummary.summary.availability.toFixed(2)) || this.oeeSummary.summary.availability === 0) ? 0 : Math.ceil(this.oeeSummary.summary.availability.toFixed(2));
-                        this.gaugePerformance = (isNaN(this.oeeSummary.summary.performance.toFixed(2)) || this.oeeSummary.summary.performance === 0) ? 0 : Math.ceil(this.oeeSummary.summary.performance.toFixed(2));
-                        this.gaugeQuality = (isNaN(this.oeeSummary.summary.quality.toFixed(2)) || this.oeeSummary.summary.quality === 0) ? 0 : Math.ceil(this.oeeSummary.summary.quality.toFixed(2));
+                    this.gaugeTotalOee = this.getDisplayableValueForGauge(this.gaugeTotalOee);
+                    this.gaugeAvailability = this.getDisplayableValueForGauge(this.gaugeAvailability);
+                    this.gaugeQuality = this.getDisplayableValueForGauge(this.gaugeQuality);
+                    this.gaugePerformance = this.gaugePerformance < 0 ? 0: this.gaugePerformance;
+                    var assignedProducts = this.products.filter(prod => prod.start_time !== null);
+                    this.currentProduct = assignedProducts.length > 0? assignedProducts[0] : null;
+                    this.isInitialized = true;
+                }
+            );
 
-                        var assignedProducts = this.products.filter(prod => prod.start_time !== null);
-                        this.currentProduct = assignedProducts.length > 0? assignedProducts[0] : null;
-                        this.isInitialized = true;
-                    }
-                );
-
-                this.fetchOperatorName();
-            },
-            fetchStationShift() {
-                LineViewService.fetchStationShift({},
+            this.fetchOperatorName();
+            this.fetchTeamName();
+        },
+        getDisplayableValueForGauge(value){
+            value = Math.min(100,value);
+            value = Math.max(value,0);
+            return value;
+        },
+        fetchStationShift() {
+            LineViewService.fetchStationShift({},
                 (data) => {
                     this.$set(this.stationShifts, 'data', data);
                 });
-            },
-            fetchTopDowntimeReasons() {
-                LineViewService.fetchTopDowntimeReasons({
-                        start: this.range.start,
-                        end: this.range.end,
-                    },
-                    (data) => {
-                        this.topDowntimeReasons = data;
-                    }
-                );
-            },
-            fetchTopOperatorDowntimes() {
-                LineViewService.fetchTopOperatorDowntimes({
-                        start: this.range.start,
-                        end: this.range.end,
-                    },
-                    (data) => {
-                        this.topOperatorDowntimes = data;
-                    }
-                );
-            },
-            renderGaugeChart(){
-                let elements = ['#totalOee', '#totalAvailability', '#totalPerformance', '#totalQuality'];
-                for (let i = 0; i < elements.length; i++) {
-
-                    let element = document.querySelector(elements[i]);
-                    element.innerHTML = "";
-
-                    GaugeChart.gaugeChart(document.querySelector(elements[i]), elements[i] === '#totalOee' ? (window.innerWidth >= 1920 ? 260 : 185) : (window.innerWidth >= 1920 ? 170 : 135),
-                        elements[i] === '#totalOee' ? {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
-                        arcDelimiters: [30, 70]}} : {...this.gaugeOptions, ...{arcColors: ['#EAEAEA']}} );
-
-                }
-            },
-            generateGaugeProperties(nv, color){
-                if ([100, 100.00,'100', '100.00', '100.0'].includes(nv)){
-                    return  {...this.gaugeOptions, ...{arcColors: [color], arcDelimiters: []}};
-                }else if([0,0.00,'0', '0.00', '0.0'].includes(nv)){
-                    return  {...this.gaugeOptions, ...{arcColors: ['#EAEAEA'], arcDelimiters: []}};
-                }else {
-                    return  {...this.gaugeOptions, ...{arcColors: [color], arcDelimiters: [nv]}};
-                }
-            },
-            onReasonChange: function (event) {
-                var data = event.target.value;
-                this.selectedDowntimeReasonId = data;
-            },
         },
-        computed: {
-            formattedSelectedDate() {
-                return moment(this.filter.selectedDate).format('dddd, DD MMMM, YYYY');
-            },
-            showTableTopDowntimeReasons(){
-                return this.topDowntimeReasons && this.topDowntimeReasons.length > 0;
-            },
-            showTableTopOperartorDowntimeReasons(){
-                return this.topOperatorDowntimes && this.topOperatorDowntimes.length > 0;
-            },
-        },
-        mounted() {
-            const vm = this;
-            this.fetchData();
-            this.$data._updateData = () => {
-                if (moment().diff(vm.filter.selectedDate, 'day') === 0) {
-                    vm.fetchData();
+        fetchTopDowntimeReasons() {
+            LineViewService.fetchTopDowntimeReasons({
+                    start: this.range.start,
+                    end: this.range.end,
+                },
+                (data) => {
+                    this.topDowntimeReasons = data;
                 }
-            };
-            this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
+            );
+        },
+        fetchTopOperatorDowntimes() {
+            LineViewService.fetchTopOperatorDowntimes({
+                    start: this.range.start,
+                    end: this.range.end,
+                },
+                (data) => {
+                    this.topOperatorDowntimes = data;
+                }
+            );
+        },
+        renderGaugeChart(){
+            let elements = ['#totalOee', '#totalAvailability', '#totalPerformance', '#totalQuality'];
+            for (let i = 0; i < elements.length; i++) {
 
-            StationsService.fetchAll({}, (data) => {
-                this.$set(this, 'stations', data);
-                this.filter.stationId = this.stations[0].id;
-                this.filter.stationName = this.stations[0].name;
+                let element = document.querySelector(elements[i]);
+                element.innerHTML = "";
+
+                GaugeChart.gaugeChart(document.querySelector(elements[i]), elements[i] === '#totalOee' ? (window.innerWidth >= 1920 ? 260 : 185) : (window.innerWidth >= 1920 ? 170 : 135),
+                    elements[i] === '#totalOee' ? {...this.gaugeOptions, ...{arcColors: ['#FF2D1C', '#FFA600', '#49B92A'],
+                            arcDelimiters: [30, 70]}} : {...this.gaugeOptions, ...{arcColors: ['#EAEAEA']}} );
+
+            }
+        },
+        generateGaugeProperties(nv, color){
+            if ([100, 100.00,'100', '100.00', '100.0'].includes(nv)){
+                return  {...this.gaugeOptions, ...{arcColors: [color], arcDelimiters: []}};
+            }else if([0,0.00,'0', '0.00', '0.0'].includes(nv)){
+                return  {...this.gaugeOptions, ...{arcColors: ['#EAEAEA'], arcDelimiters: []}};
+            }else {
+                return  {...this.gaugeOptions, ...{arcColors: [color], arcDelimiters: [nv]}};
+            }
+        },
+        onReasonChange: function (event) {
+            var data = event.target.value;
+            this.selectedDowntimeReasonId = data;
+        },
+    },
+    computed: {
+        formattedSelectedDate() {
+            return moment(this.filter.selectedDate).format('dddd, DD MMMM, YYYY');
+        },
+        showTableTopDowntimeReasons(){
+            return this.topDowntimeReasons && this.topDowntimeReasons.length > 0;
+        },
+        showTableTopOperartorDowntimeReasons(){
+            return this.topOperatorDowntimes && this.topOperatorDowntimes.length > 0;
+        },
+    },
+    mounted() {
+
+        this.filter.stationId = (this.$route.query.stn_id) ?  this.$route.query.stn_id : this.filter.stationId;
+        const vm = this;
+        this.fetchData();
+        this.$data._updateData = () => {
+            if (moment().diff(vm.filter.selectedDate, 'day') === 0) {
+                vm.fetchData();
+            }
+        };
+        this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
+
+        StationsService.fetchAll({}, (data) => {
+            //If a user comes to this page by clicking on a station from the SCADA page, the station will be selected by default
+            //So we are taking that station to the front of the array
+            var selectedStation = null;
+            data = data.filter(function (item) {
+                if((item['id'] + '') === (vm.filter.stationId + '')) selectedStation = item;
+                return (item['id'] + '') !== (vm.filter.stationId + '');
             });
+            data.unshift(selectedStation);
+            this.$set(this, 'stations', data);
+            this.filter.stationId = this.stations[0].id;
+            this.filter.stationName = this.stations[0].name;
+        });
 
-            DowntimeReasonsService.fetchAll({}, (data) => {
-                this.$set(this, 'downtimeReasons', data);
-            });
+        DowntimeReasonsService.fetchAll({}, (data) => {
+            this.$set(this, 'downtimeReasons', data);
+        });
 
-            this.renderGaugeChart();
+        this.renderGaugeChart();
 
-            this.fetchStationShift();
+        this.fetchStationShift();
 
-            this.fetchTopDowntimeReasons();
-            this.fetchTopOperatorDowntimes();
-        },
-        destroyed() {
-            clearInterval(this.dataUpdateTimer);
-        }
+        this.fetchTopDowntimeReasons();
+        this.fetchTopOperatorDowntimes();
+    },
+    destroyed() {
+        clearInterval(this.dataUpdateTimer);
     }
+}
 </script>
 
 <style scoped>
