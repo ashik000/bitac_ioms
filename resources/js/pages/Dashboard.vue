@@ -310,8 +310,8 @@ export default {
         return {
             machineStatus: [],
             operatorName: '',
-            roundGreen: '',
-            roundRed: ''
+            roundGreen: false,
+            roundRed: true
         }
     },
 
@@ -321,8 +321,10 @@ export default {
                 .then((response) => {
                     this.machineStatus = response.data
                     if (this.machineStatus.power_status === 'STOPPED') {
+                        this.roundGreen = false
                         this.roundRed = true
                     } else {
+                        this.roundRed = false
                         this.roundGreen = true
                     }
                 })
