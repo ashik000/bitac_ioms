@@ -52,6 +52,16 @@ export default {
             .then(r => success(r.data))
             .catch(e => console.log(e))
     },
+    fetchTeamName: (filter, success, error) => {
+        axios.get('getTeamName', {
+            params: {
+                stationId: filter.stationId,
+                date: filter.date
+            }
+        })
+            .then(r => success(r.data))
+            .catch(e => console.log(e))
+    },
     storeDefects: (data, success, error) => {
         axios.post('storeLineviewDefects',data)
             .then( r=> success(r.data))

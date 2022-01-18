@@ -63,8 +63,8 @@
                                         cursor: pointer;
                                     `
                                }"
-                               mode='range'
-                               :value='range'
+                               is-range
+                               v-model="range"
                                @input="onDateRangeChanged"/>
 
                 <div class="btn-group btn-group-lg" role="group" aria-label="">
@@ -283,6 +283,14 @@
                 right: 0;
             }
         }
+    }
+
+    .date-range-picker.vc-container.vc-blue{
+        cursor: pointer;
+        position: absolute;
+        right: 7em;
+        top: .5em;
+        z-index: 9999;
     }
 </style>
 

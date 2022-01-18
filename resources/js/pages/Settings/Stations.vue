@@ -190,6 +190,13 @@
                                 {{ group.name }}
                             </option>
                         </select>
+                        <label class="mt-3">Station Type</label>
+                        <select class="form-select" v-model="selectedStationType">
+                            <option disabled value="0"> -- Select -- </option>
+                            <option v-for="type in stationTypes" :value="type.value" :key="type.id">
+                                {{ type.name }}
+                            </option>
+                        </select>
                         <label class="mt-3">Description</label>
                         <input type="text" v-model="description" class="form-control" placeholder="Enter Description">
                         <label class="mt-3">Performance Threshold</label>
@@ -253,6 +260,11 @@ export default {
         selectedStationId:0,
         showInprogress: false,
         groupName: '',
+        stationTypes: [
+            {id: 1, name: 'Regular', value: 'regular'},
+            {id: 2, name: 'Quality', value: 'quality'},
+        ],
+        selectedStationType: 'regular',
     }),
     methods:{
         showStationEditModal(item){
@@ -316,7 +328,8 @@ export default {
                 name:this.name,
                 station_group_id: this.selectedGroupId,
                 oee_threshold : this.oee_threshold,
-                description : this.description
+                description : this.description,
+                station_type : this.selectedStationType
             }, data => {
                 this.stations = data;
                 this.showStationForm = false;

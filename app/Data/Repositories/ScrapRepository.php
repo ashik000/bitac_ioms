@@ -28,6 +28,15 @@ class ScrapRepository {
             ->get();
     }
 
+    public function fetchScrapsBetweenADateTimeRangeOfAllStations(CarbonImmutable $startDate, CarbonImmutable $endDate) {
+        return Scrap::whereBetween('date', [$startDate->toDateString(), $endDate->toDateString()])
+            ->where('hour', '>=', $startDate->hour)
+            ->where('hour', '<=', $startDate->hour)
+            ->orderBy('date', 'asc')
+            ->orderBy('hour', 'asc')
+            ->get();
+    }
+
     public function postScrap($date, $startTime, $endTime)
     {
         Log::debug('---------------------------------------------------------------------------------------');
@@ -49,16 +58,17 @@ class ScrapRepository {
                 $stationId = $stationProduct->station_id;
                 $station = Station::where('id', $stationId)->first();
 
-                if ($station)
-                {
-                    $stationName = $station->name;
+                $stationCode = $station->code;
+                $productCode = $product->code;
 
+                if (!empty($stationCode) && !empty($productCode))
+                {
                     $shift = Shift::where('start_time', '<=', $startTime)
                         ->where('end_time', '>=', $endTime)
                         ->first();
                     $shiftId = empty($shift)? null : $shift->id;
 
-                    $scrapData = $this->getScrapData($date, $startTime, $endTime, 'indoor_final', $stationName, $product->name);
+                    $scrapData = $this->getScrapData($date, $startTime, $endTime, 'indoor_final', $stationCode, $productCode);
                     $scrapData = json_decode($scrapData, true);
                     Log::debug('API response');
                     Log::debug($scrapData);

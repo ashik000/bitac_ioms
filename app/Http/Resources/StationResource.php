@@ -22,6 +22,7 @@ class StationResource extends JsonResource
             'id'            => $this->id,
             'name'          => $this->name,
             'description'   => $this->description,
+            'station_type'  => $this->station_type,
             'oee_threshold' => $this->oee_threshold,
             'station_group' => new StationGroupResource($this->stationGroup),
         ];
