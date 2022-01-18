@@ -483,20 +483,14 @@ class ReportController extends Controller
 
             $scraped = $scraps->sum('value');
 
-<<<<<<< Updated upstream
-            $performance  = !empty($produced) || !empty($expected) ? ($produced / $expected) : 0;
-            $quality      = !empty($produced) || !empty($scraped) ? (($produced - $scraped) / $produced) : 0;
-            $availability = !empty($nominalTime) || !empty($plannedStopTime) ? ($nominalTime / (3600 - $plannedStopTime)) : 0;
-=======
-            $performance  = $produced ? ($produced / $expected) : 0;
-            $quality      = $produced ? (($produced - $scraped) / $produced) : 0;
-            $availability = $nominalTime ? ($nominalTime / (3600 - $plannedStopTime)) : 0;
+            $performance  = empty($produced) || empty($expected) ? 0 : ($produced / $expected);
+            $quality      = empty($produced) || empty($scraped) ? 0 : (($produced - $scraped) / $produced);
+            $availability = empty($nominalTime) || empty($plannedStopTime) ? 0 : ($nominalTime / (3600 - $plannedStopTime));
 
             $performance = min(1, max(0, $performance));
             $quality = min(1, max(0, $quality));
             $availability = min(1, max(0, $availability));
 
->>>>>>> Stashed changes
             $oeeNumber = $performance * $quality * $availability * 100;
 
             $currentProduct = $station->products->sortByDesc('start_time')->first();
