@@ -483,9 +483,9 @@ class ReportController extends Controller
 
             $scraped = $scraps->sum('value');
 
-            $performance  = $produced ? ($produced / $expected) : 0;
-            $quality      = $produced ? (($produced - $scraped) / $produced) : 0;
-            $availability = $nominalTime ? ($nominalTime / (3600 - $plannedStopTime)) : 0;
+            $performance  = !empty($produced) || !empty($expected) ? ($produced / $expected) : 0;
+            $quality      = !empty($produced) || !empty($scraped) ? (($produced - $scraped) / $produced) : 0;
+            $availability = !empty($nominalTime) || !empty($plannedStopTime) ? ($nominalTime / (3600 - $plannedStopTime)) : 0;
             $oeeNumber = $performance * $quality * $availability * 100;
 
             $currentProduct = $station->products->sortByDesc('start_time')->first();
