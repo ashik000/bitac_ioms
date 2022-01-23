@@ -108,11 +108,9 @@
                             <div
                                 class="secondary-header d-flex justify-content-between align-items-center"
                             >
-                                <div><span>MEM</span></div>
-                                <div class="d-flex gap-5 align-items-center">
-                                    <span>...1/gazipur</span>
-                                    <span>113NAME.NC</span>
-                                    <span>N5870</span>
+                                <div><span>Program:</span></div>
+                                <div class="d-flex align-items-center">
+                                    <span class="ml-120">{{ machineStatus.program_name }}</span>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -246,7 +244,6 @@
                                 class="card-header card-header-bg text-center fw-bold d-flex"
                             >
                                 <span>Positions</span>
-                                <span class="ml-120">{{ machineStatus.program_name }}</span>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between fw-bold">
