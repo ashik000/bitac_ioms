@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Data\Models\StationOperator;
+use App\Data\Models\StationTeam;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -64,6 +65,7 @@ class StationOperatorController extends Controller
         $stationOperator->end_time    = null;
         try {
             $stationOperator->save();
+            $this->validateOperator($stationId);
         }
         catch (Exception $ex)
         {
@@ -177,6 +179,17 @@ class StationOperatorController extends Controller
         {
             return FALSE;
         }
+    }
+
+    public function validateOperator($stationId)
+    {
+        $stationTeam = StationTeam::where('station_id', '=', $stationId)->first();
+        if ($stationTeam)
+        {
+            // soft delete the station team
+            $stationTeam->delete();
+        }
+
     }
 
 }

@@ -56,6 +56,10 @@
             type: {
                 type: String,
                 default: 'totals'
+            },
+            reportType: {
+                type: String,
+                default: 'oee'
             }
         },
         watch:{
@@ -80,15 +84,16 @@
                 });
             },
             getRequestParams(){
-              return {
-                  'stationShiftId': this.stationShiftId === '0' ? null : this.stationShiftId,
-                  'start' : moment(this.start).format('DD-MM-YYYY'),
-                  'end': moment(this.end).format('DD-MM-YYYY'),
-                  'type': this.type
-              }
+                return {
+                    'stationShiftId': this.stationShiftId === '0' ? null : this.stationShiftId,
+                    'start' : moment(this.start).format('DD-MM-YYYY'),
+                    'end': moment(this.end).format('DD-MM-YYYY'),
+                    'type': this.type,
+                    'reportType': this.reportType
+                }
             },
             downloadExcel(){
-              reportService.getOEETableReportByStationShiftExcel(this.getRequestParams());
+                reportService.getOEETableReportByStationShiftExcel(this.getRequestParams());
             }
         },
         mounted(){

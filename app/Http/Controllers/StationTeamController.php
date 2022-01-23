@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\Models\StationOperator;
 use App\Data\Models\StationTeam;
 use Carbon\Carbon;
 use Exception;
@@ -50,8 +51,7 @@ class StationTeamController extends Controller
         $stationId       = $data['station_id'];
         $teamId      = $data['team_id'];
         $startTime       = $data['start_time'] ?? null;
-        StationTeam::where('station_id', '=', $stationId)
-                    ->delete();
+        StationTeam::where('station_id', '=', $stationId)->delete();
 
         $stationTeam = new StationTeam();
         $stationTeam->station_id  = $stationId;
@@ -60,6 +60,7 @@ class StationTeamController extends Controller
         $stationTeam->end_time    = null;
         try {
             $stationTeam->save();
+            $this->validateTeam($stationId);
         }
         catch (Exception $ex)
         {
@@ -171,6 +172,16 @@ class StationTeamController extends Controller
         catch (Exception $ex)
         {
             return FALSE;
+        }
+    }
+
+    public function validateTeam($stationId)
+    {
+        // soft delete all operator from $stationOperator where station_id = $stationId
+        $stationOperator = StationOperator::where('station_id', '=', $stationId)->get();
+        foreach ($stationOperator as $operator)
+        {
+            $operator->delete();
         }
     }
 

@@ -47,8 +47,8 @@ export const LineViewDataTransformer = (data) => {
             performance: Math.min(100, totalSummary.produced * 100 / totalSummary.expected),
             availability: totalSummary.available_time * 100 / totalSummary.expected_uptime,
             quality: totalSummary.produced ? (( totalSummary.produced-totalSummary.scrapped) / totalSummary.produced)*100 : 0,
-            oee: ((totalSummary.produced/totalSummary.expected) * (totalSummary.available_time / totalSummary.expected_uptime) *
-                (totalSummary.produced ? (( totalSummary.produced-totalSummary.scrapped) / totalSummary.produced) : 0))
+            oee: (Math.min(1, (totalSummary.produced/totalSummary.expected)) * Math.min(1, (totalSummary.available_time / totalSummary.expected_uptime)) *
+                Math.min(1, (totalSummary.produced ? (( totalSummary.produced-totalSummary.scrapped) / totalSummary.produced) : 0)))
         },
     }
 }

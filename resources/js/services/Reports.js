@@ -24,7 +24,8 @@ export default {
                 'station_shift_id' : data.stationShiftId,
                 'station_operator_id' : data.stationOperatorId,
                 'end': data.endTime,
-                'start': data.start
+                'start': data.start,
+                'report_type': data.reportType,
             }
         }).then(r => success(r.data))
         .catch(e => console.log(e.response.data))
@@ -59,7 +60,8 @@ export default {
                 'stationId': data.stationId,
                 'end' : data.end,
                 'start' : data.start,
-                'type' : data.type
+                'type' : data.type,
+                'reportType' : data.reportType
             }
         }).then(r => success(r.data))
             .catch(e => console.error(e))
@@ -71,7 +73,8 @@ export default {
                 'stationId': data.stationId,
                 'end' : data.end,
                 'start' : data.start,
-                'type' : data.type
+                'type' : data.type,
+                'reportType' : data.reportType
             }
         }).then(r => getFileFromRequest(r, "Station Report"))
             .catch(e => console.error(e))
@@ -82,7 +85,8 @@ export default {
                 'stationProductId': data.stationProductId,
                 'end' : data.end,
                 'start' : data.start,
-                'type' : data.type
+                'type' : data.type,
+                'reportType' : data.reportType
             }
         }).then(r => success(r.data))
             .catch(e => console.error(e))
@@ -94,7 +98,8 @@ export default {
                 'stationProductId': data.stationProductId,
                 'end' : data.end,
                 'start' : data.start,
-                'type' : data.type
+                'type' : data.type,
+                'reportType' : data.reportType
             }
         }).then(r => getFileFromRequest(r, 'Product Report'))
             .catch(e => console.error(e))
@@ -105,7 +110,8 @@ export default {
                 'stationShiftId': data.stationShiftId,
                 'end' : data.end,
                 'start' : data.start,
-                'type' : data.type
+                'type' : data.type,
+                'reportType' : data.reportType
             }
         }).then(r => success(r.data))
             .catch(e => console.error(e))
@@ -118,7 +124,8 @@ export default {
                 'stationShiftId': data.stationShiftId,
                 'end' : data.end,
                 'start' : data.start,
-                'type' : data.type
+                'type' : data.type,
+                'reportType' : data.reportType
             }
         }).then(r => getFileFromRequest(r, "Shift Report"))
             .catch(e => console.error(e))
@@ -129,7 +136,8 @@ export default {
                 'stationOperatorId': data.stationOperatorId,
                 'end' : data.end,
                 'start' : data.start,
-                'type' : data.type
+                'type' : data.type,
+                'reportType' : data.reportType
             }
         }).then(r => success(r.data))
             .catch(e => console.error(e))
@@ -141,7 +149,8 @@ export default {
                 'stationOperatorId': data.stationOperatorId,
                 'end' : data.end,
                 'start' : data.start,
-                'type' : data.type
+                'type' : data.type,
+                'reportType' : data.reportType
             }
         }).then(function (response) {
             getFileFromRequest(response, "Station Report")
@@ -153,7 +162,8 @@ export default {
                 'stationTeamId': data.stationTeamId,
                 'end' : data.end,
                 'start' : data.start,
-                'type' : data.type
+                'type' : data.type,
+                'reportType' : data.reportType
             }
         }).then(r => success(r.data))
             .catch(e => console.error(e))
@@ -165,7 +175,8 @@ export default {
                 'stationTeamId': data.stationTeamId,
                 'end' : data.end,
                 'start' : data.start,
-                'type' : data.type
+                'type' : data.type,
+                'reportType' : data.reportType
             }
         }).then(function (response) {
             getFileFromRequest(response, "Team Report");
