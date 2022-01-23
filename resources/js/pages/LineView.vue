@@ -344,7 +344,7 @@
             selectedDowntime: null,
             currentProduct: null,
             filter: {
-                stationId: 1,
+                stationId: 7,
                 stationShiftId: null,
                 stationName: '',
                 stationOperatorId: null,
@@ -468,6 +468,7 @@
                 this.fetchData();
             },
             fetchOperatorName() {
+
                 LineViewService.fetchOperatorName({
                         stationId: this.filter.stationId,
                         date: moment(this.filter.selectedDate).format('YYYY-MM-DD')

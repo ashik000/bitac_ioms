@@ -71,6 +71,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('report/downtime/by/team/excel',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationTeamExcel']);
     Route::get('lineviewStationShift','LineViewController@getLineViewStationShifts');
     Route::get('getOperatorName','LineViewController@getOperatorOfStation');
+    Route::get('getTeamName','LineViewController@getTeamOfStation');
     Route::post('storeLineviewDefects','LineViewController@storeLineviewDefects');
     Route::post('assignOperatorToStation','StationOperatorController@assignOperatorToStation');
     Route::post('assignProductToStation','StationProductController@assignProductToStation');
