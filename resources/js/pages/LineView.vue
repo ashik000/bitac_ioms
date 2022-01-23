@@ -563,7 +563,7 @@
                         this.gaugeAvailability = this.getDisplayableValueForGauge(this.gaugeAvailability);
                         this.gaugeQuality = this.getDisplayableValueForGauge(this.gaugeQuality);
                         this.gaugePerformance = this.gaugePerformance < 0 ? 0: this.gaugePerformance;
-                        var assignedProducts = this.products.filter(prod => prod.start_time !== null);
+                        let assignedProducts = this.products.filter(prod => prod.start_time !== null);
                         this.currentProduct = assignedProducts.length > 0? assignedProducts[0] : null;
                         this.isInitialized = true;
                     }
