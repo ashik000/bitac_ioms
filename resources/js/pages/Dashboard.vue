@@ -30,7 +30,7 @@
                                 <img src="../assets/Artboard8.png" alt=""/>
                                 <h6 class="text-uppercase mb-2">
                                     <span>Total Production: </span>:
-                                    <span><span class="fw-bolder">{{ machineStatus.counter_number }}</span> pcs</span>
+                                    <span><span class="fw-bolder">{{ machineStatus.production_counter2 }}</span> pcs</span>
                                 </h6>
                             </div>
                         </div>
