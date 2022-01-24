@@ -26,6 +26,17 @@ class ProductRepository implements PaginatedResultInterface, RawQueryBuilderOutp
         return $products;
     }
 
+    public function findRunningProductOfStationByStationId(int $staionId)
+    {
+        $stationProduct = StationProduct::where('station_id', $staionId)->whereNotNull('start_time')->first();
+        if(empty($stationProduct))
+        {
+           return null;
+        }
+        $product = Product::find($stationProduct->product_id);
+        return $product;
+    }
+
     public function findStationProductAndProductByStationId(int $stationId)
     {
         $stationProduct = StationProduct::where('station_id', '=', $stationId)->first();

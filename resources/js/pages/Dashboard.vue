@@ -118,9 +118,9 @@
                             <div
                                 class="secondary-header d-flex justify-content-between align-items-center"
                             >
-                                <div><span>Program:</span></div>
+                                <div><span v-bind:class="{programStatus}">Program:</span></div>
                                 <div class="d-flex align-items-center">
-                                    <span class="ml-120">{{ machineStatus.program_name }}</span>
+                                    <span class="ml-120" v-bind:class="{programStatus}">{{ machineStatus.program_name }}</span>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -320,6 +320,7 @@ export default {
             roundGreen: false,
             roundRed: true,
             isAlarm: false,
+            programStatus: false,
         }
     },
 
@@ -327,7 +328,9 @@ export default {
         getMachineData() {
             axios.get('getMachineStatus')
                 .then((response) => {
-                    this.machineStatus = response.data
+                    this.programStatus = response.data.programStatus
+                    this.machineStatus = response.data.machineStatus
+                    console.log(this.programStatus)
                     if (this.machineStatus.power_status === 'STOPPED') {
                         this.roundGreen = false
                         this.roundRed = true
@@ -440,6 +443,11 @@ export default {
 
 .roundRed {
     background: #FF0D0D;
+}
+
+.programStatus {
+    font-weight: bolder;
+    color: #FF0D0D;
 }
 
 .middle-column .card {
