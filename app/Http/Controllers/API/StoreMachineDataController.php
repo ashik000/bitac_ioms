@@ -17,12 +17,13 @@ class StoreMachineDataController extends Controller
     protected $deviceRepository;
     protected $machineStatusRepository;
     protected $packetRepository;
+    protected $productRepository;
 
     public function __construct(
         DeviceRepository $deviceRepository,
         MachineStatusRepository $machineStatusRepository,
         PacketRepository $packetRepository,
-        ProductRepository $productRepository,
+        ProductRepository $productRepository
     ) {
         $this->deviceRepository = $deviceRepository;
         $this->machineStatusRepository = $machineStatusRepository;
