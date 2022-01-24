@@ -19,7 +19,8 @@ class MachineStatusRepository
         $machineStatus['program_number'] = $request['program_number'];
         $machineStatus['program_name'] = $request['program_name'];
         $machineStatus['cycle_time'] = $request['cycle_time'];
-        $machineStatus['counter_number'] = $request['counter_number'];
+        $machineStatus['production_counter1'] = $request['production_counter1'];
+        $machineStatus['production_counter2'] = $request['production_counter2'];
         $machineStatus['power_status'] = $request['power_status'];
         $machineStatus['program_name'] = $request['program_name'];
         $machineStatus['produced_at'] = $request['produced_at'];

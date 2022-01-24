@@ -52,6 +52,14 @@ class ProductRepository implements PaginatedResultInterface, RawQueryBuilderOutp
         return Product::where('product_group_id', $productGroupId)->orderBy('name', $orderBy)->get();
     }
 
+    public function findProductByName($name) {
+        return Product::where('name', $name)->first();
+    }
+
+    public function findStationProductByStationIdAndProductId($stationId, $productId) {
+        return StationProduct::where('station_id', $stationId)->where('product_id', $productId)->first();
+    }
+
     public function storeProduct($request) {
         $product = new Product();
         $product['name']             = $request['name'];

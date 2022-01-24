@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Data\Models\StationProduct;
 use App\Data\Repositories\DeviceRepository;
 use App\Data\Repositories\MachineStatusRepository;
 use App\Data\Repositories\PacketRepository;
+use App\Data\Repositories\ProductRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class StoreMachineDataController extends Controller
@@ -18,11 +21,13 @@ class StoreMachineDataController extends Controller
     public function __construct(
         DeviceRepository $deviceRepository,
         MachineStatusRepository $machineStatusRepository,
-        PacketRepository $packetRepository
+        PacketRepository $packetRepository,
+        ProductRepository $productRepository,
     ) {
         $this->deviceRepository = $deviceRepository;
         $this->machineStatusRepository = $machineStatusRepository;
         $this->packetRepository = $packetRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function store(Request $request)
@@ -67,7 +72,8 @@ class StoreMachineDataController extends Controller
                 'program_number' => $dataRow['program_number'] ?? null,
                 'program_name' => $dataRow['program_name'] ?? null,
                 'cycle_time' => $dataRow['cycle_time'] ?? null,
-                'counter_number' => $dataRow['counter_number'] ?? null,
+                'production_counter1' => $dataRow['production_counter1'] ?? null,
+                'production_counter2' => $dataRow['production_counter2'] ?? null,
                 'power_status' => $dataRow['power_status'] ?? null,
                 'produced_at' => $dataRow['produced_at'] ?? null
             ];
@@ -76,6 +82,36 @@ class StoreMachineDataController extends Controller
 
             if (!$result) {
                 response()->json(['error' => true, 'message' => 'Could not store data'], 500);
+            }
+            else{
+                $product = $this->productRepository->findProductByName($dataRow['program_name']);
+                if(!empty($product) && $station['station_id'] > 0)
+                {
+                    Log::debug('Product Found');
+                    $stationProduct = $this->productRepository->findStationProductByStationIdAndProductId($station['station_id'], $product->id);
+                    if(!empty($stationProduct) && empty($stationProduct['start_time']))
+                    {
+                        Log::debug('StationProduct found');
+                        DB::transaction(function () use ($stationProduct) {
+                            StationProduct::where('id', $stationProduct->id)
+                                ->update([
+                                    'start_time' => now()
+                                ]);
+                            StationProduct::where('station_id', $stationProduct->station_id)
+                                ->where('id', '<>', $stationProduct->id)
+                                ->update([
+                                    'start_time' => null
+                                ]);
+                        });
+                        Log::debug('StationProduct UPDATED');
+                    }
+                    else{
+                        Log::debug('StationProduct not found or already running!');
+                    }
+                }
+                else{
+                    Log::debug('Product not found!');
+                }
             }
         }
 

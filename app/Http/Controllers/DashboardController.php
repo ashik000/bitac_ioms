@@ -18,11 +18,9 @@ class DashboardController extends Controller
         $this->machineStatusRepository = $machineStatusRepository;
     }
 
-
     public function GetMachineStatus(Request $request)
     {
         $machineStatus = $this->machineStatusRepository->findLatestMachineStatusByStationId(7);
-        //dd($machineStatus);
         return $machineStatus;
     }
 }

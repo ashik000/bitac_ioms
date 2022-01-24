@@ -41,9 +41,18 @@
                                 <h6
                                     class="text-uppercase mb-2 d-flex justify-content-center align-items-center gap-3"
                                 >
-                                    <span>Machine Status:</span>
-                                    <div class="round" v-bind:class="{roundGreen, roundRed}"></div>
-                                    <span class="fw-bolder">{{ machineStatus.power_status }}</span>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <span>Machine Status:</span>
+                                            <div class="round" v-bind:class="{roundGreen, roundRed}"></div>
+                                            <span class="fw-bolder">{{ machineStatus.power_status }}</span><br>
+                                        </div>
+
+                                        <div v-if="isAlarm" class="col-md-12" style="margin-top: 10px">
+                                            <span class="fw-bolder text-danger">Alarm:</span>
+                                            <span class="fw-bolder text-danger">{{ machineStatus.alarm_info}}</span>
+                                        </div>
+                                    </div>
                                 </h6>
                             </div>
                         </div>
@@ -77,12 +86,12 @@
                                     <tr>
                                         <td>M30 Counter #1</td>
                                         <td>:</td>
-                                        <td>--</td>
+                                        <td>{{ machineStatus.production_counter1 }}</td>
                                     </tr>
                                     <tr>
                                         <td>M30 Counter #2</td>
                                         <td>:</td>
-                                        <td>{{ machineStatus.counter_number }}</td>
+                                        <td>{{ machineStatus.production_counter2 }}</td>
                                     </tr>
                                     <tr>
                                         <td>Loops Remaining</td>
@@ -102,7 +111,8 @@
                                 <div class="d-flex gap-4 align-items-center">
                                     <img src="../assets/Artboard11.png" alt=""/>
 
-                                    <span class="mt-1 text-dark" style="font-family: 'Cascadia Code'">{{ machineStatus.machine_uptime }}</span>
+                                    <span class="mt-1 text-dark"
+                                          style="font-family: 'Cascadia Code'">{{ machineStatus.machine_uptime }}</span>
                                 </div>
                             </div>
                             <div
@@ -308,7 +318,8 @@ export default {
             machineStatus: [],
             operatorName: '',
             roundGreen: false,
-            roundRed: true
+            roundRed: true,
+            isAlarm: false,
         }
     },
 
@@ -324,11 +335,19 @@ export default {
                         this.roundRed = false
                         this.roundGreen = true
                     }
+
+                    if(this.machineStatus.alarm_info === 'NULL' || this.machineStatus.alarm_info === 'NO ACTIVE ALARMS')
+                    {
+                        this.isAlarm = false
+                    }
+                    else {
+                        this.isAlarm = true
+                    }
                 })
         },
 
         getOperator() {
-            let currentDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+            let currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
             axios.get('getOperatorName', {
                 params: {
                     stationId: 7,
