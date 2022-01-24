@@ -87,7 +87,7 @@ class StoreMachineDataController extends Controller
                 $product = $this->productRepository->findProductByName($dataRow['program_name']);
                 if(!empty($product) && $station['station_id'] > 0)
                 {
-                    Log::debug('Product Found');
+                    Log::debug($product);
                     $stationProduct = $this->productRepository->findStationProductByStationIdAndProductId($station['station_id'], $product->id);
                     if(!empty($stationProduct) && empty($stationProduct['start_time']))
                     {
