@@ -220,7 +220,7 @@
                                                 <td>MMPT</td>
                                             </tr>
                                             <tr>
-                                                <td>total Feed Time</td>
+                                                <td>Feed Rate</td>
                                                 <td>:</td>
                                                 <td>{{ machineStatus.feed_rate }}</td>
                                                 <td>MMPH</td>
