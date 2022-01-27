@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Console\Commands\MailAlert;
 use App\Data\Models\StationProduct;
 use App\Data\Repositories\DeviceRepository;
 use App\Data\Repositories\MachineStatusRepository;
 use App\Data\Repositories\PacketRepository;
 use App\Data\Repositories\ProductRepository;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -85,37 +87,54 @@ class StoreMachineDataController extends Controller
                 response()->json(['error' => true, 'message' => 'Could not store data'], 500);
             }
             else{
-                $product = $this->productRepository->findProductByName($dataRow['program_name']);
-                if(!empty($product) && $station['station_id'] > 0)
-                {
-                    Log::debug($product);
-                    $stationProduct = $this->productRepository->findStationProductByStationIdAndProductId($station['station_id'], $product->id);
-                    if(!empty($stationProduct) && empty($stationProduct['start_time']))
-                    {
-                        Log::debug('StationProduct found');
-                        DB::transaction(function () use ($stationProduct) {
-                            StationProduct::where('id', $stationProduct->id)
-                                ->update([
-                                    'start_time' => now()
-                                ]);
-                            StationProduct::where('station_id', $stationProduct->station_id)
-                                ->where('id', '<>', $stationProduct->id)
-                                ->update([
-                                    'start_time' => null
-                                ]);
-                        });
-                        Log::debug('StationProduct UPDATED');
-                    }
-                    else{
-                        Log::debug('StationProduct not found or already running!');
-                    }
-                }
-                else{
-                    Log::debug('Product not found!');
-                }
+                $this->AlarmCheck($stationName, $dataRow['alarm_info']);
+                $this->AutoProductSelection($dataRow, $station);
             }
         }
 
         return response()->json(['success' => true, 'message' => 'Data store successful'], 200);
+    }
+
+    public function AutoProductSelection($dataRow, $station){
+        $product = $this->productRepository->findProductByName($dataRow['program_name']);
+        if(!empty($product) && $station['station_id'] > 0)
+        {
+            Log::debug($product);
+            $stationProduct = $this->productRepository->findStationProductByStationIdAndProductId($station['station_id'], $product->id);
+            if(!empty($stationProduct) && empty($stationProduct['start_time']))
+            {
+                Log::debug('StationProduct found');
+                DB::transaction(function () use ($stationProduct) {
+                    StationProduct::where('id', $stationProduct->id)
+                        ->update([
+                            'start_time' => now()
+                        ]);
+                    StationProduct::where('station_id', $stationProduct->station_id)
+                        ->where('id', '<>', $stationProduct->id)
+                        ->update([
+                            'start_time' => null
+                        ]);
+                });
+                Log::debug('StationProduct UPDATED');
+            }
+            else{
+                Log::debug('StationProduct not found or already running!');
+            }
+        }
+        else{
+            Log::debug('Product not found!');
+        }
+    }
+
+    public function AlarmCheck($machineName, $alarmInfo){
+        if($alarmInfo != 'NULL' && $alarmInfo != 'NO ACTIVE ALARMS')
+        {
+            $mailBody = [
+                'machine_name'=>$machineName,
+                'alarm_info'=>$alarmInfo
+            ];
+            $mailController = new MailController();
+            $mailController->GenerateAlarmMail($mailBody);
+        }
     }
 }

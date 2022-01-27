@@ -45,6 +45,7 @@ class DashboardController extends Controller
         $diff = '00:00:00';
         if(!empty($lastStop)) {
             $lastStart = MachineStatus::query()
+                ->where('power_status', '=', 'ACTIVE')
                 ->where('produced_at', '>', $lastStop['produced_at'])
                 ->orderBy('produced_at')->first();
 
