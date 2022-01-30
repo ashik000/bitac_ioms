@@ -81,13 +81,13 @@ class StoreMachineDataController extends Controller
                 'produced_at' => $dataRow['produced_at'] ?? null
             ];
 
+            $this->AlarmCheck($stationName, $dataRow['alarm_info'], $station['station_id']);
             $result = $this->machineStatusRepository->storeMachineStatus($payload);
 
             if (!$result) {
                 response()->json(['error' => true, 'message' => 'Could not store data'], 500);
             }
             else{
-                $this->AlarmCheck($stationName, $dataRow['alarm_info']);
                 $this->AutoProductSelection($dataRow, $station);
             }
         }
@@ -126,15 +126,19 @@ class StoreMachineDataController extends Controller
         }
     }
 
-    public function AlarmCheck($machineName, $alarmInfo){
+    public function AlarmCheck($machineName, $alarmInfo, $stationId){
         if($alarmInfo != 'NULL' && $alarmInfo != 'NO ACTIVE ALARMS')
         {
-            $mailBody = [
-                'machine_name'=>$machineName,
-                'alarm_info'=>$alarmInfo
-            ];
-            $mailController = new MailController();
-            $mailController->GenerateAlarmMail($mailBody);
+            $lastStatus = $this->machineStatusRepository->findLatestMachineStatusByStationId($stationId);
+            if($lastStatus['alarmInfo'] == 'NULL' || $lastStatus['alarmInfo'] == 'NO ACTIVE ALARMS')
+            {
+                $mailBody = [
+                    'machine_name'=>$machineName,
+                    'alarm_info'=>$alarmInfo
+                ];
+                $mailController = new MailController();
+                $mailController->GenerateAlarmMail($mailBody);
+            }
         }
     }
 }
