@@ -129,15 +129,18 @@ class StoreMachineDataController extends Controller
     public function AlarmCheck($machineName, $alarmInfo, $stationId){
         if($alarmInfo != 'NULL' && $alarmInfo != 'NO ACTIVE ALARMS')
         {
+            Log::debug('alarm detected');
             $lastStatus = $this->machineStatusRepository->findLatestMachineStatusByStationId($stationId);
             if($lastStatus['alarmInfo'] == 'NULL' || $lastStatus['alarmInfo'] == 'NO ACTIVE ALARMS')
             {
+                Log::debug('alarm validation success');
                 $mailBody = [
                     'machine_name'=>$machineName,
                     'alarm_info'=>$alarmInfo
                 ];
                 $mailController = new MailController();
                 $mailController->GenerateAlarmMail($mailBody);
+                Log::debug('alarm sent');
             }
         }
     }
