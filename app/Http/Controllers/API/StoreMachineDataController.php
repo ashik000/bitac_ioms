@@ -9,10 +9,12 @@ use App\Data\Repositories\MachineStatusRepository;
 use App\Data\Repositories\PacketRepository;
 use App\Data\Repositories\ProductRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\MailController;
+//use App\Http\Controllers\MailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class StoreMachineDataController extends Controller
 {
@@ -138,10 +140,52 @@ class StoreMachineDataController extends Controller
                     'machine_name'=>$machineName,
                     'alarm_info'=>$alarmInfo
                 ];
-                $mailController = new MailController();
-                $mailController->GenerateAlarmMail($mailBody);
+                $this->GenerateAlarmMail($mailBody);
                 Log::debug('alarm sent');
             }
+        }
+    }
+
+    public function GenerateAlarmMail($mailBody)
+    {
+        $mail = new PHPMailer();
+        $mail->IsSMTP();
+        $mail->Mailer = "smtp";
+        $mail->SMTPDebug  = 1;
+        $mail->SMTPAuth   = TRUE;
+        $mail->SMTPSecure = "tls";
+        $mail->Port       = 587;
+        $mail->Host       = "smtp.gmail.com";
+        $mail->Username   = "cncshop.bitacdhaka@gmail.com";
+        $mail->Password   = "k%uGR@8xpRZkjqA3";
+        $mail->IsHTML(true);
+        $mail->AddAddress("ashik.inovace@gmail.com", "Ashik");
+        $mail->AddAddress("arifahmed.bitac@gmail.com", "Arif Ahmed");
+        $mail->AddAddress("mhasan0925@gmail.com", "M Hasan");
+        $mail->AddAddress("pulakkantiroy09@gmail.com", "Pulak Roy");
+        $mail->AddAddress("omaryusuf778106@gmail.com", "Omar Yusuf");
+        $mail->SetFrom("cncshop.bitacdhaka@gmail.com", "BITAC CNC Shop");
+        //$mail->AddReplyTo("ashik.inovace@gmail.com", "Ashik");
+        //$mail->AddCC("cc-recipient-email@domain", "cc-recipient-name");
+        $mail->Subject = "Alarm | IOMS";
+        //$content = "Test Body";
+        $machineName = $mailBody['machine_name'];
+        $alarmInfo = $mailBody['alarm_info'];
+        $content = "<b>Machine: </b>".$machineName."<br><b>Alarm: </b>".$alarmInfo;
+        $mail->MsgHTML($content);
+        $this->SendMail($mail);
+    }
+
+    public function SendMail($mail){
+        try{
+            if($mail->Send()) {
+                Log::debug("Email sent successfully");
+            } else {
+                Log::debug("Error while sending Email");
+            }
+        }
+        catch(Exception $e){
+            Log::debug($e->getMessage());
         }
     }
 }
