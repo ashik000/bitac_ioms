@@ -131,7 +131,7 @@ class StoreMachineDataController extends Controller
         {
             Log::debug('alarm detected');
             $lastStatus = $this->machineStatusRepository->findLatestMachineStatusByStationId($stationId);
-            if($lastStatus['alarmInfo'] == 'NULL' || $lastStatus['alarmInfo'] == 'NO ACTIVE ALARMS')
+            if($lastStatus['alarm_info'] == 'NULL' || $lastStatus['alarm_info'] == 'NO ACTIVE ALARMS')
             {
                 Log::debug('alarm validation success');
                 $mailBody = [
