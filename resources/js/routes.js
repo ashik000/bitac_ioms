@@ -14,6 +14,7 @@ import DowntimeReport from "./pages/Reports/DowntimeReport";
 import Teams from "./pages/Settings/Teams";
 import ScadaView from "./pages/Scada/ScadaView";
 import Dashboard from "./pages/Dashboard";
+import MachiningReport from "./pages/Reports/MachiningReport";
 
 import LoginPage from "./pages/login/Login";
 
@@ -96,7 +97,11 @@ const routes = [
             {
                 path: 'users',
                 component: Users
-            }
+            },
+            {
+                path: 'machining-report',
+                component: MachiningReport
+            },
         ]
     },
     {

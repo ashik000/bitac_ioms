@@ -111,7 +111,7 @@ export default {
 
         setInterval(this.$data._clock, 1000);
 
-        switch (this.$router.currentRoute.name) {
+        switch (this.$router.currentRoute.path) {
             case '/dashboard':
                 this.active = 'dashboard';
             break;
@@ -138,6 +138,9 @@ export default {
                 this.active = 'reports';
                 break;
             case '/reports/downtime-report':
+                this.active = 'reports';
+                break;
+            case '/reports/machining-report':
                 this.active = 'reports';
                 break;
             case '/settings/stations':

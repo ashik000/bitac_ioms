@@ -35,6 +35,11 @@
                                 Downtime Reasons
                             </router-link>
                         </li>
+                        <li class="machining_report padding_y" v-on:click="makeActive2('machining_report')">
+                            <router-link to="/settings/machining-report" active-class="active" class="nav-link text-white">
+                                Machining Report
+                            </router-link>
+                        </li>
                     </ul>
 
                 </div>
@@ -85,6 +90,10 @@ export default {
             case '/settings/downtime_reasons':
                 this.active = 'settings';
                 this.active2 = 'downtime_reasons';
+                break;
+            case '/settings/machining-report':
+                this.active = 'settings';
+                this.active2 = 'machining-report';
                 break;
             default:
                 this.active = 'settings';
