@@ -86,6 +86,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('scada-api', 'ReportController@scada');
     Route::get('dashboard', 'DashboardController@GetMachineStatus');
     Route::get('machiningData', 'MachiningController@index');
+    Route::get('getMachiningDataExcel', 'MachiningController@getMachiningDataExcel');
 });
 
 Route::middleware(['auth:api'])->group(function () {

@@ -91,10 +91,6 @@ export default {
                 this.active = 'settings';
                 this.active2 = 'downtime_reasons';
                 break;
-            case '/settings/machining-report':
-                this.active = 'settings';
-                this.active2 = 'machining-report';
-                break;
             default:
                 this.active = 'settings';
                 this.active2 = 'stations';

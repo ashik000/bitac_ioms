@@ -1,54 +1,56 @@
 <template>
     <span>
-        <div class="card-wrapper row">
-            <b-overlay :show="showInprogress" opacity="0.6" class="h-100">
-                <div class="col-12 h-100">
-                    <MachiningList :items="machining" sectionHeader="Machining Report">
-                        <template v-slot:columnHeaders>
-                            <tr>
-                                <th style="width: 20%;">Station Name</th>
-                                <th style="width: 20%;">Program Name</th>
-                                <th style="width: 20%;">Spindle Speed</th>
-                                <th style="width: 20%;">Feed Rate</th>
-                                <th style="width: 20%;">Produced At</th>
-                            </tr>
-                        </template>
-                        <div></div>
-                        <template v-slot:row="{ row }">
-                            <td>
-                                <div>
-                                    <span>{{ row.station_name }}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <span>{{ row.program_name }}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <span>{{ row.spindle_speed }}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <span>{{ row.feed_rate }}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <span>{{ row.produced_at }}</span>
-                                </div>
-                            </td>
-                        </template>
-                    </MachiningList>
-                </div>
-            </b-overlay>
+        <div class="container-fluid wrapper" style="top: 4em;">
+            <div class="card-wrapper row">
+                <b-overlay :show="showInprogress" opacity="0.6" class="h-100">
+                    <div class="col-12 h-100">
+                        <MachiningList :items="machining" sectionHeader="Machining Report" @update-range="updateRange" @download-excel="downloadExcel">
+                            <template v-slot:columnHeaders>
+                                <tr>
+                                    <th style="width: 20%;">Station Name</th>
+                                    <th style="width: 20%;">Program Name</th>
+                                    <th style="width: 20%;">Spindle Speed</th>
+                                    <th style="width: 20%;">Feed Rate</th>
+                                    <th style="width: 20%;">Produced At</th>
+                                </tr>
+                            </template>
+                            <div></div>
+                            <template v-slot:row="{ row }">
+                                <td>
+                                    <div>
+                                        <span>{{ row.station_name }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span>{{ row.program_name }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span>{{ row.spindle_speed }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span>{{ row.feed_rate }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span>{{ row.produced_at }}</span>
+                                    </div>
+                                </td>
+                            </template>
+                        </MachiningList>
+                    </div>
+                </b-overlay>
+            </div>
         </div>
-
         <!-- modal -->
     </span>
 </template>
+
 
 <script>
     import MachiningList from "../../components/machining/MachiningList";
@@ -56,7 +58,7 @@
     import groupMixin from '../../mixins/groupMixin';
 
     export default {
-        name: "MachiningReport",
+        name: "machiningReport",
         components: {MachiningList},
         mixins:[groupMixin],
         data: function () {
@@ -64,18 +66,49 @@
                 machining: [],
                 hide: true,
                 showInprogress: false,
+                selectedRange: {
+                    tag: 'today',
+                    title: 'Today'
+                },
+                range: {
+                    start: moment().startOf('day').toDate(),
+                    end: moment().endOf('day').toDate()
+                },
+                selectedRangeX: {
+                    start: moment().startOf('day').toDate(),
+                    end: moment().endOf('day').toDate()
+                },
             };
         },
         methods: {
-
+            fetchMachiningReport: function() {
+                let data = {
+                    startTime: moment(this.range.start).format('YYYY-MM-DD'),
+                    endTime: moment(this.range.end).format('YYYY-MM-DD'),
+                };
+                this.showInprogress = true;
+                machiningService.fetchAll(data, response => {
+                    this.machining = response;
+                    this.showInprogress = false;
+                }, error => {
+                    console.error(error);
+                });
+            },
+            updateRange(range) {
+                this.range.start = range.start;
+                this.range.end = range.end;
+                this.fetchMachiningReport();
+            },
+            downloadExcel() {
+                let data = {
+                    startTime: moment(this.range.start).format('YYYY-MM-DD'),
+                    endTime: moment(this.range.end).format('YYYY-MM-DD'),
+                };
+                machiningService.downloadExcel(data);
+            }
         },
-
         mounted() {
-            machiningService.fetchAll((data) => {
-                this.machining = data;
-            }, (error) => {
-                console.log(error);
-            });
+            this.fetchMachiningReport();
         }
     }
 </script>
