@@ -14,6 +14,7 @@ import DowntimeReport from "./pages/Reports/DowntimeReport";
 import Teams from "./pages/Settings/Teams";
 import ScadaView from "./pages/Scada/ScadaView";
 import Dashboard from "./pages/Dashboard";
+import MachiningReport from "./pages/MachiningReport/MachiningReport";
 
 import LoginPage from "./pages/login/Login";
 
@@ -58,6 +59,14 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: Dashboard,
+        meta: {
+            requiresAuth: true
+        },
+    },
+    {
+        path: '/machining_report',
+        name: 'machiningReport',
+        component: MachiningReport,
         meta: {
             requiresAuth: true
         },

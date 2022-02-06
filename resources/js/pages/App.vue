@@ -38,6 +38,12 @@
                             <li><router-link class="dropdown-item" to="/reports/downtime-report">Downtime</router-link></li>
                         </ul>
                     </li>
+                    <li class="machining_report padding_y_ten_px" v-on:click="makeActive('machining_report')">
+                        <router-link to="/machining_report" class="nav-link text-white" active-class="active">
+                            <b-icon icon="file-bar-graph" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
+                            Machining Report
+                        </router-link>
+                    </li>
                     <li class="settings padding_y_ten_px" v-on:click="makeActive('settings')">
                         <router-link to="/settings/stations" class="nav-link text-white" active-class="active">
                             <b-icon icon="gear" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
@@ -111,7 +117,7 @@ export default {
 
         setInterval(this.$data._clock, 1000);
 
-        switch (this.$router.currentRoute.name) {
+        switch (this.$router.currentRoute.path) {
             case '/dashboard':
                 this.active = 'dashboard';
             break;
@@ -140,6 +146,9 @@ export default {
             case '/reports/downtime-report':
                 this.active = 'reports';
                 break;
+            case '/machining_report':
+                this.active = 'machining_report';
+                break;
             case '/settings/stations':
                 this.active = 'settings';
                 break;
@@ -166,6 +175,7 @@ export default {
     ul.dashboard .dashboard,
     ul.lineview .lineview,
     ul.reports .reports,
+    ul.machining_report .machining_report,
     ul.settings .settings{
         background-color: #035FA3;
         margin: 0 2px 0 2px;

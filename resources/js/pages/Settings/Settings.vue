@@ -35,6 +35,11 @@
                                 Downtime Reasons
                             </router-link>
                         </li>
+                        <li class="machining_report padding_y" v-on:click="makeActive2('machining_report')">
+                            <router-link to="/settings/machining-report" active-class="active" class="nav-link text-white">
+                                Machining Report
+                            </router-link>
+                        </li>
                     </ul>
 
                 </div>
