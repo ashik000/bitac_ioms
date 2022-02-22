@@ -75,7 +75,7 @@
                         {{ bar.reason.name }}
                     </span>
                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="bar"
-                             :viewBox="viewBoxAttributes" style="background: #222056;" preserveAspectRatio="none">
+                             :viewBox="viewBoxAttributes" :style=getBackgroundColor(index,logs,linedata.length) preserveAspectRatio="none">
                             <template v-for="bar in logs.data">
                                 <rect v-if="bar.type == 'log'" :key="bar.type + '-' + bar.id"
                                       :x="bar.second_of_hour"
@@ -167,6 +167,18 @@
             showInprogress: false,
         }),
         methods: {
+            getBackgroundColor(index,logs,total) {
+                var colorHex = '#222056';
+                if((logs.available_time !== 0 ) && (logs.hour < moment().hour()) && (logs.data.length > 0 )) {
+                    if ((index !== 0)) {
+                        colorHex = '#2dc630';
+                    }
+                    else {
+                        colorHex = '#222056';
+                    }
+                }
+                return 'background: ' + colorHex + ';';
+            },
             reportDefect (event) {
                 this.$emit('reportDefects', this.defects);
             },
