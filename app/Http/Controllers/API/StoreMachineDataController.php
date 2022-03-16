@@ -148,7 +148,7 @@ class StoreMachineDataController extends Controller
 
     public function GenerateAlarmMail($mailBody)
     {
-        $mail =  PHPMailer();
+        $mail =  new PHPMailer();
         $mail->IsSMTP();
         $mail->Mailer = "smtp";
         $mail->SMTPDebug  = 1;
