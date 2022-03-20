@@ -148,7 +148,7 @@ class StoreMachineDataController extends Controller
 
     public function GenerateAlarmMail($mailBody)
     {
-        $mail =  new PHPMailer();
+        $mail = new PHPMailer();
         $mail->IsSMTP();
         $mail->Mailer = "smtp";
         $mail->SMTPDebug  = 1;
@@ -164,6 +164,7 @@ class StoreMachineDataController extends Controller
         $mail->AddAddress("mhasan0925@gmail.com", "M Hasan");
         $mail->AddAddress("pulakkantiroy09@gmail.com", "Pulak Roy");
         $mail->AddAddress("omaryusuf778106@gmail.com", "Omar Yusuf");
+        $mail->AddAddress("salauddin06@yahoo.com", "Salauddin");
         $mail->SetFrom("cncshop.bitacdhaka@gmail.com", "BITAC CNC Shop");
         //$mail->AddReplyTo("ashik.inovace@gmail.com", "Ashik");
         //$mail->AddCC("cc-recipient-email@domain", "cc-recipient-name");

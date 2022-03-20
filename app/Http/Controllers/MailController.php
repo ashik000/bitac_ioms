@@ -23,10 +23,6 @@ class MailController extends Controller
         $mail->Password   = "k%uGR@8xpRZkjqA3";
         $mail->IsHTML(true);
         $mail->AddAddress("ashik.inovace@gmail.com", "Ashik");
-        $mail->AddAddress("arifahmed.bitac@gmail.com", "Arif Ahmed");
-        $mail->AddAddress("mhasan0925@gmail.com", "M Hasan");
-        $mail->AddAddress("pulakkantiroy09@gmail.com", "Pulak Roy");
-        $mail->AddAddress("omaryusuf778106@gmail.com", "Omar Yusuf");
         $mail->SetFrom("cncshop.bitacdhaka@gmail.com", "BITAC CNC Shop");
         //$mail->AddReplyTo("ashik.inovace@gmail.com", "Ashik");
         //$mail->AddCC("cc-recipient-email@domain", "cc-recipient-name");
