@@ -31,7 +31,7 @@ export default {
                 'start_time': data.startTime,
                 'end_time': data.endTime,
             }
-        }).then(r => getFileFromRequest(r, "Station Report"))
+        }).then(r => getFileFromRequest(r, "Machining Report"))
             .catch(e => console.error(e))
     },
 }
