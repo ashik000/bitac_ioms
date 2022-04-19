@@ -38,7 +38,7 @@ class StoreMachineDataController extends Controller
     public function store(Request $request)
     {
         $machineData = $request->all();
-        Log::debug($machineData);
+
         if (empty($machineData)) {
             return response()->json(['error' => true, 'message' => 'Empty body'], 500);
         }
@@ -101,11 +101,10 @@ class StoreMachineDataController extends Controller
         $product = $this->productRepository->findProductByName($dataRow['program_name']);
         if(!empty($product) && $station['station_id'] > 0)
         {
-            Log::debug($product);
+
             $stationProduct = $this->productRepository->findStationProductByStationIdAndProductId($station['station_id'], $product->id);
             if(!empty($stationProduct) && empty($stationProduct['start_time']))
             {
-                Log::debug('StationProduct found');
                 DB::transaction(function () use ($stationProduct) {
                     StationProduct::where('id', $stationProduct->id)
                         ->update([
@@ -117,31 +116,27 @@ class StoreMachineDataController extends Controller
                             'start_time' => null
                         ]);
                 });
-                Log::debug('StationProduct UPDATED');
             }
             else{
-                Log::debug('StationProduct not found or already running!');
+
             }
         }
         else{
-            Log::debug('Product not found!');
+
         }
     }
 
     public function AlarmCheck($machineName, $alarmInfo, $stationId){
         if($alarmInfo != 'NULL' && $alarmInfo != 'NO ACTIVE ALARMS')
         {
-            Log::debug('alarm detected');
             $lastStatus = $this->machineStatusRepository->findLatestMachineStatusByStationId($stationId);
             if($lastStatus['alarm_info'] == 'NULL' || $lastStatus['alarm_info'] == 'NO ACTIVE ALARMS')
             {
-                Log::debug('alarm validation success');
                 $mailBody = [
                     'machine_name'=>$machineName,
                     'alarm_info'=>$alarmInfo
                 ];
                 $this->GenerateAlarmMail($mailBody);
-                Log::debug('alarm sent');
             }
         }
     }
@@ -179,14 +174,10 @@ class StoreMachineDataController extends Controller
 
     public function SendMail($mail){
         try{
-            if($mail->Send()) {
-                Log::debug("Email sent successfully");
-            } else {
-                Log::debug("Error while sending Email");
-            }
+            $mail->Send();
         }
         catch(Exception $e){
-            Log::debug($e->getMessage());
+            Log::debug("Email not sent");
         }
     }
 }
