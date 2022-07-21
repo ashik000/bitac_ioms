@@ -48,7 +48,7 @@ class MachiningController extends Controller
         $startTime = Carbon::parse($data['start_time'])->startOfDay();
         $endTime = Carbon::parse($data['end_time'])->endOfDay();
 
-        $data = $this->machiningRepository->fetchAllMachiningData($startTime, $endTime);
+        $data = $this->machiningRepository->fetchAllMachiningDataExcel($startTime, $endTime);
 
         $formattedData = $this->formatData($data);
         $headers = $this->getHeaders();
