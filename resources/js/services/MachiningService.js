@@ -18,6 +18,7 @@ export default {
     fetchAll(data, success, error) {
         axios.get('machiningData', {
             params: {
+                'page': data.page,
                 'start_time': data.startTime,
                 'end_time': data.endTime,
             }
