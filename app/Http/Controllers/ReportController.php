@@ -158,8 +158,10 @@ class ReportController extends Controller
                 $availableBase = Carbon::parse($item->generated_at)->endOfMonth()->diffInSeconds(Carbon::parse($item->generated_at)->startOfMonth());
             }
 
-            $performance  = $item->produced ? ($item->produced / $item->expected) : 0;
-//            $quality      = 1; //$item->produced ? ($item->scrapped / $item->produced) : 0;
+            // $performance  = $item->produced ? ($item->produced / $item->expected) : 0;
+            //            $quality      = 1; //$item->produced ? ($item->scrapped / $item->produced) : 0;
+
+            $performance = $item->produced ? ($item->produced / ($item->expected == 0? 1 : $item->expected)) : 0;
             $quality      = $item->produced ? (($item->produced-$item->scraped) / $item->produced) : 0;
 
             if ($reportType == 'oee')

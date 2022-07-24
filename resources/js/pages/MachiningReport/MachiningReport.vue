@@ -7,21 +7,15 @@
                         <MachiningList :items="records" sectionHeader="Machining Report" @update-range="updateRange" @download-excel="downloadExcel">
                             <template v-slot:columnHeaders>
                                 <tr>
-                                    <th style="width: 10%;">Sl.</th>
-                                    <th style="width: 15%;">Station Name</th>
+                                    <th style="width: 20%;">Station Name</th>
                                     <th style="width: 20%;">Program Name</th>
                                     <th style="width: 20%;">Spindle Speed</th>
-                                    <th style="width: 15%;">Feed Rate</th>
+                                    <th style="width: 20%;">Feed Rate</th>
                                     <th style="width: 20%;">Produced At</th>
                                 </tr>
                             </template>
                             <div></div>
                             <template v-slot:row="{ row }">
-                                <td>
-                                    <div>
-                                        <span>{{ row.id }}</span>
-                                    </div>
-                                </td>
                                 <td>
                                     <div>
                                         <span>{{ row.station_name }}</span>
@@ -47,6 +41,11 @@
                                         <span>{{ row.produced_at }}</span>
                                     </div>
                                 </td>
+                            </template>
+                            <template v-slot:no-data>
+                                <tr>
+                                    <td colspan="5" class="text-center">No data found</td>
+                                </tr>
                             </template>
                         </MachiningList>
 
