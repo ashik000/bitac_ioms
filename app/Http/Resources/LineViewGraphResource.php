@@ -88,21 +88,9 @@ class LineViewGraphResource extends JsonResource
             $slowLogs  = $this->slows->get($hour, collect());
             $downtimes = $this->downtimes->get($hour, collect());
 
-            $totalStopTime    = $downtimes->sum('duration');
             $plannedStopTime = $downtimes->filter(function($val, $key){
                 return isset($val['reason']) && $val->reason->type==='planned';
             })->sum('duration');
-            $unplannedStopTime = $totalStopTime - $plannedStopTime;
-
-            $unplannedStopTimeByProductId = $downtimes->mapWithKeys(function ($downtime) {
-                return [
-                    $downtime->product_id => 0
-                ];
-            });
-            $unplannedStopTimeByProductId = $downtimes->reduce(function ($carry, $downtime) {
-                $carry[$downtime->product_id]+=((empty($downtime->reason) or $downtime->reason->type != 'planned')? $downtime->duration : 0);
-                return $carry;
-            }, $unplannedStopTimeByProductId);
 
             $plannedStopTimeByProductId = $downtimes->mapWithKeys(function ($downtime) {
                 return [
@@ -113,11 +101,6 @@ class LineViewGraphResource extends JsonResource
                 $carry[$downtime->product_id]+=((!empty($downtime->reason) && $downtime->reason->type == 'planned')? $downtime->duration : 0);
                 return $carry;
             }, $plannedStopTimeByProductId);
-
-//            $slowTimes = $slowLogs->groupBy('product_id')
-//                                  ->map(function ($items) {
-//                                      return $items->sum('duration');
-//                                  });
 
             $scrapsOfThisHour = $this->scraps->get($hour, collect());
             $scrapsOfThisHourGroupedByProductId = $scrapsOfThisHour->groupBy('product_id');
@@ -146,10 +129,14 @@ class LineViewGraphResource extends JsonResource
                 $productProductionMap[$productId]['produced'] += $production;
             }
 
+            $this->products = $this->products->filter(function ($product) {
+                return $product->meta->start_time != null;
+            });
+
             $producedMap = $this->products->map(function (Product $product) use ($nominalTimesByProductId, $plannedStopTimeByProductId) {
                 $nominal = $nominalTimesByProductId->get($product->id, 0);
+                $nominal = min(3600, $nominal);
                 $total = $nominal;
-
                 $productPlannedStopTime = $plannedStopTimeByProductId->get($product->id, 0);
                 $expected = floor((3600-$productPlannedStopTime)/$product->meta->cycle_time);
                 return [
@@ -179,6 +166,7 @@ class LineViewGraphResource extends JsonResource
             return [
                 'hour'                  => $hour,
                 'available_time'        => $totalAvailableTime,
+                'planned_stop_time'     => $plannedStopTime,
                 'produced'              => $productionLogs->sum('units_per_signal'),
                 'expected'              => $totalExpected,
                 'performance_threshold' => $threshold,
@@ -192,7 +180,7 @@ class LineViewGraphResource extends JsonResource
         });
         return [
             'products' => $productProductionMap,
-            'logs'     => $formattedLineView->toArray(),
+            'logs'     => $formattedLineView->toArray()
         ];
     }
 }

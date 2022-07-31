@@ -138,8 +138,6 @@ class LineViewController extends Controller
         $start = date('Y-m-d', strtotime($start));
         $end   = date('Y-m-d', strtotime($end));
 
-        //    $start = '2021-09-05';
-        //    $end = '2021-09-11';
 
         $result   = Downtime::query()
                             ->join('operators', 'operators.id', '=', 'downtimes.operator_id')
