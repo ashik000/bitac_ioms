@@ -26,6 +26,17 @@ class ProductRepository implements PaginatedResultInterface, RawQueryBuilderOutp
         return $products;
     }
 
+    public function findRunningProductOfStationByStationId(int $staionId)
+    {
+        $stationProduct = StationProduct::where('station_id', $staionId)->whereNotNull('start_time')->first();
+        if(empty($stationProduct))
+        {
+           return null;
+        }
+        $product = Product::find($stationProduct->product_id);
+        return $product;
+    }
+
     public function findStationProductAndProductByStationId(int $stationId)
     {
         $stationProduct = StationProduct::where('station_id', '=', $stationId)->first();
@@ -50,6 +61,14 @@ class ProductRepository implements PaginatedResultInterface, RawQueryBuilderOutp
 
     public function fetchAllProductsByGroup($productGroupId, $orderBy) {
         return Product::where('product_group_id', $productGroupId)->orderBy('name', $orderBy)->get();
+    }
+
+    public function findProductByName($name) {
+        return Product::where('name', $name)->first();
+    }
+
+    public function findStationProductByStationIdAndProductId($stationId, $productId) {
+        return StationProduct::where('station_id', $stationId)->where('product_id', $productId)->first();
     }
 
     public function storeProduct($request) {

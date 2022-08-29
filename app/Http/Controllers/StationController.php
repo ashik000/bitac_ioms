@@ -35,7 +35,7 @@ class StationController extends Controller
      */
     public function store(StationCreateRequest $request)
     {
-        Station::insert($request->only(['name', 'description', 'station_group_id', 'oee_threshold']));
+        Station::insert($request->only(['name', 'description', 'station_group_id', 'oee_threshold', 'station_type']));
         return new StationCollection(Station::all());
     }
 

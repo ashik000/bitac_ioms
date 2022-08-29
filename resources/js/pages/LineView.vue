@@ -57,7 +57,8 @@
                                 </li>
                             </ul>
                         </div>
-                        Operator: {{ filter.stationOperatorName }}
+                        <span v-if="checkTeamName">Team: {{ filter.stationTeamName }}</span>
+                        <span v-else>Operator: {{ filter.stationOperatorName }}</span>
                     </div>
                 </div>
 
@@ -87,8 +88,15 @@
                                 <v-date-picker :max-date='new Date()'
                                     mode='single' v-model='filter.selectedDate'
                                     :masks="{ input: 'WWW, DD MMMM' }"
-                                    :input-props="{ class: 'date-picker-input text-center border-0 w-100 bg-transparent', style: 'height: 4.5rem; font-size: 1.3em;' }"
                                     @input="changeSelectedDate">
+                                  <template v-slot="{ inputValue, inputEvents }">
+                                    <input
+                                        style="height: 4.5rem; font-size: 1.3em;"
+                                        class="date-picker-input text-center border-0 w-100 bg-transparent"
+                                        :value="inputValue"
+                                        v-on="inputEvents"
+                                    />
+                                  </template>
                                 </v-date-picker>
                             </div>
                         </div>
@@ -336,13 +344,16 @@
             selectedDowntime: null,
             currentProduct: null,
             filter: {
-                stationId: 1,
+                stationId: 7,
                 stationShiftId: null,
                 stationName: '',
                 stationOperatorId: null,
                 stationOperatorName: 'N/A',
+                stationTeamId: null,
+                stationTeamName: 'N/A',
                 selectedDate: new Date(),
             },
+            checkTeamName: false,
             downtimeReasons: [],
             stations: [],
             products: [],
@@ -457,6 +468,7 @@
                 this.fetchData();
             },
             fetchOperatorName() {
+
                 LineViewService.fetchOperatorName({
                         stationId: this.filter.stationId,
                         date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
@@ -464,6 +476,19 @@
                     (data) => {
                         this.filter.stationOperatorName = data.operatorName;
                         this.filter.stationOperatorId = data.operatorId;
+                    }
+                );
+            },
+            fetchTeamName() {
+                LineViewService.fetchTeamName({
+                        stationId: this.filter.stationId,
+                        date: moment(this.filter.selectedDate).format('YYYY-MM-DD')
+                    },
+                    (data) => {
+                        (data.status === false) ? this.checkTeamName = false : this.checkTeamName = true;
+
+                        this.filter.stationTeamName = data.teamName;
+                        this.filter.stationTeamId = data.teamId;
                     }
                 );
             },
@@ -525,7 +550,6 @@
                     },
                     (data) => {
                         const {products, logs, hourlyMetric, summaryMetric} = LineViewDataTransformer(data);
-
                         this.$set(this, 'products', products);
                         this.$set(this.linedata, 'logs', logs);
                         this.$set(this.oeeSummary, 'hourly', hourlyMetric);
@@ -535,13 +559,23 @@
                         this.gaugePerformance = (isNaN(this.oeeSummary.summary.performance.toFixed(2)) || this.oeeSummary.summary.performance === 0) ? 0 : Math.ceil(this.oeeSummary.summary.performance.toFixed(2));
                         this.gaugeQuality = (isNaN(this.oeeSummary.summary.quality.toFixed(2)) || this.oeeSummary.summary.quality === 0) ? 0 : Math.ceil(this.oeeSummary.summary.quality.toFixed(2));
 
-                        var assignedProducts = this.products.filter(prod => prod.start_time !== null);
+                        this.gaugeTotalOee = this.getDisplayableValueForGauge(this.gaugeTotalOee);
+                        this.gaugeAvailability = this.getDisplayableValueForGauge(this.gaugeAvailability);
+                        this.gaugeQuality = this.getDisplayableValueForGauge(this.gaugeQuality);
+                        this.gaugePerformance = this.gaugePerformance < 0 ? 0: this.gaugePerformance;
+                        let assignedProducts = this.products.filter(prod => prod.start_time !== null);
                         this.currentProduct = assignedProducts.length > 0? assignedProducts[0] : null;
                         this.isInitialized = true;
                     }
                 );
 
                 this.fetchOperatorName();
+                this.fetchTeamName();
+            },
+            getDisplayableValueForGauge(value){
+              value = Math.min(100,value);
+              value = Math.max(value,0);
+              return value;
             },
             fetchStationShift() {
                 LineViewService.fetchStationShift({},
@@ -608,6 +642,8 @@
             },
         },
         mounted() {
+
+            this.filter.stationId = (this.$route.query.stn_id) ?  this.$route.query.stn_id : this.filter.stationId;
             const vm = this;
             this.fetchData();
             this.$data._updateData = () => {
@@ -618,6 +654,14 @@
             this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
 
             StationsService.fetchAll({}, (data) => {
+                //If a user comes to this page by clicking on a station from the SCADA page, the station will be selected by default
+                //So we are taking that station to the front of the array
+                var selectedStation = null;
+                data = data.filter(function (item) {
+                    if((item['id'] + '') === (vm.filter.stationId + '')) selectedStation = item;
+                    return (item['id'] + '') !== (vm.filter.stationId + '');
+                });
+                data.unshift(selectedStation);
                 this.$set(this, 'stations', data);
                 this.filter.stationId = this.stations[0].id;
                 this.filter.stationName = this.stations[0].name;

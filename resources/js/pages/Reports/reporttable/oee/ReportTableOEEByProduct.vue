@@ -58,6 +58,10 @@
             type: {
                 type: String,
                 default: 'totals'
+            },
+            reportType: {
+                type: String,
+                default: 'oee'
             }
         },
         watch:{
@@ -86,7 +90,8 @@
             'stationProductId': this.stationProductId === '0' ? null : this.stationProductId,
             'start': moment(this.start).format('DD-MM-YYYY'),
             'end': moment(this.end).format('DD-MM-YYYY'),
-            'type': this.type
+            'type': this.type,
+            'reportType': this.reportType
           }
         },
         downloadExcel(){

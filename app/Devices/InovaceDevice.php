@@ -545,9 +545,8 @@ class InovaceDevice
         $slowProductions = [];
 
         $devicePortToDeviceStationMap = $this->deviceRepository->findAllDeviceStationsOfADevice($device->id)->mapWithKeys(function ($deviceStation) {
-            return [$deviceStation['port'] + 1 => $deviceStation]; // 1 is added to port
+            return [$deviceStation['port'] => $deviceStation]; // 1 is added to port
         });
-
         $stationIdToStationProductMap = $this->productRepository->findAllStationProductsKeyByStationId();
 
         $stationIdToShiftListMap = $this->shiftRepository->findAllShiftsOfDeviceSortedGroupByStationId($device->id);
@@ -563,7 +562,7 @@ class InovaceDevice
         $topDowntimeId = empty($topDowntime)? 1 : $topDowntime->id;
 
         $stationIdToTeamMap = $this->stationTeamRepository->getStationIdToTeamMap();
-
+        Log::debug($numberOfLogs);
         for ($i = 0; $i < $numberOfLogs; $i++) {
 
             $startingIndex = 5 + ($i*7);
@@ -571,8 +570,9 @@ class InovaceDevice
             $logTimeObject = Carbon::createFromTimestamp($logTimeStamp);
             //we are omitting the length of packets, channel length bytes because for logs, the length of packets will always be 1
             $port = unpack('cport/', substr($packetContentBin, $startingIndex+6, 1))['port'];
+            Log::debug($port);
 
-            $deviceStation = $devicePortToDeviceStationMap->get($port+1);
+            $deviceStation = $devicePortToDeviceStationMap->get($port);
             if(empty($deviceStation)) continue;
             $stationProduct = $stationIdToStationProductMap->get($deviceStation->station_id);
             if(empty($stationProduct)) continue;
@@ -839,7 +839,7 @@ class InovaceDevice
         } catch (Exception $ex) {
             Log::error($ex);
         }
-        error_log('Packet saving done');
+        Log::debug('Packet saving done');
     }
 
     public function findShiftOfStation($stationIdToShiftListMap, int $stationId, Carbon $producedAt)

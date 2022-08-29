@@ -12,7 +12,7 @@
                 <div class="row" style="margin-left: 0!important;">
                     <span style="padding-left: 5px;">Current Station: {{ stationName }}</span>
                 </div>
-                <div>
+                <div style="max-height: 50vh;overflow-y: scroll;">
                     <ul class="list-group">
                         <operator-selection-list-item
                             v-for="operator in operators"

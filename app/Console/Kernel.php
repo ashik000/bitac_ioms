@@ -4,7 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\GenerateReportCommand;
 use App\Console\Commands\GenerateReportWithPreviousDataCommand;
-use App\Console\Commands\StoreScrapData;
+// use App\Console\Commands\StoreScrapData;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -62,12 +62,12 @@ class Kernel extends ConsoleKernel
             '-E' . $monthTime->endOfMonth()->toDateTimeString(),
         ])->monthlyOn(1, '00:20:00');
 
-        $hourlyTime = now()->toImmutable()->subHour();
-        $schedule->command(StoreScrapData::class, [
-            '-D' . date('Y-m-d'),
-            '-S' . $hourlyTime->startOfHour()->toDateTimeString(),
-            '-E' . $hourlyTime->endOfHour()->toDateTimeString(),
-        ])->hourly();
+        // $hourlyTime = now()->toImmutable()->subHour();
+        // $schedule->command(StoreScrapData::class, [
+        //     '-D' . date('Y-m-d'),
+        //     '-S' . $hourlyTime->startOfHour()->toDateTimeString(),
+        //     '-E' . $hourlyTime->endOfHour()->toDateTimeString(),
+        // ])->hourlyAt(10);
     }
 
     /**

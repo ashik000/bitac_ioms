@@ -10,23 +10,24 @@
                             <img src="/storage/images/walton-logo.png" alt="walton-logo" style="height: 40px;">
                         </router-link>
                     </li>
-<!--                    <li class="dashboard padding_y_ten_px" v-on:click="makeActive('dashboard')">-->
-<!--                        <router-link to="/dashboard" class="nav-link text-white" active-class="active">-->
-<!--                            Dashboard-->
-<!--                        </router-link>-->
-<!--                    </li>-->
-                    <li class="lineview padding_y_ten_px ms-5" v-on:click="makeActive('lineview')">
-                        <router-link to="/lineview" class="nav-link text-white" active-class="active">
+                    <li class="dashboard padding_y_ten_px ms-5" v-on:click="makeActive('dashboard')">
+                        <router-link to="/dashboard" class="nav-link text-white" active-class="active">
+                            <b-icon icon="bar-chart" style="border: 1px solid #ff0000; padding: 2px;"></b-icon>
+                            Dashboard
+                        </router-link>
+                    </li>
+                    <li class="lineview padding_y_ten_px" v-on:click="makeActive('lineview')">
+                        <router-link to="/lineview" class="nav-link text-white">
                             <b-icon icon="graph-up" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
                             Lineview
                         </router-link>
                     </li>
-                    <li class="scada padding_y_ten_px" v-on:click="makeActive('scada')">
-                        <router-link to="/scada" class="nav-link text-white" active-class="active">
-                            <b-icon icon="graph-up" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
-                            SCADA View
-                        </router-link>
-                    </li>
+<!--                    <li class="scada padding_y_ten_px" v-on:click="makeActive('scada')">-->
+<!--                        <router-link to="/scada" class="nav-link text-white" active-class="active">-->
+<!--                            <b-icon icon="graph-up" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>-->
+<!--                            SCADA View-->
+<!--                        </router-link>-->
+<!--                    </li>-->
                     <li class="reports padding_y_ten_px" v-on:click="makeActive('reports')">
                         <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <b-icon icon="file-bar-graph" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
@@ -36,6 +37,12 @@
                             <li><router-link class="dropdown-item" to="/reports/oee-report">OEE</router-link></li>
                             <li><router-link class="dropdown-item" to="/reports/downtime-report">Downtime</router-link></li>
                         </ul>
+                    </li>
+                    <li class="machining_report padding_y_ten_px" v-on:click="makeActive('machining_report')">
+                        <router-link to="/machining_report" class="nav-link text-white" active-class="active">
+                            <b-icon icon="file-bar-graph" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
+                            Machining Report
+                        </router-link>
                     </li>
                     <li class="settings padding_y_ten_px" v-on:click="makeActive('settings')">
                         <router-link to="/settings/stations" class="nav-link text-white" active-class="active">
@@ -110,9 +117,9 @@ export default {
 
         setInterval(this.$data._clock, 1000);
 
-        switch (this.$router.currentRoute.name) {
-            case '/lineview':
-                this.active = 'lineview';
+        switch (this.$router.currentRoute.path) {
+            case '/dashboard':
+                this.active = 'dashboard';
             break;
         }
     },
@@ -138,6 +145,9 @@ export default {
                 break;
             case '/reports/downtime-report':
                 this.active = 'reports';
+                break;
+            case '/machining_report':
+                this.active = 'machining_report';
                 break;
             case '/settings/stations':
                 this.active = 'settings';
@@ -165,6 +175,7 @@ export default {
     ul.dashboard .dashboard,
     ul.lineview .lineview,
     ul.reports .reports,
+    ul.machining_report .machining_report,
     ul.settings .settings{
         background-color: #035FA3;
         margin: 0 2px 0 2px;

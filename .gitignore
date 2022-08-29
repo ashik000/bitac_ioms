@@ -22,3 +22,5 @@ public/js/vendor.js
 public/mix-manifest.json
 public/fonts/*
 *.map
+
+yarn.lock

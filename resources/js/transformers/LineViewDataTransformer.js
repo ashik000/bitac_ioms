@@ -23,10 +23,21 @@ export const LineViewDataTransformer = (data) => {
 
 
         hourlyData.labels.unshift(`${row.hour}`.padStart(2, '0'));
-        hourlyData.availability.unshift((available * 100).toFixed(2));
-        hourlyData.performance.unshift((performance * 100).toFixed(2));
-        hourlyData.quality.unshift((quality * 100).toFixed(2));
-        hourlyData.oee.unshift((available * performance * quality * 100).toFixed(2));
+
+        let av = (available * 100).toFixed(2);
+        av = getDisplayableValueForGauge(av);
+        hourlyData.availability.unshift(av);
+
+        let pe = (performance * 100).toFixed(2);
+        pe = getDisplayableValueForGauge(pe);
+        hourlyData.performance.unshift(pe);
+
+        let qu = (quality * 100).toFixed(2);
+        qu = getDisplayableValueForGauge(qu);
+        hourlyData.quality.unshift(qu);
+
+        let oe = (av * pe * qu / 10000).toFixed(2);
+        hourlyData.oee.unshift(oe);
         hourlyData.scrapped.unshift(row.scrapped);
 
         totalSummary.expected_uptime += 3600;
@@ -47,8 +58,14 @@ export const LineViewDataTransformer = (data) => {
             performance: Math.min(100, totalSummary.produced * 100 / totalSummary.expected),
             availability: totalSummary.available_time * 100 / totalSummary.expected_uptime,
             quality: totalSummary.produced ? (( totalSummary.produced-totalSummary.scrapped) / totalSummary.produced)*100 : 0,
-            oee: ((totalSummary.produced/totalSummary.expected) * (totalSummary.available_time / totalSummary.expected_uptime) *
-                (totalSummary.produced ? (( totalSummary.produced-totalSummary.scrapped) / totalSummary.produced) : 0))
+            oee: (Math.min(1, (totalSummary.produced/totalSummary.expected)) * Math.min(1, (totalSummary.available_time / totalSummary.expected_uptime)) *
+                Math.min(1, (totalSummary.produced ? (( totalSummary.produced-totalSummary.scrapped) / totalSummary.produced) : 0)))
         },
     }
-}
+};
+
+function getDisplayableValueForGauge(value){
+    value = Math.min(100,value);
+    value = Math.max(value,0);
+    return value;
+};

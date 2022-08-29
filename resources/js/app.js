@@ -8,6 +8,7 @@ import { BootstrapVue, IconsPlugin, BIcon } from 'bootstrap-vue'
 import router from './routes';
 import {store} from './store/index';
 import moment from 'moment'
+import Pagination from 'vue-pagination-2';
 
 import App from './pages/App'
 
@@ -21,6 +22,8 @@ Vue.component('Modal', Modal);
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 Vue.component('multiselect', Multiselect);
 Vue.component('b-icon', BIcon);
+Vue.component('pagination', Pagination);
+
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(VCalendar);

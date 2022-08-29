@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\LineViewController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\API\StoreMachineDataController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +71,7 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('report/downtime/by/team/excel',['uses'=>'DowntimeReportController@getDowntimeTableReportByStationTeamExcel']);
     Route::get('lineviewStationShift','LineViewController@getLineViewStationShifts');
     Route::get('getOperatorName','LineViewController@getOperatorOfStation');
+    Route::get('getTeamName','LineViewController@getTeamOfStation');
     Route::post('storeLineviewDefects','LineViewController@storeLineviewDefects');
     Route::post('assignOperatorToStation','StationOperatorController@assignOperatorToStation');
     Route::post('assignProductToStation','StationProductController@assignProductToStation');
@@ -81,6 +84,9 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::post('team/operators','TeamController@updateTeamOperators');
     Route::post('team/operators/delete','TeamController@destroyTeamOperators');
     Route::get('scada-api', 'ReportController@scada');
+    Route::get('dashboard', 'DashboardController@GetMachineStatus');
+    Route::get('machiningData', 'MachiningController@index');
+    Route::get('getMachiningDataExcel', 'MachiningController@getMachiningDataExcel');
 });
 
 Route::middleware(['auth:api'])->group(function () {
@@ -94,4 +100,7 @@ Route::post('storeEventFile', 'LineViewController@storeEventFile');
 
 Route::get('getDummyScrap', 'ScrapController@getDummyScrap');
 Route::get('testScrapX', 'ScrapController@testScrap');
+
+Route::post('storeMachineData', [StoreMachineDataController::class, 'store']);
+Route::get('getMachineStatus', 'DashboardController@GetMachineStatus');
 
