@@ -6,17 +6,11 @@ use App\Data\Repositories\MachineStatusRepository;
 use App\Data\Repositories\ProductRepository;
 use DateTime;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Database\Eloquent\Builder;
 use App\Data\Models\MachineStatus;
-use mysql_xdevapi\Table;
-use Illuminate\Support\Facades\Log;
-use function Psy\debug;
 
 class DashboardController extends Controller
 {
-    protected $deviceRepository;
     protected $machineStatusRepository;
-    protected $packetRepository;
     protected $productRepository;
 
     public function __construct(MachineStatusRepository $machineStatusRepository, ProductRepository $productRepository)
@@ -25,7 +19,7 @@ class DashboardController extends Controller
         $this->productRepository = $productRepository;
     }
 
-    public function GetMachineStatus(Request $request)
+    public function getMachineStatus()
     {
         $machineStatus = $this->machineStatusRepository->findLatestMachineStatusByStationId(7);
         $programStatus = false;

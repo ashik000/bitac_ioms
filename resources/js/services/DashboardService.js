@@ -1,10 +1,12 @@
 import axios from 'axios';
 
 export default {
-
-    fetchAllSummaryData(success, error) {
-        axios.get('dashboard-summary')
-            .then(r => success(r.data))
-            .catch(e => console.log(e))
-    },
+    getMachineStatus(success, error) {
+        axios.get('getMachineStatus').
+        then(response => {
+            success(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 }

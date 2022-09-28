@@ -274,7 +274,7 @@ class LineViewController extends Controller
             $scrap['created_by']  = 1;
 
         }
-        else {
+        else{
             $scrap->value += $request['defectValue'];
         }
 
