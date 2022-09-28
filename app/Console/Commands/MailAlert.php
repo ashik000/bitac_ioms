@@ -34,7 +34,7 @@ class MailAlert extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
     public function handle()
     {
@@ -42,7 +42,25 @@ class MailAlert extends Command
           'machine_name'=> 'CM-1',
           'alarm_info'=> 'Test Alarm'
         ];
-        $controller = new MailController();
-        $controller->GenerateAlarmMail($mailBody);
+
+        $toEmails = [
+            'emails' => [
+                'arifahmed.bitac@gmail.com',
+                'mhasan0925@gmail.com',
+                'pulakkantiroy09@gmail.com',
+                'omaryusuf778106@gmail.com',
+                'salauddin06@yahoo.com'
+            ],
+            'names' => [
+                'Arif Ahmed',
+                'M Hasan',
+                'Pulak Roy',
+                'Omar Yusuf',
+                'Salauddin'
+            ]
+        ];
+
+        $mailController = new MailController();
+        $mailController->generateAlarmMail($mailBody, $toEmails);
     }
 }

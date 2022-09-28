@@ -22,7 +22,6 @@ class MachineStatusRepository
         $machineStatus['production_counter1'] = $request['production_counter1'];
         $machineStatus['production_counter2'] = $request['production_counter2'];
         $machineStatus['power_status'] = $request['power_status'];
-        $machineStatus['program_name'] = $request['program_name'];
         $machineStatus['produced_at'] = $request['produced_at'];
         $machineStatus['synced_at'] = now();
         $check = $machineStatus->save();

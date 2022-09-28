@@ -310,6 +310,8 @@
 
 <script>
 
+import dashboardService from "../services/DashboardService";
+
 export default {
     name: "Dashboard",
 
@@ -320,33 +322,30 @@ export default {
             roundGreen: false,
             roundRed: true,
             isAlarm: false,
-            programStatus: false,
+            programStatus: false
         }
     },
 
     methods: {
         getMachineData() {
-            axios.get('getMachineStatus')
-                .then((response) => {
-                    this.programStatus = response.data.programStatus
-                    this.machineStatus = response.data.machineStatus
-                    console.log(this.programStatus)
-                    if (this.machineStatus.power_status === 'STOPPED') {
-                        this.roundGreen = false
-                        this.roundRed = true
-                    } else {
-                        this.roundRed = false
-                        this.roundGreen = true
-                    }
+            dashboardService.getMachineStatus(response => {
+                this.programStatus = response.programStatus
+                this.machineStatus = response.machineStatus
+                // console.log(this.programStatus)
+                if (this.machineStatus.power_status === 'STOPPED') {
+                    this.roundGreen = false
+                    this.roundRed = true
+                } else {
+                    this.roundRed = false
+                    this.roundGreen = true
+                }
 
-                    if(this.machineStatus.alarm_info === 'NULL' || this.machineStatus.alarm_info === 'NO ACTIVE ALARMS')
-                    {
-                        this.isAlarm = false
-                    }
-                    else {
-                        this.isAlarm = true
-                    }
-                })
+                if (this.machineStatus.alarm_info === 'NULL' || this.machineStatus.alarm_info === 'NO ACTIVE ALARMS') {
+                    this.isAlarm = false
+                } else {
+                    this.isAlarm = true
+                }
+            });
         },
 
         getOperator() {

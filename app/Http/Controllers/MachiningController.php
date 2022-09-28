@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\Models\MachineStatus;
-use App\Data\Models\Stations;
 use App\Exports\ExcelDataExport;
-
 use Carbon\Carbon;
-
 use App\Data\Repositories\MachiningRepository;
 
 use Illuminate\Http\Request;
 use DB;
 use Excel;
-use Illuminate\Validation\UnauthorizedException;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+
 
 class MachiningController extends Controller
 {
@@ -31,7 +26,7 @@ class MachiningController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -52,11 +47,11 @@ class MachiningController extends Controller
 
         $formattedData = $this->formatData($data);
         $headers = $this->getHeaders();
-    
+
         return Excel::download(new ExcelDataExport($formattedData, $headers), 'Machining Report.xlsx');
     }
 
-    public function formatData($data)
+    public function formatData($data): array
     {
         $formattedData = [];
         foreach ($data as $key => $value) {
@@ -75,21 +70,6 @@ class MachiningController extends Controller
     {
         $headers = ["Station Name", "Program Name", "Spindle Speed", "Feed Rate", "Produced At"];
         return $headers;
-    }
-
-    public function getFormattedDataForExcel($data): array
-    {
-        $excel_data = [];
-        foreach ($data as $key) {
-            $excel_data[] = [
-                "station_name"  => $key['station_name'],
-                "program_name"  => $key['program_name'],
-                "spindle_speed" => $key['spindle_speed'],
-                "feed_rate"     => $key['feed_rate'],
-                "Produced At"   => $key['produced_at'],
-            ];
-        }
-        return $excel_data;
     }
 
 }

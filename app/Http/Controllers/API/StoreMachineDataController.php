@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Console\Commands\MailAlert;
 use App\Data\Models\StationProduct;
 use App\Data\Repositories\DeviceRepository;
 use App\Data\Repositories\MachineStatusRepository;
 use App\Data\Repositories\PacketRepository;
 use App\Data\Repositories\ProductRepository;
 use App\Http\Controllers\Controller;
-//use App\Http\Controllers\MailController;
+use App\Http\Controllers\MailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
+
 
 class StoreMachineDataController extends Controller
 {
@@ -43,14 +41,14 @@ class StoreMachineDataController extends Controller
             return response()->json(['error' => true, 'message' => 'Empty body'], 500);
         }
 
-        $factoryName = $machineData['factory_name'] ?? null;
         $date = $machineData['date'];
 
         if (empty($machineData['data']) || empty($date)) {
             return response()->json(['error' => true, 'message' => 'Empty data'], 400);
         }
 
-        foreach ($machineData['data'] as $dataRow) {
+        foreach ($machineData['data'] as $dataRow)
+        {
             $stationName = $dataRow['machine_name'];
             $machine_id = $dataRow['machine_id'];
             $deviceIdentifier = $dataRow['device_id'];
@@ -83,25 +81,25 @@ class StoreMachineDataController extends Controller
                 'produced_at' => $dataRow['produced_at'] ?? null
             ];
 
-            $this->AlarmCheck($stationName, $dataRow['alarm_info'], $station['station_id']);
+            $this->alarmCheck($stationName, $dataRow['alarm_info'], $station['station_id']);
             $result = $this->machineStatusRepository->storeMachineStatus($payload);
 
             if (!$result) {
                 response()->json(['error' => true, 'message' => 'Could not store data'], 500);
             }
             else{
-                $this->AutoProductSelection($dataRow, $station);
+                $this->autoProductSelection($dataRow, $station);
             }
         }
 
         return response()->json(['success' => true, 'message' => 'Data store successful'], 200);
     }
 
-    public function AutoProductSelection($dataRow, $station){
+    public function autoProductSelection($dataRow, $station)
+    {
         $product = $this->productRepository->findProductByName($dataRow['program_name']);
         if(!empty($product) && $station['station_id'] > 0)
         {
-
             $stationProduct = $this->productRepository->findStationProductByStationIdAndProductId($station['station_id'], $product->id);
             if(!empty($stationProduct) && empty($stationProduct['start_time']))
             {
@@ -117,16 +115,11 @@ class StoreMachineDataController extends Controller
                         ]);
                 });
             }
-            else{
-
-            }
-        }
-        else{
-
         }
     }
 
-    public function AlarmCheck($machineName, $alarmInfo, $stationId){
+    public function alarmCheck($machineName, $alarmInfo, $stationId)
+    {
         if($alarmInfo != 'NULL' && $alarmInfo != 'NO ACTIVE ALARMS')
         {
             $lastStatus = $this->machineStatusRepository->findLatestMachineStatusByStationId($stationId);
@@ -136,48 +129,31 @@ class StoreMachineDataController extends Controller
                     'machine_name'=>$machineName,
                     'alarm_info'=>$alarmInfo
                 ];
-                $this->GenerateAlarmMail($mailBody);
+
+                $toEmails = [
+                    'emails' => [
+                        'arifahmed.bitac@gmail.com',
+                        'mhasan0925@gmail.com',
+                        'pulakkantiroy09@gmail.com',
+                        'omaryusuf778106@gmail.com',
+                        'salauddin06@yahoo.com'
+                    ],
+                    'names' => [
+                        'Arif Ahmed',
+                        'M Hasan',
+                        'Pulak Roy',
+                        'Omar Yusuf',
+                        'Salauddin'
+                    ]
+                ];
+
+                $mailController = new MailController();
+                $mailController->generateAlarmMail($mailBody, $toEmails);
             }
         }
     }
 
-    public function GenerateAlarmMail($mailBody)
-    {
-        $mail = new PHPMailer();
-        $mail->IsSMTP();
-        $mail->Mailer = "smtp";
-        $mail->SMTPDebug  = 1;
-        $mail->SMTPAuth   = TRUE;
-        $mail->SMTPSecure = "tls";
-        $mail->Port       = 587;
-        $mail->Host       = "smtp.gmail.com";
-        $mail->Username   = "cncshop.bitacdhaka@gmail.com";
-        $mail->Password   = "k%uGR@8xpRZkjqA3";
-        $mail->IsHTML(true);
-        $mail->AddAddress("ashik.inovace@gmail.com", "Ashik");
-        $mail->AddAddress("arifahmed.bitac@gmail.com", "Arif Ahmed");
-        $mail->AddAddress("mhasan0925@gmail.com", "M Hasan");
-        $mail->AddAddress("pulakkantiroy09@gmail.com", "Pulak Roy");
-        $mail->AddAddress("omaryusuf778106@gmail.com", "Omar Yusuf");
-        $mail->AddAddress("salauddin06@yahoo.com", "Salauddin");
-        $mail->SetFrom("cncshop.bitacdhaka@gmail.com", "BITAC CNC Shop");
-        //$mail->AddReplyTo("ashik.inovace@gmail.com", "Ashik");
-        //$mail->AddCC("cc-recipient-email@domain", "cc-recipient-name");
-        $mail->Subject = "Alarm | IOMS";
-        //$content = "Test Body";
-        $machineName = $mailBody['machine_name'];
-        $alarmInfo = $mailBody['alarm_info'];
-        $content = "<b>Machine: </b>".$machineName."<br><b>Alarm: </b>".$alarmInfo;
-        $mail->MsgHTML($content);
-        $this->SendMail($mail);
-    }
 
-    public function SendMail($mail){
-        try{
-            $mail->Send();
-        }
-        catch(Exception $e){
-            Log::debug("Email not sent");
-        }
-    }
+
+
 }
