@@ -17,9 +17,9 @@ class MailController extends Controller
         $mail->SMTPAuth   = TRUE;
         $mail->SMTPSecure = "tls";
         $mail->Port       = 587;
-        $mail->Host       = "smtp.gmail.com";
-        $mail->Username   = "cncshop.bitacdhaka@gmail.com";
-        $mail->Password   = "k%uGR@8xpRZkjqA3";
+        $mail->Host       = "mail.inovacetech.com";
+        $mail->Username   = "rtva@inovacetech.com";
+        $mail->Password   = "unilever123";
         $mail->isHTML(true);
 
         for ($i=0; $i<count($toEmails['emails']); $i++)
@@ -27,7 +27,7 @@ class MailController extends Controller
             $mail->addAddress($toEmails['emails'][$i], $toEmails['names'][$i]);
         }
 
-        $mail->setFrom("cncshop.bitacdhaka@gmail.com", "BITAC CNC Shop");
+        $mail->setFrom("rtva@inovacetech.com", "BITAC CNC Shop");
         //$mail->AddReplyTo("john@gmail.com", "John Doe");
         //$mail->AddCC("cc-recipient-email@domain", "cc-recipient-name");
         $mail->Subject = "Alarm | IOMS";

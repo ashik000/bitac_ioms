@@ -4,6 +4,10 @@ Setup instructions
 1. Create a new `.env` file
 2. Copy everything from `.env.example`
 3. Run `composer install`
+   
+   If failed by this (laravel/horizon v4.3.5 requires ext-posix) error then use this command
+   
+   `composer install --ignore-platform-reqs`
 4. Run `php artisan key:generate`
 5. Run `php artisan passport:keys`
 6. Run `npm install`

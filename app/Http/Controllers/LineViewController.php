@@ -170,7 +170,7 @@ class LineViewController extends Controller
         $stationId = $request->get('stationId');
         $date      = $request->get('date');
 
-        $checkDate = Carbon::parse($date)->addHour(now()->hour)->addMinutes(now()->minute)->addSeconds(now()->second);
+        $checkDate = Carbon::parse($date)->addHours(now()->hour)->addMinutes(now()->minute)->addSeconds(now()->second);
 
         $result = StationOperator::query()
                                  ->leftJoin('stations', 'stations.id', '=', 'station_operators.station_id')
@@ -211,7 +211,7 @@ class LineViewController extends Controller
         $stationId = $request->get('stationId');
         $date      = $request->get('date');
 
-        $checkDate = Carbon::parse($date)->addHour(now()->hour)->addMinutes(now()->minute)->addSeconds(now()->second);
+        $checkDate = Carbon::parse($date)->addHours(now()->hour)->addMinutes(now()->minute)->addSeconds(now()->second);
 
         $result = StationTeam::query()
                              ->leftJoin('stations', 'stations.id', '=', 'station_teams.station_id')

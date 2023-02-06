@@ -136,14 +136,18 @@ class StoreMachineDataController extends Controller
                         'mhasan0925@gmail.com',
                         'pulakkantiroy09@gmail.com',
                         'omaryusuf778106@gmail.com',
-                        'salauddin06@yahoo.com'
+                        'salauddin06@yahoo.com',
+                        'ae_cncdhaka@bitac.gov.bd',
+                        'ashik@inovacetech.com'
                     ],
                     'names' => [
                         'Arif Ahmed',
                         'M Hasan',
                         'Pulak Roy',
                         'Omar Yusuf',
-                        'Salauddin'
+                        'Salauddin',
+                        'AE CNC Dhaka',
+                        'Ashik Inovace'
                     ]
                 ];
 
