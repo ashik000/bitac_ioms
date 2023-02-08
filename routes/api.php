@@ -101,6 +101,7 @@ Route::post('storeEventFile', 'LineViewController@storeEventFile');
 Route::get('getDummyScrap', 'ScrapController@getDummyScrap');
 Route::get('testScrapX', 'ScrapController@testScrap');
 
-Route::post('storeMachineData', 'StoreMachineDataController@store');
+//Route::post('storeMachineData', 'StoreMachineDataController@store');
+Route::post('storeMachineData', [StoreMachineDataController::class, 'store']);
 Route::get('getMachineStatus', 'DashboardController@getMachineStatus');
 
