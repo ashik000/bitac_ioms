@@ -68,7 +68,7 @@ class StoreMachineDataController extends Controller
             $payload = [
                 'station_id' => $station['station_id'],
                 'spindle_speed' => $dataRow['spindle_speed'] ?? null,
-                'feed_rate' => $dataRow['feed_rate'] ?? null,
+                'feed_rate' => $dataRow['feed_rate'] ?? '0.0',
                 'machine_uptime' => $dataRow['machine_uptime'] ?? null,
                 'alarm_code' => $dataRow['alarm_code'] ?? null,
                 'alarm_info' => $dataRow['alarm_info'] ?? null,
