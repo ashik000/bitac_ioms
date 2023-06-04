@@ -49,7 +49,6 @@ class MailAlert extends Command
                 'mhasan0925@gmail.com',
                 'pulakkantiroy09@gmail.com',
                 'omaryusuf778106@gmail.com',
-                'salauddin06@yahoo.com',
                 'ae_cncdhaka@bitac.gov.bd',
                 'ashik@inovacetech.com'
             ],
@@ -58,7 +57,6 @@ class MailAlert extends Command
                 'M Hasan',
                 'Pulak Roy',
                 'Omar Yusuf',
-                'Salauddin',
                 'AE CNC Dhaka',
                 'Ashik Inovace'
             ]
