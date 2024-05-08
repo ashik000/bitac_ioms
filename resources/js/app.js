@@ -8,6 +8,7 @@ import { BootstrapVue, IconsPlugin, BIcon } from 'bootstrap-vue'
 import router from './routes';
 import {store} from './store/index';
 import moment from 'moment'
+import VueCookies from 'vue-cookies';
 import Pagination from 'vue-pagination-2';
 
 import App from './pages/App'
@@ -27,6 +28,7 @@ Vue.component('pagination', Pagination);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(VCalendar);
+Vue.use(VueCookies);
 
 Vue.filter('formatTime', function(value) {
     if (value) {

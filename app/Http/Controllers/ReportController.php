@@ -11,6 +11,7 @@ use App\Data\Models\Station;
 use App\Data\Models\StationOperator;
 use App\Data\Models\StationProduct;
 use App\Data\Models\StationShift;
+use App\Data\Repositories\DeviceRepository;
 use App\Data\Repositories\ProductionLogRepository;
 use App\Data\Repositories\ReportRepository;
 use App\Data\Repositories\ScrapRepository;
@@ -33,16 +34,22 @@ class ReportController extends Controller
 
     private $productionLogRepository;
     private $scrapRepository;
+    private $deviceRepository;
 
     private $headers_with_duration = ['Time Duration', "Availability", "Quality", "Performance", "OEE"];
     private $headers_without_criteria = ['Station Name', 'Station Group', "Availability", "Quality", "Performance", "OEE"];
 
-    public function __construct(ReportRepository $reportRepository,
-                                ProductionLogRepository $productionLogRepository, ScrapRepository $scrapRepository)
+    public function __construct(
+        ReportRepository            $reportRepository,
+        ProductionLogRepository     $productionLogRepository,
+        ScrapRepository             $scrapRepository,
+        DeviceRepository            $deviceRepository
+    )
     {
         $this->reportRepository = $reportRepository;
         $this->productionLogRepository = $productionLogRepository;
         $this->scrapRepository = $scrapRepository;
+        $this->deviceRepository = $deviceRepository;
     }
 
     public function index(Request $request)
@@ -423,6 +430,8 @@ class ReportController extends Controller
 
     public function getDashboardSummary(Request $request)
     {
+        $stationIds = $request['station_ids'];
+
         $startTime = now()->startOfHour();
         $endTime = now()->endOfHour();
 
@@ -430,19 +439,23 @@ class ReportController extends Controller
         $allStationIds = $allStations->pluck('id');
         $stationsById = $allStations->keyBy('id');
 
+        $deviceIdentifiers = $this->deviceRepository->getAllDeviceIdentifiers();
+
+        $latest_production_logs = $this->productionLogRepository->findLatestProductionLogOfEachStation();
+
         $allDowntimes = $this->productionLogRepository->fetchDowntimes([
-            'between'    => [
+            'between' => [
                 'start' => $startTime,
-                'end'   => $endTime,
+                'end' => $endTime,
             ],
         ])->groupBy(function ($log) {
-                return $log->station_id;
-            });
+            return $log->station_id;
+        });
 
         $allProductionLogs = $this->productionLogRepository->fetchProductionLogs([
-            'between'    => [
+            'between' => [
                 'start' => $startTime,
-                'end'   => $endTime,
+                'end' => $endTime,
             ],
         ])->groupBy(function ($log) {
             return $log->station_id;
@@ -451,43 +464,45 @@ class ReportController extends Controller
 
         $allScraps = $this->scrapRepository->fetchScrapsBetweenADateTimeRangeOfAllStations($startTime->toImmutable(), $endTime->toImmutable())->groupBy('station_id');
 
-        $reports = $allStationIds->reduce(function ($carry, $stationId) use($allProductionLogs, $allDowntimes, $allScraps, $stationsById) {
+        $reports = $allStationIds->reduce(function ($carry, $stationId) use ($allProductionLogs, $allDowntimes, $allScraps, $stationsById, $latest_production_logs, $deviceIdentifiers) {
             $productionLogs = $allProductionLogs->get($stationId);
             $station = $stationsById->get($stationId);
 
             $downtimes = $allDowntimes->get($stationId);
 
-            $nominalTime = empty($productionLogs)? 0 : $productionLogs->sum(function ($log) {
+            $nominalTime = empty($productionLogs) ? 0 : $productionLogs->sum(function ($log) {
                 return $log->cycle_interval >= ($log->cycle_time + $log->cycle_timeout) ? ($log->cycle_time + $log->cycle_timeout) : $log->cycle_interval;
             });
-            $totalStopTime    = empty($downtimes)? 0 : $downtimes->sum('duration');
-            $plannedStopTime = empty($downtimes)? 0 : $downtimes->filter(function($val, $key){
-                return isset($val['reason']) && $val->reason->type==='planned';
+            $totalStopTime = empty($downtimes) ? 0 : $downtimes->sum('duration');
+            $plannedStopTime = empty($downtimes) ? 0 : $downtimes->filter(function ($val, $key) {
+                return isset($val['reason']) && $val->reason->type === 'planned';
             })->sum('duration');
             $unplannedStopTime = $totalStopTime - $plannedStopTime;
 
-            $expected = empty($productionLogs)? 0 : floor(($nominalTime  + $unplannedStopTime)/ $productionLogs[0]->cycle_time);
-            $produced = empty($productionLogs)? 0 : $productionLogs->sum('units_per_signal');
+            $expected = empty($productionLogs) ? 0 : floor(($nominalTime + $unplannedStopTime) / $productionLogs[0]->cycle_time);
+            $produced = empty($productionLogs) ? 0 : $productionLogs->sum('units_per_signal');
 
             $producedTillNow = 0;
-            $logsPerMinute = empty($productionLogs)? [] : $productionLogs->groupBy(function ($log) {
+            $logsPerMinute = empty($productionLogs) ? [] : $productionLogs->groupBy(function ($log) {
                 return Carbon::parse($log->produced_at)->minute;
             });
             $logsPerMinute = collect($logsPerMinute);
-            $speed = collect(range(0, 59))->reduce(function ($carry, $minute) use($producedTillNow, $logsPerMinute) {
+            $speed = collect(range(0, 59))->reduce(function ($carry, $minute) use (&$producedTillNow, $logsPerMinute) {
                 $logs = $logsPerMinute->get($minute) ?? null;
-                $producedTillNow = empty($logs)? $producedTillNow : $producedTillNow + $logs->sum('units_per_signal');
-                $carry[$minute] = $minute == 0? $producedTillNow : $producedTillNow/$minute;
+                $producedTillNow = empty($logs) ? $producedTillNow : $producedTillNow + $logs->sum('units_per_signal');
+                $producedTillNow = $minute > now()->minute ? 0 : $producedTillNow;
+                $carry[$minute] = $minute == 0 ? $producedTillNow : $producedTillNow / $minute;
                 return $carry;
             }, []);
 
-            $scraps   = $allScraps->get($stationId, collect());
+            $scraps = $allScraps->get($stationId, collect());
 
             $scraped = $scraps->sum('value');
 
-            $performance  = empty($produced) || empty($expected) ? 0 : ($produced / $expected);
-            $quality      = empty($produced) || empty($scraped) ? 0 : (($produced - $scraped) / $produced);
-            $availability = empty($nominalTime) || empty($plannedStopTime) ? 0 : ($nominalTime / (3600 - $plannedStopTime));
+            $performance = empty($expected) ? 0 : ($produced / $expected);
+            $quality = empty($produced) ? 0 : (($produced - $scraped) / $produced);
+//            $availability = ($nominalTime / (3600 - $plannedStopTime));
+            $availability = ($nominalTime / (now()->diffInSeconds(now()->startOfHour()) - $plannedStopTime));
 
             $performance = min(1, max(0, $performance));
             $quality = min(1, max(0, $quality));
@@ -497,23 +512,43 @@ class ReportController extends Controller
 
             $currentProduct = $station->products->sortByDesc('start_time')->first();
 
+            $last_log_time = $latest_production_logs->get($stationId)->produced_at ?? null;
+            $last_log_time = Carbon::parse($last_log_time);
+            $timeDiff = Carbon::createFromFormat('Y-m-d H:i:s', $last_log_time)->diffForHumans();
+            $timeDifference = $timeDiff == '1 second ago' ? 'N/A' : $timeDiff;
+
+            $deviceId = $deviceIdentifiers->where('station_id', $stationId)->first()->identifier ?? 'N/A';
+
             $carry[$stationId] = [
-                'stationName'  => $station->name,
-                'productName'  => empty($currentProduct)? '' : $currentProduct->name,
-                'stationId'    => $stationId,
-                'speed'        => $speed,
-                'labels'       => range(0, 59),
-                'performance'  => number_format($performance * 100, 0),
+                'stationName' => $station->name,
+                'productName' => empty($currentProduct) ? '' : $currentProduct->name,
+                'stationId' => $stationId,
+                'stationType' => $station->station_type ?? 'N/A',
+                'deviceId' => $deviceId,
+                'timeDifference' => $timeDifference,
+                'speed' => $speed,
+                'labels' => range(0, 59),
+                'performance' => number_format($performance * 100, 0),
                 'availability' => number_format($availability * 100, 2),
-                'quality'      => number_format($quality * 100, 2),
-                'oee'          => number_format($oeeNumber, 0),
-                'color'        => empty($productionLogs)? 'black' : ($oeeNumber < $station->oee_threshold? 'red' : 'green')
+                'quality' => number_format($quality * 100, 2),
+                'oee' => number_format($oeeNumber, 0),
+                'color' => empty($productionLogs) ? 'black' : ($oeeNumber < $station->oee_threshold ? 'red' : 'green')
             ];
 
             return $carry;
         }, []);
 
-        return response()->json($reports, 200);
+        // stationIds sample = ['1', '3', '8']
+        if (empty($stationIds))
+        {
+            return response()->json($reports, 200);
+        }
+        else
+        {
+            // remove all stations except the ones in the stationIds array using array_intersect
+            $reports = array_intersect_key($reports, array_flip($stationIds));
+            return response()->json($reports, 200);
+        }
     }
 
     public function getSixSigmaQuality(Request $request)

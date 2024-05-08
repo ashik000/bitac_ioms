@@ -1,587 +1,205 @@
 <template>
-    <div class="dashboard-bg">
-        <div class="mt-3"></div>
-        <!--Dashboard body starts-->
-        <div class="row main-body">
-            <div class="col-md-12">
-                <div class="row">
-                    <!--Left column starts-->
+    <div class="container-fluid mt-2">
+        <div class="row">
+
+            <div class="row justify-content-end">
+                <div class="col-md-5 d-flex p-1 mb-2 rounded-2 bg-primary text-white">
                     <div class="col-md-4">
-                        <div class="card card-style">
-                            <div class="card-body text-center">
-                                <img src="../assets/Artboard7.png" alt=""/>
-                                <h5 class="text-uppercase mb-2">
-                                    <span>Machine</span>:
-                                    <span class="fw-bolder" style="color: #00dd20">CM-1</span>
-                                </h5>
-                            </div>
-                        </div>
-                        <div class="card card-style mt-4">
-                            <div class="card-body text-center">
-                                <img src="../assets/Artboard9.png" alt=""/>
-                                <h6 class="text-uppercase mb-2">
-                                    <span>Operator</span>:
-                                    <span class="fw-bolder">{{ operatorName }}</span>
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="card card-style mt-4">
-                            <div class="card-body text-center">
-                                <img src="../assets/Artboard8.png" alt=""/>
-                                <h6 class="text-uppercase mb-2">
-                                    <span>Total Production: </span>:
-                                    <span><span class="fw-bolder">{{ machineStatus.production_counter2 }}</span> pcs</span>
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="card card-style mt-4">
-                            <div
-                                class="card-body text-center d-flex justify-content-center align-items-center"
-                            >
-                                <h6
-                                    class="text-uppercase mb-2 d-flex justify-content-center align-items-center gap-3"
-                                >
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <span>Machine Status:</span>
-                                            <div class="round" v-bind:class="{roundGreen, roundRed}"></div>
-                                            <span class="fw-bolder">{{ machineStatus.power_status }}</span><br>
-                                        </div>
-
-                                        <div v-if="isAlarm" class="col-md-12" style="margin-top: 10px">
-                                            <span class="fw-bolder text-danger">Alarm:</span>
-                                            <span class="fw-bolder text-danger">{{ machineStatus.alarm_info}}</span>
-                                        </div>
-                                    </div>
-                                </h6>
-                            </div>
-                        </div>
+                        <label class="float-end mt-1 me-2">Select Stations</label>
                     </div>
-                    <!--Left column ends-->
-
-                    <!--Middle column starts-->
-                    <div class="col-md-4 middle-column">
-                        <div class="card card-style font-12  height-300">
-                            <div class="card-header card-header-bg text-center fw-bold">
-                                Time and Counter
-                            </div>
-                            <div class="card-body">
-                                <table class="table borderless-table table-responsive">
-                                    <tbody class="text-start">
-                                    <tr>
-                                        <td>This Cycle</td>
-                                        <td>:</td>
-                                        <td>{{ machineStatus.cycle_time }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Last Cycle</td>
-                                        <td>:</td>
-                                        <td>--</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Remaining</td>
-                                        <td>:</td>
-                                        <td>--</td>
-                                    </tr>
-                                    <tr>
-                                        <td>M30 Counter #1</td>
-                                        <td>:</td>
-                                        <td>{{ machineStatus.production_counter1 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>M30 Counter #2</td>
-                                        <td>:</td>
-                                        <td>{{ machineStatus.production_counter2 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Loops Remaining</td>
-                                        <td>:</td>
-                                        <td>--</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="card card-style card-1 mt-4 height-420">
-                            <div
-                                class="card-header d-flex justify-content-between align-items-center"
-                            >
-                                <div><span class="heading-color">Operation MEM</span></div>
-                                <div class="d-flex gap-4 align-items-center">
-                                    <img src="../assets/Artboard11.png" alt=""/>
-
-                                    <span class="mt-1 text-dark"
-                                          style="font-family: 'Cascadia Code'">{{ machineStatus.machine_uptime }}</span>
-                                </div>
-                            </div>
-                            <div
-                                class="secondary-header d-flex justify-content-between align-items-center"
-                            >
-                                <div><span v-bind:class="{programStatus}">Program:</span></div>
-                                <div class="d-flex align-items-center">
-                                    <span class="ml-120" v-bind:class="{programStatus}">{{ machineStatus.program_name }}</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <table class="table borderless-table table-responsive">
-                                    <tbody class="text-start">
-                                    <tr>
-                                        <td>N5830X11, 707Y-20,8</td>
-                                    </tr>
-                                    <tr>
-                                        <td>N5830X11, 707Y-20,8</td>
-                                    </tr>
-                                    <tr>
-                                        <td>N5830X11, 707Y-20,8</td>
-                                    </tr>
-                                    <tr>
-                                        <td>N5830X11, 707Y-20,8</td>
-                                    </tr>
-                                    <tr>
-                                        <td>N5830X11, 707Y-20,8</td>
-                                    </tr>
-                                    <tr>
-                                        <td>N5830X11, 707Y-20,8</td>
-                                    </tr>
-                                    <tr>
-                                        <td>N5830X11, 707Y-20,8</td>
-                                    </tr>
-                                    <tr>
-                                        <td>N5830X11, 707Y-20,8</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="col-md-8">
+                        <multiselect v-model="selectedStations" tag-placeholder="Select Stations" placeholder="Select Stations"
+                                    label="station_name" :custom-label="labelWithStationName" track-by="id"
+                                    :options="multiSelectOptions" group-values="station_group_station_data" group-label="station_group_name"
+                                    :group-select="true" :multiple="true" :taggable="true"
+                                    :close-on-select="false"></multiselect>
                     </div>
-                    <!--Middle column ends-->
-
-                    <!--Right column starts-->
-                    <div class="col-md-4 right-column">
-
-                        <div class="card card-style card-4 font-12 height-300">
-                            <div class="card-header card-header-bg text-center fw-bold">
-                                Main Spindle
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div style="text-align: center">
-                                            <img src="../assets/Artboard10.png" alt=""/>
-                                            <div><span class="font-14 fw-bold">Overrides</span></div>
-                                        </div>
-                                        <table class="table borderless-table table-responsive">
-                                            <tbody class="text-start">
-                                            <tr>
-                                                <td>Spindle</td>
-                                                <td>:</td>
-                                                <td>--</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Feed</td>
-                                                <td>:</td>
-                                                <td>--</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Rapid</td>
-                                                <td>:</td>
-                                                <td>--</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="col-md-8" style="border-left:1px dotted #606f7b">
-                                        <table class="table borderless-table table-responsive">
-                                            <thead></thead>
-                                            <tbody class="text-start">
-                                            <tr>
-                                                <td>Spindle Speed</td>
-                                                <td>:</td>
-                                                <td>{{ parseFloat(machineStatus.spindle_speed).toFixed(2) }}</td>
-                                                <td>RPM</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Spindle Power</td>
-                                                <td>:</td>
-                                                <td>--</td>
-                                                <td>KW</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Surface Speed</td>
-                                                <td>:</td>
-                                                <td>--</td>
-                                                <td>Mpm</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Chip Load</td>
-                                                <td>:</td>
-                                                <td>--</td>
-                                                <td>MMPT</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Feed Rate</td>
-                                                <td>:</td>
-                                                <td>{{ machineStatus.feed_rate }}</td>
-                                                <td>MMPH</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Active Feed</td>
-                                                <td>:</td>
-                                                <td>--</td>
-                                                <td>MMPH</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex gap-5 align-items-center slide-range mt-3">
-                                    <span>Spindle Load(%)</span>
-                                    <input
-                                        type="range"
-                                        min="1"
-                                        max="100"
-                                        value=""
-                                        style="width: 70%; height: 15px"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card card-style font-12 mt-4 card-3 height-420">
-                            <div
-                                class="card-header card-header-bg text-center fw-bold d-flex"
-                            >
-                                <span>Positions</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between fw-bold">
-                                    <span class="mm">(MM)</span>
-                                    <span class="load">Load</span>
-                                </div>
-                                <div class="card mt-1 height-85">
-                                    <div class="card-body d-flex align-items-center">
-                                        <div class="d-flex gap-5 align-items-center width-100">
-                                            <h5 class="mt-1">X</h5>
-                                            <div class="d-flex gap-4 align-items-center slide-range width-90">
-                                                <span>--</span>
-                                                <input class="width-65" type="range" min="1" max="100" value=""/>
-                                                <span>-%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card mt-4 height-85">
-                                    <div class="card-body d-flex align-items-center">
-                                        <div class="d-flex gap-5 align-items-center width-100">
-                                            <h5 class="mt-1">Y</h5>
-                                            <div class="d-flex gap-4 align-items-center slide-range width-90">
-                                                <span>--</span>
-                                                <input class="width-65" type="range" min="1" max="100" value=""/>
-                                                <span>-%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card mt-4 height-85">
-                                    <div class="card-body d-flex align-items-center">
-                                        <div class="d-flex gap-5 align-items-center width-100">
-                                            <h5 class="mt-1">Z</h5>
-                                            <div class="d-flex gap-4 align-items-center slide-range width-90">
-                                                <span>--</span>
-                                                <input class="width-65" type="range" min="1" max="100" value=""/>
-                                                <span>-%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Right column ends-->
                 </div>
             </div>
-        </div>
-        <!--Dashboard body ends-->
-    </div>
 
+            <div class="col-md-12 d-flex justify-content-start flex-wrap">
+                <chart-card :stationC="stationCount" :activeStationCount="activeStationCount" :inactiveStationCount="inactiveStationCount"></chart-card>
+                <chart-card v-for="data in summaryData" :key="data.stationId" :summaryData="data"></chart-card>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-
+import ChartCard from "../components/dashboard/ChartCard";
+import stationService from '../services/StationsService';
 import dashboardService from "../services/DashboardService";
+import Multiselect from 'vue-multiselect';
 
 export default {
     name: "Dashboard",
-
-    data() {
-        return {
-            machineStatus: [],
-            operatorName: '',
-            roundGreen: false,
-            roundRed: true,
-            isAlarm: false,
-            programStatus: false
-        }
+    components: {
+        ChartCard,
+        Multiselect
     },
-
+    data: () => ({
+        summaryData: null,
+        stationCount: 0,
+        activeStationCount: 0,
+        inactiveStationCount: 0,
+        deviceId: 'N/A',
+        selectedStationId: 0,
+        allStations: [],
+        selectedStations: [],
+        multiSelectOptions: [],
+    }),
     methods: {
-        getMachineData() {
-            dashboardService.getMachineStatus(response => {
-                this.programStatus = response.programStatus
-                this.machineStatus = response.machineStatus
-                // console.log(this.programStatus)
-                if (this.machineStatus.power_status === 'STOPPED') {
-                    this.roundGreen = false
-                    this.roundRed = true
-                } else {
-                    this.roundRed = false
-                    this.roundGreen = true
-                }
-
-                if (this.machineStatus.alarm_info === 'NULL' || this.machineStatus.alarm_info === 'NO ACTIVE ALARMS') {
-                    this.isAlarm = false
-                } else {
-                    this.isAlarm = true
-                }
+        labelWithStationName({ name }) {
+            return `${name}`;
+        },
+        fetchAllStations: function() {
+            stationService.fetchAll([], response => {
+                // console.log(response);
+                this.allStations = response;
+                this.processStationGroupData(response);
             });
         },
+        fetchAllSummaryData: function() {
+            var vm = this;
+            let stnIds = vm.selectedStations.map(a => a.id);
 
-        getOperator() {
-            let currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
-            axios.get('getOperatorName', {
-                params: {
-                    stationId: 7,
-                    date: currentDate
+            let stnNames = vm.selectedStations.map(b => b.name);  // needed to setCookie to show stationName after reloading page
+
+            this.setCookie(stnIds, stnNames);
+
+            let params = {
+                stationIds: stnIds
+            };
+            dashboardService.fetchAllSummaryData(params, data => {
+                vm.summaryData = data;
+                vm.stationCount = Object.keys(data).length;
+                vm.stationCount = parseInt(vm.stationCount);
+
+                for (var key in data) {
+                    if (data[key].color === "black") {
+                        vm.inactiveStationCount++;
+                    } else {
+                        vm.activeStationCount++;
+                    }
                 }
-            })
+            }, error => {
+                console.error(error);
+            });
+        },
+        updateData: function() {
+            this.activeStationCount = 0;
+            this.inactiveStationCount = 0;
+            this.fetchAllSummaryData();
+        },
+        setCookie(stationIds, stationNames) {
+            this.$cookies.set("dashboardSummaryPageStationIds",stationIds,"3d");
+            this.$cookies.set("dashboardSummaryPageStationNames",stationNames,"3d");
+        },
+        processStationGroupData(response) {
+            let stationGroups = [];
+            let stationGroup = {};
+            let stationGroupData = [];
+            let stationGroupDataObj = {};
 
-                .then((response) => {
-                    this.operatorName = response.data.operatorName
-                })
+            // group by station group
+            response.forEach(station => {
+                // pass all unique station groups with their stations data
+                if (stationGroups.indexOf(station.station_group.name) === -1) {
+                    stationGroups.push(station.station_group.name);
+                    stationGroupDataObj = {
+                        station_group_name: station.station_group.name,
+                        station_group_station_data: []
+                    };
+                    stationGroupDataObj.station_group_station_data.push({
+                        id: station.id,
+                        name: station.name
+                    });
+                    stationGroupData.push(stationGroupDataObj);
+                } else {
+                    // if station group already exists, push the station data to the existing station group
+                    stationGroupData.forEach(group => {
+                        if (group.station_group_name === station.station_group.name) {
+                            group.station_group_station_data.push({
+                                id: station.id,
+                                name: station.name
+                            });
+                        }
+                    });
+                }
+            });
+
+            // sort station groups by name asc
+            stationGroupData.sort((a, b) => {
+                if (a.station_group_name < b.station_group_name) {
+                    return -1;
+                }
+                if (a.station_group_name > b.station_group_name) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            // sort stations within each group by name asc
+            stationGroupData.forEach(group => {
+                group.station_group_station_data.sort((a, b) => {
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            });
+
+            this.multiSelectOptions = stationGroupData;
         }
     },
+    mounted() {
+        let dashboardSummaryPageStationIds = this.$cookies.get('dashboardSummaryPageStationIds');
 
-    created: function () {
-        this.getOperator()
-        this.getMachineData()
+        let dashboardSummaryPageStationNames = this.$cookies.get('dashboardSummaryPageStationNames');
 
-        setInterval(() => {
-            this.getOperator()
-            this.getMachineData()
-        }, 10000)
+        if (dashboardSummaryPageStationIds != null && dashboardSummaryPageStationNames != null) {
+            // dashboardSummaryPageStationIds = 5, 6
+            let stationIdsArr = [];
+            // remove comma and space and push values to array stationIdsArr
+            stationIdsArr = dashboardSummaryPageStationIds.split(',').map(Number);
+            // console.log(stationIdsArr);
+            // stationIdsArr = [5, 6]
+
+            this.selectedStations = stationIdsArr.map(id => {
+                return {
+                    id: id
+                }
+            });
+
+            // now pass dashboardSummaryPageStationNames
+
+            let stationNamesArr = [];
+            stationNamesArr = dashboardSummaryPageStationNames.split(',');
+            // console.log(stationNamesArr);
+
+            this.selectedStations.map((station, index) => {
+                station.name = stationNamesArr[index];
+            });
+        }
+
+
+        this.fetchAllStations();
+        this.fetchAllSummaryData();
+        this.dataUpdateTimer = setInterval(this.updateData, 1000*5);
+
+        this.reloadTimer = setInterval(() => {
+            window.location.reload();
+        }, 1000*30);
     },
+    destroyed() {
+        clearInterval(this.dataUpdateTimer);
+        clearInterval(this.reloadTimer);
+    }
 }
 </script>
-
-<style>
-.bitac-logo img {
-    height: 34px;
-    width: 105px;
-}
-
-.nav-bar {
-    height: 55px;
-    width: 100%;
-    background-image: linear-gradient(to right, #00c595 5%, #0090fe 80%);
-    padding: 12px 30px;
-    color: white;
-}
-
-.main-nav {
-    margin-left: 150px;
-}
-
-.main-nav a {
-    text-decoration: none;
-    font-size: 12px;
-    color: white;
-}
-
-.time {
-    font-size: 22px;
-}
-
-.main-body {
-    margin: 25px;
-}
-
-.card-margin-top {
-    margin-top: 25px;
-}
-
-.card-style {
-    border: 1px solid #bbe7ff;
-    border-radius: 0px;
-    min-height: 181px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19);
-}
-
-.shadow-cus {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19);
-}
-
-.main-body .card-body img {
-    height: 50px;
-    width: 48px;
-    margin-top: 10px;
-    margin-bottom: 15px;
-}
-
-.round {
-    display: inline-block;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-}
-
-.roundGreen {
-    background: #00dd20;
-}
-
-.roundRed {
-    background: #FF0D0D;
-}
-
-.programStatus {
-    font-weight: bolder;
-    color: #FF0D0D;
-}
-
-.middle-column .card {
-    border: none;
-}
-
-.right-column .card-3,
-.right-column .card-4 {
-    border: none;
-}
-
-.card-1 .card-header {
-    background: white;
-}
-
-.card-1 .card-body {
-    padding: 10px 25px 10px 25px;
-    font-size: 14px;
-}
-
-.card-3.card-body {
-    padding: 10px 25px 25px 25px;
-}
-
-.heading-color {
-    color: #00c594;
-}
-
-.secondary-header {
-    height: 40px;
-    width: 100%;
-    background: #2e25a5;
-    color: white;
-    font-size: 15px;
-    padding: 0px 30px;
-}
-
-.card-header-bg {
-    background: #10306c;
-    color: white;
-}
-
-.font-12 {
-    font-size: 12px;
-}
-
-.font-14 {
-    font-size: 14px;
-}
-
-.borderless-table tr td {
-    border-style: hidden !important;
-}
-
-.ml-120 {
-    margin-left: 120px;
-}
-
-.mm {
-    margin-left: 85px;
-}
-
-.load {
-    margin-right: 68px;
-}
-
-.height-85 {
-    height: 85px;
-}
-
-.height-420 {
-    height: 420px;
-}
-
-.height-300 {
-    height: 350px;
-}
-
-.dashboard-bg {
-    background: #f4faff;
-    /*height: 100vh;*/
-    margin: 12px;
-}
-
-.width-100 {
-    width: 100%;
-}
-
-.width-90 {
-    width: 90% !important;
-}
-
-.width-65 {
-    width: 65% !important;
-}
-
-/* slider style starts */
-.slide-range input[type='range'] {
-    -webkit-appearance: none;
-    margin: 10px 0;
-    /* width: 300px; */
-}
-
-.slide-range input[type='range']:focus {
-    outline: none;
-}
-
-.slide-range input[type='range']::-webkit-slider-runnable-track {
-    width: 250px;
-    height: 20px;
-    cursor: pointer;
-    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
-    background-image: linear-gradient(
-        to right,
-        #00c594 20%,
-        #ffa400,
-        #ff0000 85%
-    );
-}
-
-.slide-range input[type='range']::-webkit-slider-thumb {
-    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
-    height: 30px;
-    width: 8px;
-    border-radius: 5px;
-    background: #008dff;
-    cursor: pointer;
-    -webkit-appearance: none;
-    margin-top: -5px;
-}
-
-table {
-    font-size: 13px;
-    font-family: "Cascadia Code";
-}
-
-/* slider style ends */
+<style scoped>
+fieldset[disabled] .multiselect{pointer-events:none}.multiselect__spinner{position:absolute;right:1px;top:1px;width:48px;height:35px;background:#fff;display:block}.multiselect__spinner:after,.multiselect__spinner:before{position:absolute;content:"";top:50%;left:50%;margin:-8px 0 0 -8px;width:16px;height:16px;border-radius:100%;border:2px solid transparent;border-top-color:#41b883;box-shadow:0 0 0 1px transparent}.multiselect__spinner:before{animation:spinning 2.4s cubic-bezier(.41,.26,.2,.62);animation-iteration-count:infinite}.multiselect__spinner:after{animation:spinning 2.4s cubic-bezier(.51,.09,.21,.8);animation-iteration-count:infinite}.multiselect__loading-enter-active,.multiselect__loading-leave-active{transition:opacity .4s ease-in-out;opacity:1}.multiselect__loading-enter,.multiselect__loading-leave-active{opacity:0}.multiselect,.multiselect__input,.multiselect__single{font-family:inherit;font-size:16px;-ms-touch-action:manipulation;touch-action:manipulation}.multiselect{box-sizing:content-box;display:block;position:relative;width:100%;min-height:40px;text-align:left;color:#35495e}.multiselect *{box-sizing:border-box}.multiselect:focus{outline:none}.multiselect--disabled{background:#ededed;pointer-events:none;opacity:.6}.multiselect--active{z-index:50}.multiselect--active:not(.multiselect--above) .multiselect__current,.multiselect--active:not(.multiselect--above) .multiselect__input,.multiselect--active:not(.multiselect--above) .multiselect__tags{border-bottom-left-radius:0;border-bottom-right-radius:0}.multiselect--active .multiselect__select{transform:rotate(180deg)}.multiselect--above.multiselect--active .multiselect__current,.multiselect--above.multiselect--active .multiselect__input,.multiselect--above.multiselect--active .multiselect__tags{border-top-left-radius:0;border-top-right-radius:0}.multiselect__input,.multiselect__single{position:relative;display:inline-block;min-height:20px;line-height:20px;border:none;border-radius:5px;background:#fff;padding:0 0 0 5px;width:100%;transition:border .1s ease;box-sizing:border-box;margin-bottom:8px;vertical-align:top}.multiselect__input:-ms-input-placeholder{color:#35495e}.multiselect__input::placeholder{color:#35495e}.multiselect__tag~.multiselect__input,.multiselect__tag~.multiselect__single{width:auto}.multiselect__input:hover,.multiselect__single:hover{border-color:#cfcfcf}.multiselect__input:focus,.multiselect__single:focus{border-color:#a8a8a8;outline:none}.multiselect__single{padding-left:5px;margin-bottom:8px}.multiselect__tags-wrap{display:inline}.multiselect__tags{min-height:40px;display:block;padding:8px 40px 0 8px;border-radius:5px;border:1px solid #e8e8e8;background:#fff;font-size:14px}.multiselect__tag{position:relative;display:inline-block;padding:4px 26px 4px 10px;border-radius:5px;margin-right:10px;color:#fff;line-height:1;background:#41b883;margin-bottom:5px;white-space:nowrap;overflow:hidden;max-width:100%;text-overflow:ellipsis}.multiselect__tag-icon{cursor:pointer;margin-left:7px;position:absolute;right:0;top:0;bottom:0;font-weight:700;font-style:normal;width:22px;text-align:center;line-height:22px;transition:all .2s ease;border-radius:5px}.multiselect__tag-icon:after{content:"\D7";color:#266d4d;font-size:14px}.multiselect__tag-icon:focus,.multiselect__tag-icon:hover{background:#369a6e}.multiselect__tag-icon:focus:after,.multiselect__tag-icon:hover:after{color:#fff}.multiselect__current{min-height:40px;overflow:hidden;padding:8px 30px 0 12px;white-space:nowrap;border-radius:5px;border:1px solid #e8e8e8}.multiselect__current,.multiselect__select{line-height:16px;box-sizing:border-box;display:block;margin:0;text-decoration:none;cursor:pointer}.multiselect__select{position:absolute;width:40px;height:38px;right:1px;top:1px;padding:4px 8px;text-align:center;transition:transform .2s ease}.multiselect__select:before{position:relative;right:0;top:65%;color:#999;margin-top:4px;border-color:#999 transparent transparent;border-style:solid;border-width:5px 5px 0;content:""}.multiselect__placeholder{color:#adadad;display:inline-block;margin-bottom:10px;padding-top:2px}.multiselect--active .multiselect__placeholder{display:none}.multiselect__content-wrapper{position:absolute;display:block;background:#fff;width:100%;max-height:240px;overflow:auto;border:1px solid #e8e8e8;border-top:none;border-bottom-left-radius:5px;border-bottom-right-radius:5px;z-index:50;-webkit-overflow-scrolling:touch}.multiselect__content{list-style:none;display:inline-block;padding:0;margin:0;min-width:100%;vertical-align:top}.multiselect--above .multiselect__content-wrapper{bottom:100%;border-bottom-left-radius:0;border-bottom-right-radius:0;border-top-left-radius:5px;border-top-right-radius:5px;border-bottom:none;border-top:1px solid #e8e8e8}.multiselect__content::webkit-scrollbar{display:none}.multiselect__element{display:block}.multiselect__option{display:block;padding:12px;min-height:40px;line-height:16px;text-decoration:none;text-transform:none;vertical-align:middle;position:relative;cursor:pointer;white-space:nowrap}.multiselect__option:after{top:0;right:0;position:absolute;line-height:40px;padding-right:12px;padding-left:20px;font-size:13px}.multiselect__option--highlight{background:#41b883;outline:none;color:#fff}.multiselect__option--highlight:after{content:attr(data-select);background:#41b883;color:#fff}.multiselect__option--selected{background:#f3f3f3;color:#35495e;font-weight:700}.multiselect__option--selected:after{content:attr(data-selected);color:silver}.multiselect__option--selected.multiselect__option--highlight{background:#ff6a6a;color:#fff}.multiselect__option--selected.multiselect__option--highlight:after{background:#ff6a6a;content:attr(data-deselect);color:#fff}.multiselect--disabled .multiselect__current,.multiselect--disabled .multiselect__select{background:#ededed;color:#a6a6a6}.multiselect__option--disabled{background:#ededed!important;color:#a6a6a6!important;cursor:text;pointer-events:none}.multiselect__option--group{background:#ededed;color:#35495e}.multiselect__option--group.multiselect__option--highlight{background:#35495e;color:#fff}.multiselect__option--group.multiselect__option--highlight:after{background:#35495e}.multiselect__option--disabled.multiselect__option--highlight{background:#dedede}.multiselect__option--group-selected.multiselect__option--highlight{background:#ff6a6a;color:#fff}.multiselect__option--group-selected.multiselect__option--highlight:after{background:#ff6a6a;content:attr(data-deselect);color:#fff}.multiselect-enter-active,.multiselect-leave-active{transition:all .15s ease}.multiselect-enter,.multiselect-leave-active{opacity:0}.multiselect__strong{margin-bottom:8px;line-height:20px;display:inline-block;vertical-align:top}[dir=rtl] .multiselect{text-align:right}[dir=rtl] .multiselect__select{right:auto;left:1px}[dir=rtl] .multiselect__tags{padding:8px 8px 0 40px}[dir=rtl] .multiselect__content{text-align:right}[dir=rtl] .multiselect__option:after{right:auto;left:0}[dir=rtl] .multiselect__clear{right:auto;left:12px}[dir=rtl] .multiselect__spinner{right:auto;left:1px}@keyframes spinning{0%{transform:rotate(0)}to{transform:rotate(2turn)}}
 </style>

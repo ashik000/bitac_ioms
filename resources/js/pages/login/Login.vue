@@ -12,9 +12,9 @@
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
                             <div class="form-group" align="center" style="margin: 0px; padding: 0px;">
-                                <img src="storage/images/walton-logo.png" alt="inovace logo" height="90" style="margin-top: 20px;">
+                                <img src="storage/images/bitac-logo.png" alt="bitac logo" height="90" style="margin-top: 20px;">
                             </div>
-                            <h2 class="pt-5" style="font-size: 30px; font-family:Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; color: black; text-align: center;">IOMS</h2>
+                            <h2 class="pt-2" style="font-size: 30px; font-family:Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; color: #555; text-align: center; font-weight: bold;">BITAC IOMS</h2>
                             <form action="#" @submit.prevent = 'login' style="margin-top: 30px;">
                                 <div class="form-group">
                                     <label for="username">Email</label>
@@ -71,7 +71,7 @@
                     // window.localStorage.setItem('token_expiration', response.expires_in);
                     // window.localStorage.setItem('role', response.role);
                     this.$router.push({
-                        name: 'dashboard'
+                        name: 'hmiview'
                     });
                     ToastrService.showSuccessToast('Login Successful');
                 }, error => {

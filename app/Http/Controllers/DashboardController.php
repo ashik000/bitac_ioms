@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Data\Repositories\MachineStatusRepository;
 use App\Data\Repositories\ProductRepository;
 use DateTime;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use App\Data\Models\MachineStatus;
 
 class DashboardController extends Controller
@@ -19,11 +19,12 @@ class DashboardController extends Controller
         $this->productRepository = $productRepository;
     }
 
-    public function getMachineStatus()
+    public function getMachineStatus(Request $request)
     {
-        $machineStatus = $this->machineStatusRepository->findLatestMachineStatusByStationId(7);
+        $stationId = $request['station_id'];
+        $machineStatus = $this->machineStatusRepository->findLatestMachineStatusByStationId($stationId);
         $programStatus = false;
-        $productSelected = $this->productRepository->findRunningProductOfStationByStationId(7);
+        $productSelected = $this->productRepository->findRunningProductOfStationByStationId($stationId);
         if(!empty($productSelected))
         {
             if($machineStatus->program_name !== $productSelected->name)

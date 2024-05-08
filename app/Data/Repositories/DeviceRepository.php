@@ -50,4 +50,14 @@ class DeviceRepository implements PaginatedResultInterface, RawQueryBuilderOutpu
     {
         Device::insert($devices);
     }
+    public function getAllDeviceIdentifiers()
+    {
+        $devices = Device::join('device_stations', 'device_stations.device_id', '=', 'devices.id')
+            ->select('devices.identifier', 'device_stations.station_id')
+            ->groupBy('devices.identifier')
+            ->groupBy('device_stations.station_id')
+            ->whereNull('device_stations.deleted_at')
+            ->get();
+        return $devices;
+    }
 }

@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-md-10">
                         <div class="dropdown">
-                            <label for="station-picker" style="font-size: 1.35rem; padding-top: 1px">STATION:</label>
+                            <label class="text-black-50" for="station-picker" style="font-size: 1.35rem; padding-top: 1px">Station:</label>
                             <button class="btn btn-light dropdown-toggle text-uppercase" type="button" id="station-picker" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0px;font-size: 20px;font-weight: 500;margin-top: -12px;">
                                 {{ filter.stationName }}
                             </button>
@@ -57,7 +57,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <span v-if="checkTeamName">Team: {{ filter.stationTeamName }}</span>
+                        <span v-if="checkTeamName"><span class="text-black-50">Team:</span> {{ filter.stationTeamName }}</span>
                         <span v-else>Operator: {{ filter.stationOperatorName }}</span>
                     </div>
                 </div>
@@ -651,7 +651,7 @@
                     vm.fetchData();
                 }
             };
-            this.dataUpdateTimer = setInterval(this.$data._updateData, 2000);
+            this.dataUpdateTimer = setInterval(this.$data._updateData, 1000*10);
 
             StationsService.fetchAll({}, (data) => {
                 //If a user comes to this page by clicking on a station from the SCADA page, the station will be selected by default

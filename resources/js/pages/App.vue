@@ -6,19 +6,25 @@
             <div class="d-flex flex-wrap align-items-center justify-content-start justify-content-lg-start main-header-flex-container">
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small top_menu" v-bind:class="active" v-on:click.prevent>
                     <li class="padding_y_ten_px">
-                        <router-link to="/lineview">
-                            <img src="/storage/images/walton-logo.png" alt="walton-logo" style="height: 40px;">
+                        <router-link to="/dashboard">
+                            <img src="/storage/images/bitac-logo.png" alt="bitac-logo" style="height: 40px;">
                         </router-link>
                     </li>
                     <li class="dashboard padding_y_ten_px ms-5" v-on:click="makeActive('dashboard')">
                         <router-link to="/dashboard" class="nav-link text-white" active-class="active">
-                            <b-icon icon="bar-chart" style="border: 1px solid #ff0000; padding: 2px;"></b-icon>
+                            <b-icon icon="columns" style="padding: 1px;"></b-icon>
                             Dashboard
+                        </router-link>
+                    </li>
+                    <li class="hmiview padding_y_ten_px" v-on:click="makeActive('hmiview')">
+                        <router-link to="/hmiview" class="nav-link text-white" active-class="active">
+                            <b-icon icon="tv" style="padding: 1px;"></b-icon>
+                            HMI View
                         </router-link>
                     </li>
                     <li class="lineview padding_y_ten_px" v-on:click="makeActive('lineview')">
                         <router-link to="/lineview" class="nav-link text-white">
-                            <b-icon icon="graph-up" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
+                            <b-icon icon="graph-up" style="padding: 1px;"></b-icon>
                             Lineview
                         </router-link>
                     </li>
@@ -30,23 +36,24 @@
 <!--                    </li>-->
                     <li class="reports padding_y_ten_px" v-on:click="makeActive('reports')">
                         <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <b-icon icon="file-bar-graph" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
+                            <b-icon icon="file-bar-graph" style="padding: 1px;"></b-icon>
                             Reports
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><router-link class="dropdown-item" to="/reports/oee-report">OEE</router-link></li>
                             <li><router-link class="dropdown-item" to="/reports/downtime-report">Downtime</router-link></li>
+                            <li><router-link class="dropdown-item" to="/machining_report">Machining</router-link></li>
                         </ul>
                     </li>
-                    <li class="machining_report padding_y_ten_px" v-on:click="makeActive('machining_report')">
+<!--                    <li class="machining_report padding_y_ten_px" v-on:click="makeActive('machining_report')">
                         <router-link to="/machining_report" class="nav-link text-white" active-class="active">
                             <b-icon icon="file-bar-graph" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
                             Machining Report
                         </router-link>
-                    </li>
+                    </li>-->
                     <li class="settings padding_y_ten_px" v-on:click="makeActive('settings')">
                         <router-link to="/settings/stations" class="nav-link text-white" active-class="active">
-                            <b-icon icon="gear" style="border: 1px solid #ffffff; padding: 2px;"></b-icon>
+                            <b-icon icon="gear" style="padding: 1px;"></b-icon>
                             Settings
                         </router-link>
                     </li>
@@ -81,7 +88,7 @@ export default {
     name: 'App',
     data: () => ({
         currentTime: '',
-        active: 'dashboard'
+        active: 'hmiview'
     }),
     components: {
         ReportMenuItem
@@ -103,7 +110,7 @@ export default {
                     name : 'login'
                 })
             }, error => {
-
+                console.log(error);
             });
         },
         makeActive: function(item) {
@@ -137,6 +144,9 @@ export default {
             case '/dashboard':
                 this.active = 'dashboard';
                 break;
+            case '/hmiview':
+                this.active = 'hmiview';
+                break;
             case '/lineview':
                 this.active = 'lineview';
                 break;
@@ -165,7 +175,7 @@ export default {
                 this.active = 'settings';
                 break;
             default:
-                this.active = 'dashboard';
+                this.active = 'hmiview';
         }
     }
 }
@@ -173,6 +183,7 @@ export default {
 
 <style lang="scss" scoped>
     ul.dashboard .dashboard,
+    ul.hmiview .hmiview,
     ul.lineview .lineview,
     ul.reports .reports,
     ul.machining_report .machining_report,

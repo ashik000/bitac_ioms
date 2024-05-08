@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-
+import Dashboard from "./pages/Dashboard";
+import HmiView from "./pages/HmiView";
 import LineView from "./pages/LineView";
 import Settings from "./pages/Settings/Settings";
 import DowntimeReasons from "./pages/Settings/DowntimeReasons";
@@ -13,7 +14,6 @@ import OeeReport from "./pages/Reports/OeeReport";
 import DowntimeReport from "./pages/Reports/DowntimeReport";
 import Teams from "./pages/Settings/Teams";
 import ScadaView from "./pages/Scada/ScadaView";
-import Dashboard from "./pages/Dashboard";
 import MachiningReport from "./pages/MachiningReport/MachiningReport";
 
 import LoginPage from "./pages/login/Login";
@@ -28,7 +28,7 @@ const routes = [
     {
         path: '/',
         redirect: {
-            path: '/dashboard'
+            path: '/hmiview'
         }
     },
     {
@@ -40,25 +40,25 @@ const routes = [
         },
     },
     {
-        name: 'scadaView',
-        path: '/scada',
-        component: ScadaView,
+        name: 'dashboard',
+        path: '/dashboard',
+        component: Dashboard,
         meta: {
             requiresAuth: true
         }
     },
     {
-        path: '/lineview',
-        name: 'lineview',
-        component: LineView,
+        path: '/hmiview',
+        name: 'hmiview',
+        component: HmiView,
         meta: {
             requiresAuth: true
         },
     },
     {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: Dashboard,
+        path: '/lineview',
+        name: 'lineview',
+        component: LineView,
         meta: {
             requiresAuth: true
         },
