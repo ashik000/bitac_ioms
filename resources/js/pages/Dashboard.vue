@@ -1,8 +1,7 @@
 <template>
     <div class="container-fluid mt-2">
         <div class="row">
-
-            <div class="row justify-content-end">
+<!--            <div class="row justify-content-end">
                 <div class="col-md-5 d-flex p-1 mb-2 rounded-2 bg-primary text-white">
                     <div class="col-md-4">
                         <label class="float-end mt-1 me-2">Select Stations</label>
@@ -15,9 +14,9 @@
                                     :close-on-select="false"></multiselect>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
-            <div class="col-md-12 d-flex justify-content-start flex-wrap">
+            <div class="col-md-12 d-flex justify-content-start flex-wrap mt-3">
                 <chart-card :stationC="stationCount" :activeStationCount="activeStationCount" :inactiveStationCount="inactiveStationCount"></chart-card>
                 <chart-card v-for="data in summaryData" :key="data.stationId" :summaryData="data"></chart-card>
             </div>
@@ -156,7 +155,7 @@ export default {
         }
     },
     mounted() {
-        let dashboardSummaryPageStationIds = this.$cookies.get('dashboardSummaryPageStationIds');
+        /*let dashboardSummaryPageStationIds = this.$cookies.get('dashboardSummaryPageStationIds');
 
         let dashboardSummaryPageStationNames = this.$cookies.get('dashboardSummaryPageStationNames');
 
@@ -183,20 +182,20 @@ export default {
             this.selectedStations.map((station, index) => {
                 station.name = stationNamesArr[index];
             });
-        }
+        }*/
 
 
-        this.fetchAllStations();
+        //this.fetchAllStations();
         this.fetchAllSummaryData();
-        this.dataUpdateTimer = setInterval(this.updateData, 1000*5);
+        this.dataUpdateTimer = setInterval(this.updateData, 1000*10);
 
-        this.reloadTimer = setInterval(() => {
+        /*this.reloadTimer = setInterval(() => {
             window.location.reload();
-        }, 1000*30);
+        }, 1000*30);*/
     },
     destroyed() {
         clearInterval(this.dataUpdateTimer);
-        clearInterval(this.reloadTimer);
+        //clearInterval(this.reloadTimer);
     }
 }
 </script>

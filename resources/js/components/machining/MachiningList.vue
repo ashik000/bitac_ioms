@@ -40,7 +40,7 @@
 
                 </div>
 
-            
+
                 <div class="input-group remove-width">
                     <input v-model="searchString" type="text" class="form-control rounded-2" placeholder="Search" aria-label="Shift search" aria-describedby="Shift search">
                     <button class="btn transparent-search-button" type="button">
@@ -100,18 +100,20 @@ export default {
         filteredItems : function () {
             return this.items.filter((item) => {
                 if(this.searchString === '') return true;
-                
+
                 let station_name = item.station_name;
                 let program_name = item.program_name;
                 let spindle_speed = item.spindle_speed;
+                let spindle_speed_active = item.spindle_speed_active;
                 let feed_rate = item.feed_rate;
 
                 let station_name_check = station_name.toLowerCase().includes(this.searchString.toLowerCase());
                 let program_name_check = program_name.toLowerCase().includes(this.searchString.toLowerCase());
                 let spindle_speed_check = spindle_speed.toLowerCase().includes(this.searchString.toLowerCase());
+                let spindle_speed_active_check = spindle_speed_active.toLowerCase().includes(this.searchString.toLowerCase());
                 let feed_rate_check = feed_rate.toLowerCase().includes(this.searchString.toLowerCase());
-                
-                return station_name_check || program_name_check || spindle_speed_check || feed_rate_check;
+
+                return station_name_check || program_name_check || spindle_speed_check || spindle_speed_active_check || feed_rate_check;
             });
         },
         rangeSelections() {

@@ -78,6 +78,12 @@ class StoreMachineDataController extends Controller
                 'production_counter1' => $dataRow['production_counter1'] ?? null,
                 'production_counter2' => $dataRow['production_counter2'] ?? null,
                 'power_status' => $dataRow['power_status'] ?? null,
+                'spindle_speed_active' => $dataRow['spindle_speed_active'] ?? null,
+                'feed_rate_active' => $dataRow['feed_rate_active'] ?? null,
+                'machining_mode' => $dataRow['machining_mode'] ?? null,
+                'tool_life' => $dataRow['tool_life'] ?? null,
+                'tool_number' => $dataRow['tool_number'] ?? null,
+                'load_on_table' => $dataRow['load_on_table'] ?? null,
                 'produced_at' => $dataRow['produced_at'] ?? null
             ];
 

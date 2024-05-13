@@ -7,40 +7,38 @@
                         <MachiningList :items="records" sectionHeader="Machining Report" @update-range="updateRange" @download-excel="downloadExcel">
                             <template v-slot:columnHeaders>
                                 <tr>
-                                    <th style="width: 20%;">Station Name</th>
-                                    <th style="width: 20%;">Program Name</th>
-                                    <th style="width: 20%;">Spindle Speed</th>
-                                    <th style="width: 20%;">Feed Rate</th>
-                                    <th style="width: 20%;">Produced At</th>
+                                    <th style="width: 10%;">Station Name</th>
+                                    <th style="width: 10%;">Program Name</th>
+                                    <th style="width: 10%;">Power Status</th>
+                                    <th style="width: 6%;">Spindle Speed</th>
+                                    <th style="width: 6%;">Spindle Speed Active</th>
+                                    <th style="width: 6%;">Feed Rate</th>
+                                    <th style="width: 6%;">Feed Rate Active</th>
+                                    <th style="width: 6%;">This Cycle</th>
+                                    <th style="width: 6%;">M30 Counter 1</th>
+                                    <th style="width: 6%;">M30 Counter 2</th>
+                                    <th style="width: 6%;">Machining Mode</th>
+                                    <th style="width: 6%;">Tool Life</th>
+                                    <th style="width: 6%;">Load On</th>
+                                    <th style="width: 10%;">Produced At</th>
                                 </tr>
                             </template>
                             <div></div>
                             <template v-slot:row="{ row }">
-                                <td>
-                                    <div>
-                                        <span>{{ row.station_name }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <span>{{ row.program_name }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <span>{{ row.spindle_speed }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <span>{{ row.feed_rate }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <span>{{ row.produced_at }}</span>
-                                    </div>
-                                </td>
+                                <td>{{ row.station_name }}</td>
+                                <td>{{ row.program_name }}</td>
+                                <td>{{ row.power_status }}</td>
+                                <td>{{ floatFixed(row.spindle_speed,2) }}</td>
+                                <td>{{ floatFixed(row.spindle_speed_active,2) }}</td>
+                                <td>{{ floatFixed(row.feed_rate,2) }}</td>
+                                <td>{{ floatFixed(row.feed_rate_active,2) }}</td>
+                                <td>{{ row.cycle_time }}</td>
+                                <td>{{ row.production_counter1 }}</td>
+                                <td>{{ row.production_counter2 }}</td>
+                                <td>{{ row.machining_mode }}</td>
+                                <td>{{ row.tool_life }}</td>
+                                <td>{{ row.load_on_table }}</td>
+                                <td>{{ row.produced_at }}</td>
                             </template>
                             <template v-slot:no-data>
                                 <tr>
@@ -120,6 +118,11 @@
                     endTime: moment(this.range.end).format('YYYY-MM-DD'),
                 };
                 machiningService.downloadExcel(data);
+            },
+            floatFixed(number,point){
+                if(number==null) return "";
+                if(isNaN(number)) number = 0;
+                return parseFloat(number).toFixed(point);
             }
         },
         mounted() {

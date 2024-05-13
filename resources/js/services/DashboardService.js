@@ -13,6 +13,18 @@ export default {
             console.log(error);
         });
     },
+    getMachineOEE(data, success, error) {
+        axios.get('getMachineOEE', {
+            params: {
+                'station_id': data.stationId,
+            }
+        })
+            .then(response => {
+                success(response.data);
+            }).catch(error => {
+            console.log(error);
+        });
+    },
     fetchAllSummaryData(data, success, error) {
         axios.get('dashboard-summary', {
             params: {

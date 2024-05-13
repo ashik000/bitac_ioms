@@ -2,24 +2,34 @@
     <div class="col-md-3 mb-2">
         <div class="card shadow rounded-2 mx-2">
 
-            <div v-if="summaryData" :class="getBackGroundColor" class="card-body rounded-2 main_card" style="min-height: 20rem;">
+            <div v-if="summaryData" :class="getBackGroundColor" class="card-body rounded-2 main_card" style="min-height: 10rem;">
                 <div class="flex-container">
-                    <h6 class="text-white">{{this.summaryData.stationName}}</h6>
-                    <h6 class="text-white">OEE: {{this.summaryData.oee}}%</h6>
+                    <h5 :class="getTextColor">{{this.summaryData.stationName}}</h5>
+                    <h5 :class="getTextColor">OEE: {{this.summaryData.oee}}%</h5>
                 </div>
                 <div class="flex-container">
-                    <h6 class="text-white">{{this.summaryData.productName}}</h6>
+                    <h6 :class="getTextColor">{{this.summaryData.productName}}</h6>
                 </div>
-                <div class="flex-container" :class="{ bar_update: checkProgressBar }">
+                <div class="flex-container mt-2">
+                    <h7 class="text-black-50">Alarm: {{this.summaryData.productName}}</h7>
+                </div>
+                <div class="flex-container mt-3" style="text-align: center;">
+                    <span :class="getTextColor" style="font-size: 12px;">
+                        Availability: {{this.summaryData.availability}}% |
+                        Performance: {{this.summaryData.performance}}% |
+                        Quality: {{this.summaryData.quality}}%
+                    </span>
+                </div>
+<!--                <div class="flex-container" :class="{ bar_update: checkProgressBar }">
                     <div class="progress-bar-wrapper">
                         <div class="progress-bar">
                             <span class="progress-bar-fill" :style="getProgressBarWidth"></span>
                         </div>
                     </div>
                     <h6 class="text-white">{{this.summaryData.performance}}%</h6>
-                </div>
+                </div>-->
 
-                <div v-if="summaryData.stationId" @click="setCookie(summaryData.stationId)" style="cursor: pointer;">
+<!--                <div v-if="summaryData.stationId" @click="setCookie(summaryData.stationId)" style="cursor: pointer;">
                     <div class="flex-container" v-if="!makeInactive" >
                         <speed-chart :title="title" :dataset="summaryData"></speed-chart>
                     </div>
@@ -49,17 +59,17 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
             </div>
 
 
-            <div class="d-flex align-items-center justify-content-center card-body rounded-2" style="background-color: #262626; color: #FFFFFF; height: 20rem" v-else>
+            <div class="d-flex align-items-center justify-content-center card-body rounded-2" style="background-color: #8b93e0; color: #FFFFFF; height: 10rem" v-else>
                 <div class="row">
                     <div class="col-md-6 col-6">
                         <div class="row" style="font-size: 1.2rem">
                             <span>
-                                Stations: <br> <span style="font-size: 1.8rem; font-weight: 600;">{{this.stationC ? this.stationC : '0'}}</span>
+                                Stations: <span style="font-size: 1.8rem; font-weight: 600;">{{this.stationC ? this.stationC : '0'}}</span>
                             </span>
                             <span>
                                 Operating: {{ this.activeStationCount ? this.activeStationCount : '0' }}
@@ -131,12 +141,21 @@ export default {
         getBackGroundColor() {
             switch (this.summaryData.color ) {
                 case 'red':
-                    return 'bg-danger';
+                    return 'red-card';
                 case 'green':
-                    return 'bg-success';
+                    return 'green-card';
             }
             this.makeInactive = true;
             return 'inactive-card';
+        },
+        getTextColor() {
+            switch (this.summaryData.color ) {
+                case 'red':
+                    return 'text-white';
+                case 'green':
+                    return 'text-white';
+            }
+            return 'text-black';
         },
         getProgressBarWidth() {
             return "width:" +  this.summaryData.performance + "%";
@@ -193,9 +212,16 @@ export default {
     border-radius: 3px;
     transition: width 500ms ease-in-out;
 }
-
+.red-card {
+    background-color: #E4393F;
+    max-width: 50rem!important;
+}
+.green-card {
+    background-color: #1AB25F;
+    max-width: 50rem!important;
+}
 .inactive-card {
-    background-color: #030303;
+    background-color: #C3CCC7;
     max-width: 50rem!important;
 }
 .walton_logo {

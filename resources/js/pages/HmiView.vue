@@ -2,10 +2,9 @@
     <div class="dashboard-bg">
         <!--Dashboard body starts-->
         <div class="row main-body">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="row">
-                    <!--Left column starts-->
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="card card-style mt-3">
                             <div class="card-header card-header-bg text-center fw-bold">
                                 Machine Information
@@ -30,34 +29,30 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="m-0 p-2 section-border d-flex justify-content-start">
-                                        <div>
-                                            <img src="../assets/Artboard9.png" alt=""/>
+                                <div class="row px-md-3 px-0 py-0">
+                                    <div class="col-md-6 col-12 px-0">
+                                        <div class="mx-0 my-2 p-2 section-border d-flex justify-content-start">
+                                            <div>
+                                                <img src="../assets/Artboard9.png" alt=""/>
+                                            </div>
+                                            <div>
+                                                <small class="text-black-50">Operator:</small>
+                                                <h6 class="text-uppercase py-1 mb-0">
+                                                    <span class="fw-bolder">{{ operatorName }}</span>
+                                                </h6>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <small class="text-black-50">Operator:</small>
-                                            <h6 class="text-uppercase py-1 mb-0">
-                                                <span class="fw-bolder">{{ operatorName }}</span>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="col-6 p-0">
-                                        <div class="m-0 p-2 section-border d-flex justify-content-start">
+                                        <div class="mx-0 my-2 p-2 section-border d-flex justify-content-start">
                                             <div>
                                                 <img src="../assets/Artboard8.png" alt=""/>
                                             </div>
                                             <div>
                                                 <small class="text-black-50">Total Production:</small>
                                                 <h6 class="text-uppercase py-1 mb-0">
-                                                    <span><span class="fw-bolder">{{ machineStatus.production_counter2 }}</span> pcs</span>
+                                                    <span v-if="machineStatus.production_counter2"><span class="fw-bolder">{{ machineStatus.production_counter2 }}</span> pcs</span>
                                                 </h6>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-6 p-0">
                                         <div class="m-0 p-2 section-border d-flex justify-content-start">
                                             <div>
                                                 <img src="../assets/Artboard7.png" alt=""/>
@@ -65,7 +60,7 @@
                                             <div>
                                                 <small class="text-black-50">Machine Status:</small>
                                                 <h6 class="text-uppercase py-1 mb-0">
-                                                    <div class="round" v-bind:class="{roundGreen, roundRed}"></div>
+                                                    <div v-if="machineStatus.power_status" class="round" v-bind:class="{roundGreen, roundRed}"></div>
                                                     <span class="fw-bolder">{{ machineStatus.power_status }}</span>
                                                 </h6>
                                             </div>
@@ -76,9 +71,111 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-6 col-12 ps-md-2 pe-md-0 px-0">
+                                        <div class="row mx-0 my-2 px-0 py-3">
+                                            <div class="col-8">
+                                                <h5 class="py-1 mb-0 fw-bolder text-blue">
+                                                    Total OEE
+                                                </h5>
+                                            </div>
+                                            <div class="col-4">
+                                                <h5 class="text-uppercase py-1 mb-0" style="text-align: right">
+                                                    <span class="fw-bolder text-blue">{{ machineTotalOee }}%</span>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                        <div class="row mx-0 mt-3 mb-1 px-2 py-2 bg-primary-light">
+                                            <div class="col-8 px-0">
+                                                <h6 class="py-1 mb-0">
+                                                    Availability
+                                                </h6>
+                                            </div>
+                                            <div class="col-4 px-0">
+                                                <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
+                                                    <span>{{ machineAvailability }}%</span>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <div class="row mx-0 my-1 px-2 py-2 bg-success-light">
+                                            <div class="col-8 px-0">
+                                                <h6 class="py-1 mb-0">
+                                                    Performance
+                                                </h6>
+                                            </div>
+                                            <div class="col-4 px-0">
+                                                <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
+                                                    <span>{{ machinePerformance }}%</span>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <div class="row mx-0 my-1 px-2 py-2 bg-warning-light">
+                                            <div class="col-8 px-0">
+                                                <h6 class="py-1 mb-0">
+                                                    Quality
+                                                </h6>
+                                            </div>
+                                            <div class="col-4 px-0">
+                                                <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
+                                                    <span>{{ machineQuality }}%</span>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-6 ">
+                        <div class="card card-style mt-3">
+                            <div class="card-header card-header-bg text-center fw-bold">
+                                Programme
+                            </div>
+                            <div class="card-body text-left">
+                                <div class="row px-md-3 px-0 py-md-2 py-0">
+                                    <div class="row m-0 p-0 section-border bg-light">
+                                        <div class="col-12">
+                                            <h5 class="py-1 mb-0">
+                                                <span class="fw-bolder">{{ machineStatus.program_name }}</span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row px-md-3 px-0 py-md-2 py-0">
+                                    <div class="row m-0 p-0 section-border">
+                                        <div class="col-6">
+                                            <small class="text-black-50">Spindle</small>
+                                            <h6 class="py-1 mb-0">
+                                                Spindle Speed
+                                            </h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="text-black-50">.</span>
+                                            <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
+                                                <span v-if="machineStatus.spindle_speed" class="fw-bolder">{{ parseFloat(machineStatus.spindle_speed).toFixed(2) }} RPM</span>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row px-md-3 px-0 py-md-2 py-0">
+                                    <div class="row m-0 p-0 section-border">
+                                        <div class="col-6">
+                                            <small class="text-black-50">Feed</small>
+                                            <h6 class="py-1 mb-0">
+                                                Feed Rate
+                                            </h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="text-black-50">.</span>
+                                            <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
+                                                <span v-if="machineStatus.feed_rate" class="fw-bolder">{{ machineStatus.feed_rate }} MMPH</span>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="card card-style mt-3">
                             <div class="card-header card-header-bg text-center fw-bold">
                                 Production
@@ -135,58 +232,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--Left column ends-->
-
-                    <!--Middle column starts-->
-                    <div class="col-md-4 middle-column">
-                        <div class="card card-style mt-3">
-                            <div class="card-header card-header-bg text-center fw-bold">
-                                Programme
-                            </div>
-                            <div class="card-body text-left">
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="row m-0 p-0 section-border bg-light">
-                                        <div class="col-12">
-                                            <h5 class="py-1 mb-0">
-                                                <span class="fw-bolder">{{ machineStatus.program_name }}</span>
-                                            </h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="row m-0 p-0 section-border">
-                                        <div class="col-6">
-                                            <small class="text-black-50">Spindle</small>
-                                            <h6 class="py-1 mb-0">
-                                                Spindle Speed
-                                            </h6>
-                                        </div>
-                                        <div class="col-6">
-                                            <span class="text-black-50">.</span>
-                                            <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
-                                                <span class="fw-bolder">{{ parseFloat(machineStatus.spindle_speed).toFixed(2) }} RPM</span>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="row m-0 p-0 section-border">
-                                        <div class="col-6">
-                                            <small class="text-black-50">Feed</small>
-                                            <h6 class="py-1 mb-0">
-                                                Feed Rate
-                                            </h6>
-                                        </div>
-                                        <div class="col-6">
-                                            <span class="text-black-50">.</span>
-                                            <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
-                                                <span class="fw-bolder">{{ machineStatus.feed_rate }} MMPH</span>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-md-6">
                         <div class="card card-style mt-3">
                             <div class="card-header card-header-bg text-center fw-bold">
                                 Machining
@@ -196,12 +242,12 @@
                                     <div class="row m-0 p-0 section-border">
                                         <div class="col-6">
                                             <h6 class="py-1 mb-0">
-                                                Tool Life
+                                                Mode
                                             </h6>
                                         </div>
                                         <div class="col-6">
                                             <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
-                                                <span class="fw-bolder">{{ machineStatus.cycle_time }}</span>
+                                                <span class="fw-bolder">{{ machineStatus.machining_mode }}</span>
                                             </h6>
                                         </div>
                                     </div>
@@ -210,12 +256,12 @@
                                     <div class="row m-0 p-0 section-border">
                                         <div class="col-6">
                                             <h6 class="py-1 mb-0">
-                                                Mood
+                                                Tool Life
                                             </h6>
                                         </div>
                                         <div class="col-6">
                                             <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
-                                                <span class="fw-bolder">{{ machineStatus.production_counter1 }}</span>
+                                                <span class="fw-bolder">{{ machineStatus.tool_life }}</span>
                                             </h6>
                                         </div>
                                     </div>
@@ -229,7 +275,7 @@
                                         </div>
                                         <div class="col-6">
                                             <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
-                                                <span class="fw-bolder">{{ machineStatus.production_counter2 }}</span>
+                                                <span class="fw-bolder">{{ machineStatus.load_on_table }}</span>
                                             </h6>
                                         </div>
                                     </div>
@@ -237,104 +283,104 @@
                             </div>
                         </div>
                     </div>
-                    <!--Middle column ends-->
-
-                    <!--Right column starts-->
-                    <div class="col-md-4 right-column">
-                        <div class="card card-style mt-3">
-                            <div class="card-header card-header-bg text-center fw-bold">
-                                Maintenance Feed
-                            </div>
-                            <div class="card-body">
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="row m-0 p-1 section-border">
-                                        <div class="col-12">
-                                            <h6 class="p-0 mb-0">
-                                                <strong>Maintenance Header</strong>
-                                            </h6>
-                                            <small>
-                                                Maintenance details with short description.
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="row m-0 p-1 section-border">
-                                        <div class="col-12">
-                                            <h6 class="p-0 mb-0">
-                                                <strong>Maintenance Header</strong>
-                                            </h6>
-                                            <small>
-                                                Maintenance details with short description.
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="row m-0 p-1 section-border">
-                                        <div class="col-12">
-                                            <h6 class="p-0 mb-0">
-                                                <strong>Maintenance Header</strong>
-                                            </h6>
-                                            <small>
-                                                Maintenance details with short description.
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="row m-0 p-1 section-border">
-                                        <div class="col-12">
-                                            <h6 class="p-0 mb-0">
-                                                <strong>Maintenance Header</strong>
-                                            </h6>
-                                            <small>
-                                                Maintenance details with short description.
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="row m-0 p-1 section-border">
-                                        <div class="col-12">
-                                            <h6 class="p-0 mb-0">
-                                                <strong>Maintenance Header</strong>
-                                            </h6>
-                                            <small>
-                                                Maintenance details with short description.
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="row m-0 p-1 section-border">
-                                        <div class="col-12">
-                                            <h6 class="p-0 mb-0">
-                                                <strong>Maintenance Header</strong>
-                                            </h6>
-                                            <small>
-                                                Maintenance details with short description.
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
-                                    <div class="row m-0 p-1 section-border">
-                                        <div class="col-12">
-                                            <h6 class="p-0 mb-0">
-                                                <strong>Maintenance Header</strong>
-                                            </h6>
-                                            <small>
-                                                Maintenance details with short description.
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Right column ends-->
                 </div>
+            </div>
+            <div class="col-md-4">
+                <!--Right column starts-->
+                <div class="col-md-12 right-column">
+                    <div class="card card-style mt-3">
+                        <div class="card-header card-header-bg text-center fw-bold">
+                            Maintenance Feed
+                        </div>
+                        <div class="card-body">
+                            <div class="row px-md-3 px-0 py-md-2 py-0">
+                                <div class="row m-0 p-1 section-border">
+                                    <div class="col-12">
+                                        <h6 class="p-0 mb-0">
+                                            <strong>Maintenance Header</strong>
+                                        </h6>
+                                        <small>
+                                            Maintenance details with short description.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-md-3 px-0 py-md-2 py-0">
+                                <div class="row m-0 p-1 section-border">
+                                    <div class="col-12">
+                                        <h6 class="p-0 mb-0">
+                                            <strong>Maintenance Header</strong>
+                                        </h6>
+                                        <small>
+                                            Maintenance details with short description.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-md-3 px-0 py-md-2 py-0">
+                                <div class="row m-0 p-1 section-border">
+                                    <div class="col-12">
+                                        <h6 class="p-0 mb-0">
+                                            <strong>Maintenance Header</strong>
+                                        </h6>
+                                        <small>
+                                            Maintenance details with short description.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-md-3 px-0 py-md-2 py-0">
+                                <div class="row m-0 p-1 section-border">
+                                    <div class="col-12">
+                                        <h6 class="p-0 mb-0">
+                                            <strong>Maintenance Header</strong>
+                                        </h6>
+                                        <small>
+                                            Maintenance details with short description.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-md-3 px-0 py-md-2 py-0">
+                                <div class="row m-0 p-1 section-border">
+                                    <div class="col-12">
+                                        <h6 class="p-0 mb-0">
+                                            <strong>Maintenance Header</strong>
+                                        </h6>
+                                        <small>
+                                            Maintenance details with short description.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-md-3 px-0 py-md-2 py-0">
+                                <div class="row m-0 p-1 section-border">
+                                    <div class="col-12">
+                                        <h6 class="p-0 mb-0">
+                                            <strong>Maintenance Header</strong>
+                                        </h6>
+                                        <small>
+                                            Maintenance details with short description.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-md-3 px-0 py-md-2 py-0">
+                                <div class="row m-0 p-1 section-border">
+                                    <div class="col-12">
+                                        <h6 class="p-0 mb-0">
+                                            <strong>Maintenance Header</strong>
+                                        </h6>
+                                        <small>
+                                            Maintenance details with short description.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Right column ends-->
             </div>
         </div>
         <!--Dashboard body ends-->
@@ -347,7 +393,8 @@
 import dashboardService from "../services/DashboardService";
 import moment from "moment";
 import StationsService from "../services/StationsService";
-import DowntimeReasonsService from "../services/DowntimeReasons";
+import LineViewService from "../services/LineViewService";
+import {LineViewDataTransformer} from "../transformers/LineViewDataTransformer";
 
 export default {
     name: "HmiView",
@@ -361,6 +408,26 @@ export default {
             roundRed: true,
             isAlarm: false,
             programStatus: false,
+            machineTotalOee: 0,
+            machineAvailability: 0,
+            machinePerformance: 0,
+            machineQuality: 0,
+            oeeSummary: {
+                hourly: {
+                    labels: [],
+                    performance: [],
+                    availability: [],
+                    quality: [],
+                    oee: [],
+                },
+                summary: {
+                    produced: 0,
+                    expected: 0,
+                    performance: 0,
+                    availability: 0,
+                    quality: 0,
+                }
+            },
             filter: {
                 stationId: 7,
                 stationName: '',
@@ -375,6 +442,7 @@ export default {
                 stationId: this.filter.stationId
             };
             dashboardService.getMachineStatus(params,response => {
+                if(response.machineStatus ==null) return this.machineStatus = [];
                 this.programStatus = response.programStatus
                 this.machineStatus = response.machineStatus
                 // console.log(this.programStatus)
@@ -393,12 +461,31 @@ export default {
                 }
             });
         },
+        getMachineOEE(){
+            LineViewService.fetchLineViewData({
+                    stationId: this.filter.stationId,
+                    stationShiftId: this.filter.stationShiftId,
+                    date: moment(new Date()).subtract(4, "days") .format('YYYY-MM-DD')
+                },
+                (data) => {
+                    const {products, logs, hourlyMetric, summaryMetric} = LineViewDataTransformer(data);
+                    this.$set(this.oeeSummary, 'hourly', hourlyMetric);
+                    this.$set(this.oeeSummary, 'summary', summaryMetric);
+                    this.machineTotalOee = (isNaN((this.oeeSummary.summary.oee * 100).toFixed(2)) || this.oeeSummary.summary.oee === 0) ? 0 : Math.ceil((this.oeeSummary.summary.oee * 100).toFixed(2));
+                    this.machineAvailability = (isNaN(this.oeeSummary.summary.availability.toFixed(2)) || this.oeeSummary.summary.availability === 0) ? 0 : Math.ceil(this.oeeSummary.summary.availability.toFixed(2));
+                    this.machinePerformance = (isNaN(this.oeeSummary.summary.performance.toFixed(2)) || this.oeeSummary.summary.performance === 0) ? 0 : Math.ceil(this.oeeSummary.summary.performance.toFixed(2));
+                    this.machineQuality = (isNaN(this.oeeSummary.summary.quality.toFixed(2)) || this.oeeSummary.summary.quality === 0) ? 0 : Math.ceil(this.oeeSummary.summary.quality.toFixed(2));
+
+                }
+            );
+        },
         changeSelectedStation(station) {
             this.filter.stationId = station.id;
             this.filter.stationName = station.name;
 
             this.getOperator()
             this.getMachineData()
+            this.getMachineOEE()
         },
         getOperator() {
             let currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
@@ -408,10 +495,9 @@ export default {
                     date: currentDate
                 }
             })
-
-                .then((response) => {
-                    this.operatorName = response.data.operatorName
-                })
+            .then((response) => {
+                this.operatorName = response.data.operatorName
+            })
         }
     },
     mounted() {
@@ -433,10 +519,12 @@ export default {
         });
         this.getOperator();
         this.getMachineData();
+        this.getMachineOEE();
 
         this.dataUpdateTimer = setInterval(() => {
             this.getOperator()
             this.getMachineData()
+            this.getMachineOEE()
         }, 1000*10);
     },
     destroyed() {
@@ -450,7 +538,9 @@ export default {
     height: 34px;
     width: 105px;
 }
-
+.text-blue{
+    color: #10306c;
+}
 .nav-bar {
     height: 55px;
     width: 100%;
@@ -484,7 +574,7 @@ export default {
 .card-style {
     border: 1px solid #bbe7ff;
     border-radius: 0px;
-    min-height: 181px;
+    height: 95%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19);
 }
 .section-border {
@@ -601,8 +691,8 @@ export default {
 .dashboard-bg {
     background: #f4faff;
     /*height: 100vh;*/
-    margin: 12px;
-    margin-top: 0px;
+    margin: 2%;
+    margin-top: 0%;
 }
 
 .width-100 {
@@ -656,6 +746,23 @@ table {
     font-size: 13px;
     font-family: "Cascadia Code";
 }
-
+.bg-primary-light{
+    color: #3d5199;
+    background: #EDF1FA;
+    border: 1px solid #E1E4EC;
+    border-radius: 5px;
+}
+.bg-success-light{
+    color: #61AF48;
+    background: #F0FBED;
+    border: 1px solid #E0EBDC;
+    border-radius: 5px;
+}
+.bg-warning-light{
+    color: #EDB044;
+    background: #FAF6ED;
+    border: 1px solid #F5ECE3;
+    border-radius: 5px;
+}
 /* slider style ends */
 </style>

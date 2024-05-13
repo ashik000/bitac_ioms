@@ -4,6 +4,7 @@ namespace App\Data\Repositories;
 
 use App\Data\Models\MachineStatus;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
 class MachineStatusRepository
 {
@@ -22,6 +23,12 @@ class MachineStatusRepository
         $machineStatus['production_counter1'] = $request['production_counter1'];
         $machineStatus['production_counter2'] = $request['production_counter2'];
         $machineStatus['power_status'] = $request['power_status'];
+        $machineStatus['spindle_speed_active'] = $request['spindle_speed_active'];
+        $machineStatus['feed_rate_active'] = $request['feed_rate_active'];
+        $machineStatus['machining_mode'] = $request['machining_mode'];
+        $machineStatus['tool_life'] = $request['tool_life'];
+        $machineStatus['tool_number'] = $request['tool_number'];
+        $machineStatus['load_on_table'] = $request['load_on_table'];
         $machineStatus['produced_at'] = $request['produced_at'];
         $machineStatus['synced_at'] = now();
         $check = $machineStatus->save();
@@ -40,6 +47,21 @@ class MachineStatusRepository
             ->where('station_id', '=', (int)$stationId)
             ->orderBy('produced_at', 'DESC')
             ->first();
+    }
+    public function findLatestAllMachineStatus($startTime, $endTime)
+    {
+        $query = MachineStatus::query();
+        $query
+            ->select('machine_status.*', 'stations.name as station_name')
+            ->join('stations', 'machine_status.station_id', '=', 'stations.id')
+            ->whereBetween('machine_status.produced_at', [$startTime, $endTime])
+            ->orderBy('machine_status.produced_at', 'DESC');
+
+        $query->when($filter['station_id'] ?? null, function (EloquentBuilder $q, $stationId) {
+            $q->where('machine_status.station_id', '=', $stationId);
+        });
+
+        return $query->get();
     }
 
 }

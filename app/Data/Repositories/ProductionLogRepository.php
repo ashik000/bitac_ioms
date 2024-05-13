@@ -35,7 +35,13 @@ class ProductionLogRepository
 
         return empty($log) ? null : $log;
     }
-
+    public function findLatestProductionLogOfEachStation()
+    {
+        return ProductionLog::selectRaw('station_id, max(produced_at) as produced_at')
+            ->groupBy('station_id')
+            ->get()
+            ->keyBy('station_id');
+    }
     public function fetchDowntimeLogsOfStationBetween($stationId, $start, $end, $type)
     {
         $query = Downtime::join('production_logs', function (QueryBuilder $join) {

@@ -88,6 +88,9 @@ Route::middleware(['auth:api', 'scope:admin,manager'])->group(function () {
     Route::get('dashboard', 'DashboardController@getMachineStatus');
     Route::get('machiningData', 'MachiningController@index');
     Route::get('getMachiningDataExcel', 'MachiningController@getMachiningDataExcel');
+    Route::post('storeMachineData', [StoreMachineDataController::class, 'store']);
+    Route::get('getMachineStatus', 'DashboardController@getMachineStatus');
+    Route::get('getMachineOEE', 'DashboardController@getMachineOEE');
 });
 
 Route::middleware(['auth:api'])->group(function () {
@@ -103,6 +106,5 @@ Route::get('getDummyScrap', 'ScrapController@getDummyScrap');
 Route::get('testScrapX', 'ScrapController@testScrap');
 
 //Route::post('storeMachineData', 'StoreMachineDataController@store');
-Route::post('storeMachineData', [StoreMachineDataController::class, 'store']);
-Route::get('getMachineStatus', 'DashboardController@getMachineStatus');
+
 

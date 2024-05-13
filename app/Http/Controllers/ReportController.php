@@ -12,6 +12,7 @@ use App\Data\Models\StationOperator;
 use App\Data\Models\StationProduct;
 use App\Data\Models\StationShift;
 use App\Data\Repositories\DeviceRepository;
+use App\Data\Repositories\MachineStatusRepository;
 use App\Data\Repositories\ProductionLogRepository;
 use App\Data\Repositories\ReportRepository;
 use App\Data\Repositories\ScrapRepository;
@@ -35,6 +36,7 @@ class ReportController extends Controller
     private $productionLogRepository;
     private $scrapRepository;
     private $deviceRepository;
+    private $machineStatusRepository;
 
     private $headers_with_duration = ['Time Duration', "Availability", "Quality", "Performance", "OEE"];
     private $headers_without_criteria = ['Station Name', 'Station Group', "Availability", "Quality", "Performance", "OEE"];
@@ -43,13 +45,15 @@ class ReportController extends Controller
         ReportRepository            $reportRepository,
         ProductionLogRepository     $productionLogRepository,
         ScrapRepository             $scrapRepository,
-        DeviceRepository            $deviceRepository
+        DeviceRepository            $deviceRepository,
+        MachineStatusRepository     $machineStatusRepository
     )
     {
         $this->reportRepository = $reportRepository;
         $this->productionLogRepository = $productionLogRepository;
         $this->scrapRepository = $scrapRepository;
         $this->deviceRepository = $deviceRepository;
+        $this->machineStatusRepository = $machineStatusRepository;
     }
 
     public function index(Request $request)
@@ -460,11 +464,15 @@ class ReportController extends Controller
         ])->groupBy(function ($log) {
             return $log->station_id;
         });
+        $allMachineStatus = $this->machineStatusRepository->findLatestAllMachineStatus($startTime,$endTime)
+        ->groupBy(function ($data) {
+            return $data->station_id;
+        });
 
 
         $allScraps = $this->scrapRepository->fetchScrapsBetweenADateTimeRangeOfAllStations($startTime->toImmutable(), $endTime->toImmutable())->groupBy('station_id');
 
-        $reports = $allStationIds->reduce(function ($carry, $stationId) use ($allProductionLogs, $allDowntimes, $allScraps, $stationsById, $latest_production_logs, $deviceIdentifiers) {
+        $reports = $allStationIds->reduce(function ($carry, $stationId) use ($allProductionLogs, $allMachineStatus, $allDowntimes, $allScraps, $stationsById, $latest_production_logs, $deviceIdentifiers) {
             $productionLogs = $allProductionLogs->get($stationId);
             $station = $stationsById->get($stationId);
 
@@ -518,6 +526,7 @@ class ReportController extends Controller
             $timeDifference = $timeDiff == '1 second ago' ? 'N/A' : $timeDiff;
 
             $deviceId = $deviceIdentifiers->where('station_id', $stationId)->first()->identifier ?? 'N/A';
+            $machineStatus = $allMachineStatus->get($stationId);
 
             $carry[$stationId] = [
                 'stationName' => $station->name,
@@ -528,6 +537,7 @@ class ReportController extends Controller
                 'timeDifference' => $timeDifference,
                 'speed' => $speed,
                 'labels' => range(0, 59),
+                'alarm' => $allMachineStatus,
                 'performance' => number_format($performance * 100, 0),
                 'availability' => number_format($availability * 100, 2),
                 'quality' => number_format($quality * 100, 2),
