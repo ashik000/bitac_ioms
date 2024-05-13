@@ -465,7 +465,7 @@ export default {
             LineViewService.fetchLineViewData({
                     stationId: this.filter.stationId,
                     stationShiftId: this.filter.stationShiftId,
-                    date: moment(new Date()).subtract(4, "days") .format('YYYY-MM-DD')
+                    date: moment(new Date()).format('YYYY-MM-DD')
                 },
                 (data) => {
                     const {products, logs, hourlyMetric, summaryMetric} = LineViewDataTransformer(data);
