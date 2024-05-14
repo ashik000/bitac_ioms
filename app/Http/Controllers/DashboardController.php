@@ -21,8 +21,10 @@ class DashboardController extends Controller
 
     public function getMachineStatus(Request $request)
     {
+        $startTime = now()->startOfHour();
+        $endTime = now()->endOfHour();
         $stationId = $request['station_id'];
-        $machineStatus = $this->machineStatusRepository->findLatestMachineStatusByStationId($stationId);
+        $machineStatus = $this->machineStatusRepository->findCurrentMachineStatusByStationId($stationId,$startTime,$endTime);
         $programStatus = false;
         $productSelected = $this->productRepository->findRunningProductOfStationByStationId($stationId);
         if(empty($machineStatus) || empty($productSelected))

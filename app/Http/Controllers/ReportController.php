@@ -464,10 +464,7 @@ class ReportController extends Controller
         ])->groupBy(function ($log) {
             return $log->station_id;
         });
-        $allMachineStatus = $this->machineStatusRepository->findLatestAllMachineStatus($startTime,$endTime)
-        ->groupBy(function ($data) {
-            return $data->station_id;
-        });
+        $allMachineStatus = $this->machineStatusRepository->findLatestAllMachineStatus($startTime,$endTime);
 
 
         $allScraps = $this->scrapRepository->fetchScrapsBetweenADateTimeRangeOfAllStations($startTime->toImmutable(), $endTime->toImmutable())->groupBy('station_id');
@@ -526,7 +523,7 @@ class ReportController extends Controller
             $timeDifference = $timeDiff == '1 second ago' ? 'N/A' : $timeDiff;
 
             $deviceId = $deviceIdentifiers->where('station_id', $stationId)->first()->identifier ?? 'N/A';
-            $machineStatus = $allMachineStatus->get($stationId);
+            $machineStatus = $allMachineStatus[$stationId] ?? null;
 
             $carry[$stationId] = [
                 'stationName' => $station->name,
@@ -537,12 +534,12 @@ class ReportController extends Controller
                 'timeDifference' => $timeDifference,
                 'speed' => $speed,
                 'labels' => range(0, 59),
-                'alarm' => $allMachineStatus,
+                'alarm' => $machineStatus->alarm_info,
                 'performance' => number_format($performance * 100, 0),
                 'availability' => number_format($availability * 100, 2),
                 'quality' => number_format($quality * 100, 2),
                 'oee' => number_format($oeeNumber, 0),
-                'color' => empty($productionLogs) ? 'black' : ($oeeNumber < $station->oee_threshold ? 'red' : 'green')
+                'color' => $machineStatus->power_status==null ? 'black' : ($machineStatus->power_status=='ACTIVE' ? 'green' : 'red')
             ];
 
             return $carry;

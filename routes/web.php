@@ -18,5 +18,4 @@ Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'i
 
 Route::get('/{view?}', function () {
     return view('app');
-})
-     ->where('view', '.*');
+})->where('view', '.*');

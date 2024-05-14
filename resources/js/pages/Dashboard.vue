@@ -17,7 +17,7 @@
             </div>-->
 
             <div class="col-md-12 d-flex justify-content-start flex-wrap mt-3">
-                <chart-card :stationC="stationCount" :activeStationCount="activeStationCount" :inactiveStationCount="inactiveStationCount"></chart-card>
+                <chart-card :stationC="stationCount" :activeStationCount="activeStationCount" :inactiveStationCount="inactiveStationCount" :alarmStationCount="alarmStationCount"></chart-card>
                 <chart-card v-for="data in summaryData" :key="data.stationId" :summaryData="data"></chart-card>
             </div>
         </div>
@@ -41,6 +41,7 @@ export default {
         stationCount: 0,
         activeStationCount: 0,
         inactiveStationCount: 0,
+        alarmStationCount: 0,
         deviceId: 'N/A',
         selectedStationId: 0,
         allStations: [],
@@ -73,12 +74,17 @@ export default {
                 vm.summaryData = data;
                 vm.stationCount = Object.keys(data).length;
                 vm.stationCount = parseInt(vm.stationCount);
-
+                vm.activeStationCount = 0;
+                vm.inactiveStationCount = 0;
+                vm.alarmStationCount = 0;
                 for (var key in data) {
                     if (data[key].color === "black") {
                         vm.inactiveStationCount++;
                     } else {
                         vm.activeStationCount++;
+                    }
+                    if (data[key].alarm != null  && data[key].alarm != 'NO ACTIVE ALARMS') {
+                        vm.alarmStationCount++;
                     }
                 }
             }, error => {
@@ -86,8 +92,6 @@ export default {
             });
         },
         updateData: function() {
-            this.activeStationCount = 0;
-            this.inactiveStationCount = 0;
             this.fetchAllSummaryData();
         },
         setCookie(stationIds, stationNames) {

@@ -3,8 +3,8 @@
 namespace App\Data\Repositories;
 
 use App\Data\Models\MachineStatus;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use App\Data\Models\Station;
+use Illuminate\Support\Facades\DB;
 
 class MachineStatusRepository
 {
@@ -48,20 +48,24 @@ class MachineStatusRepository
             ->orderBy('produced_at', 'DESC')
             ->first();
     }
-    public function findLatestAllMachineStatus($startTime, $endTime)
+    public function findCurrentMachineStatusByStationId($stationId,$startTime,$endTime)
     {
         $query = MachineStatus::query();
-        $query
-            ->select('machine_status.*', 'stations.name as station_name')
-            ->join('stations', 'machine_status.station_id', '=', 'stations.id')
-            ->whereBetween('machine_status.produced_at', [$startTime, $endTime])
-            ->orderBy('machine_status.produced_at', 'DESC');
-
-        $query->when($filter['station_id'] ?? null, function (EloquentBuilder $q, $stationId) {
-            $q->where('machine_status.station_id', '=', $stationId);
-        });
-
-        return $query->get();
+        return $query
+            ->where('station_id', '=', (int)$stationId)
+            ->whereBetween('produced_at', [$startTime, $endTime])
+            ->orderBy('produced_at', 'DESC')
+            ->first();
+    }
+    public function findLatestAllMachineStatus($startTime,$endTime)
+    {
+        $query = Station::query();
+        return $query
+            ->select('stations.id as sid','stations.name as station_name', 'ms.*')
+            ->leftJoin(DB::raw("(select * from machine_status as ms
+                    where (ms.produced_at between '".$startTime."' and '".$endTime."') order by ms.produced_at desc limit 1) as ms"), 'ms.station_id', '=', 'stations.id')
+            ->orderBy('stations.id')
+            ->get()->keyBy('sid');
     }
 
 }

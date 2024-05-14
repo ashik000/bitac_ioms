@@ -11,7 +11,7 @@
                     <h6 :class="getTextColor">{{this.summaryData.productName}}</h6>
                 </div>
                 <div class="flex-container mt-2">
-                    <h7 class="text-black-50">Alarm: {{this.summaryData.productName}}</h7>
+                    <h7 v-if="this.summaryData.alarm!=null && this.summaryData.alarm!='NO ACTIVE ALARMS'" class="text-black-50">Alarm: {{this.summaryData.alarm}}</h7>&nbsp;
                 </div>
                 <div class="flex-container mt-3" style="text-align: center;">
                     <span :class="getTextColor" style="font-size: 12px;">
@@ -67,15 +67,18 @@
             <div class="d-flex align-items-center justify-content-center card-body rounded-2" style="background-color: #8b93e0; color: #FFFFFF; height: 10rem" v-else>
                 <div class="row">
                     <div class="col-md-6 col-6">
-                        <div class="row" style="font-size: 1.2rem">
+                        <div class="row" style="font-size: 1.25rem">
                             <span>
-                                Stations: <span style="font-size: 1.8rem; font-weight: 600;">{{this.stationC ? this.stationC : '0'}}</span>
+                                Station: <strong>{{this.stationC ? this.stationC : '0'}}</strong>
                             </span>
                             <span>
-                                Operating: {{ this.activeStationCount ? this.activeStationCount : '0' }}
+                                Operating: <strong>{{ this.activeStationCount ? this.activeStationCount : '0' }}</strong>
                             </span>
                             <span>
-                                Stopped: {{ this.inactiveStationCount ? this.inactiveStationCount : '0' }}
+                                Stopped: <strong>{{ this.inactiveStationCount ? this.inactiveStationCount : '0' }}</strong>
+                            </span>
+                            <span>
+                                Alarm: <strong>{{ this.alarmStationCount ? this.alarmStationCount : '0' }}</strong>
                             </span>
                         </div>
                     </div>
@@ -110,6 +113,10 @@ export default {
             required: false
         },
         inactiveStationCount: {
+            type: Number,
+            required: false
+        },
+        alarmStationCount: {
             type: Number,
             required: false
         },
