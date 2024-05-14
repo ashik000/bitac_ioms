@@ -52,6 +52,8 @@ class MachineStatusRepository
     {
         $query = MachineStatus::query();
         return $query
+            ->select('machine_status.*', 'stations.station_group_id')
+            ->join('stations', 'stations.id', '=', 'machine_status.station_id')
             ->where('station_id', '=', (int)$stationId)
             ->whereBetween('produced_at', [$startTime, $endTime])
             ->orderBy('produced_at', 'DESC')

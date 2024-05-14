@@ -151,7 +151,7 @@
                                         <div class="col-6">
                                             <span class="text-black-50">.</span>
                                             <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
-                                                <span v-if="machineStatus.spindle_speed" class="fw-bolder">{{ parseFloat(machineStatus.spindle_speed).toFixed(2) }} RPM</span>
+                                                <span v-if="machineStatus.spindle_speed" class="fw-bolder">{{ floatFixed(machineStatus.spindle_speed,2) }}/{{ floatFixed(machineStatus.spindle_speed_active,2) }} RPM</span>
                                             </h6>
                                         </div>
                                     </div>
@@ -167,7 +167,7 @@
                                         <div class="col-6">
                                             <span class="text-black-50">.</span>
                                             <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
-                                                <span v-if="machineStatus.feed_rate" class="fw-bolder">{{ machineStatus.feed_rate }} MMPH</span>
+                                                <span v-if="machineStatus.feed_rate" class="fw-bolder">{{ floatFixed(machineStatus.feed_rate,2) }}/{{ floatFixed(machineStatus.feed_rate_active,2) }} MMPH</span>
                                             </h6>
                                         </div>
                                     </div>
@@ -255,18 +255,19 @@
                                 <div class="row px-md-3 px-0 py-md-2 py-0">
                                     <div class="row m-0 p-0 section-border">
                                         <div class="col-6">
+                                            <small class="text-black-50">Tool Life</small>
                                             <h6 class="py-1 mb-0">
-                                                Tool Life
+                                                Active Tools ({{ machineStatus.tool_number }})
                                             </h6>
                                         </div>
                                         <div class="col-6">
                                             <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
-                                                <span class="fw-bolder">{{ machineStatus.tool_life }}</span>
+                                                <span class="fw-bolder">{{ machineStatus.tool_life }}%</span>
                                             </h6>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row px-md-3 px-0 py-md-2 py-0">
+                                <div class="row px-md-3 px-0 py-md-2 py-0" v-if="machineStatus.station_group_id==2">
                                     <div class="row m-0 p-0 section-border">
                                         <div class="col-6">
                                             <h6 class="py-1 mb-0">
@@ -498,6 +499,11 @@ export default {
             .then((response) => {
                 this.operatorName = response.data.operatorName
             })
+        },
+        floatFixed(number,point){
+            if(number==null) return "";
+            if(isNaN(number)) number = 0;
+            return parseFloat(number).toFixed(point);
         }
     },
     mounted() {
