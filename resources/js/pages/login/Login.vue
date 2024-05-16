@@ -71,7 +71,7 @@
                     // window.localStorage.setItem('token_expiration', response.expires_in);
                     // window.localStorage.setItem('role', response.role);
                     this.$router.push({
-                        name: 'hmiview'
+                        name: 'dashboard'
                     });
                     ToastrService.showSuccessToast('Login Successful');
                 }, error => {
@@ -86,6 +86,14 @@
                     // this.$toasted.show('Bad Credentials', {duration: 1000, type: "error"});
                 })
             },
+        },
+        mounted() {
+            this.$store.commit('addAuthProperties', {
+                token: null,
+                refreshToken: null,
+                tokenExpiration: null,
+                role: null
+            });
         }
     }
 </script>

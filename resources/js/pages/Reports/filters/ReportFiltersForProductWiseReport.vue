@@ -1,30 +1,30 @@
 <template>
-    <nav class="navbar w-100">
-        <div class="row w-100">
+    <nav>
+        <div class="row">
             <div class="col-sm-3">
-                <label>Select Station Group</label>
-                <select class="form-select" v-model="selectedStationGroupId" >
+                <label>Station Group</label>
+                <select class="form-select form-select-sm" v-model="selectedStationGroupId" >
                     <option value="0">All</option>
                     <option v-for="stationGroup in StationGroup" :value="stationGroup.id" :key="stationGroup.id">{{ stationGroup.name }}</option>
                 </select>
             </div>
             <div class="col-sm-3 ps-0">
-                <label>Select Station</label>
-                <select class="form-select" v-model="selectedStationId" @change="stationChanged">
+                <label>Station</label>
+                <select class="form-select form-select-sm" v-model="selectedStationId" @change="stationChanged">
                     <option value="0">All</option>
                     <option v-for="station in filteredStations" :value="station.id" :key="station.id">{{ station.name }}</option>
                 </select>
             </div>
             <div class="col-sm-3 ps-0">
-                <label>Select Product Group</label>
-                <select class="form-select" v-model="selectedProductGroupId">
+                <label>Product Group</label>
+                <select class="form-select form-select-sm" v-model="selectedProductGroupId">
                     <option value="0">All</option>
                     <option v-for="productGroup in productGroups" :value="productGroup.id" :key="productGroup.id">{{ productGroup.name }}</option>
                 </select>
             </div>
             <div class="col-sm-3 ps-0">
-                <label style="font-size: 13px;">Select Product (With station)</label>
-                <select class="form-select" v-model="selectedStationProductId">
+                <label>Product (with station)</label>
+                <select class="form-select form-select-sm" v-model="selectedStationProductId">
                     <option value="0">All</option>
                     <option v-for="sp in filteredStationProducts" :value="sp.id" :key="sp.id">{{ sp.name }}</option>
                 </select>

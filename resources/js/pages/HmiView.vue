@@ -63,12 +63,12 @@
                                                     <div v-if="machineStatus.power_status" class="round" v-bind:class="{roundGreen, roundRed}"></div>
                                                     <span class="fw-bolder">{{ machineStatus.power_status }}</span>
                                                 </h6>
+                                                <div v-if="isAlarm" class="col-md-12 mt-0">
+                                                    <p class="text-danger m-0" style="font-size: 11px; line-height: 15px;"><strong>Alarm:</strong> {{ machineStatus.alarm_info}}</p>
+                                                </div>
                                             </div>
 
-                                            <div v-if="isAlarm" class="col-md-12" style="margin-top: 10px">
-                                                <span class="fw-bolder text-danger">Alarm:</span>
-                                                <span class="fw-bolder text-danger">{{ machineStatus.alarm_info}}</span>
-                                            </div>
+
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12 ps-md-2 pe-md-0 px-0">
@@ -151,7 +151,7 @@
                                         <div class="col-6">
                                             <span class="text-black-50">.</span>
                                             <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
-                                                <span v-if="machineStatus.spindle_speed" class="fw-bolder">{{ floatFixed(machineStatus.spindle_speed,2) }}/{{ floatFixed(machineStatus.spindle_speed_active,2) }} RPM</span>
+                                                <span v-if="machineStatus.spindle_speed" class="fw-bolder">{{ floatFixed(machineStatus.spindle_speed_active,2) }}/{{ floatFixed(machineStatus.spindle_speed,2) }} RPM</span>
                                             </h6>
                                         </div>
                                     </div>
@@ -167,7 +167,7 @@
                                         <div class="col-6">
                                             <span class="text-black-50">.</span>
                                             <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
-                                                <span v-if="machineStatus.feed_rate" class="fw-bolder">{{ floatFixed(machineStatus.feed_rate,2) }}/{{ floatFixed(machineStatus.feed_rate_active,2) }} MMPH</span>
+                                                <span v-if="machineStatus.feed_rate" class="fw-bolder">{{ floatFixed(machineStatus.feed_rate_active,2) }}/{{ floatFixed(machineStatus.feed_rate,2) }} MMPH</span>
                                             </h6>
                                         </div>
                                     </div>
@@ -262,7 +262,7 @@
                                         </div>
                                         <div class="col-6">
                                             <h6 class="text-uppercase py-1 mb-0" style="text-align: right">
-                                                <span class="fw-bolder">{{ machineStatus.tool_life }}%</span>
+                                                <span v-if="machineStatus.tool_life" class="fw-bolder">{{ machineStatus.tool_life }}%</span>
                                             </h6>
                                         </div>
                                     </div>

@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-3 mb-2">
+    <div class="col-xl-3 col-md-4 col-12 mb-2">
         <div class="card shadow rounded-2 mx-2">
 
             <div v-if="summaryData" :class="getBackGroundColor" class="card-body rounded-2 main_card" style="min-height: 10rem;">
@@ -11,12 +11,12 @@
                     <h6 :class="getTextColor">{{this.summaryData.productName}}</h6>
                 </div>
                 <div class="flex-container mt-2">
-                    <h7 v-if="this.summaryData.alarm!=null && this.summaryData.alarm!='NO ACTIVE ALARMS'" class="text-black-50">Alarm: {{this.summaryData.alarm}}</h7>&nbsp;
+                    <h7 v-if="this.summaryData.alarm!=null && this.summaryData.alarm!='NO ACTIVE ALARMS'" class="text-warning">Alarm: {{this.summaryData.alarm}}</h7>&nbsp;
                 </div>
                 <div class="flex-container mt-3" style="text-align: center;">
                     <span :class="getTextColor" style="font-size: 12px;">
-                        Availability: {{this.summaryData.availability}}% |
-                        Performance: {{this.summaryData.performance}}% |
+                        Availability: {{this.summaryData.availability}}% &nbsp;&nbsp;|&nbsp;&nbsp;
+                        Performance: {{this.summaryData.performance}}% &nbsp;&nbsp;|&nbsp;&nbsp;
                         Quality: {{this.summaryData.quality}}%
                     </span>
                 </div>
@@ -63,10 +63,9 @@
 
             </div>
 
-
             <div class="d-flex align-items-center justify-content-center card-body rounded-2" style="background-color: #8b93e0; color: #FFFFFF; height: 10rem" v-else>
                 <div class="row">
-                    <div class="col-md-6 col-6">
+                    <div class="col-md-7 col-8">
                         <div class="row" style="font-size: 1.25rem">
                             <span>
                                 Station: <strong>{{this.stationC ? this.stationC : '0'}}</strong>
@@ -82,8 +81,8 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-md-6 col-6 text-center">
-                        <img class="walton_logo" src="storage/images/bitac-logo.png" alt="bitac-logo" style="">
+                    <div class="col-md-5 col-4">
+                        <img class="walton_logo" src="storage/images/bitac-logo.png" alt="bitac-logo" style="float: right;">
                     </div>
                 </div>
             </div>
@@ -229,7 +228,6 @@ export default {
 }
 .inactive-card {
     background-color: #C3CCC7;
-    max-width: 50rem!important;
 }
 .walton_logo {
     height: 125px; width: 125px; border-radius: 50%;
@@ -241,61 +239,23 @@ export default {
     }
 }
 @media (max-width: 768px) {
-    .main_card {
-        max-width: 30rem;
-    }
-    .inactive-card {
-        max-width: 30rem!important;
-    }
-    .bar_update {
-        width: 450px;
+    .walton_logo {
+        height: 125px; width: 125px; border-radius: 50%;
     }
 }
 @media (max-width: 520px) {
-    .main_card {
-        max-width: 28.5rem;
-    }
-    .inactive-card {
-        max-width: 28.5rem!important;
-    }
-    .bar_update {
-        width: 425px;
-    }
+
 }
 @media (max-width: 495px) {
-    .main_card {
-        max-width: 27rem;
-    }
-    .inactive-card {
-        max-width: 27rem!important;
-    }
-    .bar_update {
-        width: 410px;
-    }
+
 }
 @media (max-width: 450px) {
-    .main_card {
-        max-width: 25rem;
-    }
-    .inactive-card {
-        max-width: 25rem!important;
-    }
-    .bar_update {
-        width: 350px;
-    }
+
 }
 @media (max-width: 400px) {
-    .main_card {
-        max-width: 23rem;
-    }
-    .inactive-card {
-        max-width: 22rem!important;
-    }
-    .bar_update {
-        width: 330px;
-    }
+
 }
-@media (max-width: 390px) {
+/*@media (max-width: 390px) {
     .main_card {
         max-width: 21.5rem;
     }
@@ -335,5 +295,5 @@ export default {
     .bar_update {
         width: 230px;
     }
-}
+}*/
 </style>

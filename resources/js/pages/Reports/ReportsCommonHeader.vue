@@ -1,83 +1,81 @@
 <template>
-    <nav class="navbar navbar-expand-lg partitionNav ps-3 pe-3 py-0">
+    <nav class="partitionNav ms-md-3 mx-0 p-2">
 
-        <div class="row justify-content-between" style="width: 1600px;">
-            <div class="col-md-6 col-sm-12">
-                <ReportFilters :reportType="reportType" :reportName="reportName" class="w-100">
-                </ReportFilters>
+        <div class="row justify-content-between">
+            <div class="col-9">
+                <ReportFilters :reportType="reportType" :reportName="reportName"></ReportFilters>
             </div>
-            <div class="col-md-3 col-sm-12">
-                <ul class="partition-picker" v-if="showPartition">
-                    <li class="nav-item" :class="{ active: partition === 'hourly' }"
-                        @click.prevent="partitionChanged('hourly')">
-                        <a href="#" class="nav-link">
-                            Hourly
-                        </a>
-                    </li>
-                    <li class="nav-item" :class="{ active: partition === 'daily' }"
-                        @click.prevent="partitionChanged('daily')">
-                        <a href="#" class="nav-link">
-                            Daily
-                        </a>
-                    </li>
-                    <li class="nav-item" :class="{ active: partition === 'weekly' }"
-                        @click.prevent="partitionChanged('weekly')">
-                        <a href="#" class="nav-link">
-                            Weekly
-                        </a>
-                    </li>
-                    <li class="nav-item" :class="{ active: partition === 'monthly' }"
-                        @click.prevent="partitionChanged('monthly')">
-                        <a href="#" class="nav-link">
-                            Monthly
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="col-md-3 col-sm-12">
-                <div class="date-range-picker-wrap mt-3" style="float: right;">
-                    <span class="range-picker-label">
-                        Date Range
-                    </span>
-                    <v-date-picker class="date-range-picker" v-show="selectedRange.tag === 'custom'"
-                        :input-props="{ style: `
-                                background-color: #ffffff;
-                                color: #3D3B30;
-                                padding: 0.5rem;
-                                border-radius: 0.25rem;
-                                margin: 0.1rem 0;
-                                width: 200px;
-                                text-align: center;
-                                cursor: pointer;
-                            `
-                        }"
-                        is-range
-                        v-model="range"
-                        @input="onDateRangeChanged">
-                    </v-date-picker>
-
-
-                    <div class="dropdown">
-                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ selectedRange.title }}
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                            <li>
-                                <a href="#" class="dropdown-item"
-                                    v-for="item in rangeSelections" @click="changeSelectedRange(item)">
-                                    {{ item.title }}
-                                </a>
-
-                                <a href="#" class="dropdown-item"
-                                    @click="changeSelectedRange({ tag: 'custom', title: 'Custom' })">
-                                    Custom
-                                </a>
-                            </li>
-                        </ul>
+            <div class="col-3">
+                <div class="row">
+                    <div class="col-6">
+                        <div style="float: right">
+                            <div>Type</div>
+                            <div class="date-range-picker-wrap mt-0" style="float: right;">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-primary dropdown-toggle text-capitalize" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ partition }}
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                                        <li class="nav-item" :class="{ active: partition === 'hourly' }" @click.prevent="partitionChanged('hourly')">
+                                            <a href="#" class="nav-link">Hourly</a>
+                                        </li>
+                                        <li class="nav-item" :class="{ active: partition === 'daily' }" @click.prevent="partitionChanged('daily')">
+                                            <a href="#" class="nav-link">Daily</a>
+                                        </li>
+                                        <li class="nav-item" :class="{ active: partition === 'weekly' }" @click.prevent="partitionChanged('weekly')">
+                                            <a href="#" class="nav-link">Weekly</a>
+                                        </li>
+                                        <li class="nav-item" :class="{ active: partition === 'monthly' }" @click.prevent="partitionChanged('monthly')">
+                                            <a href="#" class="nav-link">Monthly</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-6">
+                        <div style="float: right">
+                            <div>Date</div>
+                            <div class="date-range-picker-wrap mt-0" style="float: right;">
+                                <v-date-picker class="date-range-picker" v-show="selectedRange.tag === 'custom'"
+                                   :input-props="{ style: `
+                                            background-color: #ffffff;
+                                            color: #3D3B30;
+                                            padding: 0.5rem;
+                                            border-radius: 0.25rem;
+                                            margin: 0.1rem 0;
+                                            width: 200px;
+                                            text-align: center;
+                                            cursor: pointer;
+                                        `
+                                    }"
+                                   is-range
+                                   v-model="range"
+                                   @input="onDateRangeChanged">
+                                </v-date-picker>
 
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ selectedRange.title }}
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                                        <li>
+                                            <a href="#" class="dropdown-item"
+                                               v-for="item in rangeSelections" @click="changeSelectedRange(item)">
+                                                {{ item.title }}
+                                            </a>
+                                            <a href="#" class="dropdown-item"
+                                               @click="changeSelectedRange({ tag: 'custom', title: 'Custom' })">
+                                                Custom
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </nav>
@@ -315,6 +313,18 @@ export default {
     right: 7em;
     top: .5em;
     z-index: 9999;
+}
+.partition-picker {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+}
+.partition-picker li a {
+    padding: .85em;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+}
+.partitionNav {
+    background-color: #b7e4ff;
 }
 </style>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="justify-content-center align-items-center ps-4">
+    <div class="justify-content-center align-items-center ps-3">
         <div>
             <div>
                 <slot name="reportContainer"></slot>

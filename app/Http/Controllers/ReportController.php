@@ -193,9 +193,9 @@ class ReportController extends Controller
 
             $carry['labels'][]       = $this->getLabel($item->generated_at, $type);
             $carry['generated_at'][] = $item->generated_at;
-            $carry['performance'][]  = $performance * 100;
-            $carry['quality'][]      = $quality * 100;
-            $carry['availability'][] = $availability * 100;
+            $carry['performance'][]  = $performance * 100 > 100 ? 100 : $performance * 100;
+            $carry['quality'][]      = $quality * 100 > 100 ? 100 : $quality * 100;
+            $carry['availability'][] = $availability * 100 > 100 ? 100 : $availability * 100;
             $carry['oee'][]          = $performance * $quality * $availability * 100;
 
             return $carry;
@@ -525,6 +525,10 @@ class ReportController extends Controller
             $deviceId = $deviceIdentifiers->where('station_id', $stationId)->first()->identifier ?? 'N/A';
             $machineStatus = $allMachineStatus[$stationId] ?? null;
 
+            $cardColor = 'black';
+            if($machineStatus->power_status=='ACTIVE') $cardColor = 'green';
+            if($machineStatus->power_status!='ACTIVE' && $machineStatus->alarm_info!=null && $machineStatus->alarm_info!='NO ACTIVE ALARMS' ) $cardColor = 'red';
+
             $carry[$stationId] = [
                 'stationName' => $station->name,
                 'productName' => empty($currentProduct) ? '' : $currentProduct->name,
@@ -539,7 +543,7 @@ class ReportController extends Controller
                 'availability' => number_format($availability * 100, 2),
                 'quality' => number_format($quality * 100, 2),
                 'oee' => number_format($oeeNumber, 0),
-                'color' => $machineStatus->power_status==null ? 'black' : ($machineStatus->power_status=='ACTIVE' ? 'green' : 'red')
+                'color' => $cardColor
             ];
 
             return $carry;

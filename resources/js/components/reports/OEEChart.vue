@@ -1,9 +1,9 @@
 <template>
     <div class="wrap">
-        <h4 class="text-center text-uppercase">{{ title }}</h4>
+        <h4 class="text-center text-uppercase mt-2">{{ title }}</h4>
 
         <div class="chart-container">
-            <canvas height="360" ref="chartElement"/>
+            <canvas height="300" ref="chartElement"/>
         </div>
     </div>
 </template>

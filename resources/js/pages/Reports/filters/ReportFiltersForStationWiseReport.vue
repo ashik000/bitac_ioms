@@ -1,10 +1,10 @@
 <template>
-    <nav class="navbar w-100">
-        <div class="row w-100">
+    <nav>
+        <div class="row">
             <div class="col-sm-6">
                 <div class="">
-                    <label>Select Station Group</label>
-                    <select class="form-select station_wise_select" v-model="selectedStationGroupId">
+                    <label>Station Group</label>
+                    <select class="form-select form-select-sm station_wise_select" v-model="selectedStationGroupId">
                         <option value="0">All</option>
                         <option v-for="stationGroup in StationGroup" :value="stationGroup.id" :key="stationGroup.id">{{ stationGroup.name }}</option>
                     </select>
@@ -12,8 +12,8 @@
             </div>
             <div class="col-sm-6">
                 <div class="">
-                    <label>Select Station</label>
-                    <select class="form-select station_wise_select" v-model="selectedStationId">
+                    <label>Station</label>
+                    <select class="form-select form-select-sm station_wise_select" v-model="selectedStationId">
                         <option value="0">All</option>
                         <option v-for="station in filteredStations" :value="station.id" :key="station.id">{{ station.name }}</option>
                     </select>

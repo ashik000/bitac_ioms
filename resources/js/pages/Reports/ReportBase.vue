@@ -1,11 +1,11 @@
 <template>
-    <div class="container-fluid wrapper wrapper-top-4">
-        <div class="row card-wrapper gx-0">
-            <div class="section col-md-2 h-100">
+    <div class="container-fluid mt-3">
+        <div class="row gx-0">
+            <div class="section col-md-2">
                 <ReportSideBar v-on:reportTypeChanged="changeReportType" :reportName="reportName" :reportType="reportType">
                 </ReportSideBar>
             </div>
-            <div class="section col-md-10 h-100">
+            <div class="section col-md-10">
                 <router-view :reportType="reportType" @reportNameX="updateReportName"></router-view>
             </div>
         </div>
